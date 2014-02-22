@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'active_record'
+require 'haml'
 
 ActiveRecord::Base.establish_connection
 
@@ -7,14 +8,31 @@ ActiveRecord::Base.establish_connection
 Dir['./backend/models/*.rb'].each { |f| require f }
 
 get '/' do
-  return "<a href='/individuals'>Individual Contributors</a>" +
-         "<a href='/others'>Other Contributors</a>"
+  haml :index, locals: {
+    organizations: Committee.mayoral_candidates
+  }
+end
+
+get '/committees/:id' do |id|
+  committee     = Committee.find_by(committee_id: id)
+  contributions = Contribution
+                    .where(recipient_id: committee)
+                    .includes(:contributor)
+
+  haml :contributions, locals: {
+    committee: committee,
+    contributions: contributions
+  }
 end
 
 get '/individuals' do
-  return '<ul>' + Individual.order(:name).pluck(:name).join('</li><li>') + '</ul>'
+  haml :contributors, locals: {
+    contributors: Individual.order(:name).pluck(:name)
+  }
 end
 
 get '/others' do
-  return '<ul>' + OtherContributor.order(:name).pluck(:name).join('</li><li>') + '</ul>'
+  haml :contributors, locals: {
+    contributors: OtherContributor.order(:name).pluck(:name)
+  }
 end

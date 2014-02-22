@@ -1,0 +1,11 @@
+%h2 Mayoral Candidates
+%ul
+  - organizations.each do |o|
+    %li
+      %a{ href: "/committees/#{o.committee_id}" }= o.name
+
+%h2 Contributors
+%div
+  %a{ href: '/individuals' } Individual Contributors
+%div
+  %a{ href: '/others' } Other Contributors

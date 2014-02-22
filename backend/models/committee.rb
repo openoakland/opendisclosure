@@ -1,5 +1,3 @@
 class Committee < ActiveRecord::Base
-
-  def self.from_row(row)
-  end
+  scope :mayoral_candidates, -> { where(committee_id: [1354678, 1357609, 1362261, 1359017]) }
 end
