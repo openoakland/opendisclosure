@@ -13,28 +13,54 @@ get '/' do
   }
 end
 
-get '/committees/:id' do |id|
-  committee     = Committee.find_by(committee_id: id)
+get '/recipients/:type/:id' do |type, id|
+  recipient     = get_record_by_type(type, id)
   contributions = Contribution
-                    .where(recipient_id: committee)
+                    .where(recipient_id: recipient)
                     .includes(:contributor)
 
-  haml :contributions, locals: {
-    committee: committee,
+  haml :recipient, locals: {
+    recipient: recipient,
     contributions: contributions
   }
 end
 
-get '/individuals' do
-  haml :contributors, locals: {
-    contributors: Individual.order(:name).pluck(:name)
+get '/contributions' do
+  contributors = case params[:type]
+  when 'individuals'
+    Individual
+  when 'committees'
+    Committee
+  when 'others'
+    OtherContributor
+  end.order(:name)
+
+  haml :contributons, locals: {
+    contributors: contributors
   }
 end
 
-get '/others' do
-  haml :contributors, locals: {
-    contributors: OtherContributor.order(:name).pluck(:name)
+get '/contributors/:type/:id' do |type, id|
+  contributor = get_record_by_type(type, id)
+  contributions = Contribution
+                    .where(contributor_id: contributor)
+                    .includes(:recipient)
+
+  haml :contributor, locals: {
+    contributor: contributor,
+    contributions: contributions,
   }
+end
+
+def get_record_by_type(type, id)
+  case type
+  when 'individual'
+    Individual
+  when 'committee'
+    Committee
+  when 'othercontributor'
+    OtherContributor
+  end.find(id)
 end
 
 after do

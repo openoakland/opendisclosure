@@ -1,11 +1,14 @@
-%h2 Mayoral Candidates
+%h2 Recipients (Mayoral Candidates)
 %ul
   - organizations.each do |o|
     %li
-      %a{ href: "/committees/#{o.committee_id}" }= o.name
+      %a{ href: "/recipients/#{o.class.name.downcase}/#{o.id}" }= o.name
 
 %h2 Contributors
-%div
-  %a{ href: '/individuals' } Individual Contributors
-%div
-  %a{ href: '/others' } Other Contributors
+%ul
+  %li
+    %a{ href: '/contributions?type=individuals' } Individuals
+  %li
+    %a{ href: '/contributions?type=committees' } Committees
+  %li
+    %a{ href: '/contributions?type=others' } Others
