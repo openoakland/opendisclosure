@@ -1,106 +1,116 @@
 (function() {
-    
-    this.App = (function() {
 
-        App.prototype.amounts = {};
+  var chartDiv;
+  var sidebar;
 
-        function App() {
-            var _this = this;
+  function injectScript(src, onLoad, onError) {
+    var headEl = document.getElementsByTagName("head")[0];
+    var script = document.createElement('script');
 
-            this.init = _.bind(this.init, this);
+    script.type = 'text/javascript';
+    script.src = src;
+    script.async = true;
 
-            d3.csv('assets/data/data.csv', this.init);
+    if (onLoad) {
+      // onreadystatechange for old versions of IE
+      script.onload = script.onreadystatechange = function() {
+        if (script.readyState &&
+          script.readyState != 'complete' && script.readyState != 'loaded') {
+          return;
         }
+        script.onload = script.onreadystatechange = null;
+        onLoad(src);
+      };
+    }
+    // This doesn't work in IE and there's no way to make it work in IE, but
+    // it will allow error handling for everybody else.
+    if (onError) {
+      script.onerror = onError;
+    }
 
-        App.prototype.init = function(data) {
-            var _this = this;
+    headEl.appendChild(script);
 
-            for (var i = 0; i < data.length; i++) {
-                var el = data[i],
-                    amount = parseInt(el.Tran_Amt1);
+    return script;
+  }
 
-                if (this.amounts[el.Filer_NamL]) {
-                    this.amounts[el.Filer_NamL] += amount;
-                } else {
-                    this.amounts[el.Filer_NamL] = amount;
-                }
-            }
+  function injectCss(filename) {
+    var fileref = document.createElement("link");
+    fileref.setAttribute("rel", "stylesheet");
+    fileref.setAttribute("type", "text/css");
+    fileref.setAttribute("href", filename);
+    document.getElementsByTagName("head")[0].appendChild(fileref)
+  }
 
-            data = _.collect(this.amounts, function(v, k) { return {name: k, amount: v}});
-            data = _.sortBy(data, function(el) { return -el.amount; });
-            data = _.filter(data, function(el) { return !isNaN(el.amount); });
+  function createChart(chart, data) {
+    // Create container for this chart.
+    var chartEl = $('<div></div>').attr('id', 'chart-' + chart.id);
+    chartDiv.append(chartEl);
 
+    injectScript('assets/charts/' + chart.id + '/' + chart.id + '.js', function() {
+      // Each chart should have a global function defined that takes an element and data as arguments
+      if (window[chart.id]) {
+        console.log('Creating chart "' + chart.id + '".');
 
-            var margin = {top: 30, right: 40, bottom: 300, left: 50},
-                width = 960 - margin.left - margin.right,
-                height = 800 - margin.top - margin.bottom;
+        // Load css (may not exist but that's fine)
+        injectCss('assets/charts/' + chart.id + '/' + chart.id + '.css');
 
-            var formatDollar = d3.format("$.0");
+        // Load js and create the chart
+        window[chart.id](chartEl[0], data);
+      } else {
+        console.error('Couldn\'t find chart "' + chart.id + '".');
+      }
+    });
+  }
 
-            var x = d3.scale.ordinal()
-                .rangeRoundBands([0, width], .1);
+  function createNavLink(chart) {
+    // Create container
+    var linkHolder = $('<li></li>');
 
-            var y = d3.scale.linear()
-                .range([height, 0]);
+    // Create link
+    var link = $('<a></a>').attr('href', '#chart-' + chart.id);
+    link.text(chart.description);
 
-            var xAxis = d3.svg.axis()
-                .scale(x)
-                .orient("bottom");
+    // Add link to container
+    linkHolder.append(link);
 
-            var yAxis = d3.svg.axis()
-                .scale(y)
-                .orient("left")
-                .tickFormat(formatDollar);
+    // Attach container to sidebar
+    sidebar.find('ul').append(linkHolder);
+  }
 
-            var svg = d3.select("body").append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-              .append("g")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-            
-            x.domain(data.map(function(d) { return d.name; }));
-            y.domain([0, d3.max(data, function(d) { return d.amount; })]);
+  function setupHandlers() {
+    $('body').scrollspy({ target: '#sidebar' });
 
-            svg.append("g")
-              .attr("class", "x axis")
-              .attr("transform", "translate(0," + height + ")")
-              .call(xAxis)
-              .selectAll("text")
-              .style("text-anchor", "end")
-                .attr("dx", "-.8em")
-                .attr("dy", ".15em")
-                .attr("transform", function(d) {
-                return "rotate(-65)" 
-                });
+    // SMOOTH SCROLLING FROM PAULUND.CO.UK
+    $('a[href^="#"]').on('click',function (e) {
+      e.preventDefault();
 
-            svg.append("g")
-              .attr("class", "y axis")
-              .call(yAxis)
-            .append("text")
-              .attr("transform", "rotate(-90)")
-              .attr("y", 6)
-              .attr("dy", ".71em")
-              .style("text-anchor", "end")
-              .text("Dollar amount");
+      var target = this.hash,
+        $target = $(target);
 
-            svg.selectAll(".bar")
-              .data(data)
-            .enter().append("rect")
-              .attr("class", "bar")
-              .attr("x", function(d) { return x(d.name); })
-              .attr("width", x.rangeBand())
-              .attr("y", function(d) { return y(d.amount); })
-              .attr("height", function(d) { return height - y(d.amount); });
+      $('html, body').stop().animate({
+        'scrollTop': $target.offset().top
+      }, 900, 'swing', function () {
+        window.location.hash = target;
+      });
+    });
+  }
 
+  function start() {
+    chartDiv = $('#charts');
+    sidebar = $('#sidebar');
 
-            function type(d) {
-              d.frequency = +d.frequency;
-              return d;
-            }
+    d3.csv('assets/data/data.csv', function(data) {
+      _.each(charts, function(chart) {
+        // Preserve data - chart may want to rearrange things internally.
+        var newData = _.clone(data);
+        createChart(chart, newData);
+        createNavLink(chart);
+      });
+      setupHandlers();
+    });
+  }
 
-        }
-
-        return App;
-    })();
-
-}).call(this);
+  $(document).ready(function() {
+    start();
+  });
+})();

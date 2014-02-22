@@ -7,8 +7,21 @@
 
 
 
+#content {
+  position: absolute;
+  left: 220px;
+  width: 850px;
+}
 
+#sidebar.affix-top {
+  position: absolute;
+  top: 180px;
+  left: 0;
+}
 
+#sidebar.affix-bottom {
+  position: absolute;
+}
 
 
 
