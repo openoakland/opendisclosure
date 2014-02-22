@@ -1,6 +1,8 @@
 require 'active_record'
 require 'roo'
 
+Dir['models/*.rb'].each { |f| require f }
+
 ActiveRecord::Base.establish_connection(database: 'db.sqlite3', adapter: 'sqlite3')
 
 `rm db.sqlite3` # XXX: for testing during development
@@ -40,14 +42,6 @@ ActiveRecord::Schema.define do
   end
 end
 
-class Committee < ActiveRecord::Base;end
-class OtherContributor < ActiveRecord::Base;end
-class Individual < ActiveRecord::Base;end
-class Contribution < ActiveRecord::Base
-  belongs_to :contributor, polymorphic: true
-  belongs_to :recipient, polymorphic: true
-end
-
 def parse_file(filename)
   workbook = Roo::Excelx.new(filename)
   parse_contributions_schedule_a(workbook)
@@ -74,24 +68,25 @@ def parse_contribution(row)
     when 'COM', 'SCC'
       # contributor is a Committee and Cmte_ID is set. Same thing as
       # Filer_ID but some names disagree
-      Committee.where(committee_id: row['Cmte_ID'])
-      .first_or_create(name: row['Tran_NamL'])
+      Committee.from_row(row)#where(committee_id: row['Cmte_ID'])
+               #.first_or_create(name: row['Tran_NamL'])
     when 'IND'
       # contributor is an Individual
       full_name = row.values_at('Tran_NamT', 'Tran_NamF', 'Tran_NamL', 'Tran_NamS')
                      .join(' ')
+                     .strip
       Individual.where(name: full_name,
                        city: row['Tran_City'],
                        state: row['Tran_State'],
                        zip: row['Tran_Zip4'])
-      .first_or_create(employer: row['Tran_Emp'],
-                       occupation: row['Tran_Occ'])
+                 .first_or_create(employer: row['Tran_Emp'],
+                                  occupation: row['Tran_Occ'])
     when 'OTH'
       # contributor is "Other"
       OtherContributor.where(name: row['Tran_NamL'])
-      .first_or_create(city: row['Tran_City'],
-                       state: row['Tran_State'],
-                       zip: row['Tran_Zip4'])
+                      .first_or_create(city: row['Tran_City'],
+                                       state: row['Tran_State'],
+                                       zip: row['Tran_Zip4'])
     end
 
   Contribution.create(recipient: recipient,
@@ -101,5 +96,5 @@ def parse_contribution(row)
 end
 
 if __FILE__ == $0
-  parse_file('assets/data/efile_COAK_2013.xlsx')
+  parse_file('../assets/data/efile_COAK_2013.xlsx')
 end
