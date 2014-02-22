@@ -46,13 +46,13 @@
     var chartEl = $('<div></div>').attr('id', 'chart-' + chart.id);
     chartDiv.append(chartEl);
 
-    injectScript('assets/charts/' + chart.id + '/' + chart.id + '.js', function() {
+    injectScript('/charts/' + chart.id + '/' + chart.id + '.js', function() {
       // Each chart should have a global function defined that takes an element and data as arguments
       if (window[chart.id]) {
         console.log('Creating chart "' + chart.id + '".');
 
         // Load css (may not exist but that's fine)
-        injectCss('assets/charts/' + chart.id + '/' + chart.id + '.css');
+        injectCss('/charts/' + chart.id + '/' + chart.id + '.css');
 
         // Load js and create the chart
         window[chart.id](chartEl[0], data);
@@ -99,7 +99,7 @@
     chartDiv = $('#charts');
     sidebar = $('#sidebar');
 
-    d3.csv('assets/data/data.csv', function(data) {
+    d3.csv('/data/data.csv', function(data) {
       _.each(charts, function(chart) {
         // Preserve data - chart may want to rearrange things internally.
         var newData = _.clone(data);

@@ -39,7 +39,7 @@ topContributorsPeople = function() {
     var data = [];
 
     // Parsing csv file and building contributor array
-    d3.csv('assets/data/data.csv', function (d3Data) {
+    d3.csv('/data/data.csv', function (d3Data) {
       for (var i = 0; i < d3Data.length; i++) {
         var firstName = d3Data[i].Tran_NamF,
             lastName = d3Data[i].Tran_NamL,
