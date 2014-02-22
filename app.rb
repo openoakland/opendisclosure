@@ -7,6 +7,10 @@ ActiveRecord::Base.establish_connection
 # Load ActiveRecord models so we can query using an ORM
 Dir['./backend/models/*.rb'].each { |f| require f }
 
+configure do
+  set :public_folder, 'assets'
+end
+
 get '/' do
   haml :index, locals: {
     organizations: Committee.mayoral_candidates
