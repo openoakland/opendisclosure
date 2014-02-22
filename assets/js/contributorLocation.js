@@ -19,18 +19,30 @@
                 var el = data[i],
                     amount = parseInt(el.Tran_Amt1),
                     candidate = el.Filer_NamL,
-                    city = el.Tran_City;
+                    city = el.Tran_City,
+                    state = el.Tran_State;
 
-                if (this.amounts[candidate] && city == 'Oakland') {
-                    this.amounts[candidate] += amount;
-                } else if (city == 'Oakland') {
-                    this.amounts[candidate] = amount;
+                if (!this.amounts[candidate]) {
+                	this.amounts[candidate] = {
+                		'total' : 0,
+                		'oakland' : 0,
+                		'california' : 0
+                	};
                 }
+                this.amounts[candidate]['total'] += amount;
+                	if (state == 'CA') {
+                		this.amounts[candidate]['california'] += amount;
+	                	if (city == 'Oakland') {
+	                		this.amounts[candidate]['oakland'] += amount;
+	                	} 
+             	}
             }
+            //console.log(this.amounts);
 
-            data = _.collect(this.amounts, function(v, k) { return {name: k, amount: v}});
-            data = _.sortBy(data, function(el) { return -el.amount; });
-            data = _.filter(data, function(el) { return !isNaN(el.amount); });
+            data = _.collect(this.amounts, function(v, k) 
+            	{ return {name: k, total: v['total'], oakland: v['oakland'], california: v['california']} });
+            data = _.sortBy(data, function(el) { return -el.oakland; });
+            data = _.filter(data, function(el) { return !isNaN(el.total); });
             console.log(data);
 
 
@@ -62,7 +74,7 @@
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
             
             x.domain(data.map(function(d) { return d.name; }));
-            y.domain([0, d3.max(data, function(d) { return d.amount; })]);
+            y.domain([0, d3.max(data, function(d) { return d.total; })]);
 
             svg.append("g")
               .attr("class", "x axis")
@@ -92,8 +104,8 @@
               .attr("class", "bar")
               .attr("x", function(d) { return x(d.name); })
               .attr("width", x.rangeBand())
-              .attr("y", function(d) { return y(d.amount); })
-              .attr("height", function(d) { return height - y(d.amount); });
+              .attr("y", function(d) { return y(d.oakland); })
+              .attr("height", function(d) { return height - y(d.oakland); });
 
 
             function type(d) {

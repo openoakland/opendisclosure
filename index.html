@@ -70,6 +70,7 @@
         <script src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.3.3/d3.min.js"></script>
         <script src="assets/js/app.js"></script>
         <script src="assets/js/topContributorsPeople.js"></script>
+        <script src="assets/js/contributorLocation.js"></script>
 
     </head>
     <body>
@@ -97,14 +98,11 @@
     <div class="container">
       <!-- Example row of columns -->
       <div class="row">
-        <div class="col-lg-4">
+        <div class="col-lg-4" id="contributorLocation">
           <script>
-              topContributorsPeople(); 
-              // var app = new App();
-          </script>
-        </div>
-        <div class="col-lg-4" id="topContributorsPeople">
-          <script>
+            // topContributorsPeople(); 
+            var app = new ContributorLocation();
+            //contributorLocation();
           </script>
         </div>
       </div>
