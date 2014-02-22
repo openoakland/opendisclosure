@@ -43,7 +43,7 @@
             	{ return {name: k, total: v['total'], oakland: v['oakland'], california: v['california']} });
             data = _.sortBy(data, function(el) { return -el.oakland; });
             data = _.filter(data, function(el) { return !isNaN(el.total); });
-            console.log(data);
+            //console.log(data);
 
 
             var margin = {top: 30, right: 40, bottom: 300, left: 50},
@@ -98,14 +98,37 @@
               .style("text-anchor", "end")
               .text("Dollar amount");
 
-            svg.selectAll(".bar")
-              .data(data)
-            .enter().append("rect")
-              .attr("class", "bar")
-              .attr("x", function(d) { return x(d.name); })
-              .attr("width", x.rangeBand())
-              .attr("y", function(d) { return y(d.oakland); })
-              .attr("height", function(d) { return height - y(d.oakland); });
+
+			var valgroup = svg.selectAll('g.valgroup')
+    			.data(data)
+			.enter().append('g')
+  				.attr('class', 'g')
+  				.attr("transform", function(d) { return "translate(" + x(d.name) + ",0)"; });
+
+  			var colors = ['pink', 'purple', 'red']
+
+  			valgroup.selectAll('rect')
+  				.data( function(d) { return [d.total, d.california, d.oakland]; })
+  			.enter().append('rect')
+  				.attr('width', x.rangeBand())
+  				.attr('y', function(d) { return y(d); })
+  				.attr('height', function(d) { return height - y(d); })
+  				.attr('fill', function(d, i) { 
+  					return colors[i];
+  				});
+
+            // svg.selectAll(".bar")
+            //   .data(data)
+            // .enter().append("rect")
+            //   .attr("class", "bar")
+            //   .attr("x", function(d) { return x(d.name); })
+            //   .attr("width", x.rangeBand())
+            //   .attr("y", function(d) { return y(d.oakland); })
+            //   .attr("height", function(d) { return height - y(d.oakland); });
+
+
+
+
 
 
             function type(d) {
