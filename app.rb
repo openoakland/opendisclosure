@@ -35,7 +35,7 @@ get '/contributions' do
     OtherContributor
   end.order(:name)
 
-  haml :contributons, locals: {
+  haml :contributions, locals: {
     contributors: contributors
   }
 end
