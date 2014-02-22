@@ -36,3 +36,7 @@ get '/others' do
     contributors: OtherContributor.order(:name).pluck(:name)
   }
 end
+
+after do
+  ActiveRecord::Base.connection.close
+end
