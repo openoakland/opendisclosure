@@ -4,13 +4,68 @@
    Author's custom styles
    ========================================================================== */
 
+body {
+  background-image: url('/images/squairy_light.png');
+  font-size: 12px;
+}
 
+h1,h2 {
+  font-family: 'Crete Round', serif;
+}
 
+#charts {
+  font-size: 10px;
+}
+
+#header {
+  height: 200px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  position: relative;
+}
+
+#header h1 {
+  display: none;
+}
+
+#header h2 {
+  text-transform: uppercase;
+  position: absolute;
+  top: 50px;
+  text-align: center;
+}
+
+#gallery .gallery-item {
+  width: 200px;
+  background: rgba(255, 255, 255, 0.5);
+  height: 200px;
+  padding: 10px;
+  margin: 10px;
+  float: left;
+}
+
+#gallery .gallery-item h3{
+  margin: 0;
+}
 
 #content {
   position: absolute;
   left: 220px;
   width: 850px;
+}
+
+#sidebar {
+  font-size: 15px;
+  color: #000;
+  background-color: rgba(255,255,255,0.5);
+  width: 190px;
+}
+
+#sidebar a {
+  color: #000;
+}
+
+#sidebar li.active {
+  font-weight: bold;
 }
 
 #sidebar.affix-top {
