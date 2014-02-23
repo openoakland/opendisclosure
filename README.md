@@ -17,6 +17,7 @@ Current technology choices to-date:
 - Javascript/HTML/CSS
 - D3.js for visualization
 - Ruby (probably) for backend data acquisition and processing
+- [Neo4j (graph database)](neo4j) for storying and querying contributions data
 
 The raw data needs to be cleaned. A few common problems are:
 - Misspellings
