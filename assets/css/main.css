@@ -4,34 +4,66 @@
    Author's custom styles
    ========================================================================== */
 
-body {
+body, html {
   background-image: url('/images/squairy_light.png');
+  font-family: 'Open Sans', sans-serif;
   font-size: 12px;
-}
-
-h1,h2 {
-  font-family: 'Crete Round', serif;
+  margin: 0;
+  padding: 0;
 }
 
 #charts {
   font-size: 10px;
 }
 
-#header {
-  height: 200px;
+section {
+  clear: both;
+  margin: 24px 0;
+  overflow: auto;
+}
+
+section:first-child {
+  margin-top: 0;
+}
+
+/* ------------------- HEADER -------------------- */
+.site-header {
+  background-color: #454d60;
   border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  height: 200px;
   position: relative;
 }
 
-#header h1 {
-  display: none;
+.site-header-title, .site-header-right {
+  bottom: 24px;
+  color: #fff;
+  margin: 0 36px;
+  position: absolute;
 }
 
-#header h2 {
-  text-transform: uppercase;
-  position: absolute;
-  top: 50px;
-  text-align: center;
+.site-header h1 {
+  margin: 0;
+  font-size: 48px;
+  font-weight: 800;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, .5);
+}
+
+.site-header-right {
+  margin-bottom: 8px;
+  right: 0;
+  font-size: 20px;
+}
+
+.site-header-right img {
+  position: relative;
+  top: 8px;
+  width: 150px;
+}
+
+/* ------------------- GENERAL LAYOUT -------------------- */
+
+#content {
+  margin-left: 260px;
 }
 
 #gallery .gallery-item {
@@ -47,44 +79,63 @@ h1,h2 {
   margin: 0;
 }
 
-#content {
-  position: absolute;
-  left: 220px;
-  width: 850px;
+.mayoral-candidates {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
+.mayoral-box {
+  background-position: center center;
+  background-size: cover;
+  float: left;
+  font-size: 24px;
+  height: 300px;
+  margin: 0 10px;
+  position: relative;
+  width: 200px;
+}
+
+.mayoral-box-name {
+  color: #fff;
+  margin: 10px 0;
+  position: absolute;
+  bottom: 0px;
+  text-align: center;
+  width: 100%;
+  text-shadow: 2px 2px 1px #000;
+  text-decoration: none;
+}
+
+/* ------------------- SIDEBAR -------------------- */
+
 #sidebar {
-  font-size: 15px;
+  font-size: 16px;
+  padding: 4px;
   color: #000;
   background-color: rgba(255,255,255,0.5);
   width: 190px;
+  position: absolute;
+  top: 220px;
+  left: 36px;
+}
+
+#sidebar.affix {
+  position: fixed;
+  top: 10px;
+  left: 36px;
 }
 
 #sidebar a {
   color: #000;
 }
 
+#sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
 #sidebar li.active {
   font-weight: bold;
 }
-
-#sidebar.affix-top {
-  position: absolute;
-  top: 180px;
-  left: 0;
-}
-
-#sidebar.affix-bottom {
-  position: absolute;
-}
-
-
-
-
-
-
-
-
-
-
-
