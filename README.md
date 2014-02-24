@@ -17,6 +17,7 @@ Current technology choices to-date:
 - Javascript/HTML/CSS
 - D3.js for visualization
 - Ruby (probably) for backend data acquisition and processing
+- [Neo4j (graph database)](neo4j) for storying and querying contributions data
 
 The raw data needs to be cleaned. A few common problems are:
 - Misspellings
@@ -43,5 +44,28 @@ Trying out an "agile" approach, with a basic first version:
 [4. What percentage of campaign contributions to each mayoral candidate are made from Oakland residents vs. others?](https://github.com/openoakland/opendisclosure/issues/6)
 
 [5. Evaluate any overlap between corporations and industries that employ and register a lobbyist with the City of Oakland and campaign contribution and expenditure data.](https://github.com/openoakland/opendisclosure/issues/7)
+
+
+TABLETOP CODE
+
+## Initialize Tabletop
+
+    var gsheet = "https://docs.google.com/spreadsheet/pub?key=0AnZDmytGK63SdDVyeE9ONFctMnRSU2VjanhZTUJsN1E&output=html";
+		$(document).ready(function(){
+				Tabletop.init( { key: gsheet,
+			                     callback: setTheScene,
+			                     proxy: IF USING PROXY,
+			                     wanted: ["SHEETi"], ##can haz multiple sheets
+			                     debug: true } );
+		});
+		
+		function setTheScene(data, tabletop){
+			$.each( tabletop.sheets("SHEETi").all(), function(i, sheeti) {
+				var insertRow = [];
+				insertRow[0] = sheeti.columnname; #enter column name here
+				ARRAY.push(insertRow); ## push to array of choice
+			});
+		
+		}
 
 
