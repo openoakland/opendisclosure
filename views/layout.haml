@@ -5,9 +5,6 @@
     %meta{content: "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}
     %title Open Disclosure
     %meta{content: "width=device-width", name: "viewport"}
-    /
-      %link{href: "/css/bootstrap.min.css", rel: "stylesheet"}
-      %link{href: "/css/bootstrap-theme.min.css", rel: "stylesheet"}
     %link{href: 'http://fonts.googleapis.com/css?family=Open+Sans:400,300,800', rel:"stylesheet"}
     %link{href: "/css/main.css", rel: "stylesheet"}
     %script{src: "http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"}
@@ -49,20 +46,17 @@
       %section
         %h2 Charts
         #charts
+
     #sidebar{ data: { offset: { top: 210 }, spy: 'affix' }}
       %ul
         %li
           %a{ href: '#mayoral-candidates' } Mayoral Candidates
+
     :javascript
       var charts = [
         {
           id: 'chart1',
           name: 'My Fancy Chart',
           description: 'How do these work?'
-        },
-        {
-          id: 'chart2',
-          name: 'My Fancy New Chart',
-          description: 'Is this important?'
         }
       ];
