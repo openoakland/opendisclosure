@@ -1,14 +1,26 @@
-%h2 Recipients (Mayoral Candidates)
-%ul
-  - organizations.each do |o|
-    %li
-      %a{ href: "/recipients/#{o.class.name.downcase}/#{o.id}" }= o.name
+#content
+  %section#mayoral-candidates
+    %h2#mayoral-candidates City of Oakland Mayoral Candidates
+    %ul.mayoral-candidates
+      - organizations.each do |o, name|
+        - url = "/recipients/#{o.class.name.downcase}/#{o.id}"
+        %li.mayoral-box{ style: "background-image: url(/images/#{name.split.last}.jpg)" }
+          %a.mayoral-box-name{ href: url }
+            = name
+  %section
+    %h2 Charts
+    #charts
 
-%h2 Contributors
-%ul
-  %li
-    %a{ href: '/contributions?type=individuals' } Individuals
-  %li
-    %a{ href: '/contributions?type=committees' } Committees
-  %li
-    %a{ href: '/contributions?type=others' } Others
+#sidebar{ data: { offset: { top: 210 }, spy: 'affix' }}
+  %ul
+    %li
+      %a{ href: '#mayoral-candidates' } Mayoral Candidates
+
+:javascript
+  var charts = [
+    {
+      id: 'chart1',
+      name: 'My Fancy Chart',
+      description: 'How do these work?'
+    }
+  ];

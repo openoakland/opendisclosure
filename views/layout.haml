@@ -17,46 +17,12 @@
   %body
     %header.site-header
       .site-header-title
-        %h1 Open Disclosure
+        %h1
+          %a{ href: '/' } Open Disclosure
       .site-header-right
         by
         %a{ href: 'http://openoakland.org' }
           %img{ src: '/images/openoaklandlogo.png', width: '150px' }
 
-    #content
-      %section#mayoral-candidates
-        %h2#mayoral-candidates City of Oakland Mayoral Candidates
-        %ul.mayoral-candidates
-          %li.mayoral-box{ style: 'background-image: url(/images/Quan.jpg)' }
-            %a.mayoral-box-name{ href: '/quan' }
-              Jean Quan
-
-          %li.mayoral-box{ style: 'background-image: url(/images/Parker.jpg)' }
-            %a.mayoral-box-name{ href: '/parker' }
-              Bryan Parker
-
-          %li.mayoral-box{ style: 'background-image: url(/images/Schaaf.jpg)' }
-            %a.mayoral-box-name{ href: '/schaaf' }
-              Libby Schaaf
-
-          %li.mayoral-box{ style: 'background-image: url(/images/Tuman.jpg)' }
-            %a.mayoral-box-name{ href: '/tuman' }
-              Joe Tuman
-
-      %section
-        %h2 Charts
-        #charts
-
-    #sidebar{ data: { offset: { top: 210 }, spy: 'affix' }}
-      %ul
-        %li
-          %a{ href: '#mayoral-candidates' } Mayoral Candidates
-
-    :javascript
-      var charts = [
-        {
-          id: 'chart1',
-          name: 'My Fancy Chart',
-          description: 'How do these work?'
-        }
-      ];
+    #contentWrapper
+      = yield
