@@ -1,11 +1,13 @@
 require 'active_record'
 require 'roo'
 
-Dir['models/*.rb'].each { |f| require f }
+Dir['./models/*.rb'].each { |f| require f }
 
-ActiveRecord::Base.establish_connection(database: 'db.sqlite3', adapter: 'sqlite3')
+# In order to connect, set ENV['DATABASE_URL'] to the database you wish to
+# populate
+ActiveRecord::Base.establish_connection
+ActiveRecord::Base.connection.execute('drop table if exists committees, other_contributors, individuals, contributions')
 
-`rm db.sqlite3` # XXX: for testing during development
 ActiveRecord::Schema.define do
   create_table :committees do |t|         # both SCC and COM
     t.integer :committee_id # 0 = pending

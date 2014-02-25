@@ -1,0 +1,6 @@
+%h1= recipient.name
+%h2 Received #{contributions.count} contributions
+%ul
+  - contributions.each do |c|
+    %li
+      %a{ href: "/contributors/#{c.contributor.class.name.downcase}/#{c.contributor.id}"}= c.contributor.name

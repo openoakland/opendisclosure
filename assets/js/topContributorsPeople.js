@@ -1,6 +1,6 @@
-topContributorsPeople = function() {    
-    // var data = [{"label":"1990", "value":16}, 
-    //         {"label":"1991", "value":56}, 
+topContributorsPeople = function() {
+    // var data = [{"label":"1990", "value":16},
+    //         {"label":"1991", "value":56},
     //         {"label":"1992", "value":7},
     //         {"label":"1993", "value":77},
     //         {"label":"1994", "value":22},
@@ -36,27 +36,27 @@ topContributorsPeople = function() {
     var chart_left = left_margin;
     var chart_right = w - right_margin;
 
-    var data = []; 
+    var data = [];
 
     // Parsing csv file and building contributor array
-    d3.csv('assets/data/data.csv', function (d3Data) { 
+    d3.csv('/data/data.csv', function (d3Data) {
       for (var i = 0; i < d3Data.length; i++) {
         var firstName = d3Data[i].Tran_NamF,
-            lastName = d3Data[i].Tran_NamL, 
-            city = d3Data[i].Tran_City, 
-            state = d3Data[i].Tran_State, 
+            lastName = d3Data[i].Tran_NamL,
+            city = d3Data[i].Tran_City,
+            state = d3Data[i].Tran_State,
             zip = d3Data[i].Tran_Zip
             contribution = d3Data[i].Tran_Amt1;
 
-        var key = (firstName + lastName + city + state + zip).split(' ').join(''); 
+        var key = (firstName + lastName + city + state + zip).split(' ').join('');
 
         var objectForKey = $.grep(c, function(e){ return e["key"] == key; });
 
         // We have a new donor!
-        if (objectForKey.length === 0) { 
+        if (objectForKey.length === 0) {
 
         } else {
-            objectForKey["value"] += contribution; 
+            objectForKey["value"] += contribution;
         }
       }
     });
@@ -107,7 +107,7 @@ topContributorsPeople = function() {
     .enter()
         .append("svg:g")
             .attr("class", "bar")
-            .attr("transform", function(d, i) { 
+            .attr("transform", function(d, i) {
                     return "translate(0, " + y(i) + ")"; });
 
     bars.append("svg:rect")
@@ -172,5 +172,4 @@ topContributorsPeople = function() {
         .attr("y1", chart_top)
         .attr("y2", chart_top)
         .attr("stroke", "black");
- 
 };

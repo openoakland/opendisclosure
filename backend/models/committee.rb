@@ -1,5 +1,10 @@
 class Committee < ActiveRecord::Base
-
-  def self.from_row(row)
+  def self.mayoral_candidates
+    {
+      find_by(committee_id: 1357609) => 'Brian Parker',
+      find_by(committee_id: 1354678) => 'Jean Quan',
+      find_by(committee_id: 1362261) => 'Libby Schaaf',
+      find_by(committee_id: 1359017) => 'Joe Tuman',
+    }
   end
 end

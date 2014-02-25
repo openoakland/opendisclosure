@@ -51,21 +51,19 @@ TABLETOP CODE
 ## Initialize Tabletop
 
     var gsheet = "https://docs.google.com/spreadsheet/pub?key=0AnZDmytGK63SdDVyeE9ONFctMnRSU2VjanhZTUJsN1E&output=html";
-		$(document).ready(function(){
-				Tabletop.init( { key: gsheet,
-			                     callback: setTheScene,
-			                     proxy: IF USING PROXY,
-			                     wanted: ["SHEETi"], ##can haz multiple sheets
-			                     debug: true } );
-		});
-		
-		function setTheScene(data, tabletop){
-			$.each( tabletop.sheets("SHEETi").all(), function(i, sheeti) {
-				var insertRow = [];
-				insertRow[0] = sheeti.columnname; #enter column name here
-				ARRAY.push(insertRow); ## push to array of choice
-			});
-		
-		}
 
+    $(document).ready(function(){
+        Tabletop.init( { key: gsheet,
+                           callback: setTheScene,
+                           proxy: IF USING PROXY,
+                           wanted: ["SHEETi"], ##can haz multiple sheets
+                           debug: true } );
+    });
 
+    function setTheScene(data, tabletop){
+      $.each( tabletop.sheets("SHEETi").all(), function(i, sheeti) {
+        var insertRow = [];
+        insertRow[0] = sheeti.columnname; #enter column name here
+        ARRAY.push(insertRow); ## push to array of choice
+      });
+    }

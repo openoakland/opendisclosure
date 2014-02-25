@@ -1,0 +1,26 @@
+#content
+  %section#mayoral-candidates
+    %h2#mayoral-candidates City of Oakland Mayoral Candidates
+    %ul.mayoral-candidates
+      - organizations.each do |o, name|
+        - url = "/recipients/#{o.class.name.downcase}/#{o.id}"
+        %li.mayoral-box{ style: "background-image: url(/images/#{name.split.last}.jpg)" }
+          %a.mayoral-box-name{ href: url }
+            = name
+  %section
+    %h2 Charts
+    #charts
+
+#sidebar{ data: { offset: { top: 210 }, spy: 'affix' }}
+  %ul
+    %li
+      %a{ href: '#mayoral-candidates' } Mayoral Candidates
+
+:javascript
+  var charts = [
+    {
+      id: 'chart1',
+      name: 'My Fancy Chart',
+      description: 'How do these work?'
+    }
+  ];

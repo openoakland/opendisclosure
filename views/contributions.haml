@@ -1,0 +1,7 @@
+%h2 Showing #{contributors.count} contributors:
+
+%ul
+  - contributors.each do |c|
+    %li
+      %a{ href: "/contributors/#{c.class.name.downcase}/#{c.id}" }
+        = c.name
