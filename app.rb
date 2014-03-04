@@ -2,7 +2,11 @@ require 'sinatra'
 require 'active_record'
 require 'haml'
 
-ActiveRecord::Base.establish_connection
+# NOTE: Vivian added arguments here to make the dev server work.
+ActiveRecord::Base.establish_connection(
+  :adapter => "sqlite3",
+  :database  => "backend/db.sqlite3"
+)
 
 # Load ActiveRecord models so we can query using an ORM
 Dir['./backend/models/*.rb'].each { |f| require f }

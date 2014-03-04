@@ -35,3 +35,15 @@
   color: gray;
   fill-opacity: .6;
 }
+
+.Others {
+  fill: #4682B4;
+}
+
+.California {
+  fill: #4F93CC;
+}
+
+.Oakland {
+  fill: #B0DBFF;
+}
