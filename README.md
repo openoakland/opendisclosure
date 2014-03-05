@@ -23,6 +23,24 @@ The raw data needs to be cleaned. A few common problems are:
 - Misspellings
 - Mischaracterized/vague occupation
 
+## Running Locally
+
+To start, you'll need ruby installed. Then install bundler with:
+
+    gem install bundler
+
+Now you can install the other dependencies with:
+
+    bundle install
+
+The production version of the app uses a postgres database but you can use a local database by setting the DATABASE_URL. Something like this should work:
+
+    export DATABASE_URL="sqlite3://./backend/db.sqlite3"
+
+Now you should be all set. Run the app like this:
+
+    bundle exec ruby app.rb
+
 ## Development Process
 
 Trying out an "agile" approach, with a basic first version:
