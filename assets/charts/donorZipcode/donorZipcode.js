@@ -1,4 +1,3 @@
-
 // Shapefiles from https://data.sfgov.org/
 // Converted to Geo-JSON using ogr2ogr
 // Geo-JSON simplified 50% - mapshaper.org
@@ -153,7 +152,6 @@
       .attr("dy", ".35em")
       .style("text-anchor", "middle")
       .text(function(d) { return d; });
-
 	};
 
 	donorZipcode = function(chartEl, data) {
