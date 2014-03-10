@@ -27,7 +27,12 @@
           %img{ src: '/images/openoaklandlogo.png', width: '150px' }
 
     #contentWrapper
-      = yield
+      #content
+        = yield
+
+      - if content_for?(:sidebar)
+        #sidebar{ data: { offset: { top: 210 }, spy: 'affix' }}
+          = yield_content :sidebar
 
     %script{src: "http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"}
     %script{src: "http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"}
