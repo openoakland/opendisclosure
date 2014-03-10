@@ -111,6 +111,8 @@
   }
 
   $(document).ready(function() {
-    start();
+    if (typeof window.charts !== 'undefined') {
+      start();
+    }
   });
 })();
