@@ -94,26 +94,45 @@ section:first-child {
   padding: 0;
 }
 
+.mayoral-candidates li {
+  float: left;
+  margin: 0 10px;
+}
+
 .mayoral-box {
   background-position: center center;
   background-size: cover;
-  float: left;
+  bottom: 0px;
+  color: #fff;
+  display: block;
   font-size: 24px;
   height: 300px;
-  margin: 0 10px;
+  margin: 10px 0;
   position: relative;
+  text-align: center;
+  text-decoration: none;
+  text-shadow: 2px 2px 1px #000;
   width: 200px;
 }
 
+.mayoral-box:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+}
+
+.mayoral-box-table {
+  text-align: left;
+}
+
+.mayoral-box-table td {
+  padding-left: 16px;
+}
+
 .mayoral-box-name {
-  color: #fff;
-  margin: 10px 0;
   position: absolute;
-  bottom: 0px;
-  text-align: center;
+  bottom: 10px;
+  left: 0;
   width: 100%;
-  text-shadow: 2px 2px 1px #000;
-  text-decoration: none;
+  text-align: center;
 }
 
 /* ------------------- SIDEBAR -------------------- */
