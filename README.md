@@ -7,11 +7,28 @@ The goal of the project is to produce useful visualizations and statistics for O
 
 Meeting notes can be found in [this Google Doc](https://docs.google.com/document/d/11xji54-RiszyFBQnSBOI5Ylmzn2vC9glwAoU6A8CM_0/edit?pli=1#).
 
+## Running Locally
 
-## Technical Details
+To start, you'll need ruby installed. Then install bundler and foreman:
+
+    gem install bundler
+    gem install foreman
+
+Now you can install the other dependencies with:
+
+    bundle install
+
+You should be all set. Run the app like this:
+
+    foreman start
+
+## Data Source
 
 The raw data can be found on Oakland's "NetFile" site here:
 http://ssl.netfile.com/pub2/Default.aspx?aid=COAK
+
+However, work is happening to get an up-to-date copy on Oakland's Socrata
+site.
 
 Current technology choices to-date:
 - Javascript/HTML/CSS
@@ -22,24 +39,6 @@ Current technology choices to-date:
 The raw data needs to be cleaned. A few common problems are:
 - Misspellings
 - Mischaracterized/vague occupation
-
-## Running Locally
-
-To start, you'll need ruby installed. Then install bundler with:
-
-    gem install bundler
-
-Now you can install the other dependencies with:
-
-    bundle install
-
-The production version of the app uses a postgres database but you can use a local database by setting the DATABASE_URL. Something like this should work:
-
-    export DATABASE_URL="sqlite3://./backend/db.sqlite3"
-
-Now you should be all set. Run the app like this:
-
-    bundle exec ruby app.rb
 
 ## Development Process
 
