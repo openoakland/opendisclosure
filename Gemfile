@@ -6,4 +6,7 @@ gem 'sinatra-contrib'
 gem 'activerecord'
 gem 'pg'
 gem 'haml'
-gem 'sqlite3'
+
+group :development do
+  gem 'sqlite3'
+end
