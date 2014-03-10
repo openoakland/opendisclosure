@@ -69,6 +69,21 @@ section:first-child {
   width: 150px;
 }
 
+.disclaimer {
+  background-color: yellow;
+  font-size: 14px;
+  line-height: 28px;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+.disclaimer a {
+  color: #000;
+  font-weight: bold;
+}
 /* ------------------- GENERAL LAYOUT -------------------- */
 
 #content {
