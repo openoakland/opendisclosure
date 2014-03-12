@@ -3,7 +3,12 @@ require 'sinatra/content_for'
 require 'active_record'
 require 'haml'
 
-ActiveRecord::Base.establish_connection
+ActiveRecord::Base.establish_connection(
+  :adapter => "sqlite3",
+  :database  => "backend/db.sqlite3"
+)
+
+
 
 # Load ActiveRecord models so we can query using an ORM
 Dir['./backend/models/*.rb'].each { |f| require f }

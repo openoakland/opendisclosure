@@ -92,23 +92,19 @@
 				.attr('fill', 'green');
 		});
 
-		var cities = svg.append('g')
-			.attr('id', 'bay-cities');
-
+		// Add outline for cities
 		d3.json("/charts/donorZipcode/bay_area_cities.json", function(json) {
+			var cities = svg.append('g')
+				.attr('id', 'bay-cities');
+
 			var cit = cities.selectAll("path")
 				.data(json.features)
 				.enter().append("svg:path")
 				.attr("d", path)
 				.attr('fill', 'none')
 				.attr('stroke', '#303030')
-				.append("svg:title")
-				.text(function(d) {
-					return "" + d.id + ": " + d.properties.name;
-				});
+				.append("svg:title");
 		});
-
-
 
 	};
 
