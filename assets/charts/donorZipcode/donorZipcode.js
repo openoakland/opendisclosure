@@ -38,20 +38,24 @@
 			width = 960 - margin.left - margin.right,
 			height = 800 - margin.top - margin.bottom;
 
+		var color = d3.scale.ordinal()
+  		.domain(candidates)
+  		.range(d3.range(12).map(function(i) { return "q" + i + "-12"; }));
+
 		var path = d3.geo.path()
 			.projection(d3.geo.albersUsa()
 				.scale(78000)
 				.translate([27400, 2800]));
 
 		var svg = d3.select(chartEl).append("svg")
-			.attr("class", "YlOrRd")
-			.attr("width", width)
-			.attr("height", height)
+			.attr("id", "map")
+			.attr("width", width + margin.right)
+      .attr("height", height);
 			
 		var zipcodes = svg.append("g")
 			.attr("id", "bay-zipcodes");
 
-		var candidate = 'Re-Elect Mayor Quan 2014';
+		var candidate = 'Parker for Oakland Mayor 2014';
 
 		d3.json("/charts/donorZipcode/bay_area_zip_codes.json", function(json) {
 
@@ -89,7 +93,7 @@
 					}
 					return 0;
 				})
-				.attr('fill', 'green');
+				.attr('class', color(candidate));
 		});
 
 		// Add outline for cities
@@ -97,7 +101,7 @@
 			var cities = svg.append('g')
 				.attr('id', 'bay-cities');
 
-			var cit = cities.selectAll("path")
+			var cities = cities.selectAll("path")
 				.data(json.features)
 				.enter().append("svg:path")
 				.attr("d", path)
@@ -105,6 +109,49 @@
 				.attr('stroke', '#303030')
 				.append("svg:title");
 		});
+
+		// Add a legend at the bottom!
+		var candidates = _.keys(candidates);
+
+  	var svg_legend = d3.select(chartEl).append("svg")
+			.attr("id", "legend")
+			.attr("width", width + margin.right)
+      .attr("height", margin.bottom);
+
+    var offset = (width + margin.right)/candidates.length;
+
+		var legend = svg_legend.selectAll('.legend')
+			.data(candidates)
+			.enter().append('g')
+			.attr("class", "legend")
+      .attr("transform", function(d, i) {
+        return "translate(" + i * offset + ",0)";
+      });
+
+		legend.append("rect")
+      .attr("x", 0)
+      .attr("width", offset)
+      .attr("height", 18)
+      .attr("class", function(d) {
+        return color(d);
+      });
+
+    legend.append("text")
+      .attr("x", offset/2)
+      .attr("y", 24)
+      .attr("dy", ".35em")
+      .style("text-anchor", "middle")
+      .text(function(d) {
+        return d;
+      });
+
+    // Update the chart when a user clicks on a candidate's name
+    update = function() {
+    	candidate = $(this).select('text').text();
+    	console.log(color(candidate));
+    }
+
+    legend.on("click", update);
 
 	};
 
