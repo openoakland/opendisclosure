@@ -27,6 +27,7 @@
 			// Create a list of all candidates
 			if (!candidates[candidate]) { candidates[candidate] = true; }
 		}
+		var candidates = _.keys(candidates);
 		// End of data processing
 
 		var margin = {
@@ -55,7 +56,7 @@
 		var zipcodes = svg.append("g")
 			.attr("id", "bay-zipcodes");
 
-		var candidate = 'Parker for Oakland Mayor 2014';
+		var candidate = candidates[0];
 
 		d3.json("/charts/donorZipcode/bay_area_zip_codes.json", function(json) {
 
@@ -77,6 +78,13 @@
 			var circles = svg.append("g")
 				.attr('id', 'circles');
 
+			radius = function(d) {
+    		if (amounts[d.properties.ZIP]){
+					return Math.sqrt( amounts[d.properties.ZIP][candidate] || 0)/8;
+				}
+				return 0;
+			}
+
 			// Add a circle at the center of each zip
 			var dorling = circles.selectAll("circle")
 				.data(function() {
@@ -87,13 +95,18 @@
 				.each(function(d) { d.properties.c = path.centroid(d); })
 				.attr('cx', function(d) { return d.properties.c[0]; })
 				.attr('cy', function(d) { return d.properties.c[1]; })
-				.attr('r', function(d) {
-					if (amounts[d.properties.ZIP]){
-						return Math.sqrt( amounts[d.properties.ZIP][candidate] || 0)/5;
-					}
-					return 0;
-				})
+				.attr('r', radius)
 				.attr('class', color(candidate));
+
+			// Update the chart when a user clicks on a candidate's name
+	    update = function() {
+	    	candidate = $(this).select('text').text();
+	    	dorling.attr('class', color(candidate))
+	    		.transition()
+	    		.attr('r', radius);
+	    }
+
+	    legend.on("click", update);
 		});
 
 		// Add outline for cities
@@ -111,8 +124,6 @@
 		});
 
 		// Add a legend at the bottom!
-		var candidates = _.keys(candidates);
-
   	var svg_legend = d3.select(chartEl).append("svg")
 			.attr("id", "legend")
 			.attr("width", width + margin.right)
@@ -141,17 +152,7 @@
       .attr("y", 24)
       .attr("dy", ".35em")
       .style("text-anchor", "middle")
-      .text(function(d) {
-        return d;
-      });
-
-    // Update the chart when a user clicks on a candidate's name
-    update = function() {
-    	candidate = $(this).select('text').text();
-    	console.log(color(candidate));
-    }
-
-    legend.on("click", update);
+      .text(function(d) { return d; });
 
 	};
 
