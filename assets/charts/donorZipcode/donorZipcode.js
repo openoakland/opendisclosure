@@ -80,7 +80,7 @@
 
 			radius = function(d) {
     		if (amounts[d.properties.ZIP]){
-					return Math.sqrt( amounts[d.properties.ZIP][candidate] || 0)/8;
+					return Math.sqrt( amounts[d.properties.ZIP][candidate] || 0)/10;
 				}
 				return 0;
 			}
