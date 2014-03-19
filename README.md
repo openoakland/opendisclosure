@@ -16,7 +16,7 @@ To start, you'll need ruby installed. Then install bundler and foreman:
 
 Now you can install the other dependencies with:
 
-    bundle install
+    bundle install --without=production
 
 You should be all set. Run the app like this:
 
@@ -24,11 +24,12 @@ You should be all set. Run the app like this:
 
 ## Data Source
 
-The raw data can be found on Oakland's "NetFile" site here:
-http://ssl.netfile.com/pub2/Default.aspx?aid=COAK
+The raw, original, separated-by-year data can be found on Oakland's "NetFile"
+site here: http://ssl.netfile.com/pub2/Default.aspx?aid=COAK
 
-However, work is happening to get an up-to-date copy on Oakland's Socrata
-site.
+We process that data in a nightly ETL process. Every day (or so) [this
+dataset][1] is updated with the latest version of the data. **There is a [data
+dictionary of what all the columns mean here][2].**
 
 Current technology choices to-date:
 - Javascript/HTML/CSS
@@ -84,3 +85,6 @@ TABLETOP CODE
         ARRAY.push(insertRow); ## push to array of choice
       });
     }
+
+[1]: https://data.oaklandnet.com/dataset/Campaign-Finance-FPPC-Form-460-Schedule-A-Monetary/3xq4-ermg
+[2]: https://data.sfgov.org/Ethics/Campaign-Finance-Data-Key/wygs-cc76
