@@ -1,6 +1,12 @@
 %h1= recipient.name
 %h2 Received #{contributions.count} contributions
+%form#contribfilter
+  %div
+    Filter contributors:
+    %input#contributor
+
 %ul
   - contributions.each do |c|
-    %li
+    %li.contrib
       %a{ href: "/contributors/#{c.contributor.class.name.downcase}/#{c.contributor.id}"}= c.contributor.name
+
