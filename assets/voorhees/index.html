@@ -2,12 +2,26 @@
 <head>
 <title>Voorhees</title>
 <style>
+#diagram {
+}
+#detail {
+}
 #output { background-color: #ccc; }
 #rawdata { background-color: #666; color: #fff; }
 </style>
 </head>
 <body>
 <h1>Voorhees</h1>
+<!-- svg class="chart" -->
+<script id="con_amt_tpl" type="text/x-handlebars-template">
+  <p>foo</p>
+  <p>count: {{s.[count]}} total: {{s.[total]}}</p>
+  {{#each s.[collated]}}
+    <p>'{{key}}': ({{count}}), ${{total}}</p>
+  {{/each}}
+</script>
+<div id="ctype_amt_output"></div>
+<div id="con_amt_output"></div>
 <div id="output"></div>
 <div id="rawdata"></div>
 <script id="showelt" type="text/x-handlebars-template">
@@ -26,25 +40,6 @@
 <script type="text/javascript" src="/js/vendor/jquery-1.10.1.min.js"></script>
 <script type="text/javascript" src="/js/vendor/handlebars-1.1.2.js"></script>
 <script type="text/javascript" src="/js/vendor/json2.js"></script>
-<script type="text/javascript">
-  var contribs = false;
-
-  $().ready(function() {
-    $.getJSON("/alltables", function(dat) {
-      contribs = dat;
-      $("#rawdata").html(JSON.stringify(dat));
-      var t_src = $("#showelt").html();
-      var t_template = Handlebars.compile(t_src);
-      $.each(dat['contrib'], function(idx,wut) {
-        var wut_ctx = {
-          // blob: JSON.stringify(wut),
-          c: wut
-        };
-        $("#output").append(t_template(wut_ctx));
-      });
-    });
-    $('body').append('<h2>foo</h2>');
-  });
-</script>
+<script type="text/javascript" src="voorhees.js"></script>
 </body>
 </html>
