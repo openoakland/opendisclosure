@@ -1,0 +1,50 @@
+<html>
+<head>
+<title>Voorhees</title>
+<style>
+#output { background-color: #ccc; }
+#rawdata { background-color: #666; color: #fff; }
+</style>
+</head>
+<body>
+<h1>Voorhees</h1>
+<div id="output"></div>
+<div id="rawdata"></div>
+<script id="showelt" type="text/x-handlebars-template">
+<hr/>
+<p>
+  Contributor: {{c._contributor.name}}
+  ({{c.contributor_type}},ID#{{c._contributor.id}})
+</p>
+<p>
+  Recipient: {{c._recipient.name}}
+  ({{c.recipient_type}},ID#{{c._recipient.id}})
+</p>
+<p>Amount: ${{c.amount}} Date: {{c.date}}</p>
+<!-- pre * {{blob}} /pre -->
+</script>
+<script type="text/javascript" src="/js/vendor/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="/js/vendor/handlebars-1.1.2.js"></script>
+<script type="text/javascript" src="/js/vendor/json2.js"></script>
+<script type="text/javascript">
+  var contribs = false;
+
+  $().ready(function() {
+    $.getJSON("/alltables", function(dat) {
+      contribs = dat;
+      $("#rawdata").html(JSON.stringify(dat));
+      var t_src = $("#showelt").html();
+      var t_template = Handlebars.compile(t_src);
+      $.each(dat['contrib'], function(idx,wut) {
+        var wut_ctx = {
+          // blob: JSON.stringify(wut),
+          c: wut
+        };
+        $("#output").append(t_template(wut_ctx));
+      });
+    });
+    $('body').append('<h2>foo</h2>');
+  });
+</script>
+</body>
+</html>
