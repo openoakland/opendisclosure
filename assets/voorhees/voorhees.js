@@ -8,28 +8,6 @@
     return contribs;
   }
 
-  // collate_statistic(indata,collate,stat)
-  // Collate collects data in array 'indata' and returns an
-  // object with properties
-  function collate_statistic(indata,collate,stat) {
-    var statresult = { 'collated': {}, 'count': 0, 'total': 0 };
-    $(indata).each(function(i,d) {
-      var collate_by = collate(d);
-      var collate_val = Number(stat(d));
-      statresult['count'] += 1;
-      statresult['total'] += collate_val;
-      if ( ! statresult['collated'][collate_by] ) {
-        statresult['collated'][collate_by] = {
-          'key': collate_by, 'count': 1, 'total': collate_val
-        };
-      } else {
-        statresult['collated'][collate_by]['count'] += 1;
-        statresult['collated'][collate_by]['total'] += collate_val;
-      }
-    });
-    return statresult;
-  }
-
   function render_chart(contribdata) {
     // Conventionally, the "width" and "height" of a D3 figure
     // excludes margins, so the container element's width and
@@ -67,7 +45,7 @@
        * Collect a distribution of contribution sums by
        * the contributor type.  Dump info via template.
        */
-      var ctype_amt_stat = collate_statistic(contribs['contrib'],
+      var ctype_amt_stat = VDT.collate_statistic(contribs['contrib'],
 	function(x) { return x['contributor_type']; },
         function(x) { return x['amount']; });
       var ctype_amt_ctx = { 's': ctype_amt_stat };
@@ -77,12 +55,20 @@
        * Collect a distribution of contribution sums by
        * the name of the contributor.  Dump info via template.
        */
-      var con_amt_stat = collate_statistic(contribs['contrib'],
+      var con_amt_stat = VDT.collate_statistic(contribs['contrib'],
 	function(x) { return x['_contributor']['name']; },
         function(x) { return x['amount']; });
       var con_amt_ctx = { 's': con_amt_stat };
       var con_amt_html = con_amt_template(con_amt_ctx);
       $("#con_amt_output").html(con_amt_html);
+
+      // matrix
+      var ctype_mat = VDT.collate_matrix(contribs['contrib'],
+	function(x) { return x['contributor_type']; },
+	function(x) { return x['recipient_type']; },
+        function(x) { return x['amount']; });
+      var qq = 0;
+      alert('ah');
     });
   });
 
