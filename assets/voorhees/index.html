@@ -8,22 +8,34 @@
 }
 #output { background-color: #ccc; }
 #rawdata { background-color: #666; color: #fff; }
+.rightfigure {
+  float: right;
+  background-color: #ddd;
+}
 </style>
 </head>
 <body>
 <h1>Voorhees</h1>
-<!-- svg class="chart" -->
-<script id="con_amt_tpl" type="text/x-handlebars-template">
+<script id="con_amt_full_tpl" type="text/x-handlebars-template">
   <p>foo</p>
   <p>count: {{s.[count]}} total: {{s.[total]}}</p>
   {{#each s.[collated]}}
     <p>'{{key}}': ({{count}}), ${{total}}</p>
   {{/each}}
 </script>
-<div id="ctype_amt_output"></div>
-<div id="con_amt_output"></div>
-<div id="output"></div>
-<div id="rawdata"></div>
+<script id="con_amt_short_tpl" type="text/x-handlebars-template">
+  <p>foo</p>
+  <p>count: {{s.[count]}} total: {{s.[total]}}</p>
+</script>
+<div id="figsection">
+  <svg class="chart"></svg>
+</div>
+<div id="datasection">
+  <div id="ctype_amt_output"></div>
+  <div id="con_amt_output"></div>
+  <div id="output"></div>
+  <div id="rawdata"></div>
+</div>
 <script id="showelt" type="text/x-handlebars-template">
 <hr/>
 <p>
@@ -37,6 +49,7 @@
 <p>Amount: ${{c.amount}} Date: {{c.date}}</p>
 <!-- pre * {{blob}} /pre -->
 </script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.3.3/d3.min.js"></script>
 <script type="text/javascript" src="/js/vendor/jquery-1.10.1.min.js"></script>
 <script type="text/javascript" src="/js/vendor/handlebars-1.1.2.js"></script>
 <script type="text/javascript" src="/js/vendor/json2.js"></script>
