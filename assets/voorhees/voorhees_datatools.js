@@ -38,7 +38,7 @@
     // collate_matrix(indata,r_collate,c_collate,stat)
     // collate_matrix 
     // 
-    _.collate_tuples = function(indata,r_collate,c_collate,stat,opts) {
+    _.matcollate_tuples = function(indata,r_collate,c_collate,stat,opts) {
       var m = {
         'count': 0,
         'total': 0,
@@ -78,7 +78,7 @@
       return m;
     }; // END collate_tuples
 
-    _.collate_tupgenmats = function(tupset,r_collate,c_collate,stat,opts) {
+    _.matcollate_tupgenmats = function(tupset,r_collate,c_collate,stat,opts) {
       // 
       var i, j;
 
@@ -104,9 +104,19 @@
       return tupset;
     }; // END collate_tupgenmats
 
-    _.collate_matrix = function(indata,r_collate,c_collate,stat,opts) {
-      var m = _.collate_tuples(indata,r_collate,c_collate,stat,opts);
-      return _.collate_tupgenmats(m,r_collate,c_collate,stat,opts);
+    _.matcollate_matrix = function(indata,r_collate,c_collate,stat,opts) {
+      var m = _.matcollate_tuples(indata,r_collate,c_collate,stat,opts);
+      return _.matcollate_tupgenmats(m,r_collate,c_collate,stat,opts);
+    };
+
+    _.clamp_zeromin = function(indata) {
+      clampData = [];
+      $(indata).each(function(i,d) {
+          if ( d >= 0 ) {
+              clampData.push(d);
+          }
+      });
+      return clampData;
     };
 
     return _;

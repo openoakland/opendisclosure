@@ -1,3 +1,4 @@
+"use strict";
 
   var contribs = false;
 
@@ -88,7 +89,65 @@
              })
         .text(function(d) {
             return d.data.key + " (" + d.data.total + ")"; });
+  }
 
+  function render_histogram(rawdata,debugmsg) {
+    "use strict";
+    var hdebug_template = Handlebars
+	    .compile($('#histo_debug').html());
+    $('#histo_showdebug').html(hdebug_template({dump:debugmsg}));
+
+    // define the histogram rendering area
+    var outerwidth = 400, outerheight=400,
+      margin = {top:20, right: 30, bottom: 30, left: 40},
+      innerwidth = outerwidth - margin.left - margin.right,
+      innerheight = outerheight - margin.top - margin.bottom;
+
+    var nBins = 20;
+    // generate bins
+    var hLo = d3.min(rawdata);
+    var hHi = d3.max(rawdata);
+    var binScale = d3.scale.linear().domain([0,nBins]).range([hLo,hHi]);
+    var tickArray = d3.range(nBins+1).map(binScale);
+    
+    // prepare X scale
+    var x = d3.scale.linear()
+        .domain([hLo,hHi])
+        .range([0,innerwidth]);
+
+    // Generate histogram layout
+    var histy = d3.layout.histogram()
+        .bins(tickArray)
+        (rawdata);
+
+
+    // Use vertical coordinates of histogram layout to 
+    // prepare Y axis scale
+    var yrng = [0,d3.max(histy, function(d) { return d.y; })];
+    var y = d3.scale.linear()
+        .domain(yrng)
+        .range([innerheight, 0]);
+
+    // grab SVG and prepare base element
+    var chart = d3.select(".histochart")
+        .attr("width", innerwidth + margin.left + margin.right)
+        .attr("height", innerheight + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform",
+              "translate(" + margin.left + "," + margin.top + ")");
+
+    var bar = chart.selectAll(".bar")
+            .data(histy)
+        .enter().append("g")
+            .attr("class","bar")
+            .attr("transform", function(d) {
+                return "translate(" + x(d.x) + "," + y(d.y) + ")";
+            });
+
+    bar.append("rect")
+        .attr("x",1)
+        .attr("width", x(histy[0].dx) - 1)
+        .attr("height", function(d) { return innerheight - y(d.y); });
 
     var qqq = 0;
   }
@@ -122,6 +181,13 @@
       var con_amt_ctx = { 's': con_amt_stat };
       var con_amt_html = con_amt_template(con_amt_ctx);
       $("#con_amt_output").html(con_amt_html);
+      //  Do histogram here
+      var ctotal_hinput = [];
+      $(Object.keys(con_amt_stat['collated'])).each(function(i,d) {
+	      var camt = Math.max(con_amt_stat['collated'][d]['total'],0);
+              ctotal_hinput.push(camt);
+          });
+      render_histogram(ctotal_hinput,"*");
   };
 
   $().ready(function() {

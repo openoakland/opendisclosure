@@ -12,6 +12,10 @@
   float: right;
   background-color: #ddd;
 }
+.histochart .bar {
+    fill: yellow;
+    shape-rendering: crispEdges;
+}
 </style>
 </head>
 <body>
@@ -27,9 +31,13 @@
   <p>foo</p>
   <p>count: {{s.[count]}} total: {{s.[total]}}</p>
 </script>
-<div id="figsection">
+<div>
   <svg class="chart"></svg>
 </div>
+<div>
+  <svg class="histochart"></svg>
+</div>
+<div id="histo_showdebug"></div>
 <div id="datasection">
   <div id="ctype_amt_output"></div>
   <div id="con_amt_output"></div>
@@ -48,6 +56,9 @@
 </p>
 <p>Amount: ${{c.amount}} Date: {{c.date}}</p>
 <!-- pre * {{blob}} /pre -->
+</script>
+<script id="histo_debug" type="text/x-handlebars-template">
+Input data: {{dump}}
 </script>
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.3.3/d3.min.js"></script>
 <script type="text/javascript" src="/js/vendor/jquery-1.10.1.min.js"></script>
