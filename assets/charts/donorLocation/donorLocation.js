@@ -244,8 +244,8 @@
 
       // Update the scale and label on y axis.
       setYFormat();
-      d3.selectAll('.y.axis').call(yAxis);
-      d3.selectAll('.y.axis .label').text(yLabel());
+      d3.select(chartEl).selectAll('.y.axis').call(yAxis)
+        .selectAll('.label').text(yLabel());
 
       // Update the stacked bars.
       rectangles = rectangles.data(rectangleData);
