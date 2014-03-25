@@ -2,6 +2,7 @@ require 'sinatra'
 require 'sinatra/content_for'
 require 'active_record'
 require 'haml'
+require_relative 'toms_cache'
 
 ActiveRecord::Base.establish_connection
 
@@ -10,6 +11,7 @@ Dir['./backend/models/*.rb'].each { |f| require f }
 
 configure do
   set :public_folder, 'assets'
+  set :cache, TomsCache.new
 end
 
 get '/' do
@@ -55,6 +57,29 @@ get '/contributors/:type/:id' do |type, id|
     contributor: contributor,
     contributions: contributions,
   }
+end
+
+get '/data/data.csv' do
+  unless ENV['RACK_ENV'] == 'production'
+    redirect '/data/data_local.csv', 302
+  else
+    # Pull the data from Socrata and cache it for a day.
+    # TODO: Send Last-Modified and return a 304 so browsers can cache this file.
+    headers['Content-Encoding'] = 'gzip'
+    settings.cache.fetch do
+      require 'open-uri'
+      require 'zlib'
+
+      StringIO.new.tap do |s|
+        w = Zlib::GzipWriter.new(s)
+        begin
+          w.write open('http://data.oaklandnet.com/resource/3xq4-ermg.csv').read
+        ensure
+          w.close
+        end
+      end.string
+    end
+  end
 end
 
 def get_record_by_type(type, id)
