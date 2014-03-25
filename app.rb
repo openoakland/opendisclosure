@@ -73,7 +73,28 @@ get '/data/data.csv' do
       StringIO.new.tap do |s|
         w = Zlib::GzipWriter.new(s)
         begin
-          w.write open('http://data.oaklandnet.com/resource/3xq4-ermg.csv').read
+          more = true
+          written_headers = false
+          offset = 0
+          while more
+            url = URI('https://data.oaklandnet.com/resource/3xq4-ermg.csv')
+            url.query = URI.encode_www_form(
+              '$where' => Committee.mayoral_candidates.keys
+                             .map { |c| "filer_naml='#{c.name}'" }
+                             .join(' OR '),
+              '$limit' => 1000,
+              '$offset' => offset
+            )
+
+            headers, *response = open(url).read.split("\n")
+            w.puts headers unless written_headers
+            w.write response.join("\n")
+
+            # preparation for next loop!
+            more = response.length > 0
+            written_headers = true
+            offset = offset + 1000
+          end
         ensure
           w.close
         end
