@@ -8,3 +8,12 @@ class Party < ActiveRecord::Base
     }.reject! { |k, _| k.nil? }
   end
 end
+
+class Party::Individual < Party
+end
+
+class Party::Other < Party
+end
+
+class Party::Committee < Party
+end

@@ -9,11 +9,12 @@ ActiveRecord::Base.establish_connection
 %w(parties contributions summaries).each do |table|
   ActiveRecord::Base.connection.execute('drop table if exists ' + table)
 end
+#ActiveRecord::Base.logger = Logger.new(STDOUT) # <- uncomment to see everything
 
 ActiveRecord::Schema.define do
   create_table :parties do |t|
-    t.string :type    # Individual, Other, Committee
-    t.string :name
+    t.string :type, null: false    # Individual, Other, Committee
+    t.string :name, null: false
     t.string :city
     t.string :state
     t.integer :zip
@@ -21,13 +22,13 @@ ActiveRecord::Schema.define do
     t.string :employer
     t.string :occupation
 
-    t.index :committee_id
-    t.index [:name, :city, :state]
+    t.index [:committee_id, :type]
+    t.index [:type, :name, :city, :state]
   end
 
   create_table :contributions do |t|
-    t.integer :contributor_id
-    t.integer :recipient_id
+    t.integer :contributor_id, null: false
+    t.integer :recipient_id, null: false
     t.integer :amount
     t.date :date
 
@@ -36,7 +37,7 @@ ActiveRecord::Schema.define do
   end
 
   create_table :summaries do |t|
-    t.integer :party_id
+    t.integer :party_id, null: false
     t.integer :total_contributions_received
     t.integer :total_expenditures_made
     t.integer :ending_cash_balance
@@ -50,24 +51,19 @@ class SocrataFetcher
     @uri = URI(uri)
   end
 
-  def each_record
+  def each_batch
     more = true
     offset = 0
     while more
       url = @uri
       url.query = URI.encode_www_form(
-        '$where' => Party.mayoral_candidates
-                         .keys
-                         .map { |c| "filer_naml='#{c.name}'" }
-                         .join(' OR '),
         '$limit' => 1000,
         '$offset' => offset
       )
+      puts url.to_s
 
-      response = open(url.to_s).read.split("\n")
-      response.each do |record|
-        yield record
-      end
+      response = JSON.parse(open(url.to_s).read)
+      yield response
 
       # preparation for next loop!
       more = response.length > 0
@@ -77,46 +73,48 @@ class SocrataFetcher
 end
 
 def parse_contributions(row)
-  recipient = Party.where(committee_id: row['Filer_ID'])
-                   .first_or_create(name: row['Filer_NamL'])
+  recipient = Party::Committee.where(committee_id: row['filer_id'])
+                              .first_or_create(name: row['filer_naml'])
 
   contributor =
-    case row['Entity_Cd']
+    case row['entity_cd']
     when 'COM', 'SCC'
       # contributor is a Committee and Cmte_ID is set. Same thing as
       # Filer_ID but some names disagree
-      Party.where(committee_id: row['Cmte_ID'])
-           .first_or_create(name: row['Tran_NamL'],
-                            type: 'Committee')
+      Party::Committee.where(committee_id: row['cmte_id'])
+                      .first_or_create(name: row['tran_naml'])
+
     when 'IND'
       # contributor is an Individual
-      full_name = row.values_at('Tran_NamT', 'Tran_NamF', 'Tran_NamL', 'Tran_NamS')
+      full_name = row.values_at('tran_namt', 'tran_namf', 'tran_naml', 'tran_nams')
                      .join(' ')
                      .strip
-      Party.where(name: full_name,
-                  city: row['Tran_City'],
-                  state: row['Tran_State'],
-                  zip: row['Tran_Zip4'])
-           .first_or_create(employer: row['Tran_Emp'],
-                            occupation: row['Tran_Occ'],
-                            type: 'Individual')
+      Party::Individual.where(name: full_name,
+                              city: row['tran_city'],
+                              state: row['tran_state'],
+                              zip: row['tran_zip4'])
+                       .first_or_create(employer: row['tran_emp'],
+                                        occupation: row['tran_occ'])
     when 'OTH'
       # contributor is "Other"
-      Party.where(name: row['Tran_NamL'])
-           .first_or_create(city: row['Tran_City'],
-                            state: row['Tran_State'],
-                            zip: row['Tran_Zip4'],
-                            type: 'Other')
+      Party::Other.where(name: row['tran_naml'])
+                  .first_or_create(city: row['tran_city'],
+                                   state: row['tran_state'],
+                                   zip: row['tran_zip4'])
     end
 
   Contribution.create(recipient: recipient,
                       contributor: contributor,
-                      amount: row['Tran_Amt1'],
-                      date: row['Tran_Date'])
+                      amount: row['tran_amt1'],
+                      date: row['tran_date'])
 end
 
 if __FILE__ == $0
-  SocrataFetcher.new('http://data.oaklandnet.com/resource/3xq4-ermg.json').each_record do |record|
-    parse_contributions(record)
+  SocrataFetcher.new('http://data.oaklandnet.com/resource/3xq4-ermg.json').each_batch do |batch|
+    Party.transaction do #        <- speed hack for sqlite3
+      batch.each do |record|
+        parse_contributions(record)
+      end
+    end
   end
 end
