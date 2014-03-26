@@ -6,41 +6,31 @@ Dir['./models/*.rb'].each { |f| require f }
 # In order to connect, set ENV['DATABASE_URL'] to the database you wish to
 # populate
 ActiveRecord::Base.establish_connection
-ActiveRecord::Base.connection.execute('drop table if exists committees, other_contributors, individuals, contributions')
 
 ActiveRecord::Schema.define do
-  create_table :committees do |t|         # both SCC and COM
+  create_table :parties do |t|
+    t.string :type    # Individual, Other, Committee
+    t.string :name
+    t.string :city
+    t.string :state
+    t.integer :zip
     t.integer :committee_id # 0 = pending
-    t.string :committee_type # CTL, RCP, BMC (todo: figure out what those mean)
-    t.string :name
-    t.string :city # todo: how to populate these fields (city, state, zip)?
-    t.string :state
-    t.integer :zip
-  end
-
-  create_table :other_contributors do |t| # OTH
-    t.string :name
-    t.string :city
-    t.string :state
-    t.integer :zip
-  end
-
-  create_table :individuals do |t| # IND
-    t.string :name
-    t.string :city
-    t.string :state
-    t.integer :zip
     t.string :employer
-    t.string :occupation # todo: make this into a foreign key/other table?
+    t.string :occupation
   end
 
   create_table :contributions do |t|
     t.integer :contributor_id
-    t.string :contributor_type
     t.integer :recipient_id
-    t.string :recipient_type
-    t.integer :amount # todo: make decimal?
+    t.integer :amount
     t.date :date
+  end
+
+  create_table :summaries do |t|
+    t.integer :party_id
+    t.integer :total_contributions_received
+    t.integer :total_expenditures_made
+    t.integer :ending_cash_balance
   end
 end
 
