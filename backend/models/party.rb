@@ -1,4 +1,4 @@
-class Committee < ActiveRecord::Base
+class Party < ActiveRecord::Base
   def self.mayoral_candidates
     {
       find_by(committee_id: 1357609) => 'Bryan Parker',
