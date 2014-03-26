@@ -5,6 +5,6 @@ class Party < ActiveRecord::Base
       find_by(committee_id: 1354678) => 'Jean Quan',
       find_by(committee_id: 1362261) => 'Libby Schaaf',
       find_by(committee_id: 1359017) => 'Joe Tuman',
-    }
+    }.reject! { |k, _| k.nil? }
   end
 end
