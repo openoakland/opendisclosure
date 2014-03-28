@@ -2,9 +2,9 @@
   %h2#mayoral-candidates City of Oakland Mayoral Candidates
   %ul.mayoral-candidates
     - organizations.each do |o, name|
-      - url = "/recipients/#{o.class.name.downcase}/#{o.id}"
       %li
-        %a.mayoral-box{ style: "background-image: url(/images/#{name.split.last}.jpg)", href: url }
+        %a.mayoral-box{ style: "background-image: url(/images/#{name.split.last}.jpg)",
+          href: "/party/#{o.id}" }
           %span.mayoral-box-name= name
         %table.mayoral-box-table
           %tbody

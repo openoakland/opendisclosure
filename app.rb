@@ -16,45 +16,32 @@ end
 
 get '/' do
   haml :index, locals: {
-    organizations: Committee.mayoral_candidates
+    organizations: Party.mayoral_candidates
   }
 end
 
-get '/recipients/:type/:id' do |type, id|
-  recipient     = get_record_by_type(type, id)
+# TODO: Rename to /candidate/:slug ?
+get '/party/:id' do |id|
+  party         = Party.find(id)
   contributions = Contribution
-                    .where(recipient_id: recipient)
+                    .where(recipient_id: party)
                     .includes(:contributor)
 
-  haml :recipient, locals: {
-    recipient: recipient,
-    contributions: contributions
+  haml :party, locals: {
+    party: party,
+    contributions: contributions,
+    summary: party.summaries.order(date: :desc).first,
   }
 end
 
-get '/contributions' do
-  contributors = case params[:type]
-  when 'individuals'
-    Individual
-  when 'committees'
-    Committee
-  when 'others'
-    OtherContributor
-  end.order(:name)
-
-  haml :contributions, locals: {
-    contributors: contributors
-  }
-end
-
-get '/contributors/:type/:id' do |type, id|
-  contributor = get_record_by_type(type, id)
+get '/party/:id/contributions' do |id|
+  party         = Party.find(id)
   contributions = Contribution
-                    .where(contributor_id: contributor)
+                    .where(contributor_id: party)
                     .includes(:recipient)
 
   haml :contributor, locals: {
-    contributor: contributor,
+    party: party,
     contributions: contributions,
   }
 end
@@ -101,17 +88,6 @@ get '/data/data.csv' do
       end.string
     end
   end
-end
-
-def get_record_by_type(type, id)
-  case type
-  when 'individual'
-    Individual
-  when 'committee'
-    Committee
-  when 'othercontributor'
-    OtherContributor
-  end.find(id)
 end
 
 after do
