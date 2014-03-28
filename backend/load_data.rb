@@ -1,57 +1,23 @@
 require 'active_record'
 require 'open-uri'
 
-Dir['./models/*.rb'].each { |f| require f }
+URLS = {
+  'Schedule A' => 'http://data.oaklandnet.com/resource/3xq4-ermg.json',
+  'Summary'    => 'http://data.oaklandnet.com/resource/rsxe-vvuw.json',
+}.freeze
 
 # In order to connect, set ENV['DATABASE_URL'] to the database you wish to
 # populate
 ActiveRecord::Base.establish_connection
-%w(parties contributions summaries).each do |table|
-  ActiveRecord::Base.connection.execute('drop table if exists ' + table)
-end
-#ActiveRecord::Base.logger = Logger.new(STDOUT) # <- uncomment to see everything
-
-ActiveRecord::Schema.define do
-  create_table :parties do |t|
-    t.string :type, null: false    # Individual, Other, Committee
-    t.string :name, null: false
-    t.string :city
-    t.string :state
-    t.integer :zip
-    t.integer :committee_id # 0 = pending
-    t.string :employer
-    t.string :occupation
-
-    t.index [:committee_id, :type]
-    t.index [:type, :name, :city, :state]
-  end
-
-  create_table :contributions do |t|
-    t.integer :contributor_id, null: false
-    t.integer :recipient_id, null: false
-    t.integer :amount
-    t.date :date
-
-    t.index :recipient_id
-    t.index :contributor_id
-  end
-
-  create_table :summaries do |t|
-    t.integer :party_id, null: false
-    t.integer :total_contributions_received
-    t.integer :total_expenditures_made
-    t.integer :ending_cash_balance
-
-    t.index :party_id
-  end
-end
+Dir['./models/*.rb'].each { |f| require f }
+require_relative 'schema.rb'
 
 class SocrataFetcher
   def initialize(uri)
     @uri = URI(uri)
   end
 
-  def each_batch
+  def each
     more = true
     offset = 0
     while more
@@ -60,10 +26,13 @@ class SocrataFetcher
         '$limit' => 1000,
         '$offset' => offset
       )
-      puts url.to_s
+
+      puts 'Fetching: ' + url.to_s
 
       response = JSON.parse(open(url.to_s).read)
-      yield response
+      response.each do |r|
+        yield r
+      end
 
       # preparation for next loop!
       more = response.length > 0
@@ -109,12 +78,46 @@ def parse_contributions(row)
                       date: row['tran_date'])
 end
 
+# Hash of:
+# Form_Type => { Line_Item => SQL Column name }
+SUMMARY_LINES = {
+  'F460' => {
+    '1'  => :total_monetary_contributions,
+    '5'  => :total_contributions_received,
+    '11' => :total_expenditures_made,
+    '16' => :ending_cash_balance,
+  },
+  'A' => {
+    '2' => :total_unitemized_contributions,
+  },
+}.freeze
+
+def parse_summary(row)
+  return unless SUMMARY_LINES.include? row['form_type']
+  return unless SUMMARY_LINES[row['form_type']].include? row['line_item']
+  return if row['filer_id'] == 'Pending' || row['filer_id'].to_i == 0
+
+  column = SUMMARY_LINES[row['form_type']][row['line_item']]
+  value = row['amount_a']
+
+  Summary.where(party_id: row['filer_id'],
+                date: row['rpt_date'].to_date)
+         .first_or_create
+         .update_attribute(column, value)
+end
+
 if __FILE__ == $0
-  SocrataFetcher.new('http://data.oaklandnet.com/resource/3xq4-ermg.json').each_batch do |batch|
-    Party.transaction do #        <- speed hack for sqlite3
-      batch.each do |record|
-        parse_contributions(record)
-      end
+  # ActiveRecord::Base.logger = Logger.new(STDOUT)
+
+  Party.transaction do #        <- speed hack for sqlite3
+    SocrataFetcher.new(URLS['Schedule A']).each do |record|
+      parse_contributions(record)
+    end
+  end
+
+  Summary.transaction do
+    SocrataFetcher.new(URLS['Summary']).each do |record|
+      parse_summary(record)
     end
   end
 end
