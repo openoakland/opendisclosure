@@ -1,7 +1,10 @@
 require 'active_record'
 
 ActiveRecord::Schema.define do
-  drop_table :parties
+  ActiveRecord::Base.connection.tables.each do |table_to_drop|
+    drop_table table_to_drop
+  end
+
   create_table :parties do |t|
     t.string :type, null: false    # Individual, Other, Committee
     t.string :name, null: false
@@ -16,7 +19,6 @@ ActiveRecord::Schema.define do
     t.index [:type, :name, :city, :state]
   end
 
-  drop_table :contributions
   create_table :contributions do |t|
     t.integer :contributor_id, null: false
     t.integer :recipient_id, null: false
@@ -27,7 +29,6 @@ ActiveRecord::Schema.define do
     t.index :contributor_id
   end
 
-  drop_table :summaries
   create_table :summaries do |t|
     t.integer :party_id, null: false
     t.date :date

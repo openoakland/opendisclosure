@@ -1,3 +1,5 @@
+$LOAD_PATH << '.'
+
 require 'active_record'
 require 'open-uri'
 
@@ -9,7 +11,7 @@ URLS = {
 # In order to connect, set ENV['DATABASE_URL'] to the database you wish to
 # populate
 ActiveRecord::Base.establish_connection
-Dir['./models/*.rb'].each { |f| require f }
+Dir[File.dirname(__FILE__) + '/models/*.rb'].each { |f| require f }
 require_relative 'schema.rb'
 
 class SocrataFetcher
