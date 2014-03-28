@@ -118,7 +118,15 @@
 					.attr('r', radius);
 			}
 
-			legend.on("click", update);
+			legend.on("click", update)
+				.on("mouseover", function() {
+					d3.select(this)
+						.classed('hover', true);
+				})
+    		.on("mouseout", function() {
+    			d3.select(this)
+    				.classed('hover', false);
+    		});
 		});
 
 		// Add outline for cities
@@ -154,7 +162,17 @@
 			});
 
 		legend.append("rect")
+			.attr('x', 0)
+			.attr('y', 0)
+			.attr("width", offset)
+			.attr("height", 10)
+			.attr("class", function(d) {
+				return 'status ' + color(d);
+			});
+
+		legend.append("rect")
 			.attr("x", 0)
+			.attr("y", 10)
 			.attr("width", offset)
 			.attr("height", 18)
 			.attr("class", function(d) {
@@ -163,7 +181,7 @@
 
 		legend.append("text")
 			.attr("x", offset / 2)
-			.attr("y", 24)
+			.attr("y", 34)
 			.attr("dy", ".35em")
 			.style("text-anchor", "middle")
 			.text(function(d) {
