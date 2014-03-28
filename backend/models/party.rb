@@ -1,5 +1,8 @@
 class Party < ActiveRecord::Base
-  has_many :summaries
+  has_many :received_contributions,
+    foreign_key: :recipient_id,
+    class_name: 'Contribution'
+  has_many :summaries, primary_key: :committee_id
 
   def self.mayoral_candidates
     {

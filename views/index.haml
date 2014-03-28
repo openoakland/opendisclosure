@@ -2,21 +2,23 @@
   %h2#mayoral-candidates City of Oakland Mayoral Candidates
   %ul.mayoral-candidates
     - organizations.each do |o, name|
+      - summary = o.summaries.order(date: :desc).first
       %li
         %a.mayoral-box{ style: "background-image: url(/images/#{name.split.last}.jpg)",
           href: "/party/#{o.id}" }
           %span.mayoral-box-name= name
         %table.mayoral-box-table
-          %tbody
-            %tr
-              %th{ scope: 'row' } Cash On Hand:
-              %td $10,000
-            %tr
-              %th{ scope: 'row' } Pct Small Donors:
-              %td 20%
-            %tr
-              %th{ scope: 'row' } Donations:
-              %td 1000
+          - if summary
+            %tbody
+              %tr
+                %th{ scope: 'row' } Cash On Hand:
+                %td $#{summary.ending_cash_balance}
+              %tr
+                %th{ scope: 'row' } Pct Small Donors:
+                %td
+              %tr
+                %th{ scope: 'row' } Donations:
+                %td= o.received_contributions.count
 
 %section
   %h2 Charts
