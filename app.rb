@@ -4,9 +4,8 @@ require 'active_record'
 require 'haml'
 require_relative 'toms_cache'
 
+# Load ActiveRecord models (and connect to the database)
 ActiveRecord::Base.establish_connection
-
-# Load ActiveRecord models so we can query using an ORM
 Dir['./backend/models/*.rb'].each { |f| require f }
 
 configure do
@@ -14,38 +13,79 @@ configure do
   set :cache, TomsCache.new
 end
 
+# The homepage
 get '/' do
+
+  # This renders the file views/index.haml inside of the 'yield' in
+  # views/layout.haml:
   haml :index, locals: {
     organizations: Party.mayoral_candidates
   }
 end
 
 # TODO: Rename to /candidate/:slug ?
+#
+# This is the candidate page, i.e. the page which summarizes each candidate's
+# overall financial status.
 get '/party/:id' do |id|
   party         = Party.find(id)
   contributions = Contribution
                     .where(recipient_id: party)
                     .includes(:contributor)
 
+  # This renders the file views/party.haml inside of the 'yield' in
+  # views/layout.haml:
   haml :party, locals: {
     party: party,
     contributions: contributions,
-    summary: party.summaries.order(date: :desc).first,
+    summary: party.latest_summary,
   }
 end
 
+# This is page of contributions from an individual/company to various campaigns.
 get '/party/:id/contributions' do |id|
   party         = Party.find(id)
   contributions = Contribution
                     .where(contributor_id: party)
                     .includes(:recipient)
 
+  # This renders the file views/contributor.haml inside of the 'yield' in
+  # views/layout.haml:
   haml :contributor, locals: {
     party: party,
     contributions: contributions,
   }
 end
 
+# Below here are some API endpoints for the frontend JS to use to fetch data.
+# This uses a special ActiveRecord syntax for converting models to JSON. It is
+# documented here:
+#   http://apidock.com/rails/ActiveRecord/Serialization/to_json
+get '/api/candidates' do
+  fields = {
+    only: %w[id name committee_id],
+    methods: [
+      :latest_summary,
+    ],
+  }
+
+  Party.mayoral_candidates.to_json(fields)
+end
+
+get '/api/party/:id' do |id|
+  # TODO: Include names of the people contributing?
+  fields = {
+    only: %w[id name committee_id],
+    include: {
+      received_contributions: { },
+      contributions: { }
+    }
+  }
+
+  Party.find(id).to_json(fields)
+end
+
+# Deprecated in favor of the JSON API!
 get '/data/data.csv' do
   unless ENV['RACK_ENV'] == 'production'
     redirect '/data/data_local.csv', 302
