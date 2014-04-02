@@ -18,6 +18,10 @@ class Party < ActiveRecord::Base
     where(committee_id: CANDIDATE_NAMES.keys)
   end
 
+  def short_name
+    CANDIDATE_NAMES[committee_id]
+  end
+
   def latest_summary
     summaries.order(date: :desc).first
   end
