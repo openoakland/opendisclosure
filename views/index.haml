@@ -1,7 +1,8 @@
 %section#mayoral-candidates
   %h2#mayoral-candidates City of Oakland Mayoral Candidates
   %ul.mayoral-candidates
-    - organizations.each do |o, name|
+    - organizations.each do |o|
+      - name = Party::CANDIDATE_NAMES[o.committee_id]
       - summary = o.summaries.order(date: :desc).first
       %li
         %a.mayoral-box{ style: "background-image: url(/images/#{name.split.last}.jpg)",
