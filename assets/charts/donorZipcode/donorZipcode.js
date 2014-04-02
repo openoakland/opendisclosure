@@ -72,7 +72,9 @@
 			var zips = zipcodes.selectAll("path")
 				.data(data)
 				.enter().append("svg:path")
-				.attr("id", function(d) { zip = d.properties.ZIP; })
+				.attr("id", function(d) {
+					zip = d.properties.ZIP;
+				})
 				.attr("d", path)
 				.attr('fill', '#d3d3d3')
 				.attr('stroke', '#9c9c9c')
@@ -85,8 +87,8 @@
 				.attr('id', 'circles');
 
 			radius = function(d) {
-				if (amounts[d.properties.ZIP]) {
-					return Math.sqrt(amounts[d.properties.ZIP][candidate] || 0) / 8;
+    		if (amounts[d.properties.ZIP]){
+					return Math.sqrt( amounts[d.properties.ZIP][candidate] || 0)/8;
 				}
 				return 0;
 			}
@@ -123,10 +125,10 @@
 					d3.select(this)
 						.classed('hover', true);
 				})
-    		.on("mouseout", function() {
-    			d3.select(this)
-    				.classed('hover', false);
-    		});
+				.on("mouseout", function() {
+					d3.select(this)
+						.classed('hover', false);
+				});
 		});
 
 		// Add outline for cities
@@ -144,6 +146,26 @@
 				.attr('stroke', '#303030')
 				.append("svg:title");
 		});
+
+		// Show the scale of bubbles on the chart
+		var scale = svg.append("g")
+			.attr('id', 'scale');
+
+		var scale_data = [50000, 10000, 1000];
+		var scale_height = Math.sqrt(scale_data[0])/8;
+		scale.selectAll("circle")
+			.data(scale_data)
+			.enter()
+			.append("circle")
+			.attr('cx', 50)
+			.attr('cy', function(d) {
+				return 50 + scale_height - Math.sqrt(d)/8
+			})
+			.attr('r', function(d) {
+				return Math.sqrt(d)/8;
+			})
+			.attr('stroke', '#000000')
+			.attr('fill', 'none');
 
 		// Add a legend at the bottom!
 		var svg_legend = d3.select(chartEl).append("svg")
