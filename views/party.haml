@@ -1,0 +1,8 @@
+%h1= party.name
+%h2 Showing #{contributions.count} contributors:
+
+%ul
+  - contributions.each do |c|
+    %li
+      %a{ href: "/party/#{c.contributor_id}/contributions" }
+        = c.contributor.name
