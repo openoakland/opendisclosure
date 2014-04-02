@@ -10,6 +10,7 @@ URLS = {
 
 # In order to connect, set ENV['DATABASE_URL'] to the database you wish to
 # populate
+ENV['DATABASE_URL'] ||= "sqlite3://./#{File.dirname(__FILE__)}/db.sqlite3"
 ActiveRecord::Base.establish_connection
 Dir[File.dirname(__FILE__) + '/models/*.rb'].each { |f| require f }
 require_relative 'schema.rb'
@@ -29,7 +30,7 @@ class SocrataFetcher
         '$offset' => offset
       )
 
-      puts 'Fetching: ' + url.to_s
+      puts '    Downloading: ' + url.to_s
 
       response = JSON.parse(open(url.to_s).read)
       response.each do |r|
@@ -111,12 +112,14 @@ end
 if __FILE__ == $0
   # ActiveRecord::Base.logger = Logger.new(STDOUT)
 
+  puts "Fetching Contribution data (Schedule A) from Socrata:"
   Party.transaction do #        <- speed hack for sqlite3
     SocrataFetcher.new(URLS['Schedule A']).each do |record|
       parse_contributions(record)
     end
   end
 
+  puts "Fetching Summary data from Socrata:"
   Summary.transaction do
     SocrataFetcher.new(URLS['Summary']).each do |record|
       parse_summary(record)
