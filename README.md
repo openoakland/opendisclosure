@@ -7,11 +7,29 @@ The goal of the project is to produce useful visualizations and statistics for O
 
 Meeting notes can be found in [this Google Doc](https://docs.google.com/document/d/11xji54-RiszyFBQnSBOI5Ylmzn2vC9glwAoU6A8CM_0/edit?pli=1#).
 
+## Running Locally
 
-## Technical Details
+To start, you'll need ruby installed. Then install bundler and foreman:
 
-The raw data can be found on Oakland's "NetFile" site here:
-http://ssl.netfile.com/pub2/Default.aspx?aid=COAK
+    gem install bundler
+    gem install foreman
+
+Now you can install the other dependencies with:
+
+    bundle install --without=production
+
+You should be all set. Run the app like this:
+
+    foreman start
+
+## Data Source
+
+The raw, original, separated-by-year data can be found on Oakland's "NetFile"
+site here: http://ssl.netfile.com/pub2/Default.aspx?aid=COAK
+
+We process that data in a nightly ETL process. Every day (or so) [this
+dataset][1] is updated with the latest version of the data. **There is a [data
+dictionary of what all the columns mean here][2].**
 
 Current technology choices to-date:
 - Javascript/HTML/CSS
@@ -67,3 +85,6 @@ TABLETOP CODE
         ARRAY.push(insertRow); ## push to array of choice
       });
     }
+
+[1]: https://data.oaklandnet.com/dataset/Campaign-Finance-FPPC-Form-460-Schedule-A-Monetary/3xq4-ermg
+[2]: https://data.sfgov.org/Ethics/Campaign-Finance-Data-Key/wygs-cc76

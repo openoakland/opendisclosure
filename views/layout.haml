@@ -7,14 +7,16 @@
     %meta{content: "width=device-width", name: "viewport"}
     %link{href: 'http://fonts.googleapis.com/css?family=Open+Sans:400,300,800', rel:"stylesheet"}
     %link{href: "/css/main.css", rel: "stylesheet"}
-    %script{src: "http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"}
-    %script{src: "http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"}
-    %script{src: "http://cdnjs.cloudflare.com/ajax/libs/d3/3.3.3/d3.min.js"}
-    %script{src: "/js/vendor/bootstrap.min.js"}
-    %script{src: "/js/main.js"}
-    %script{src: "/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"}
-    %script{src: "/js/app.js"}
+
   %body
+    %header.disclaimer
+      This site is
+      %a{ href: 'https://github.com/openoakland/opendisclosure' }
+        under active development
+      and all data is unfinalized.
+      %a{ href: 'http://www.meetup.com/OpenOakland/' }
+        You can help us finish it!
+
     %header.site-header
       .site-header-title
         %h1
@@ -25,4 +27,17 @@
           %img{ src: '/images/openoaklandlogo.png', width: '150px' }
 
     #contentWrapper
-      = yield
+      #content
+        = yield
+
+      - if content_for?(:sidebar)
+        #sidebar{ data: { offset: { top: 210 }, spy: 'affix' }}
+          = yield_content :sidebar
+
+    %script{src: "http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"}
+    %script{src: "http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"}
+    %script{src: "http://cdnjs.cloudflare.com/ajax/libs/d3/3.3.3/d3.min.js"}
+    %script{src: "/js/vendor/topojson.v1.min.js"}
+    %script{src: "/js/vendor/bootstrap.min.js"}
+    %script{src: "/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"}
+    %script{src: "/js/app.js"}

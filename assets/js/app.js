@@ -95,15 +95,26 @@
     });
   }
 
+  // Preserve data - chart may want to rearrange things internally.
+  function copyAndSanitizeData(data) {
+    return _.map(data, function(point) {
+      if (point.Tran_Amt1.indexOf('$') === 0) {
+        // Remove dollar signs from Socrata data
+        point.Tran_Amt1 = point.Tran_Amt1.slice(1);
+        point.Tran_Amt2 = point.Tran_Amt2.slice(1);
+      }
+
+      return point;
+    });
+  }
+
   function start() {
     chartDiv = $('#charts');
     sidebar = $('#sidebar');
 
-    d3.csv('/data/data.csv', function(data) {
+    d3.csv('/data/data_local.csv', function(data) { // ASK ABOUT THIS ON TUESDAY
       _.each(charts, function(chart) {
-        // Preserve data - chart may want to rearrange things internally.
-        var newData = _.clone(data);
-        createChart(chart, newData);
+        createChart(chart, copyAndSanitizeData(data));
         createNavLink(chart);
       });
       setupHandlers();
@@ -111,6 +122,28 @@
   }
 
   $(document).ready(function() {
-    start();
+    if (typeof window.charts !== 'undefined') {
+      start();
+    }
   });
+
+  // Adding this bit for the search feature on the contributors page
+  // Adding as a separate bit to make it easier to remove if something
+  // breaks due to its inclusion.
+  $(document).ready(function(){
+    $('#contributor').keyup(function() {
+      var filterval = $('#contributor').val().trim().toLowerCase();
+      $('li.contrib').each(function() {
+        var check_name = $(this).first('a').text().trim().toLowerCase();
+        if ( check_name.indexOf(filterval) >= 0 ) {
+          // $(this).css('background-color','cyan');
+          $(this).show();
+        } else {
+          // $(this).css('background-color','magenta');
+          $(this).hide();
+        }
+      });
+    });
+  });
+
 })();

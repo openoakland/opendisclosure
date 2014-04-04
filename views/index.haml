@@ -1,17 +1,31 @@
-#content
-  %section#mayoral-candidates
-    %h2#mayoral-candidates City of Oakland Mayoral Candidates
-    %ul.mayoral-candidates
-      - organizations.each do |o, name|
-        - url = "/recipients/#{o.class.name.downcase}/#{o.id}"
-        %li.mayoral-box{ style: "background-image: url(/images/#{name.split.last}.jpg)" }
-          %a.mayoral-box-name{ href: url }
-            = name
-  %section
-    %h2 Charts
-    #charts
+%section#mayoral-candidates
+  %h2#mayoral-candidates City of Oakland Mayoral Candidates
+  %ul.mayoral-candidates
+    - organizations.each do |o|
+      - name = Party::CANDIDATE_NAMES[o.committee_id]
+      - summary = o.summaries.order(date: :desc).first
+      %li
+        %a.mayoral-box{ style: "background-image: url(/images/#{name.split.last}.jpg)",
+          href: "/party/#{o.id}" }
+          %span.mayoral-box-name= name
+        %table.mayoral-box-table
+          - if summary
+            %tbody
+              %tr
+                %th{ scope: 'row' } Cash On Hand:
+                %td $#{summary.ending_cash_balance}
+              %tr
+                %th{ scope: 'row' } Pct Small Donors:
+                %td
+              %tr
+                %th{ scope: 'row' } Donations:
+                %td= o.received_contributions.count
 
-#sidebar{ data: { offset: { top: 210 }, spy: 'affix' }}
+%section
+  %h2 Charts
+  #charts
+
+- content_for :sidebar do
   %ul
     %li
       %a{ href: '#mayoral-candidates' } Mayoral Candidates
