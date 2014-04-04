@@ -22,6 +22,10 @@ You should be all set. Run the app like this:
 
     foreman start
 
+Then, to get a local copy of all the data:
+
+    bundle exec ruby backend/load_data.rb
+
 ## Data Source
 
 The raw, original, separated-by-year data can be found on Oakland's "NetFile"
