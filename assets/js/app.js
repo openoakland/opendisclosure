@@ -112,7 +112,7 @@
     chartDiv = $('#charts');
     sidebar = $('#sidebar');
 
-    d3.csv('/data/data_local.csv', function(data) { // ASK ABOUT THIS ON TUESDAY
+    d3.csv('/data/data.csv', function(data) {
       _.each(charts, function(chart) {
         createChart(chart, copyAndSanitizeData(data));
         createNavLink(chart);
