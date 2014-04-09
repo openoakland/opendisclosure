@@ -1,25 +1,7 @@
 %section#mayoral-candidates
   %h2#mayoral-candidates City of Oakland Mayoral Candidates
-  %ul.mayoral-candidates
-    - organizations.each do |o|
-      - name = Party::CANDIDATE_NAMES[o.committee_id]
-      - summary = o.summaries.order(date: :desc).first
-      %li
-        %a.mayoral-box{ style: "background-image: url(/images/#{name.split.last}.jpg)",
-          href: "/party/#{o.id}" }
-          %span.mayoral-box-name= name
-        %table.mayoral-box-table
-          - if summary
-            %tbody
-              %tr
-                %th{ scope: 'row' } Cash On Hand:
-                %td $#{summary.ending_cash_balance}
-              %tr
-                %th{ scope: 'row' } Pct Small Donors:
-                %td
-              %tr
-                %th{ scope: 'row' } Donations:
-                %td= o.received_contributions.count
+  #mayoral-table
+    Loading data...
 
 %section
   %h2 Charts
@@ -49,3 +31,31 @@
     }
   ];
 
+%script{ type: 'text/template', id: 'mayoral-table-template' }
+  :plain
+    <table>
+      <thead>
+        <tr>
+          <th>Candidate</th>
+          <th>Total Raised</th>
+          <th>Number of Contributions</th>
+          <th>Pct. outside Oakland</th>
+          <th>Pct. small donors</th>
+          <th>Avg. contribution</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% _.each(models, function(m) { %>
+          <tr>
+            <th scope='row'>
+              <%= m.attributes.short_name %>
+            </th>
+            <td><%= m.friendlySummaryNumber('ending_cash_balance') %></td>
+            <td>(#)</td>
+            <td>(%)</td>
+            <td>(%)</td>
+            <td>($.$$)</td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
