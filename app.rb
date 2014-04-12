@@ -66,7 +66,9 @@ get '/api/candidates' do
     only: %w[id name committee_id],
     methods: [
       :latest_summary,
-      :short_name
+      :short_name,
+      :profession,
+      :party_affiliation,
     ],
   }
 

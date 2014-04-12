@@ -16,7 +16,7 @@ OpenDisclosure.CandidateCollection = Backbone.Collection.extend({
 });
 
 OpenDisclosure.CandidateTable = Backbone.View.extend({
-  el : '#mayoral-table',
+  el : '#mayoral-candidates',
 
   initialize : function() {
     this.template = _.template($('#mayoral-table-template').html());

@@ -1,7 +1,5 @@
 %section#mayoral-candidates
-  %h2#mayoral-candidates City of Oakland Mayoral Candidates
-  #mayoral-table
-    Loading data...
+  Loading data...
 
 %section
   %h2 Charts
@@ -28,10 +26,10 @@
 
 %script{ type: 'text/template', id: 'mayoral-table-template' }
   :plain
-    <table>
+    <table id='mayoral-table'>
       <thead>
         <tr>
-          <th>Candidate</th>
+          <th></th>
           <th>Total Raised</th>
           <th>Number of Contributions</th>
           <th>Pct. outside Oakland</th>
@@ -43,7 +41,9 @@
         <% _.each(models, function(m) { %>
           <tr>
             <th scope='row'>
-              <%= m.attributes.short_name %>
+              <h3 class='mayor-name'><%- m.attributes.short_name %></h3>
+              <p class='mayor-profession'><%- m.attributes.profession %></p>
+              <p class='mayor-party'><%- m.attributes.party_affiliation %></p>
             </th>
             <td><%= m.friendlySummaryNumber('ending_cash_balance') %></td>
             <td>(#)</td>
