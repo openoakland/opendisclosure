@@ -21,6 +21,10 @@ class Party < ActiveRecord::Base
   def latest_summary
     summaries.order(date: :desc).first
   end
+
+  def short_name
+    CANDIDATE_NAMES.fetch(committee_id, name)
+  end
 end
 
 class Party::Individual < Party
