@@ -65,7 +65,7 @@
 
 		var candidate = candidates[0];
 
-		d3.json("/charts/donorZipcode/sfgov_bayarea_zipcodes_topo.json", function(json) {
+		d3.json("/data/sfgov_bayarea_zipcodes_topo.json", function(json) {
 			data = topojson.feature(json, json.objects.layer1).features;
 
 			// Add map regions
@@ -132,7 +132,7 @@
 		});
 
 		// Add outline for cities
-		d3.json("/charts/donorZipcode/sfgov_bayarea_cities_topo.json", function(json) {
+		d3.json("/data/sfgov_bayarea_cities_topo.json", function(json) {
 			data = topojson.feature(json, json.objects.layer1).features;
 
 			var cities = svg.append('g')
