@@ -30,6 +30,7 @@
       <thead>
         <tr>
           <th></th>
+          <th></th>
           <th>Total Raised</th>
           <th>Number of Contributions</th>
           <th>Pct. outside Oakland</th>
@@ -40,10 +41,15 @@
       <tbody>
         <% _.each(models, function(m) { %>
           <tr>
+            <td>
+              <img class='mayor-picture' src="<%= m.imagePath() %>" />
+            </td>
             <th scope='row'>
-              <h3 class='mayor-name'><%- m.attributes.short_name %></h3>
-              <p class='mayor-profession'><%- m.attributes.profession %></p>
-              <p class='mayor-party'><%- m.attributes.party_affiliation %></p>
+              <div class='mayor-info'>
+                <h3 class='mayor-name'><%- m.attributes.short_name %></h3>
+                <p class='mayor-profession'><%- m.attributes.profession %></p>
+                <p class='mayor-party'><%- m.attributes.party_affiliation %></p>
+              </div>
             </th>
             <td><%= m.friendlySummaryNumber('ending_cash_balance') %></td>
             <td>(#)</td>

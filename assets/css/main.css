@@ -75,9 +75,19 @@ body, html {
   text-align: center;
 }
 
+.mayor-info {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.mayor-picture {
+  padding: 0 10px 10px 0;
+  width: 80px;
+}
+
 .mayor-name {
   font-family: 'Merriweather', serif;
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 700;
   margin: 0;
 }
