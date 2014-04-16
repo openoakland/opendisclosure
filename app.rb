@@ -109,9 +109,9 @@ get '/data/data.csv' do
           while more
             url = URI('https://data.oaklandnet.com/resource/3xq4-ermg.csv')
             url.query = URI.encode_www_form(
-              '$where' => Committee.mayoral_candidates.keys
-                             .map { |c| "filer_naml='#{c.name}'" }
-                             .join(' OR '),
+              '$where' => Party.mayoral_candidates
+                               .map { |c| "filer_naml='#{c.name}'" }
+                               .join(' OR '),
               '$limit' => 1000,
               '$offset' => offset
             )
