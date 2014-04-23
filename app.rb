@@ -75,6 +75,18 @@ get '/api/candidates' do
   Party.mayoral_candidates.to_json(fields)
 end
 
+get '/api/contributions' do
+  fields = {
+    only: %w[amount date],
+    include: [:recipient, :contributor],
+  }
+
+  Contribution
+    .where(recipient_id: Party.mayoral_candidates)
+    .includes(:recipient, :contributor)
+    .to_json(fields)
+end
+
 get '/api/party/:id' do |id|
   # TODO: Include names of the people contributing?
   fields = {

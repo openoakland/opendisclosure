@@ -95,26 +95,13 @@
     });
   }
 
-  // Preserve data - chart may want to rearrange things internally.
-  function copyAndSanitizeData(data) {
-    return _.map(data, function(point) {
-      if (point.Tran_Amt1.indexOf('$') === 0) {
-        // Remove dollar signs from Socrata data
-        point.Tran_Amt1 = point.Tran_Amt1.slice(1);
-        point.Tran_Amt2 = point.Tran_Amt2.slice(1);
-      }
-
-      return point;
-    });
-  }
-
   function start() {
     chartDiv = $('#charts');
     sidebar = $('#sidebar');
 
-    d3.csv('/data/data.csv', function(data) {
+    d3.json('/api/contributions', function(error, data) {
       _.each(charts, function(chart) {
-        createChart(chart, copyAndSanitizeData(data));
+        createChart(chart, data);
         createNavLink(chart);
       });
       setupHandlers();
