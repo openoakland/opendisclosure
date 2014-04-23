@@ -41,10 +41,6 @@ class Party < ActiveRecord::Base
     where(committee_id: MAYORAL_CANDIDATE_IDS)
   end
 
-  def short_name
-    CANDIDATE_NAMES[committee_id]
-  end
-
   def latest_summary
     summaries.order(date: :desc).first
   end
