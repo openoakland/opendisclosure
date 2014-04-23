@@ -7,88 +7,92 @@
 body, html {
   background-image: url('/images/squairy_light.png');
   font-family: 'Open Sans', sans-serif;
-  font-size: 12px;
-  margin: 0;
-  padding: 0;
-}
-
-#charts {
-  font-size: 10px;
-}
-
-section {
-  clear: both;
-  margin: 24px 0;
-  overflow: auto;
-}
-
-section:first-child {
-  margin-top: 0;
 }
 
 /* ------------------- HEADER -------------------- */
 .site-header {
-  background-color: #454d60;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-  height: 200px;
+  height: 147px;
   position: relative;
-}
-
-.site-header-title, .site-header-right {
-  bottom: 24px;
-  color: #fff;
-  margin: 0 36px;
-  position: absolute;
+  text-align: right;
+  font-family: 'Merriweather', serif;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, .5);
 }
 
 .site-header h1 {
   margin: 0;
-  font-size: 48px;
-  font-weight: 800;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, .5);
+  font-size: 24px;
+  font-variant: small-caps;
+}
+
+.site-header h2 {
+  font-size: 36px;
+  font-weight: 700;
 }
 
 .site-header a {
   text-decoration: none;
-  color: #fff;
 }
 
 .site-header a:hover {
   text-decoration: underline;
 }
 
-.site-header-right {
-  margin-bottom: 8px;
-  right: 0;
-  font-size: 20px;
-}
-
-.site-header-right img {
-  position: relative;
-  top: 8px;
-  width: 150px;
-}
-
 .disclaimer {
   background-color: yellow;
+  box-shadow: 0px -2px 7px rgba(0,0,0,0.2) inset;
   font-size: 14px;
-  line-height: 28px;
-  position: absolute;
+  padding: 1em;
+  margin-bottom: 10px;
   text-align: center;
-  top: 0;
   width: 100%;
-  z-index: 1;
 }
 
 .disclaimer a {
   color: #000;
-  font-weight: bold;
+  font-weight: bolder;
 }
-/* ------------------- GENERAL LAYOUT -------------------- */
 
-#content {
-  margin-left: 260px;
+/* ------------------- HOMEPAGE MAYOR TABLE -------------------- */
+#mayoral-candidates th {
+  font-weight: normal;
 }
+
+#mayoral-candidates p {
+  margin: 0;
+}
+
+#mayoral-candidates thead th {
+  max-width: 150px;
+  text-align: center;
+  padding: 10px;
+}
+
+#mayoral-candidates tbody th {
+  padding: 0 10px 10px 0;
+}
+
+#mayoral-candidates td {
+  text-align: center;
+}
+
+.mayor-info {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.mayor-picture {
+  padding: 0 10px 10px 0;
+  width: 80px;
+}
+
+.mayor-name {
+  font-family: 'Merriweather', serif;
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* ------------------- GENERAL LAYOUT -------------------- */
 
 #gallery .gallery-item {
   width: 200px;
@@ -103,82 +107,27 @@ section:first-child {
   margin: 0;
 }
 
-.mayoral-candidates {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.mayoral-candidates li {
-  float: left;
-  margin: 0 10px;
-}
-
-.mayoral-box {
-  background-position: center center;
-  background-size: cover;
-  bottom: 0px;
-  color: #fff;
-  display: block;
-  font-size: 24px;
-  height: 300px;
-  margin: 10px 0;
-  position: relative;
-  text-align: center;
-  text-decoration: none;
-  text-shadow: 2px 2px 1px #000;
-  width: 200px;
-}
-
-.mayoral-box:hover {
-  box-shadow: 0 0 10px rgba(0, 0, 0, .3);
-}
-
-.mayoral-box-table {
-  text-align: left;
-}
-
-.mayoral-box-table td {
-  padding-left: 16px;
-}
-
-.mayoral-box-name {
-  position: absolute;
-  bottom: 10px;
-  left: 0;
-  width: 100%;
-  text-align: center;
-}
-
 /* ------------------- SIDEBAR -------------------- */
 
-#sidebar {
+.sidebar {
   font-size: 16px;
-  padding: 4px;
   color: #000;
-  background-color: rgba(255,255,255,0.5);
-  width: 190px;
-  position: absolute;
-  top: 220px;
-  left: 36px;
-}
-
-#sidebar.affix {
-  position: fixed;
-  top: 10px;
-  left: 36px;
-}
-
-#sidebar a {
-  color: #000;
-}
-
-#sidebar ul {
   list-style: none;
   padding: 0;
   margin: 0;
+  width: 190px;
 }
 
-#sidebar li.active {
+.sidebar ul {
+  list-style: none;
+  padding: 4px 4px 4px 20px;
+}
+
+.sidebar a{
+  display: block;
+  padding: 4px 0;
+}
+
+.sidebar li.active {
   font-weight: bold;
 }

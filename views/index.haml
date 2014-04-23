@@ -1,25 +1,5 @@
 %section#mayoral-candidates
-  %h2#mayoral-candidates City of Oakland Mayoral Candidates
-  %ul.mayoral-candidates
-    - organizations.each do |o|
-      - name = Party::CANDIDATE_NAMES[o.committee_id]
-      - summary = o.summaries.order(date: :desc).first
-      %li
-        %a.mayoral-box{ style: "background-image: url(/images/#{name.split.last}.jpg)",
-          href: "/party/#{o.id}" }
-          %span.mayoral-box-name= name
-        %table.mayoral-box-table
-          - if summary
-            %tbody
-              %tr
-                %th{ scope: 'row' } Cash On Hand:
-                %td $#{summary.ending_cash_balance}
-              %tr
-                %th{ scope: 'row' } Pct Small Donors:
-                %td
-              %tr
-                %th{ scope: 'row' } Donations:
-                %td= o.received_contributions.count
+  Loading data...
 
 %section
   %h2 Charts
@@ -33,19 +13,50 @@
 :javascript
   var charts = [
     {
-      id: 'chart1',
-      name: 'My Fancy Chart',
-      description: 'How do these work?'
+      id: 'donorZipcode',
+      name: 'Map of Donor Zipcodes',
+      description: 'Where do donors live?'
     },
     {
       id: 'donorLocation',
       name: 'Contributor Location',
       description: 'Are donors local?'
-    },
-    {
-      id: 'donorZipcode',
-      name: 'Map of Donor Zipcodes',
-      description: 'Where do donors live?'
     }
   ];
 
+%script{ type: 'text/template', id: 'mayoral-table-template' }
+  :plain
+    <table id='mayoral-table'>
+      <thead>
+        <tr>
+          <th></th>
+          <th></th>
+          <th>Total Raised</th>
+          <th>Number of Contributions</th>
+          <th>Pct. outside Oakland</th>
+          <th>Pct. small donors</th>
+          <th>Avg. contribution</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% _.each(models, function(m) { %>
+          <tr>
+            <td>
+              <img class='mayor-picture' src="<%= m.imagePath() %>" />
+            </td>
+            <th scope='row'>
+              <div class='mayor-info'>
+                <h3 class='mayor-name'><%- m.attributes.short_name %></h3>
+                <p class='mayor-profession'><%- m.attributes.profession %></p>
+                <p class='mayor-party'><%- m.attributes.party_affiliation %></p>
+              </div>
+            </th>
+            <td><%= m.friendlySummaryNumber('ending_cash_balance') %></td>
+            <td>(#)</td>
+            <td>(%)</td>
+            <td>(%)</td>
+            <td>($.$$)</td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>

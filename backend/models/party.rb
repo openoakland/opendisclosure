@@ -7,15 +7,38 @@ class Party < ActiveRecord::Base
     class_name: 'Contribution'
   has_many :summaries, primary_key: :committee_id
 
-  CANDIDATE_NAMES = {
-    1357609 => 'Bryan Parker',
-    1354678 => 'Jean Quan',
-    1362261 => 'Libby Schaaf',
-    1359017 => 'Joe Tuman',
+  MAYORAL_CANDIDATE_IDS = [
+    PARKER = 1357609,
+    QUAN = 1354678,
+    SCHAAF = 1362261,
+    TUMAN = 1359017,
+  ]
+
+  CANDIDATE_INFO = {
+    PARKER => {
+      name: 'Bryan Parker',
+      profession: '<current profession>',
+      party: 'Democrat'
+    },
+    QUAN => {
+      name: 'Jean Quan',
+      profession: 'Incumbant Oakland Mayor',
+      party: 'Democrat'
+    },
+    SCHAAF => {
+      name: 'Libby Schaaf',
+      profession: 'Councilmember for District 4',
+      party: 'Democrat'
+    },
+    TUMAN => {
+      name: 'Joe Tuman',
+      profession: '<current profession>',
+      party: 'Independent'
+    },
   }
 
   def self.mayoral_candidates
-    where(committee_id: CANDIDATE_NAMES.keys)
+    where(committee_id: MAYORAL_CANDIDATE_IDS)
   end
 
   def short_name
@@ -24,6 +47,18 @@ class Party < ActiveRecord::Base
 
   def latest_summary
     summaries.order(date: :desc).first
+  end
+
+  def short_name
+    CANDIDATE_INFO.fetch(committee_id, {})[:name] || name
+  end
+
+  def profession
+    CANDIDATE_INFO.fetch(committee_id, {})[:profession]
+  end
+
+  def party_affiliation
+    CANDIDATE_INFO.fetch(committee_id, {})[:party]
   end
 end
 

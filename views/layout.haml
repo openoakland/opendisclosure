@@ -5,11 +5,13 @@
     %meta{content: "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}
     %title Open Disclosure
     %meta{content: "width=device-width", name: "viewport"}
-    %link{href: 'http://fonts.googleapis.com/css?family=Open+Sans:400,300,800', rel:"stylesheet"}
-    %link{href: "/css/main.css", rel: "stylesheet"}
+    %link{ href: '//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css', rel: 'stylesheet' }
+    %link{ href: 'http://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:400,300,800', rel:"stylesheet" }
+    %link{ href: "/css/main.css", rel: "stylesheet" }
 
   %body
     %header.disclaimer
+      %i.glyphicon.glyphicon-exclamation-sign
       This site is
       %a{ href: 'https://github.com/openoakland/opendisclosure' }
         under active development
@@ -17,26 +19,44 @@
       %a{ href: 'http://www.meetup.com/OpenOakland/' }
         You can help us finish it!
 
-    %header.site-header
-      .site-header-title
-        %h1
-          %a{ href: '/' } Open Disclosure
-      .site-header-right
-        by
-        %a{ href: 'http://openoakland.org' }
-          %img{ src: '/images/openoaklandlogo.png', width: '150px' }
+    %header.site-header.container
+      .col-xs-2
+        %img{ src: '/images/OaklandCityTree.png', width: '100%' }
+      .col-xs-10
+        %h1 2014 Oakland Mayoral Election
+        %h2 Campaign Finance Analysis
 
-    #contentWrapper
-      #content
-        = yield
-
-      - if content_for?(:sidebar)
-        #sidebar{ data: { offset: { top: 210 }, spy: 'affix' }}
-          = yield_content :sidebar
+    .container
+      .row
+        .col-xs-2
+          %ul.sidebar
+            %li
+              %a{ href: '#' } About Us
+            %li
+              %a{ href: '#' } Where does the data come from?
+            %li
+              %a{ href: '#' } Contribute
+            %li
+              Candidates
+              %ul
+                %li
+                  %a{ href: '#' } Bryan Parker
+                %li
+                  %a{ href: '#' } Jean Quan
+                %li
+                  %a{ href: '#' } Libby Schaff
+                %li
+                  %a{ href: '#' } Joe Tuman
+            %li [charts here]
+          =# yield_content :sidebar
+        .col-xs-10
+          = yield
 
     %script{src: "http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"}
     %script{src: "http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"}
     %script{src: "http://cdnjs.cloudflare.com/ajax/libs/d3/3.3.3/d3.min.js"}
+    %script{src: '//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js'}
     %script{src: "/js/vendor/bootstrap.min.js"}
     %script{src: "/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"}
     %script{src: "/js/app.js"}
+    %script{src: '/js/backbone.js'}
