@@ -1,7 +1,7 @@
-%h1= contributor.name
+%h1= party.name
 %h2 Made #{contributions.count} contributions:
 %ul
   - contributions.each do |c|
     %li
-      %a{ href: "/recipients/#{c.recipient.class.name.downcase}/#{c.recipient.id}"}
+      %a{ href: "/party/#{c.recipient.id}"}
         = c.recipient.name

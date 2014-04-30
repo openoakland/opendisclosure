@@ -1,102 +1,128 @@
-require 'active_record'
-require 'roo'
+$LOAD_PATH << '.'
 
-Dir['./models/*.rb'].each { |f| require f }
+require 'active_record'
+require 'open-uri'
+
+URLS = {
+  'Schedule A' => 'http://data.oaklandnet.com/resource/3xq4-ermg.json',
+  'Summary'    => 'http://data.oaklandnet.com/resource/rsxe-vvuw.json',
+}.freeze
 
 # In order to connect, set ENV['DATABASE_URL'] to the database you wish to
 # populate
+ENV['DATABASE_URL'] ||= "sqlite3://./#{File.dirname(__FILE__)}/db.sqlite3"
 ActiveRecord::Base.establish_connection
-ActiveRecord::Base.connection.execute('drop table if exists committees, other_contributors, individuals, contributions')
+Dir[File.dirname(__FILE__) + '/models/*.rb'].each { |f| require f }
+require_relative 'schema.rb'
 
-ActiveRecord::Schema.define do
-  create_table :committees do |t|         # both SCC and COM
-    t.integer :committee_id # 0 = pending
-    t.string :committee_type # CTL, RCP, BMC (todo: figure out what those mean)
-    t.string :name
-    t.string :city # todo: how to populate these fields (city, state, zip)?
-    t.string :state
-    t.integer :zip
+class SocrataFetcher
+  def initialize(uri)
+    @uri = URI(uri)
   end
 
-  create_table :other_contributors do |t| # OTH
-    t.string :name
-    t.string :city
-    t.string :state
-    t.integer :zip
-  end
+  def each
+    more = true
+    offset = 0
+    while more
+      url = @uri
+      url.query = URI.encode_www_form(
+        '$limit' => 1000,
+        '$offset' => offset
+      )
 
-  create_table :individuals do |t| # IND
-    t.string :name
-    t.string :city
-    t.string :state
-    t.integer :zip
-    t.string :employer
-    t.string :occupation # todo: make this into a foreign key/other table?
-  end
+      puts '    Downloading: ' + url.to_s
 
-  create_table :contributions do |t|
-    t.integer :contributor_id
-    t.string :contributor_type
-    t.integer :recipient_id
-    t.string :recipient_type
-    t.integer :amount # todo: make decimal?
-    t.date :date
+      response = JSON.parse(open(url.to_s).read)
+      response.each do |r|
+        yield r
+      end
+
+      # preparation for next loop!
+      more = response.length > 0
+      offset = offset + 1000
+    end
   end
 end
 
-def parse_file(filename)
-  workbook = Roo::Excelx.new(filename)
-  parse_contributions_schedule_a(workbook)
-end
+def parse_contributions(row)
+  recipient = Party::Committee.where(committee_id: row['filer_id'])
+                              .first_or_create(name: row['filer_naml'])
 
-def parse_contributions_schedule_a(workbook)
-  workbook.default_sheet = 'A-Contributions'
-  headers = workbook.row(1)
-
-  # Parse each row of the spreadsheet
-  (2..workbook.last_row).each do |row_id|
-    row = Hash[headers.zip(workbook.row(row_id))]
-
-    parse_contribution(row)
-  end
-end
-
-def parse_contribution(row)
-  recipient = Committee.where(committee_id: row['Filer_ID'])
-                       .first_or_create(name: row['Filer_NamL'],
-                                        committee_type: row['Committee_Type'])
   contributor =
-    case row['Entity_Cd']
+    case row['entity_cd']
     when 'COM', 'SCC'
       # contributor is a Committee and Cmte_ID is set. Same thing as
       # Filer_ID but some names disagree
-      Committee.from_row(row)#where(committee_id: row['Cmte_ID'])
-               #.first_or_create(name: row['Tran_NamL'])
+      Party::Committee.where(committee_id: row['cmte_id'])
+                      .first_or_create(name: row['tran_naml'])
+
     when 'IND'
       # contributor is an Individual
-      full_name = row.values_at('Tran_NamT', 'Tran_NamF', 'Tran_NamL', 'Tran_NamS')
+      full_name = row.values_at('tran_namt', 'tran_namf', 'tran_naml', 'tran_nams')
                      .join(' ')
                      .strip
-      Individual.where(name: full_name,
-                       city: row['Tran_City'],
-                       state: row['Tran_State'],
-                       zip: row['Tran_Zip4'])
-                 .first_or_create(employer: row['Tran_Emp'],
-                                  occupation: row['Tran_Occ'])
+      Party::Individual.where(name: full_name,
+                              city: row['tran_city'],
+                              state: row['tran_state'],
+                              zip: row['tran_zip4'])
+                       .first_or_create(employer: row['tran_emp'],
+                                        occupation: row['tran_occ'])
     when 'OTH'
       # contributor is "Other"
-      OtherContributor.where(name: row['Tran_NamL'])
-                      .first_or_create(city: row['Tran_City'],
-                                       state: row['Tran_State'],
-                                       zip: row['Tran_Zip4'])
+      Party::Other.where(name: row['tran_naml'])
+                  .first_or_create(city: row['tran_city'],
+                                   state: row['tran_state'],
+                                   zip: row['tran_zip4'])
     end
 
   Contribution.create(recipient: recipient,
                       contributor: contributor,
-                      amount: row['Tran_Amt1'],
-                      date: row['Tran_Date'])
+                      amount: row['tran_amt1'],
+                      date: row['tran_date'])
+end
+
+# Hash of:
+# Form_Type => { Line_Item => SQL Column name }
+SUMMARY_LINES = {
+  'F460' => {
+    '1'  => :total_monetary_contributions,
+    '5'  => :total_contributions_received,
+    '11' => :total_expenditures_made,
+    '16' => :ending_cash_balance,
+  },
+  'A' => {
+    '2' => :total_unitemized_contributions,
+  },
+}.freeze
+
+def parse_summary(row)
+  return unless SUMMARY_LINES.include? row['form_type']
+  return unless SUMMARY_LINES[row['form_type']].include? row['line_item']
+  return if row['filer_id'] == 'Pending' || row['filer_id'].to_i == 0
+
+  column = SUMMARY_LINES[row['form_type']][row['line_item']]
+  value = row['amount_a']
+
+  Summary.where(party_id: row['filer_id'],
+                date: row['rpt_date'].to_date)
+         .first_or_create
+         .update_attribute(column, value)
 end
 
 if __FILE__ == $0
-  parse_file('../assets/data/efile_COAK_2013.xlsx')
+  # ActiveRecord::Base.logger = Logger.new(STDOUT)
+
+  puts "Fetching Contribution data (Schedule A) from Socrata:"
+  Party.transaction do #        <- speed hack for sqlite3
+    SocrataFetcher.new(URLS['Schedule A']).each do |record|
+      parse_contributions(record)
+    end
+  end
+
+  puts "Fetching Summary data from Socrata:"
+  Summary.transaction do
+    SocrataFetcher.new(URLS['Summary']).each do |record|
+      parse_summary(record)
+    end
+  end
 end

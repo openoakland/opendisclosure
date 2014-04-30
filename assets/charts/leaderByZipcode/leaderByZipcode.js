@@ -32,6 +32,18 @@
 			}
 		}
 		var candidates = _.keys(candidates);
+		var max_by_zip = {};
+		_.map(amounts, function(val, zip) {
+			var candidate_list = _.map(val, function(donation, candidate) {
+				return { 'name' : candidate,
+								 'total' : donation }
+			});
+			//console.log(candidate_list);
+			var max =  _.max(candidate_list, function(candidate) {
+				return candidate.total;
+			});
+			max_by_zip[zip] = max.name;
+		});
 		// End of data processing
 
 		var margin = {
@@ -75,58 +87,14 @@
 					zip = d.properties.ZIP;
 				})
 				.attr("d", path)
-				.attr('fill', '#d3d3d3')
+				.attr('class', function(d) {
+					var leader = max_by_zip[d.properties.ZIP];
+					return leader? color(leader) : 'null';
+				})//'#d3d3d3')
 				.attr('stroke', '#9c9c9c')
 				.append("svg:title")
 				.text(function(d) {
 					return d.properties.ZIP + ": " + d.properties.PO_NAME;
-				});
-
-			var circles = svg.append("g")
-				.attr('id', 'circles');
-
-			radius = function(d) {
-    		if (amounts[d.properties.ZIP]){
-					return Math.sqrt( amounts[d.properties.ZIP][candidate] || 0)/8;
-				}
-				return 0;
-			}
-
-			// Add a circle at the center of each zip
-			var dorling = circles.selectAll("circle")
-				.data(function() {
-					return data
-				})
-				.enter()
-				.append("circle")
-				.each(function(d) {
-					d.properties.c = path.centroid(d);
-				})
-				.attr('cx', function(d) {
-					return d.properties.c[0];
-				})
-				.attr('cy', function(d) {
-					return d.properties.c[1];
-				})
-				.attr('r', radius)
-				.attr('class', color(candidate));
-
-			// Update the chart when a user clicks on a candidate's name
-			update = function() {
-				candidate = $(this).select('text').text();
-				dorling.attr('class', color(candidate))
-					.transition()
-					.attr('r', radius);
-			}
-
-			legend.on("click", update)
-				.on("mouseover", function() {
-					d3.select(this)
-						.classed('hover', true);
-				})
-				.on("mouseout", function() {
-					d3.select(this)
-						.classed('hover', false);
 				});
 		});
 
@@ -146,27 +114,7 @@
 				.append("svg:title");
 		});
 
-		// Show the scale of bubbles on the chart
-		// var scale = svg.append("g")
-		// 	.attr('id', 'scale');
-
-		// var scale_data = [50000, 10000, 1000];
-		// var scale_height = Math.sqrt(scale_data[0])/8;
-		// scale.selectAll("circle")
-		// 	.data(scale_data)
-		// 	.enter()
-		// 	.append("circle")
-		// 	.attr('cx', 50)
-		// 	.attr('cy', function(d) {
-		// 		return 50 + scale_height - Math.sqrt(d)/8
-		// 	})
-		// 	.attr('r', function(d) {
-		// 		return Math.sqrt(d)/8;
-		// 	})
-		// 	.attr('stroke', '#000000')
-		// 	.attr('fill', 'none');
-
-		// Add a legend at the bottom!
+		// Add a legend at the bottom
 		var svg_legend = d3.select(chartEl).append("svg")
 			.attr("id", "legend")
 			.attr("width", width + margin.right)
@@ -183,17 +131,8 @@
 			});
 
 		legend.append("rect")
-			.attr('x', 0)
-			.attr('y', 0)
-			.attr("width", offset)
-			.attr("height", 10)
-			.attr("class", function(d) {
-				return 'status ' + color(d);
-			});
-
-		legend.append("rect")
 			.attr("x", 0)
-			.attr("y", 10)
+			.attr("y", 0)
 			.attr("width", offset)
 			.attr("height", 18)
 			.attr("class", function(d) {
@@ -202,7 +141,7 @@
 
 		legend.append("text")
 			.attr("x", offset / 2)
-			.attr("y", 34)
+			.attr("y", 24)
 			.attr("dy", ".35em")
 			.style("text-anchor", "middle")
 			.text(function(d) {
@@ -210,7 +149,7 @@
 			});
 	};
 
-	donorZipcode = function(chartEl, data) {
+	leaderByZipcode = function(chartEl, data) {
 		var app = new App();
 		app.init(chartEl, data);
 	};
