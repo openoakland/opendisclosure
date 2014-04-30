@@ -5,6 +5,7 @@ gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'activerecord'
 gem 'haml'
+gem 'foreman'
 
 group :development do
   gem 'sqlite3'
