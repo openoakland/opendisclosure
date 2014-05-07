@@ -88,7 +88,7 @@ end
 get '/api/party/:id' do |id|
   # TODO: Include names of the people contributing?
   fields = {
-    only: %w[id name committee_id],
+    only: %w[id name committee_id received_contributions_count contributions_count],
     include: {
       received_contributions: { },
       contributions: { }
