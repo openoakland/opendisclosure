@@ -82,7 +82,7 @@ get '/api/contributions' do
   }
 
   Contribution
-    .where(recipient_id: Party.mayoral_candidates)
+    .where(recipient_id: Party.mayoral_candidates.to_a)
     .includes(:recipient, :contributor)
     .to_json(fields)
 end
