@@ -60,6 +60,7 @@ end
 # documented here:
 #   http://apidock.com/rails/ActiveRecord/Serialization/to_json
 get '/api/candidates' do
+  headers 'Content-Type' => 'application/json'
   fields = {
     only: %w[id name committee_id received_contributions_count contributions_count],
     methods: [
@@ -74,6 +75,7 @@ get '/api/candidates' do
 end
 
 get '/api/contributions' do
+  headers 'Content-Type' => 'application/json'
   fields = {
     only: %w[amount date],
     include: [:recipient, :contributor],
@@ -87,6 +89,8 @@ end
 
 get '/api/party/:id' do |id|
   # TODO: Include names of the people contributing?
+  headers 'Content-Type' => 'application/json'
+
   fields = {
     only: %w[id name committee_id received_contributions_count contributions_count],
     include: {
