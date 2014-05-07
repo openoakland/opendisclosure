@@ -2,7 +2,6 @@ require 'sinatra'
 require 'sinatra/content_for'
 require 'active_record'
 require 'haml'
-require_relative 'toms_cache'
 
 # Load ActiveRecord models (and connect to the database)
 ActiveRecord::Base.establish_connection
@@ -10,7 +9,6 @@ Dir['./backend/models/*.rb'].each { |f| require f }
 
 configure do
   set :public_folder, 'assets'
-  set :cache, TomsCache.new
 end
 
 # The homepage
@@ -98,51 +96,6 @@ get '/api/party/:id' do |id|
   }
 
   Party.find(id).to_json(fields)
-end
-
-# Deprecated in favor of the JSON API!
-get '/data/data.csv' do
-  unless ENV['RACK_ENV'] == 'production'
-    redirect '/data/data_local.csv', 302
-  else
-    # Pull the data from Socrata and cache it for a day.
-    # TODO: Send Last-Modified and return a 304 so browsers can cache this file.
-    headers['Content-Encoding'] = 'gzip'
-    settings.cache.fetch do
-      require 'open-uri'
-      require 'zlib'
-
-      StringIO.new.tap do |s|
-        w = Zlib::GzipWriter.new(s)
-        begin
-          more = true
-          written_headers = false
-          offset = 0
-          while more
-            url = URI('https://data.oaklandnet.com/resource/3xq4-ermg.csv')
-            url.query = URI.encode_www_form(
-              '$where' => Party.mayoral_candidates
-                               .map { |c| "filer_naml='#{c.name}'" }
-                               .join(' OR '),
-              '$limit' => 1000,
-              '$offset' => offset
-            )
-
-            headers, *response = open(url).read.split("\n")
-            w.puts headers unless written_headers
-            w.write response.join("\n")
-
-            # preparation for next loop!
-            more = response.length > 0
-            written_headers = true
-            offset = offset + 1000
-          end
-        ensure
-          w.close
-        end
-      end.string
-    end
-  end
 end
 
 after do
