@@ -61,7 +61,7 @@ end
 #   http://apidock.com/rails/ActiveRecord/Serialization/to_json
 get '/api/candidates' do
   fields = {
-    only: %w[id name committee_id],
+    only: %w[id name committee_id received_contributions_count contributions_count],
     methods: [
       :latest_summary,
       :short_name,
