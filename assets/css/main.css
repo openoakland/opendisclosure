@@ -4,38 +4,20 @@
    Author's custom styles
    ========================================================================== */
 
+
+/* ------------------- BASE STYLES -------------------- */
+
 body, html {
   background-image: url('/images/squairy_light.png');
-  font-family: 'Open Sans', sans-serif;
-}
-
-/* ------------------- HEADER -------------------- */
-.site-header {
-  height: 147px;
-  position: relative;
-  text-align: right;
   font-family: 'Crete Round', 'Merriweather', serif;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, .5);
+  color: #555555;
 }
 
-.site-header h1 {
-  margin: 0;
-  font-size: 24px;
-  font-variant: small-caps;
+.green {
+  color: green;
 }
 
-.site-header h2 {
-  font-size: 36px;
-  font-weight: 700;
-}
-
-.site-header a {
-  text-decoration: none;
-}
-
-.site-header a:hover {
-  text-decoration: underline;
-}
+/* ------------------- disclaimer -------------------- */
 
 .disclaimer {
   background-color: yellow;
@@ -52,7 +34,91 @@ body, html {
   font-weight: bolder;
 }
 
+/* ------------------- HEADER -------------------- */
+
+header {
+  padding: 0;
+  margin: 0;
+  min-height: 128px;
+}
+
+header #logo {
+  margin: 0 auto;
+  text-align: center;
+}
+
+header #logo img{
+  height:140px;
+  vertical-align: bottom
+}
+
+/*header #sloganContainer {
+  font-size: 20px;
+  font-style: italic;
+  font-weight:300;
+  margin-top: 32px;
+}*/
+
+header #titleContainer {
+  margin-top: 44px;
+  text-align:right;
+  /*min-width:468px;*/
+}
+
+header .subtitle {
+  font-size: 24px;
+  font-variant: small-caps;
+  /*font-weight: 700;*/
+}
+
+header .title {
+  margin-top: -18px;
+  font-size: 42px;
+}
+
+header a {
+  text-decoration: none;
+}
+
+header a:hover {
+  text-decoration: underline;
+}
+
+/* ------------------- SIDEBAR -------------------- */
+
+.sidebar {
+  border-top: 3px solid white;
+  font-size: 16px;
+  /*color: #000;*/
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background-color: #f0f0f0;
+  height:1000px;
+
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 4px 4px 4px 20px;
+}
+
+.sidebar a{
+  display: block;
+  padding: 4px 0;
+  /*text-decoration: none;*/
+  color:inherit;
+}
+
+.sidebar li.active  {
+  font-weight: bold;
+  background-color: #ffdd1f
+}
+
 /* ------------------- HOMEPAGE MAYOR TABLE -------------------- */
+.main {
+  border-top: 3px solid white;
+}
 #mayoral-candidates th {
   font-weight: normal;
 }
@@ -107,27 +173,3 @@ body, html {
   margin: 0;
 }
 
-/* ------------------- SIDEBAR -------------------- */
-
-.sidebar {
-  font-size: 16px;
-  color: #000;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  width: 190px;
-}
-
-.sidebar ul {
-  list-style: none;
-  padding: 4px 4px 4px 20px;
-}
-
-.sidebar a{
-  display: block;
-  padding: 4px 0;
-}
-
-.sidebar li.active {
-  font-weight: bold;
-}
