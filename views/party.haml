@@ -1,8 +1,40 @@
-%h1= party.name
-%h2 Showing #{contributions.count} contributors:
+%section.container#candidate
+  %h1= party.short_name
+  .row
+    .col-xs-3
+      party.image
+    .col-xs-3
+      %div.highlight Current funds:
+      %div
+        %p Donations to date: 1000
+        %p Percentage of small donors: 82%
+    .col-xs-3 Twitter Widget
+
+%section
+  %h2 Charts
+  #charts
 
 %ul
   - contributions.each do |c|
     %li
       %a{ href: "/party/#{c.contributor_id}/contributions" }
         = c.contributor.name
+
+:javascript
+  partyId = window.location.pathname.split('/')[2];
+  if (partyId === 1909){
+    $('')
+  }
+
+  var charts = [
+    {
+      id: 'donorZipcode',
+      name: 'Map of Donor Zipcodes',
+      description: 'Where do donors live?'
+    },
+    {
+      id: 'leaderByZipcode',
+      name: 'Leading Candidate by Zipcode',
+      description: 'Where are candidates leading?'
+    }
+  ];
