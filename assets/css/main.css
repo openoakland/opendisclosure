@@ -11,20 +11,11 @@ body, html {
   background-image: url('/images/squairy_light.png');
   font-family: 'Crete Round', 'Merriweather', serif;
   color: #555555;
-<<<<<<< HEAD
-}
-
-.green {
-  color: green;
-}
-=======
 }
 
 .green {
   color: #539137;
 }
-
->>>>>>> candidatePage
 
 /* ------------------- disclaimer -------------------- */
 
@@ -52,10 +43,6 @@ header {
 }
 
 header #logo {
-<<<<<<< HEAD
-  margin: 0 auto;
-=======
->>>>>>> candidatePage
   text-align: center;
 }
 
@@ -129,6 +116,16 @@ header a:hover {
 .main {
   border-top: 3px solid white;
 }
+
+.main section{
+  border-bottom: 2px solid #539137;
+}
+
+#charts div {
+  padding-top:30px;
+  border-bottom: 2px solid #539137;
+}
+
 #mayoral-candidates th {
   font-weight: normal;
 }

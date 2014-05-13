@@ -98,9 +98,9 @@
 
     var margin = {
       top: 30,
-      right: 40,
-      bottom: 300,
-      left: 50
+      right: window.innerWidth * (1/12),
+      bottom: 60,
+      left: 0
     },
       width = 960 - margin.left - margin.right,
       height = 800 - margin.top - margin.bottom;
