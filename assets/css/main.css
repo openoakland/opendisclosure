@@ -11,11 +11,20 @@ body, html {
   background-image: url('/images/squairy_light.png');
   font-family: 'Crete Round', 'Merriweather', serif;
   color: #555555;
+<<<<<<< HEAD
 }
 
 .green {
   color: green;
 }
+=======
+}
+
+.green {
+  color: #539137;
+}
+
+>>>>>>> candidatePage
 
 /* ------------------- disclaimer -------------------- */
 
@@ -43,7 +52,10 @@ header {
 }
 
 header #logo {
+<<<<<<< HEAD
   margin: 0 auto;
+=======
+>>>>>>> candidatePage
   text-align: center;
 }
 
@@ -94,8 +106,6 @@ header a:hover {
   padding: 0;
   margin: 0;
   background-color: #f0f0f0;
-  height:1000px;
-
 }
 
 .sidebar ul {
