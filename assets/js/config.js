@@ -1,4 +1,4 @@
 var config = {
-  chartWidth: 600,
+  chartWidth: 700,
   chartHeight: 400
 }
