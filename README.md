@@ -9,7 +9,11 @@ Meeting notes can be found in [this Google Doc](https://docs.google.com/document
 
 ## Running Locally
 
-To start, you'll need ruby installed. Then install bundler and foreman:
+To start, you'll need ruby installed.
+
+    rbenv install 2.1.0
+
+Then install bundler and foreman:
 
     gem install bundler
     gem install foreman
