@@ -6,11 +6,12 @@
     %title Open Disclosure
     %meta{content: "width=device-width", name: "viewport"}
     %link{ href: '//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css', rel: 'stylesheet' }
-    %link{ href: 'http://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:400,300,800', rel:"stylesheet" }
+    %link{ href: 'http://fonts.googleapis.com/css?family=Merriweather:300,400,700|Open+Sans:400,300,800', rel:"stylesheet" }
+    %link{ href:'http://fonts.googleapis.com/css?family=Crete+Round', rel:"stylesheet", type:'text/css'}
     %link{ href: "/css/main.css", rel: "stylesheet" }
 
   %body
-    %header.disclaimer
+    .disclaimer
       %i.glyphicon.glyphicon-exclamation-sign
       This site is
       %a{ href: 'https://github.com/openoakland/opendisclosure' }
@@ -19,40 +20,43 @@
       %a{ href: 'http://www.meetup.com/OpenOakland/' }
         You can help us finish it!
 
-    %header.site-header.container
-      .col-xs-2
+  %header.container.col-sm-11
+    .row
+      #logo.col-sm-2
         %a{ href: '/' }
-          %img{ src: '/images/OaklandCityTree.png', width: '100%' }
-      .col-xs-10
-        %h1 2014 Oakland Mayoral Election
-        %h2 Campaign Finance Analysis
+          %img{ src: '/images/OaklandCityTree.png'}
+      / #sloganContainer.col-sm-3.green
+      /   Open Disclosure:<br>
+      /   Bringing Campaign<br>
+      /   Money to Light
+      #titleContainer.col-sm-10
+        %p.subtitle 2014 Oakland Mayoral Election
+        %p.title Campaign Finance Analysis
+  .container-fluid
+    .row
+      .sidebar.col-sm-2{ role: 'navigation'}
+        %ul.nav.nav-sidebar
+          %li
+            %a{ href: '#' } About Us
+          %li
+            %a{ href: '#' } Where does the data come from?
+          %li
+            %a{ href: '#' } Contribute
+          %li
+            %a Candidates
+            %ul.nav.nav-sidebar.compressed
+              %li
+                %a{ href: '#' } Bryan Parker
+              %li
+                %a{ href: '#' } Jean Quan
+              %li
+                %a{ href: '#' } Libby Schaff
+              %li
+                %a{ href: '/party/1909' } Joe Tuman
+      .main.col-sm-offset-1.col-sm-8
+        .row= yield
 
-    .container
-      .row
-        .col-xs-2
-          %ul.sidebar
-            %li
-              %a{ href: '#' } About Us
-            %li
-              %a{ href: '#' } Where does the data come from?
-            %li
-              %a{ href: '#' } Contribute
-            %li
-              Candidates
-              %ul
-                %li
-                  %a{ href: '#' } Bryan Parker
-                %li
-                  %a{ href: '#' } Jean Quan
-                %li
-                  %a{ href: '#' } Libby Schaff
-                %li
-                  %a{ href: '#' } Joe Tuman
-            %li [charts here]
-          =# yield_content :sidebar
-        .col-xs-10
-          = yield
-
+    %script{src: "/js/config.js"}
     %script{src: "http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"}
     %script{src: "http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"}
     %script{src: "http://cdnjs.cloudflare.com/ajax/libs/d3/3.3.3/d3.min.js"}

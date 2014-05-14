@@ -4,38 +4,20 @@
    Author's custom styles
    ========================================================================== */
 
+
+/* ------------------- BASE STYLES -------------------- */
+
 body, html {
   background-image: url('/images/squairy_light.png');
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Crete Round', 'Merriweather', serif;
+  color: #555555;
 }
 
-/* ------------------- HEADER -------------------- */
-.site-header {
-  height: 147px;
-  position: relative;
-  text-align: right;
-  font-family: 'Merriweather', serif;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, .5);
+.green {
+  color: #539137;
 }
 
-.site-header h1 {
-  margin: 0;
-  font-size: 24px;
-  font-variant: small-caps;
-}
-
-.site-header h2 {
-  font-size: 36px;
-  font-weight: 700;
-}
-
-.site-header a {
-  text-decoration: none;
-}
-
-.site-header a:hover {
-  text-decoration: underline;
-}
+/* ------------------- disclaimer -------------------- */
 
 .disclaimer {
   background-color: yellow;
@@ -52,7 +34,129 @@ body, html {
   font-weight: bolder;
 }
 
+/* ------------------- HEADER -------------------- */
+
+header {
+  padding: 0;
+  margin: 0;
+  min-height: 128px;
+}
+
+header #logo {
+  text-align: center;
+}
+
+header #logo img{
+  height:140px;
+  vertical-align: bottom
+}
+
+/*header #sloganContainer {
+  font-size: 20px;
+  font-style: italic;
+  font-weight:300;
+  margin-top: 32px;
+}*/
+
+header #titleContainer {
+  margin-top: 44px;
+  text-align:right;
+  /*min-width:468px;*/
+}
+
+header .subtitle {
+  font-size: 24px;
+  font-variant: small-caps;
+  /*font-weight: 700;*/
+}
+
+header .title {
+  margin-top: -18px;
+  font-size: 42px;
+}
+
+header a {
+  text-decoration: none;
+}
+
+header a:hover {
+  text-decoration: underline;
+}
+
+/* ------------------- SIDEBAR -------------------- */
+
+.sidebar {
+  border-top: 3px solid white;
+  font-size: 16px;
+  list-style: none;
+  background-color: #f0f0f0;
+  /*color: #000;*/
+  /*padding: 0;*/
+  /*margin: 0;*/
+}
+
+/*.sidebar ul {
+  list-style: none;
+  padding: 4px 4px 4px 20px;
+}*/
+
+/*.sidebar li{
+  padding: 4px 0;
+}*/
+
+
+.sidebar a{
+  display: block;
+  color:inherit;
+}
+
+
+.navbar .navbar-nav > .active > a {
+  font-weight: bold;
+  color: #539137;
+  background-color: #ffdd1f
+}
+
+.compressed li {
+  padding: 0 0 0 10px;
+  margin-top: -16px;
+}
+
+
+/* ------------------- GENERAL LAYOUT -------------------- */
+
+.main {
+  border-top: 3px solid white;
+}
+
+.main section{
+  border-bottom: 2px solid #539137;
+}
+
+#charts div {
+  padding-top:30px;
+  border-bottom: 2px solid #539137;
+}
+
+/*#gallery .gallery-item {
+  width: 200px;
+  background: rgba(255, 255, 255, 0.5);
+  height: 200px;
+  padding: 10px;
+  margin: 10px;
+  float: left;
+}
+
+#gallery .gallery-item h3{
+  margin: 0;
+}
+
+*/
+
+
 /* ------------------- HOMEPAGE MAYOR TABLE -------------------- */
+
+
 #mayoral-candidates th {
   font-weight: normal;
 }
@@ -86,48 +190,15 @@ body, html {
 }
 
 .mayor-name {
-  font-family: 'Merriweather', serif;
   font-size: 18px;
   font-weight: 700;
   margin: 0;
 }
 
-/* ------------------- GENERAL LAYOUT -------------------- */
+/* ------------------- Candidate Page -------------------- */
 
-#gallery .gallery-item {
-  width: 200px;
-  background: rgba(255, 255, 255, 0.5);
-  height: 200px;
-  padding: 10px;
-  margin: 10px;
-  float: left;
-}
-
-#gallery .gallery-item h3{
-  margin: 0;
-}
-
-/* ------------------- SIDEBAR -------------------- */
-
-.sidebar {
-  font-size: 16px;
-  color: #000;
+ul#contributions {
+  text-decoration: none;
   list-style: none;
-  padding: 0;
-  margin: 0;
-  width: 190px;
 }
 
-.sidebar ul {
-  list-style: none;
-  padding: 4px 4px 4px 20px;
-}
-
-.sidebar a{
-  display: block;
-  padding: 4px 0;
-}
-
-.sidebar li.active {
-  font-weight: bold;
-}
