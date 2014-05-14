@@ -52,8 +52,10 @@
 			bottom: 60,
 			left: 0
 		},
-			width = 960 - margin.left - margin.right,
-			height = 800 - margin.top - margin.bottom;
+		  width = config.chartWidth,
+      height = config.chartHeight;
+			// width = 960 - margin.left - margin.right,
+			// height = 600 - margin.top - margin.bottom;
 
 		var color = d3.scale.ordinal()
 			.domain(candidates)

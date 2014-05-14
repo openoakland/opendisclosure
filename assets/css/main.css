@@ -88,31 +88,43 @@ header a:hover {
 .sidebar {
   border-top: 3px solid white;
   font-size: 16px;
-  /*color: #000;*/
   list-style: none;
-  padding: 0;
-  margin: 0;
   background-color: #f0f0f0;
+  /*color: #000;*/
+  /*padding: 0;*/
+  /*margin: 0;*/
 }
 
-.sidebar ul {
+/*.sidebar ul {
   list-style: none;
   padding: 4px 4px 4px 20px;
-}
+}*/
+
+/*.sidebar li{
+  padding: 4px 0;
+}*/
+
 
 .sidebar a{
   display: block;
-  padding: 4px 0;
-  /*text-decoration: none;*/
   color:inherit;
 }
 
-.sidebar li.active  {
+
+.navbar .navbar-nav > .active > a {
   font-weight: bold;
+  color: #539137;
   background-color: #ffdd1f
 }
 
-/* ------------------- HOMEPAGE MAYOR TABLE -------------------- */
+.compressed li {
+  padding: 0 0 0 10px;
+  margin-top: -16px;
+}
+
+
+/* ------------------- GENERAL LAYOUT -------------------- */
+
 .main {
   border-top: 3px solid white;
 }
@@ -125,6 +137,25 @@ header a:hover {
   padding-top:30px;
   border-bottom: 2px solid #539137;
 }
+
+/*#gallery .gallery-item {
+  width: 200px;
+  background: rgba(255, 255, 255, 0.5);
+  height: 200px;
+  padding: 10px;
+  margin: 10px;
+  float: left;
+}
+
+#gallery .gallery-item h3{
+  margin: 0;
+}
+
+*/
+
+
+/* ------------------- HOMEPAGE MAYOR TABLE -------------------- */
+
 
 #mayoral-candidates th {
   font-weight: normal;
@@ -159,24 +190,15 @@ header a:hover {
 }
 
 .mayor-name {
-  font-family: 'Crete Round', 'Merriweather', serif;
   font-size: 18px;
   font-weight: 700;
   margin: 0;
 }
 
-/* ------------------- GENERAL LAYOUT -------------------- */
+/* ------------------- Candidate Page -------------------- */
 
-#gallery .gallery-item {
-  width: 200px;
-  background: rgba(255, 255, 255, 0.5);
-  height: 200px;
-  padding: 10px;
-  margin: 10px;
-  float: left;
-}
-
-#gallery .gallery-item h3{
-  margin: 0;
+ul#contributions {
+  text-decoration: none;
+  list-style: none;
 }
 

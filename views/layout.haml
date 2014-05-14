@@ -33,7 +33,7 @@
         %p.title Campaign Finance Analysis
   .container-fluid
     .row
-      .sidebar.col-sm-2
+      .sidebar.col-sm-2{ role: 'navigation'}
         %ul.nav.nav-sidebar
           %li
             %a{ href: '#' } About Us
@@ -42,8 +42,8 @@
           %li
             %a{ href: '#' } Contribute
           %li
-            Candidates
-            %ul.nav.nav-sidebar
+            %a Candidates
+            %ul.nav.nav-sidebar.compressed
               %li
                 %a{ href: '#' } Bryan Parker
               %li
@@ -55,7 +55,7 @@
       .main.col-sm-offset-1.col-sm-8
         .row= yield
 
-
+    %script{src: "/js/config.js"}
     %script{src: "http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"}
     %script{src: "http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"}
     %script{src: "http://cdnjs.cloudflare.com/ajax/libs/d3/3.3.3/d3.min.js"}
