@@ -2,7 +2,6 @@ require 'sinatra'
 require 'sinatra/content_for'
 require 'active_record'
 require 'haml'
-require_relative 'toms_cache'
 
 # Load ActiveRecord models (and connect to the database)
 ActiveRecord::Base.establish_connection
@@ -10,7 +9,6 @@ Dir['./backend/models/*.rb'].each { |f| require f }
 
 configure do
   set :public_folder, 'assets'
-  set :cache, TomsCache.new
 end
 
 # The homepage
@@ -64,7 +62,7 @@ end
 get '/api/candidates' do
   headers 'Content-Type' => 'application/json'
   fields = {
-    only: %w[id name committee_id],
+    only: %w[id name committee_id received_contributions_count contributions_count],
     methods: [
       :latest_summary,
       :short_name,
@@ -84,7 +82,7 @@ get '/api/contributions' do
   }
 
   Contribution
-    .where(recipient_id: Party.mayoral_candidates.pluck(:id))
+    .where(recipient_id: Party.mayoral_candidates.to_a)
     .includes(:recipient, :contributor)
     .to_json(fields)
 end
@@ -94,7 +92,7 @@ get '/api/party/:id' do |id|
   headers 'Content-Type' => 'application/json'
 
   fields = {
-    only: %w[id name committee_id],
+    only: %w[id name committee_id received_contributions_count contributions_count],
     include: {
       received_contributions: { },
       contributions: { }

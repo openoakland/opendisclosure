@@ -3,6 +3,10 @@ $LOAD_PATH << '.'
 require 'active_record'
 require 'open-uri'
 
+if ENV['LOG'] == "true"
+  ActiveRecord::Base.logger = Logger.new(STDOUT)
+end
+
 URLS = {
   'Schedule A' => 'http://data.oaklandnet.com/resource/3xq4-ermg.json',
   'Summary'    => 'http://data.oaklandnet.com/resource/rsxe-vvuw.json',
@@ -16,11 +20,13 @@ Dir[File.dirname(__FILE__) + '/models/*.rb'].each { |f| require f }
 require_relative 'schema.rb'
 
 class SocrataFetcher
+  include Enumerable
+
   def initialize(uri)
     @uri = URI(uri)
   end
 
-  def each
+  def each(&block)
     more = true
     offset = 0
     while more
@@ -33,9 +39,7 @@ class SocrataFetcher
       puts '    Downloading: ' + url.to_s
 
       response = JSON.parse(open(url.to_s).read)
-      response.each do |r|
-        yield r
-      end
+      response.each(&block)
 
       # preparation for next loop!
       more = response.length > 0

@@ -15,6 +15,9 @@ ActiveRecord::Schema.define do
     t.string :employer
     t.string :occupation
 
+    t.integer :received_contributions_count, null: false, default: 0
+    t.integer :contributions_count, null: false, default: 0
+
     t.index [:committee_id, :type]
     t.index [:type, :name, :city, :state]
   end
