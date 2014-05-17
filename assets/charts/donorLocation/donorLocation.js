@@ -290,7 +290,7 @@
       });
   }
 
-  donorLocation = function(chartEl, data) {
+  window.donorLocation = function(chartEl, data) {
     var app = new App();
     app.init(chartEl, data);
   };
