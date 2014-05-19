@@ -12,7 +12,6 @@ OpenDisclosure.ContributionCollection = Backbone.Collection.extend({
   url: '/api/contributions',
   model: OpenDisclosure.Contribution,
   initialize: function(){
-    console.log('Fetching data from /api/candidates...');
     this.fetch();
   }
 });

@@ -13,6 +13,17 @@ body, html {
   color: #555555;
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:hover {
+  text-decoration: none;
+  color: inherit;
+  outline:none;
+}
+
 .green {
   color: #539137;
 }
@@ -43,14 +54,15 @@ header {
   /*min-height: 128px;*/
 }
 
-header #logo {
+#logo {
   text-align: center;
   max-height:140px;
   max-width:200px;
-  vertical-align: bottom
+  vertical-align: bottom;
+  min-width: 160px;
 }
 
-header #logo img{
+#logo img{
   width:100%;
 }
 
@@ -63,7 +75,7 @@ header #logo img{
 
 header #titleContainer {
   text-align:right;
-  margin-top:10px;
+  margin-top:44px;
 }
 
 header #titleContainer p{
@@ -81,13 +93,6 @@ header .title {
   font-size: 42px;
 }
 
-header a {
-  text-decoration: none;
-}
-
-header a:hover {
-  text-decoration: underline;
-}
 
 /* ------------------- SIDEBAR -------------------- */
 
@@ -96,9 +101,7 @@ header a:hover {
   font-size: 16px;
   list-style: none;
   background-color: #f0f0f0;
-  /*color: #000;*/
-  /*padding: 0;*/
-  /*margin: 0;*/
+  min-width: 160px;
 }
 
 /*.sidebar ul {
@@ -110,14 +113,18 @@ header a:hover {
   padding: 4px 0;
 }*/
 
-
 .sidebar a{
   display: block;
   color:inherit;
 }
 
+.sidebar .compressed a:hover{
+  display: block;
+  color:inherit;
+  background-color: #ffdd1f
+}
 
-.navbar .navbar-nav > .active > a {
+.sidebar .active > a {
   font-weight: bold;
   color: #539137;
   background-color: #ffdd1f
@@ -125,7 +132,7 @@ header a:hover {
 
 .compressed li {
   padding: 0 0 0 10px;
-  margin-top: -16px;
+  /*margin-top: -16px;*/
 }
 
 
@@ -202,6 +209,11 @@ header a:hover {
 }
 
 /* ------------------- Candidate Page -------------------- */
+
+#candidate .mayor-picture {
+  width:70%;
+  margin: auto;
+}
 
 ul#contributions {
   text-decoration: none;

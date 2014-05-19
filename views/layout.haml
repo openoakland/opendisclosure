@@ -37,39 +37,40 @@
     .row
       .sidebar.col-sm-2{ role: 'navigation'}
         %ul.nav.nav-sidebar
+          / Hiding these until we have some content there - KW 5/19/14
+          / %li
+          /   %a{ href: '#' } About Us
+          / %li
+          /   %a{ href: '#' } Where does the data come from?
+          / %li
+          /   %a{ href: '#' } Contribute
           %li
-            %a{ href: '#' } About Us
-          %li
-            %a{ href: '#' } Where does the data come from?
-          %li
-            %a{ href: '#' } Contribute
-          %li
-            %a Candidates
+            %a{href: '/'} Candidates
             %ul.nav.nav-sidebar.compressed
-              %li
-                %a{ href: '#' } Bryan Parker
-              %li
-                %a{ href: '#' } Jean Quan
-              %li
-                %a{ href: '#' } Libby Schaff
-              %li
-                %a{ href: '/party/1909' } Joe Tuman
+              %li#nav-1285
+                %a{ href: '/#candidate/1285'} Bryan Parker
+              %li#nav-1496
+                %a{ href: '/#candidate/1496' } Jean Quan
+              %li#nav-1664
+                %a{ href: '/#candidate/1664' } Libby Schaff
+              %li#nav-1909
+                %a{ href: '/#candidate/1909' } Joe Tuman
       .main.col-sm-offset-1.col-sm-8
         .row= yield
 
     / Third Party (cdn)
-    / %script{src: "http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"}
-    / %script{src: "http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"}
-    / %script{src: "http://cdnjs.cloudflare.com/ajax/libs/d3/3.3.3/d3.min.js"}
-    / %script{src: '//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js'}
+    %script{src: "http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"}
+    %script{src: "http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"}
+    %script{src: "http://cdnjs.cloudflare.com/ajax/libs/d3/3.3.3/d3.min.js"}
+    %script{src: '//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js'}
     
     / Third Party (local)
-    %script{src: "/js/vendor/underscore.js"}
-    %script{src: "/js/vendor/jquery-1.10.1.min.js"}
+    / %script{src: "/js/vendor/underscore.js"}
+    / %script{src: "/js/vendor/jquery-1.10.1.min.js"}
     %script{src: "/js/vendor/topojson.v1.min.js"}
     %script{src: "/js/vendor/bootstrap.min.js"}
-    %script{src: "/js/vendor/backbone-min.js"}
-    %script{src: "/js/vendor/d3.v3.min.js"}
+    / %script{src: "/js/vendor/backbone-min.js"}
+    / %script{src: "/js/vendor/d3.v3.min.js"}
     %script{src: "/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"}
 
     / App
@@ -78,4 +79,5 @@
     %script{src: "/js/collections.js"}
     %script{src: "/js/views/candidateTable.js"}
     %script{src: "/js/views/charts.js"}
+    %script{src: "/js/views/candidate.js"}
     %script{src: "/js/app.js"}
