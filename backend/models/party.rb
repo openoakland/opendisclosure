@@ -56,6 +56,10 @@ class Party < ActiveRecord::Base
   def party_affiliation
     CANDIDATE_INFO.fetch(committee_id, {})[:party]
   end
+
+  def from_oakland?
+    city =~ /Oakland/i
+  end
 end
 
 class Party::Individual < Party
