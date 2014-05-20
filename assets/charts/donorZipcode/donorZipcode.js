@@ -12,7 +12,7 @@
 		var candidates = {};
 
 		for (var i = 0; i < data.length; i++) {
-			var el = data[i],
+			var el = data.models[i].attributes,
 				candidate = el.recipient.name,
 				amount = (!isNaN(parseInt(el.amount))) ? parseInt(el.amount) : 0,
 				zip = el.contributor.zip;
