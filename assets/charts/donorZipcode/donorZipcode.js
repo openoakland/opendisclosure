@@ -12,10 +12,17 @@
 		var candidates = {};
 
 		for (var i = 0; i < data.length; i++) {
+<<<<<<< HEAD
 			var el = data.models[i].attributes,
 				candidate = el.recipient.name,
 				amount = (!isNaN(parseInt(el.amount))) ? parseInt(el.amount) : 0,
 				zip = el.contributor.zip;
+=======
+			var el = data[i],
+				candidate = el.Filer_NamL,
+				amount = (!isNaN(parseInt(el.Tran_Amt1))) ? parseInt(el.Tran_Amt1) : 0,
+				zip = el.Tran_Zip4.substring(0, 5)
+>>>>>>> Fix chart axis.
 
 			// Add contributions by zip code
 			if (!amounts[zip]) {
