@@ -17,6 +17,7 @@ ActiveRecord::Schema.define do
 
     t.integer :received_contributions_count, null: false, default: 0
     t.integer :received_contributions_from_oakland, null: false, default: 0
+    t.integer :small_donations, null: false, default: 0
     t.integer :contributions_count, null: false, default: 0
 
     t.index [:committee_id, :type]
