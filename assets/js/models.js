@@ -18,7 +18,7 @@ OpenDisclosure.Candidate = Backbone.Model.extend({
   },
 
   friendlyPct : function(float) {
-    return Math.round(float * 100) / 100 + "%";
+    return Math.round(float * 100) + "%";
   }
 });
 
