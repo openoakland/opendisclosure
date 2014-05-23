@@ -17,7 +17,7 @@ class Party < ActiveRecord::Base
   CANDIDATE_INFO = {
     PARKER => {
       name: 'Bryan Parker',
-      profession: '<current profession>',
+      profession: 'Health Care and Tecnology Professional',
       party: 'Democrat'
     },
     QUAN => {
@@ -32,7 +32,7 @@ class Party < ActiveRecord::Base
     },
     TUMAN => {
       name: 'Joe Tuman',
-      profession: '<current profession>',
+      profession: 'University Professor',
       party: 'Independent'
     },
   }
