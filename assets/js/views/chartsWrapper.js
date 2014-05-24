@@ -1,6 +1,6 @@
 /**
  * Original author: David Eads (https://github.com/eads)
- * 
+ *
  * Wrap D3 charting components in a simple Backbone view interface
  *
  * Provides a redrawing path, data sync, and fallback for non-d3 browsers.
@@ -40,8 +40,7 @@ OpenDisclosure.ChartView = Backbone.View.extend({
     // Fallback if d3 is unavailable, add some formatters otherwise.
     if (!this.d3) {
       this.draw = this.fallback_draw;
-    }
-    else {
+    } else {
       this.formatNumber = d3.format(".lf");
       this.formatCommas = d3.format(",");
       this.formatPercent = d3.format("%");
@@ -50,7 +49,6 @@ OpenDisclosure.ChartView = Backbone.View.extend({
   },
   initialize: function(options) {
     // Wrap chart
-    console.log(this.$el);
     this.$el.wrap($('<div class="chart-wrapper">'));
     this.$chart_container = this.$el.parent();
     this.chart_container = this.$chart_container.get(0);
@@ -61,14 +59,21 @@ OpenDisclosure.ChartView = Backbone.View.extend({
     else if (this.options.data)
       this.data = this.options.data;
 
-    $(window).on("resize", _.debounce(_.bind(this.render, this), 100));
+    var aspect = 700/400; // TODO: Encapsulate into resize function!
+    $(window).on("resize", function() {
+      var targetWidth = this.$chart_container.parent().width();
+      console.log(targetWidth);
+      this.$el.find('svg').attr("width", targetWidth);
+      this.$el.find('svg').attr("height", targetWidth / aspect);
+    }.bind(this));
+
+    //_.debounce(_.bind(this.render, this), 100));
     this.render();
   },
   get_dimensions: function() {
     var window_width = $(window).width();
 
     var wrapperWidth = this.$chart_container.width();
-    console.log('Wrapper width: ' + wrapperWidth);
     var width = wrapperWidth - this.options.margin.left - this.options.margin.right;
     var height = this.options.base_height - this.options.margin.bottom - this.options.margin.top;
 
@@ -86,8 +91,7 @@ OpenDisclosure.ChartView = Backbone.View.extend({
 
     //console.log('VIEW OPTIONS', this.options);
     this.$el
-      .height(wrapperHeight)
-      ;
+      .height(wrapperHeight);
 
     this.dimensions = {
       width: width,

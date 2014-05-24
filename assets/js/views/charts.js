@@ -1,13 +1,5 @@
 OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
-
-  // constructor: function(options) {
-  //   OpenDisclosure.ChartView.apply(this, arguments);
-  //   //this.create_tooltip();
-  //   this.$chart_container.attr('id', 'zipcode-chart-container');
-  //   return this;
-  // },
-
   draw: function() {
 
     // Process raw json data
@@ -17,16 +9,8 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
     // Set height and wdith. Eventually responsive?
     var margin = this.options.margin,
-    // {
-    //     top: 30,
-    //     right: window.innerWidth * (1 / 12),
-    //     bottom: 60,
-    //     left: 0
-    //   },
       width = this.dimensions.width,
-      height = config.chartHeight;
-    console.log(width);
-    console.log(height);
+      height = this.dimensions.height;
 
     var color = d3.scale.ordinal()
       .domain(candidates)
@@ -42,7 +26,9 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     var svg = d3.select(this.el).append("svg")
       .attr("id", "map")
       .attr("width", width + margin.right)
-      .attr("height", height);
+      .attr("height", height)
+      .attr("viewBox", "0 0 960 500")
+      .attr("preserveAspectRatio", "xMidYMid");
 
     var zipcodes = svg.append("g")
       .attr("id", "bay-zipcodes");
