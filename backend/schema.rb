@@ -34,6 +34,16 @@ ActiveRecord::Schema.define do
     t.index :contributor_id
   end
 
+  create_table :payments do |t|
+    t.integer :payer_id, null: false
+    t.integer :recipient_id, null: false
+    t.integer :amount
+    t.date :date
+
+    t.index :payer_id
+    t.index :recipient_id
+  end
+
   create_table :summaries do |t|
     t.integer :party_id, null: false
     t.date :date
