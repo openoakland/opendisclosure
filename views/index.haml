@@ -33,9 +33,9 @@
           <th></th>
           <th>Total Raised</th>
           <th>Number of Contributions</th>
-          <th>Pct. outside Oakland</th>
-          <th>Pct. small donors</th>
-          <th>Avg. contribution</th>
+          <th>Percentage from outside Oakland</th>
+          <th>Percentage from small donations*</th>
+          <th>Average of itemized contributions</th>
         </tr>
       </thead>
       <tbody>
@@ -54,9 +54,10 @@
             <td><%= m.friendlySummaryNumber('total_contributions_received') %></td>
             <td><%= m.attributes.received_contributions_count %></td>
             <td><%= m.pctContributionsFromOakland() %></td>
-            <td>(%)</td>
-            <td>($.$$)</td>
+            <td><%= m.pctSmallContributions() %></td>
+            <td><%= m.avgContribution() %></td>
           </tr>
         <% }); %>
       </tbody>
     </table>
+    <p> * Candidates do not need itemize contributions less than $100 </p>
