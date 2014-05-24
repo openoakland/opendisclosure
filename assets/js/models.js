@@ -17,9 +17,9 @@ OpenDisclosure.Candidate = Backbone.Model.extend({
   },
 
   avgContribution : function () {
-    return this.friendlyNumber(Math.round(
+    return this.friendlyNumber(
       this.attributes.latest_summary['total_contributions_received']/
-      this.attributes.received_contributions_count));
+      this.attributes.received_contributions_count);
   },
 
   friendlySummaryNumber : function(which) {
@@ -27,11 +27,11 @@ OpenDisclosure.Candidate = Backbone.Model.extend({
   },
 
   friendlyNumber : function(number) {
-    return "$" + number;
+    return accounting.formatMoney(number);
   },
 
   friendlyPct : function(float) {
-    return Math.round(float * 100) + "%";
+    return Math.round(float * 10000) / 100 + "%";
   }
 });
 
