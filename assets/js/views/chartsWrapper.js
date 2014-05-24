@@ -12,7 +12,7 @@
  *
  **/
 
-var ChartView = Backbone.View.extend({
+OpenDisclosure.ChartView = Backbone.View.extend({
   constructor: function(options) {
     this.default_options = {
       base_height: 320,
@@ -50,6 +50,7 @@ var ChartView = Backbone.View.extend({
   },
   initialize: function(options) {
     // Wrap chart
+    console.log(this.$el);
     this.$el.wrap($('<div class="chart-wrapper">'));
     this.$chart_container = this.$el.parent();
     this.chart_container = this.$chart_container.get(0);
@@ -61,11 +62,13 @@ var ChartView = Backbone.View.extend({
       this.data = this.options.data;
 
     $(window).on("resize", _.debounce(_.bind(this.render, this), 100));
+    this.render();
   },
   get_dimensions: function() {
     var window_width = $(window).width();
 
     var wrapperWidth = this.$chart_container.width();
+    console.log('Wrapper width: ' + wrapperWidth);
     var width = wrapperWidth - this.options.margin.left - this.options.margin.right;
     var height = this.options.base_height - this.options.margin.bottom - this.options.margin.top;
 

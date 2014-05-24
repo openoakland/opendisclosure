@@ -1,120 +1,236 @@
+OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
-OpenDisclosure.ChartsView = Backbone.View.extend({
 
-  initialize: function(){
-    this.listenTo(this.collection, 'sync', this.render);
-  },
-
-  createChart: function (chart, data) {
-
-    // Create container for this chart.
-    var chartEl = $('<div></div>').attr('id', 'chart-' + chart.id);
-    this.chartDiv.append(chartEl);
-
-    this.injectScript('/charts/' + chart.id + '/' + chart.id + '.js', function(src) {
-
-      // Each chart should have a global function defined that takes an element and data as arguments
-      if (window[chart.id]) {
-        console.log('Creating chart "' + chart.id + '".');
-
-        // Load css (may not exist but that's fine)
-        OpenDisclosure.ChartsView.prototype.injectCss('/charts/' + chart.id + '/' + chart.id + '.css');
-
-        // Load js and create the chart
-        window[chart.id](chartEl[0], data);
-
-      } else {
-        console.error('Couldn\'t find chart "' + chart.id + '".');
-      }
-    });
-  },
-
-  // createNavLink: function(chart) {
-  //   // Create container
-  //   var linkHolder = $('<li></li>');
-
-  //   // Create link
-  //   var link = $('<a></a>').attr('href', '#chart-' + chart.id);
-  //   link.text(chart.description);
-
-  //   // Add link to container
-  //   linkHolder.append(link);
-
-  //   // Attach container to sidebar
-  //   this.sidebar.find('ul').append(linkHolder);
+  // constructor: function(options) {
+  //   OpenDisclosure.ChartView.apply(this, arguments);
+  //   //this.create_tooltip();
+  //   this.$chart_container.attr('id', 'zipcode-chart-container');
+  //   return this;
   // },
 
-  injectCss: function (filename) {
-    console.log('injectCss running for ', filename);
-    var fileref = document.createElement("link");
-    fileref.setAttribute("rel", "stylesheet");
-    fileref.setAttribute("type", "text/css");
-    fileref.setAttribute("href", filename);
-    document.getElementsByTagName("head")[0].appendChild(fileref);
-  },
+  draw: function() {
 
-  injectScript: function (src, onLoad, onError) {
-    var headEl = document.getElementsByTagName("head")[0];
-    var script = document.createElement('script');
+    // Process raw json data
+    var data = this.processData(this.collection);
+    var amounts = data.amounts;
+    var candidates = data.candidates;
 
-    script.type = 'text/javascript';
-    script.src = src;
-    script.async = true;
+    // Set height and wdith. Eventually responsive?
+    var margin = this.options.margin,
+    // {
+    //     top: 30,
+    //     right: window.innerWidth * (1 / 12),
+    //     bottom: 60,
+    //     left: 0
+    //   },
+      width = this.dimensions.width,
+      height = config.chartHeight;
+    console.log(width);
+    console.log(height);
 
-    if (onLoad) {
-      // onreadystatechange for old versions of IE
-      script.onload = script.onreadystatechange = function() {
-        if (script.readyState &&
-          script.readyState != 'complete' && script.readyState != 'loaded') {
-          return;
+    var color = d3.scale.ordinal()
+      .domain(candidates)
+      .range(d3.range(12).map(function(i) {
+        return "q" + i + "-12";
+      }));
+
+    var path = d3.geo.path()
+      .projection(d3.geo.albersUsa()
+        .scale(90000)
+        .translate([31600, 3230]));
+
+    var svg = d3.select(this.el).append("svg")
+      .attr("id", "map")
+      .attr("width", width + margin.right)
+      .attr("height", height);
+
+    var zipcodes = svg.append("g")
+      .attr("id", "bay-zipcodes");
+
+    var candidate = candidates[0];
+
+    d3.json("/data/sfgov_bayarea_zipcodes_topo.json", function(json) {
+      data = topojson.feature(json, json.objects.layer1).features;
+
+      // Add map regions
+      var zips = zipcodes.selectAll("path")
+        .data(data)
+        .enter().append("svg:path")
+        .attr("id", function(d) {
+          zip = d.properties.ZIP;
+        })
+        .attr("d", path)
+        .attr('fill', '#d3d3d3')
+        .attr('stroke', '#9c9c9c')
+        .append("svg:title")
+        .text(function(d) {
+          return d.properties.ZIP + ": " + d.properties.PO_NAME;
+        });
+
+      var circles = svg.append("g")
+        .attr('id', 'circles');
+
+      radius = function(d) {
+        if (amounts[d.properties.ZIP]) {
+          return Math.sqrt(amounts[d.properties.ZIP][candidate] || 0) / 8;
         }
-        script.onload = script.onreadystatechange = null;
-        onLoad(src);
-      };
-    }
-    // This doesn't work in IE and there's no way to make it work in IE, but
-    // it will allow error handling for everybody else.
-    if (onError) {
-      script.onerror = onError;
-    }
+        return 0;
+      }
 
-    headEl.appendChild(script);
+      // Add a circle at the center of each zip
+      var dorling = circles.selectAll("circle")
+        .data(function() {
+          return data
+        })
+        .enter()
+        .append("circle")
+        .each(function(d) {
+          d.properties.c = path.centroid(d);
+        })
+        .attr('cx', function(d) {
+          return d.properties.c[0];
+        })
+        .attr('cy', function(d) {
+          return d.properties.c[1];
+        })
+        .attr('r', radius)
+        .attr('class', color(candidate));
 
-    return script;
-  },
+      // Update the chart when a user clicks on a candidate's name
+      update = function() {
+        candidate = $(this).select('text').text();
+        dorling.attr('class', color(candidate))
+          .transition()
+          .attr('r', radius);
+      }
 
-  setupHandlers: function() {
-    $('body').scrollspy({ target: '#sidebar' });
-
-    // SMOOTH SCROLLING FROM PAULUND.CO.UK
-    $('a[href^="#"]').on('click',function (e) {
-      e.preventDefault();
-
-      var target = this.hash,
-        $target = $(target);
-
-      $('html, body').stop().animate({
-        'scrollTop': $target.offset().top
-      }, 900, 'swing', function () {
-        window.location.hash = target;
-      });
+      legend.on("click", update)
+        .on("mouseover", function() {
+          d3.select(this)
+            .classed('hover', true);
+        })
+        .on("mouseout", function() {
+          d3.select(this)
+            .classed('hover', false);
+        });
     });
-  },
 
-  render: function(){
-    console.log('rendering charts');
-    if (typeof window.charts !== 'undefined') {
-      this.chartDiv = $('#charts');
-      this.sidebar = $('#sidebar');
+    // Add outline for cities
+    d3.json("/data/sfgov_bayarea_cities_topo.json", function(json) {
+      data = topojson.feature(json, json.objects.layer1).features;
 
-      that = this;
-      _.each(charts, function(chart) {
-        that.createChart(chart, that.collection);
-        // that.createNavLink(chart); // Commented out since we're not currently showing charts on nav - KW
+      var cities = svg.append('g')
+        .attr('id', 'bay-cities');
+
+      var cities = cities.selectAll("path")
+        .data(data)
+        .enter().append("svg:path")
+        .attr("d", path)
+        .attr('fill', 'none')
+        .attr('stroke', '#303030')
+        .append("svg:title");
+    });
+
+    // Show the scale of bubbles on the chart
+    // var scale = svg.append("g")
+    //  .attr('id', 'scale');
+
+    // var scale_data = [50000, 10000, 1000];
+    // var scale_height = Math.sqrt(scale_data[0])/8;
+    // scale.selectAll("circle")
+    //  .data(scale_data)
+    //  .enter()
+    //  .append("circle")
+    //  .attr('cx', 50)
+    //  .attr('cy', function(d) {
+    //    return 50 + scale_height - Math.sqrt(d)/8
+    //  })
+    //  .attr('r', function(d) {
+    //    return Math.sqrt(d)/8;
+    //  })
+    //  .attr('stroke', '#000000')
+    //  .attr('fill', 'none');
+
+    // Add a legend at the bottom!
+    var svg_legend = d3.select(this.el).append("svg")
+      .attr("id", "legend")
+      .attr("width", width + margin.right)
+      .attr("height", margin.bottom);
+
+    var offset = (width + margin.right) / candidates.length;
+
+    var legend = svg_legend.selectAll('.legend')
+      .data(candidates)
+      .enter().append('g')
+      .attr("class", "legend")
+      .attr("transform", function(d, i) {
+        return "translate(" + i * offset + ",0)";
       });
 
-      this.setupHandlers();
+    legend.append("rect")
+      .attr('x', 0)
+      .attr('y', 0)
+      .attr("width", offset)
+      .attr("height", 10)
+      .attr("class", function(d) {
+        return 'status ' + color(d);
+      });
+
+    legend.append("rect")
+      .attr("x", 0)
+      .attr("y", 10)
+      .attr("width", offset)
+      .attr("height", 18)
+      .attr("class", function(d) {
+        return color(d);
+      });
+
+    legend.append("text")
+      .attr("x", offset / 2)
+      .attr("y", 34)
+      .attr("dy", ".35em")
+      .style("text-anchor", "middle")
+      .text(function(d) {
+        return d;
+      });
+  },
+
+
+  processData: function(data) {
+    var amounts = {};
+    var candidates = {};
+
+    for (var i = 0; i < data.length; i++) {
+      var el = data.models[i].attributes,
+        candidate = el.recipient.name,
+        amount = (!isNaN(parseInt(el.amount))) ? parseInt(el.amount) : 0,
+        zip = el.contributor.zip;
+
+      // Add contributions by zip code
+      if (!amounts[zip]) {
+        amounts[zip] = {};
+      }
+      if (!amounts[zip][candidate]) {
+        amounts[zip][candidate] = 0;
+      }
+      amounts[zip][candidate] += amount;
+
+      // Create a list of all candidates
+      if (!candidates[candidate]) {
+        candidates[candidate] = true;
+      }
+    }
+    var candidates = _.keys(candidates);
+
+    return {
+      candidates: candidates,
+      amounts: amounts
     }
   }
 
+<<<<<<< HEAD
 });
+=======
+
+});
+>>>>>>> Chart loads via backbone chart wrapper
