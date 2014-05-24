@@ -33,5 +33,5 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
 
 });
 
-// 
+//
 // <p>Number of Contributions: <%=received_contributions_count %></p>\

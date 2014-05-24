@@ -2,9 +2,7 @@
 OpenDisclosure.ChartsView = Backbone.View.extend({
 
   initialize: function(){
-
     this.listenTo(this.collection, 'sync', this.render);
-
   },
 
   createChart: function (chart, data) {
@@ -21,8 +19,10 @@ OpenDisclosure.ChartsView = Backbone.View.extend({
 
         // Load css (may not exist but that's fine)
         OpenDisclosure.ChartsView.prototype.injectCss('/charts/' + chart.id + '/' + chart.id + '.css');
+
         // Load js and create the chart
         window[chart.id](chartEl[0], data);
+
       } else {
         console.error('Couldn\'t find chart "' + chart.id + '".');
       }
