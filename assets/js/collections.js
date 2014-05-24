@@ -8,6 +8,7 @@ OpenDisclosure.Candidates = Backbone.Collection.extend({
   }
 });
 
+
 OpenDisclosure.ContributionCollection = Backbone.Collection.extend({
   url: '/api/contributions',
   model: OpenDisclosure.Contribution,
