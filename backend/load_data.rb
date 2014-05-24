@@ -109,8 +109,7 @@ def parse_summary(row)
   column = SUMMARY_LINES[row['form_type']][row['line_item']]
   value = row['amount_a']
 
-  Summary.where(party_id: row['filer_id'],
-                date: row['rpt_date'].to_date)
+  Summary.where(party_id: row['filer_id'])
          .first_or_create
          .update_attribute(column, value)
 end

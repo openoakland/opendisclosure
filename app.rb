@@ -36,7 +36,7 @@ get '/party/:id' do |id|
   haml :party, locals: {
     party: party,
     contributions: contributions,
-    summary: party.latest_summary,
+    summary: party.summary,
   }
 end
 
@@ -64,7 +64,7 @@ get '/api/candidates' do
   fields = {
     only: %w[id name committee_id received_contributions_count contributions_count received_contributions_from_oakland small_donations],
     methods: [
-      :latest_summary,
+      :summary,
       :short_name,
       :profession,
       :party_affiliation,

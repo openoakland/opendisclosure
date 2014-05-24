@@ -46,13 +46,13 @@ ActiveRecord::Schema.define do
 
   create_table :summaries do |t|
     t.integer :party_id, null: false
-    t.date :date
+    t.date :last_summary_date
     t.integer :total_unitemized_contributions
     t.integer :total_monetary_contributions
     t.integer :total_contributions_received
     t.integer :total_expenditures_made
     t.integer :ending_cash_balance
 
-    t.index [:party_id, :date], unique: true
+    t.index :party_id, unique: true
   end
 end

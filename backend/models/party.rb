@@ -5,7 +5,7 @@ class Party < ActiveRecord::Base
   has_many :contributions,
     foreign_key: :contributor_id,
     class_name: 'Contribution'
-  has_many :summaries, primary_key: :committee_id
+  has_one :summary, primary_key: :committee_id
 
   # These are the Filer_IDs of the candidates
   MAYORAL_CANDIDATE_IDS = [
@@ -46,10 +46,6 @@ class Party < ActiveRecord::Base
 
   def self.mayoral_candidates
     where(committee_id: MAYORAL_CANDIDATE_IDS)
-  end
-
-  def latest_summary
-    summaries.order(date: :desc).first
   end
 
   def short_name
