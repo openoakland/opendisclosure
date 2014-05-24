@@ -62,7 +62,6 @@ OpenDisclosure.ChartView = Backbone.View.extend({
     var aspect = 700/400; // TODO: Encapsulate into resize function!
     $(window).on("resize", function() {
       var targetWidth = this.$chart_container.parent().width();
-      console.log(targetWidth);
       this.$el.find('svg').attr("width", targetWidth);
       this.$el.find('svg').attr("height", targetWidth / aspect);
     }.bind(this));
