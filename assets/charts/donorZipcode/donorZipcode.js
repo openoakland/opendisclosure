@@ -5,9 +5,7 @@
 (function() {
 	var App = function() {};
 
-	App.prototype.init = function(chartEl, data) {
-
-		// Begin data processing
+	function processData(data) {
 		var amounts = {};
 		var candidates = {};
 
@@ -39,18 +37,29 @@
 			}
 		}
 		var candidates = _.keys(candidates);
-		// End of data processing
 
+		return {
+			candidates : candidates,
+			amounts : amounts
+		}
+	}
+
+	App.prototype.init = function(chartEl, data) {
+
+		// Process raw json data
+		var data = processData(data);
+		var amounts = data.amounts;
+		var candidates = data.candidates;
+
+		// Set height and wdith. Eventually responsive?
 		var margin = {
-			top: 30,
-			right: window.innerWidth * (1/12),
-			bottom: 60,
-			left: 0
-		},
-		  width = config.chartWidth,
-      height = config.chartHeight;
-			// width = 960 - margin.left - margin.right,
-			// height = 600 - margin.top - margin.bottom;
+				top: 30,
+				right: window.innerWidth * (1 / 12),
+				bottom: 60,
+				left: 0
+			},
+			width = config.chartWidth,
+			height = config.chartHeight;
 
 		var color = d3.scale.ordinal()
 			.domain(candidates)
@@ -95,8 +104,8 @@
 				.attr('id', 'circles');
 
 			radius = function(d) {
-    		if (amounts[d.properties.ZIP]){
-					return Math.sqrt( amounts[d.properties.ZIP][candidate] || 0)/8;
+				if (amounts[d.properties.ZIP]) {
+					return Math.sqrt(amounts[d.properties.ZIP][candidate] || 0) / 8;
 				}
 				return 0;
 			}
