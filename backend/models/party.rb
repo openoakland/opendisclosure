@@ -7,6 +7,7 @@ class Party < ActiveRecord::Base
     class_name: 'Contribution'
   has_many :summaries, primary_key: :committee_id
 
+  # These are the Filer_IDs of the candidates
   MAYORAL_CANDIDATE_IDS = [
     PARKER = 1357609,
     QUAN = 1354678,

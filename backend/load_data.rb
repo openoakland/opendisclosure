@@ -1,52 +1,19 @@
-$LOAD_PATH << '.'
-
+require_relative 'socrata_fetcher.rb'
 require 'active_record'
 require 'open-uri'
 
-if ENV['LOG'] == "true"
-  ActiveRecord::Base.logger = Logger.new(STDOUT)
-end
+# Connect and set up the sqlite database
+$LOAD_PATH << '.'
+ENV['DATABASE_URL'] ||= "sqlite3:#{File.dirname(__FILE__)}/db.sqlite3"
+ActiveRecord::Base.establish_connection ENV['DATABASE_URL']
+require_relative 'schema.rb'
+Dir[File.dirname(__FILE__) + '/models/*.rb'].each { |f| require f }
 
 URLS = {
   'Schedule A' => 'http://data.oaklandnet.com/resource/3xq4-ermg.json',
+  'Schedule E' => 'http://data.oaklandnet.com/resource/bvfu-nq99.json',
   'Summary'    => 'http://data.oaklandnet.com/resource/rsxe-vvuw.json',
 }.freeze
-
-# In order to connect, set ENV['DATABASE_URL'] to the database you wish to
-# populate
-ENV['DATABASE_URL'] ||= "sqlite3://./#{File.dirname(__FILE__)}/db.sqlite3"
-ActiveRecord::Base.establish_connection
-Dir[File.dirname(__FILE__) + '/models/*.rb'].each { |f| require f }
-require_relative 'schema.rb'
-
-class SocrataFetcher
-  include Enumerable
-
-  def initialize(uri)
-    @uri = URI(uri)
-  end
-
-  def each(&block)
-    more = true
-    offset = 0
-    while more
-      url = @uri
-      url.query = URI.encode_www_form(
-        '$limit' => 1000,
-        '$offset' => offset
-      )
-
-      puts '    Downloading: ' + url.to_s
-
-      response = JSON.parse(open(url.to_s).read)
-      response.each(&block)
-
-      # preparation for next loop!
-      more = response.length > 0
-      offset = offset + 1000
-    end
-  end
-end
 
 def parse_contributions(row)
   recipient = Party::Committee.where(committee_id: row['filer_id'])
@@ -85,6 +52,41 @@ def parse_contributions(row)
                       date: row['tran_date'])
 end
 
+def parse_payments(row)
+  payer = Party::Committee.where(committee_id: row['filer_id'])
+                          .first_or_create(name: row['filer_naml'])
+  recipient =
+    case row['entity_cd']
+    when 'COM', 'SCC'
+      # entity being paid is a Committee and Cmte_ID will be set. Same thing as
+      # Filer_ID but some names disagree
+      Party::Committee.where(committee_id: row['cmte_id'])
+                      .first_or_create(name: row['payee_naml'])
+
+    when 'IND'
+      # entity being paid is an Individual
+      full_name = row.values_at('payee_namt', 'payee_naml', 'payee_namf', 'payee_nams')
+                     .join(' ')
+                     .strip
+      Party::Individual.where(name: full_name,
+                              city: row['payee_city'],
+                              state: row['payee_state'],
+                              zip: row['payee_zip4'])
+                       .first_or_create
+    when 'OTH'
+      # payee is "Other"
+      Party::Other.where(name: row['payee_naml'])
+                  .first_or_create(city: row['payee_city'],
+                                   state: row['payee_state'],
+                                   zip: row['payee_zip4'])
+    end
+
+  Payment.create(payer: payer,
+                 recipient: recipient,
+                 amount: row['amount'],
+                 date: row['expn_date'])
+end
+
 # Hash of:
 # Form_Type => { Line_Item => SQL Column name }
 SUMMARY_LINES = {
@@ -114,12 +116,21 @@ def parse_summary(row)
 end
 
 if __FILE__ == $0
-  # ActiveRecord::Base.logger = Logger.new(STDOUT)
+  if ENV['LOG'] == "true"
+    ActiveRecord::Base.logger = Logger.new(STDOUT)
+  end
 
   puts "Fetching Contribution data (Schedule A) from Socrata:"
   Party.transaction do #        <- speed hack for sqlite3
     SocrataFetcher.new(URLS['Schedule A']).each do |record|
       parse_contributions(record)
+    end
+  end
+
+  puts "Fetching Expense data (Schedule E) from Socrata:"
+  Party.transaction do
+    SocrataFetcher.new(URLS['Schedule E']).each do |record|
+      parse_payments(record)
     end
   end
 
