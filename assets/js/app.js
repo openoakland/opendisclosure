@@ -14,6 +14,7 @@ OpenDisclosure.App = Backbone.Router.extend({
 
     this.contributions = new OpenDisclosure.ContributionCollection();
     new OpenDisclosure.ChartsView({ collection : this.contributions });
+
   },
 
   candidateView: function(id){
