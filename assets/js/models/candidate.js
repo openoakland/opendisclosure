@@ -1,4 +1,3 @@
-
 OpenDisclosure.Candidate = Backbone.Model.extend({
   imagePath : function() {
     return '/images/' + this.attributes.short_name.split(' ').slice(-1) + '.png';
@@ -20,9 +19,4 @@ OpenDisclosure.Candidate = Backbone.Model.extend({
   friendlyPct : function(float) {
     return Math.round(float * 100) + "%";
   }
-});
-
-
-OpenDisclosure.Contribution = Backbone.Model.extend({
-
 });

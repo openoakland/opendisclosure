@@ -1,4 +1,3 @@
-
 window.OpenDisclosure = {};
 
 var config = {
