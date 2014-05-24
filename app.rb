@@ -62,7 +62,7 @@ end
 get '/api/candidates' do
   headers 'Content-Type' => 'application/json'
   fields = {
-    only: %w[id name committee_id received_contributions_count contributions_count received_contributions_from_oakland],
+    only: %w[id name committee_id received_contributions_count contributions_count received_contributions_from_oakland small_donations],
     methods: [
       :latest_summary,
       :short_name,
@@ -92,7 +92,7 @@ get '/api/party/:id' do |id|
   headers 'Content-Type' => 'application/json'
 
   fields = {
-    only: %w[id name committee_id received_contributions_count contributions_count received_contributions_from_oakland],
+    only: %w[id name committee_id received_contributions_count contributions_count received_contributions_from_oakland small_donations],
     include: {
       received_contributions: { },
       contributions: { }
