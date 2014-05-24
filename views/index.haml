@@ -42,7 +42,7 @@
         <% _.each(models, function(m) { %>
           <tr>
             <td>
-              <img class='mayor-picture' src="<%= m.imagePath() %>" />
+              <a href= '/#candidate/<%-m.attributes.id %>'><img class='mayor-picture' src="<%= m.imagePath() %>" /></a>
             </td>
             <th scope='row'>
               <div class='mayor-info'>

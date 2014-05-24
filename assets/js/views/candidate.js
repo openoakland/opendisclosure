@@ -1,4 +1,5 @@
 OpenDisclosure.CandidateView = Backbone.View.extend({
+
   template: _.template("<section id='candidate'>\
       <h1><%= short_name %></h1>\
       <div class='row'>\
@@ -17,9 +18,14 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
           <p>Last Updated: <%=latest_summary.date %> </p>\
         </div>\
       </div>\
+    </section>\
+    <section>\
+      <h2>Contributions</h2>\
+      <div class='contributions clearfix'></div>\
     </section>"),
 
   initialize: function(){
+    // debugger;
     this.model.attributes.imagePath = this.model.imagePath();
     this.render();
   },
@@ -32,6 +38,3 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
   }
 
 });
-
-//
-// <p>Number of Contributions: <%=received_contributions_count %></p>\
