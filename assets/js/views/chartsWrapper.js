@@ -15,7 +15,8 @@
 OpenDisclosure.ChartView = Backbone.View.extend({
   constructor: function(options) {
     this.default_options = {
-      base_height: 320,
+      base_width: 700,
+      aspect: .4,
       breakpoints: {
         // width->height multiplier
         "768": 0.9,
@@ -59,32 +60,24 @@ OpenDisclosure.ChartView = Backbone.View.extend({
     else if (this.options.data)
       this.data = this.options.data;
 
-    var aspect = 700/400; // TODO: Encapsulate into resize function!
     $(window).on("resize", function() {
-      var targetWidth = this.$chart_container.parent().width();
-      this.$el.find('svg').attr("width", targetWidth);
-      this.$el.find('svg').attr("height", targetWidth / aspect);
+      this.resize();
     }.bind(this));
 
     //_.debounce(_.bind(this.render, this), 100));
     this.render();
+  },
+  resize: function() {
+    this.get_dimensions();
+    this.$el.find('svg').attr("width", this.dimensions.width);
+    this.$el.find('svg').attr("height", this.dimensions.height);
   },
   get_dimensions: function() {
     var window_width = $(window).width();
 
     var wrapperWidth = this.$chart_container.width();
     var width = wrapperWidth - this.options.margin.left - this.options.margin.right;
-    var height = this.options.base_height - this.options.margin.bottom - this.options.margin.top;
-
-    _.every(this.options.breakpoints, _.bind(function(breakpoint) {
-      var width = breakpoint[0];
-      if (window_width <= width) {
-        var multiplier = breakpoint[1];
-        height = (height - this.options.margin.bottom - this.options.margin.top) * multiplier;
-        return false;
-      }
-      return true;
-    }, this));
+    var height = wrapperWidth*this.options.aspect - this.options.margin.bottom - this.options.margin.top;
 
     wrapperHeight = height + this.options.margin.top + this.options.margin.bottom;
 
