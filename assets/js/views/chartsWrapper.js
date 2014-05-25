@@ -17,16 +17,11 @@ OpenDisclosure.ChartView = Backbone.View.extend({
     this.default_options = {
       base_width: 700,
       aspect: .4,
-      breakpoints: {
-        // width->height multiplier
-        "768": 0.9,
-        "420": 0.7
-      },
       margin: {
-        top: 20,
-        right: 30,
-        bottom: 30,
-        left: 50
+        top: 10,
+        right: 10,
+        bottom: 15,
+        left: 15
       },
       type: ""
     };
@@ -49,10 +44,6 @@ OpenDisclosure.ChartView = Backbone.View.extend({
     Backbone.View.apply(this, arguments);
   },
   initialize: function(options) {
-    // Wrap chart
-    this.$el.wrap($('<div class="chart-wrapper">'));
-    this.$chart_container = this.$el.parent();
-    this.chart_container = this.$chart_container.get(0);
     this.get_dimensions();
 
     if (this.collection)
@@ -75,7 +66,7 @@ OpenDisclosure.ChartView = Backbone.View.extend({
   get_dimensions: function() {
     var window_width = $(window).width();
 
-    var wrapperWidth = this.$chart_container.width();
+    var wrapperWidth = this.$el.width();
     var width = wrapperWidth - this.options.margin.left - this.options.margin.right;
     var height = wrapperWidth*this.options.aspect - this.options.margin.bottom - this.options.margin.top;
 
