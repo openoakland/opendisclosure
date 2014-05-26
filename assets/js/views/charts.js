@@ -18,7 +18,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
     chart.svg = d3.select(this.el).append("svg")
       .attr("id", "map")
-      .attr("width", chart.dimensions.width + chart.options.margin.right)
+      .attr("width", chart.dimensions.width)
       .attr("height", chart.dimensions.height)
       .attr("viewBox", "0 0 700 400")
       .attr("preserveAspectRatio", "xMidYMid");
@@ -159,10 +159,16 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     // Add a legend at the bottom!
     var svg_legend = d3.select(chart.el).append("svg")
       .attr("id", "legend")
-      .attr("width", chart.dimensions.width + chart.options.margin.right)
-      .attr("height", chart.options.margin.bottom);
+      .attr("width", chart.dimensions.width)
+      .attr("height", chart.dimensions.height)
+      .attr("viewBox", "0 0 " + chart.dimensions.width + " " + chart.dimensions.height)
+      .attr("preserveAspectRatio", "xMidYMid");
 
-    var offset = (chart.dimensions.width + chart.options.margin.right) / chart.data.candidates.length;
+    var offset = chart.dimensions.width / chart.data.candidates.length;
+    console.log({
+      width : chart.dimensions.width,
+      offset : offset
+    });
 
     chart.legend = svg_legend.selectAll('.legend')
       .data(chart.data.candidates)
