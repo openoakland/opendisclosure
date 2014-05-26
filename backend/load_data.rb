@@ -108,10 +108,24 @@ def parse_summary(row)
 
   column = SUMMARY_LINES[row['form_type']][row['line_item']]
   value = row['amount_a']
+  summary = Summary.where(party_id: row['filer_id'])
+                   .first_or_create
 
-  Summary.where(party_id: row['filer_id'])
-         .first_or_create
-         .update_attribute(column, value)
+  # HACK / Naming convention:
+  # The "Total" fields (i.e. :total_monetary_contributions) are reported
+  # on each summary sheet for that period only. This means to calculate a true
+  # total, we need to add the values from each of the summary sheets.
+  if column =~ /^total/
+    summary.update_attributes(
+      column => (summary[column] || 0) + value.to_i,
+      :last_summary_date => row['thru_date']
+    )
+  else
+    summary.update_attributes(
+      column => value,
+      :last_summary_date => row['thru_date']
+    )
+  end
 end
 
 if __FILE__ == $0
