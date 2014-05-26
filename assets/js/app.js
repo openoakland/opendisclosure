@@ -1,38 +1,43 @@
 OpenDisclosure.App = Backbone.Router.extend({
   routes: {
-    '/': 'homepage',
-    'candidate/:id': 'candidateView'
+    '/': 'home',
+    'candidate/:id': 'candidate',
+    'contributor/:id': 'contributor'
   },
 
   initialize : function() {
-    this.homepage();
+    if(!this.candidates){this.candidates = new OpenDisclosure.Candidates();}
+    if(!this.contributions){this.contributions = new OpenDisclosure.Contributions();}
+    this.home();
   },
 
-  homepage: function(){
-    this.candidates = new OpenDisclosure.Candidates();
+  home: function(){
     new OpenDisclosure.CandidateTable({ collection : this.candidates });
-
-    this.contributions = new OpenDisclosure.ContributionCollection();
     new OpenDisclosure.ChartsView({ collection : this.contributions });
-
   },
 
-  candidateView: function(id){
+  candidate: function(id){
+    if (!this.candidates){ this.candidates = new OpenDisclosure.Candidates();}
+    this.currentCandidate = this.candidates.get(id);
+    new OpenDisclosure.CandidateView({model: this.currentCandidate});
 
-    if (!this.candidates){
-      this.candidates = new OpenDisclosure.Candidates();
-    }
+    // Render Contributions
+    var that = this;
+    this.filteredContributions = _.filter(this.contributions.models, function(c) {
+      return c.attributes.recipient.id == that.currentCandidate.id;
+    });
 
-    this.candidate = this.candidates.get(id);
-    console.log ('candidate', this.candidate);
+    new OpenDisclosure.ContributorsView({collection: this.filteredContributions});
+  },
 
-    new OpenDisclosure.CandidateView({model: this.candidate});
+  contributor : function(){
+
   }
 
 });
 
 
 $(function(){
-  app = new OpenDisclosure.App();
   Backbone.history.start();
+  app = new OpenDisclosure.App();
 });

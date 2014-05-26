@@ -6,9 +6,9 @@
     %title Open Disclosure
     %meta{content: "width=device-width", name: "viewport"}
     %link{ href: '/css/bootstrap.min.css', rel: 'stylesheet' }
-    / %link{ href: '//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css', rel: 'stylesheet' }
-    / %link{ href: 'http://fonts.googleapis.com/css?family=Merriweather:300,400,700|Open+Sans:400,300,800', rel:"stylesheet" }
-    / %link{ href:'http://fonts.googleapis.com/css?family=Crete+Round', rel:"stylesheet", type:'text/css'}
+    %link{ href: '//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css', rel: 'stylesheet' }
+    %link{ href: 'http://fonts.googleapis.com/css?family=Merriweather:300,400,700|Open+Sans:400,300,800', rel:"stylesheet" }
+    %link{ href:'http://fonts.googleapis.com/css?family=Crete+Round', rel:"stylesheet", type:'text/css'}
     %link{ href: "/css/main.css", rel: "stylesheet" }
 
   %body
@@ -69,20 +69,31 @@
     / Third Party (local)
     / %script{src: "/js/vendor/underscore.js"}
     / %script{src: "/js/vendor/jquery-1.10.1.min.js"}
-    %script{src: "/js/vendor/topojson.v1.min.js"}
-    %script{src: "/js/vendor/bootstrap.min.js"}
     / %script{src: "/js/vendor/backbone-min.js"}
     / %script{src: "/js/vendor/d3.v3.min.js"}
+    %script{src: "/js/vendor/topojson.v1.min.js"}
+    %script{src: "/js/vendor/bootstrap.min.js"}
     %script{src: "/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"}
     %script{src: "/js/vendor/accounting.min.js"}
 
-    / App
+
     %script{src: "/js/config.js"}
-    %script{src: "/js/models.js"}
-    %script{src: "/js/collections.js"}
+
+    / Models
+    %script{src: "/js/models/candidate.js"}
+    %script{src: "/js/models/contribution.js"}
+
+    / Collections
+    %script{src: "/js/collections/candidates.js"}
+    %script{src: "/js/collections/contributions.js"}
+
+    / Views
+    %script{src: "/js/views/candidate.js"}
     %script{src: "/js/views/candidateTable.js"}
     %script{src: "/js/views/charts.js"}
-    %script{src: "/js/views/candidate.js"}
+    %script{src: "/js/views/contributorsView.js"}
+
+    / App
     %script{src: "/js/app.js"}
 
     :javascript

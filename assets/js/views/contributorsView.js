@@ -1,16 +1,25 @@
-OpenDisclosure.contributorsList = Backbone.View.extend({
-  tagname : 'li',
+OpenDisclosure.ContributorsView = Backbone.View.extend({
+  el: '.contributions',
+  template: _.template(' \
+    <div class="col-sm-6"><a href="/party/<%= contributor.id %>/contributions">\
+    <span class="col-sm-8"><%= contributor.name %></span>\
+    <span class="col-sm-4">$<%= amount %> </span>\
+    </a></div>'),
 
-  events:{
+  events: {
     "keyup #contributor"  : "filterContributors",
   },
 
-  initialize : function() {
+  initialize: function() {
     this.render();
   },
 
-  render : function() {
-    this.$el.html(this.template(this.collection));
+  render: function() {
+    $('.contributions').empty();
+    var that = this;
+    _.each(this.collection, function( c ){
+      that.$el.append(that.template(c.attributes));
+    });
   },
 
   filterContributors: function() {

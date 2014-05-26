@@ -215,6 +215,10 @@ header .title {
   margin: auto;
 }
 
+.contributions {
+  margin-top: 20px;
+}
+
 ul#contributions {
   text-decoration: none;
   list-style: none;
