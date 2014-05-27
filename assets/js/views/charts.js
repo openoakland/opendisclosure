@@ -11,12 +11,15 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         return "q" + i + "-12";
       }));
 
-    chart.projection = d3.geo.albersUsa()
-      .scale(80000)
-      .translate([28200, 2900]);
+    // Calculate scale and translation of map projection based on chart size
+    var b = [[-0.3522484, -0.0361021875], [-0.3426890625, -0.0304853125]], 
+        s = .95 / Math.max((b[1][0] - b[0][0]) / chart.dimensions.width, (b[1][1] - b[0][1]) / chart.dimensions.height),
+        t = [(chart.dimensions.width - s * (b[1][0] + b[0][0])) / 2, (chart.dimensions.height - s * (b[1][1] + b[0][1])) / 2];
 
     chart.path = d3.geo.path()
-      .projection(chart.projection);
+      .projection(d3.geo.albersUsa()
+      .scale(s)
+      .translate(t));
 
     chart.svg = d3.select(this.el).append("svg")
       .attr("id", "map")
@@ -25,8 +28,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       .attr("viewBox", "0 0 " + chart.dimensions.width + " " + chart.dimensions.height)
       .attr("preserveAspectRatio", "xMidYMid");
 
-    chart.drawZipcodes();
-    chart.drawCities();
+    chart.drawMap();
     chart.drawLegend();
   },
 
@@ -69,7 +71,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     }
   },
 
-  drawZipcodes: function() {
+  drawMap: function() {
     var chart = this;
 
     var zipcodes = chart.svg.append("g")
@@ -94,6 +96,8 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         .text(function(d) {
           return d.properties.ZIP + ": " + d.properties.PO_NAME;
         });
+
+      chart.drawCities();
 
       var circles = chart.svg.append("g")
         .attr('id', 'circles');
@@ -150,22 +154,6 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     d3.json("/data/sfgov_bayarea_cities_topo.json", function(json) {
       data = topojson.feature(json, json.objects.layer1).features;
 
-      // CODE TO CALCULATE SCALE AND TRANSLATE  
-      // var water = data[data.length - 1];
-
-      // var b = [[-0.35343, -0.039921], [-0.339872, -0.0257956]], 
-      //   s = .95 / Math.max((b[1][0] - b[0][0]) / chart.dimensions.width, (b[1][1] - b[0][1]) / chart.dimensions.height),
-      //   t = [(chart.dimensions.width - s * (b[1][0] + b[0][0])) / 2, (chart.dimensions.height - s * (b[1][1] + b[0][1])) / 2];
-      // console.log({
-      //   b: b,
-      //   s: s,
-      //   t: t
-      // });
-
-      // chart.projection
-      //   .scale(s)
-      //   .translate(t);
-
       var cities = chart.svg.append('g')
         .attr('id', 'bay-cities');
 
@@ -199,7 +187,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     chart.legend.append("rect")
       .attr('x', legend.width)
       .attr('y', 0)
-      .attr("width", 10)
+      .attr("width", 20)
       .attr("height", offset)
       .attr("class", function(d) {
         return 'status ' + chart.color(d);
@@ -207,7 +195,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
     // Hold candidate name
     // chart.legend.append("rect")
-    //   .attr("x", 10)
+    //   .attr("x", 00)
     //   .attr("y", 0)
     //   .attr("width", legend.width)
     //   .attr("height", offset)
