@@ -20,7 +20,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       .attr("id", "map")
       .attr("width", chart.dimensions.width)
       .attr("height", chart.dimensions.height)
-      .attr("viewBox", "0 0 700 400")
+      .attr("viewBox", "0 0 " + chart.dimensions.width + " " + chart.dimensions.height)
       .attr("preserveAspectRatio", "xMidYMid");
 
     chart.drawZipcodes();
@@ -165,10 +165,6 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       .attr("preserveAspectRatio", "xMidYMid");
 
     var offset = chart.dimensions.width / chart.data.candidates.length;
-    console.log({
-      width : chart.dimensions.width,
-      offset : offset
-    });
 
     chart.legend = svg_legend.selectAll('.legend')
       .data(chart.data.candidates)

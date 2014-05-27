@@ -16,7 +16,7 @@ OpenDisclosure.ChartView = Backbone.View.extend({
   constructor: function(options) {
     this.default_options = {
       base_width: 700,
-      aspect: .4,
+      aspect: .6,
       margin: {
         top: 10,
         right: 10,
