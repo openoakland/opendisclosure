@@ -11,10 +11,12 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         return "q" + i + "-12";
       }));
 
+    chart.projection = d3.geo.albersUsa()
+      .scale(80000)
+      .translate([28200, 2900]);
+
     chart.path = d3.geo.path()
-      .projection(d3.geo.albersUsa()
-        .scale(90000)
-        .translate([31600, 3230]));
+      .projection(chart.projection);
 
     chart.svg = d3.select(this.el).append("svg")
       .attr("id", "map")
@@ -29,6 +31,13 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
   },
 
   processData: function(data) {
+    var candidateNames = {
+      'Parker for Oakland Mayor 2014': 'Brian Parker',
+      'Re-Elect Mayor Quan 2014': 'Jean Quan',
+      'Libby Schaaf for Oakland Mayor 2014': 'Libby Schaaf',
+      'Joe Tuman for Mayor 2014': 'Joe Tuman'
+    };
+
     var amounts = {};
     var candidates = {};
 
@@ -42,14 +51,14 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       if (!amounts[zip]) {
         amounts[zip] = {};
       }
-      if (!amounts[zip][candidate]) {
-        amounts[zip][candidate] = 0;
+      if (!amounts[zip][candidateNames[candidate]]) {
+        amounts[zip][candidateNames[candidate]] = 0;
       }
-      amounts[zip][candidate] += amount;
+      amounts[zip][candidateNames[candidate]] += amount;
 
       // Create a list of all candidates
-      if (!candidates[candidate]) {
-        candidates[candidate] = true;
+      if (!candidates[candidateNames[candidate]]) {
+        candidates[candidateNames[candidate]] = true;
       }
     }
     var candidates = _.keys(candidates);
@@ -141,6 +150,22 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     d3.json("/data/sfgov_bayarea_cities_topo.json", function(json) {
       data = topojson.feature(json, json.objects.layer1).features;
 
+      // CODE TO CALCULATE SCALE AND TRANSLATE  
+      // var water = data[data.length - 1];
+
+      // var b = [[-0.35343, -0.039921], [-0.339872, -0.0257956]], 
+      //   s = .95 / Math.max((b[1][0] - b[0][0]) / chart.dimensions.width, (b[1][1] - b[0][1]) / chart.dimensions.height),
+      //   t = [(chart.dimensions.width - s * (b[1][0] + b[0][0])) / 2, (chart.dimensions.height - s * (b[1][1] + b[0][1])) / 2];
+      // console.log({
+      //   b: b,
+      //   s: s,
+      //   t: t
+      // });
+
+      // chart.projection
+      //   .scale(s)
+      //   .translate(t);
+
       var cities = chart.svg.append('g')
         .attr('id', 'bay-cities');
 
@@ -156,45 +181,43 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
   drawLegend: function() {
     var chart = this;
-    // Add a legend at the bottom!
-    var svg_legend = d3.select(chart.el).append("svg")
-      .attr("id", "legend")
-      .attr("width", chart.dimensions.width)
-      .attr("height", chart.dimensions.height)
-      .attr("viewBox", "0 0 " + chart.dimensions.width + " " + chart.dimensions.height)
-      .attr("preserveAspectRatio", "xMidYMid");
 
-    var offset = chart.dimensions.width / chart.data.candidates.length;
+    var offset = chart.dimensions.height / chart.data.candidates.length;
+    var legend = {
+      width: chart.dimensions.width / 6
+    }
 
-    chart.legend = svg_legend.selectAll('.legend')
+    chart.legend = chart.svg.selectAll('.legend')
       .data(chart.data.candidates)
       .enter().append('g')
       .attr("class", "legend")
       .attr("transform", function(d, i) {
-        return "translate(" + i * offset + ",0)";
+        return "translate(0, " + i * offset + ")";
       });
 
+    // Show which candidate is selected
     chart.legend.append("rect")
-      .attr('x', 0)
+      .attr('x', legend.width)
       .attr('y', 0)
-      .attr("width", offset)
-      .attr("height", 10)
+      .attr("width", 10)
+      .attr("height", offset)
       .attr("class", function(d) {
         return 'status ' + chart.color(d);
       });
 
-    chart.legend.append("rect")
-      .attr("x", 0)
-      .attr("y", 10)
-      .attr("width", offset)
-      .attr("height", 18)
-      .attr("class", function(d) {
-        return chart.color(d);
-      });
+    // Hold candidate name
+    // chart.legend.append("rect")
+    //   .attr("x", 10)
+    //   .attr("y", 0)
+    //   .attr("width", legend.width)
+    //   .attr("height", offset)
+    //   .attr("class", function(d) {
+    //     return chart.color(d);
+    //   });
 
     chart.legend.append("text")
-      .attr("x", offset / 2)
-      .attr("y", 34)
+      .attr("x", legend.width / 2)
+      .attr("y", offset / 2)
       .attr("dy", ".35em")
       .style("text-anchor", "middle")
       .text(function(d) {
