@@ -31,8 +31,8 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       .attr("viewBox", "0 0 " + chart.dimensions.width + " " + chart.dimensions.height)
       .attr("preserveAspectRatio", "xMidYMid");
 
-    chart.drawMap();
     chart.drawLegend();
+    chart.drawMap();
   },
 
   processData: function(data) {
@@ -163,6 +163,8 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       dorling.attr('class', chart.color(candidate))
         .transition()
         .attr('r', radius);
+      chart.legend.classed('selected', false);
+      d3.select(this).classed('selected', true);
     }
 
     chart.legend.on("click", update)
@@ -203,14 +205,20 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       });
 
     // Hold candidate name
-    // chart.legend.append("rect")
-    //   .attr("x", 0)
-    //   .attr("y", 0)
-    //   .attr("width", legend.width)
-    //   .attr("height", offset)
-    //   .attr("class", function(d) {
-    //     return chart.color(d);
-    //   });
+    chart.legend.append("rect")
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("width", legend.width)
+      .attr("height", offset)
+      .attr("class", "name");
+
+    // Dividers between candidates
+    chart.legend.append("rect")
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("width", legend.width + 20)
+      .attr("height", 3)
+      .attr("fill", "white");
 
     chart.legend.append("text")
       .attr("x", legend.width / 2)
