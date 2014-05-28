@@ -20,7 +20,8 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
       </div>\
     </section>\
     <section>\
-      <h2>Contributions</h2>\
+      <h2>Contributors</h2>\
+      <label>Search: <input type='search' id='contribSearch'></input></label>\
       <div class='contributions clearfix'></div>\
     </section>"),
 
