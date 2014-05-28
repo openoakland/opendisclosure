@@ -6,7 +6,6 @@ OpenDisclosure.ChartsView = Backbone.View.extend({
   },
 
   createChart: function (chart, data) {
-
     // Create container for this chart.
     var chartEl = $('<div></div>').attr('id', 'chart-' + chart.id);
     this.chartDiv.append(chartEl);
@@ -15,7 +14,7 @@ OpenDisclosure.ChartsView = Backbone.View.extend({
 
       // Each chart should have a global function defined that takes an element and data as arguments
       if (window[chart.id]) {
-        console.log('Creating chart "' + chart.id + '".');
+        // console.log('Creating chart "' + chart.id + '".');
 
         // Load css (may not exist but that's fine)
         OpenDisclosure.ChartsView.prototype.injectCss('/charts/' + chart.id + '/' + chart.id + '.css');
