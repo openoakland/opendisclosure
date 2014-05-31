@@ -4,6 +4,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     var chart = this;
 
     chart.data = this.processData(this.collection);
+    console.log(chart.data);
 
     chart.color = d3.scale.ordinal()
       .domain(chart.data.candidates)
@@ -31,7 +32,6 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       .attr("viewBox", "0 0 " + chart.dimensions.width + " " + chart.dimensions.height)
       .attr("preserveAspectRatio", "xMidYMid");
 
-    chart.drawLegend();
     chart.drawMap();
   },
 
@@ -67,6 +67,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       }
     }
     var candidates = _.keys(candidates);
+    candidates.unshift('Overview');
 
     return {
       candidates: candidates,
@@ -102,7 +103,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     });
   },
 
-  drawCities: function(zips) {
+  drawCities: function() {
     var chart = this;
     // Add outline for cities
     d3.json("/data/sfgov_bayarea_cities_topo.json", function(json) {
@@ -119,21 +120,25 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         .attr('stroke', '#303030')
         .append("svg:title");
 
-      chart.drawBubbles();
+      var bubbleUpdater = chart.drawBubbles();
       chart.drawScale();
+      chart.drawLegend();
+      chart.addListeners(bubbleUpdater);
     });
   },
 
-  drawBubbles: function(zips) {
+  drawBubbles: function() {
     var chart = this;
 
     var candidate = chart.data.candidates[0];
     var circles = chart.svg.append("g")
       .attr('id', 'circles');
 
-    radius = function(d) {
+    chart.bubbleScale = chart.dimensions.width * .00015;
+
+    var radius = function(d) {
       if (chart.data.amounts[d.properties.ZIP]) {
-        return Math.sqrt(chart.data.amounts[d.properties.ZIP][candidate] || 0) / 8;
+        return Math.sqrt(chart.data.amounts[d.properties.ZIP][candidate] || 0) * chart.bubbleScale;
       }
       return 0;
     }
@@ -158,24 +163,17 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       .attr('class', chart.color(candidate));
 
     // Update the chart when a user clicks on a candidate's name
-    update = function() {
-      candidate = $(this).select('text').text();
+    var updateBubbles = function(selection) {
+      candidate = $(selection).select('text').text();
       dorling.attr('class', chart.color(candidate))
         .transition()
         .attr('r', radius);
       chart.legend.classed('selected', false);
-      d3.select(this).classed('selected', true);
+      selection.classed('selected', true);
     }
 
-    chart.legend.on("click", update)
-      .on("mouseover", function() {
-        d3.select(this)
-          .classed('hover', true);
-      })
-      .on("mouseout", function() {
-        d3.select(this)
-          .classed('hover', false);
-      });
+    return updateBubbles;
+
   },
 
   drawLegend: function() {
@@ -197,7 +195,6 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     // Show which candidate is selected
     chart.legend.append("rect")
       .attr('x', legend.width)
-      .attr('y', 0)
       .attr("width", 20)
       .attr("height", offset)
       .attr("class", function(d) {
@@ -206,16 +203,12 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
     // Hold candidate name
     chart.legend.append("rect")
-      .attr("x", 0)
-      .attr("y", 0)
       .attr("width", legend.width)
       .attr("height", offset)
       .attr("class", "name");
 
     // Dividers between candidates
     chart.legend.append("rect")
-      .attr("x", 0)
-      .attr("y", 0)
       .attr("width", legend.width + 20)
       .attr("height", 3)
       .attr("fill", "white");
@@ -234,32 +227,75 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     // Show the scale of bubbles on the chart
     var chart = this;
 
-    var scale = chart.svg.append("g")
-      .attr('id', 'scale');
+    var radius = function(area) {
+      return Math.sqrt(area) * chart.bubbleScale;
+    }
 
-    scale.append("rect")
-      .attr("x", chart.dimensions.width * .725)
-      .attr("y", chart.dimensions.height * .05)
-      .attr("width", chart.dimensions.width * .25)
-      .attr("height", chart.dimensions.height * .15)
+    var scale = chart.svg.append("g")
+      .attr('id', 'scale')
+      .attr("transform", "translate(" +
+        chart.dimensions.width * .725 + ", " +
+        chart.dimensions.height * .05 + ")");
+
+    var scale_data = [1000, 10000, 50000];
+    var offset = 20;
+    var scale_items = scale.selectAll("g")
+      .data(scale_data)
+      .enter().append('g')
+      .attr("transform", function(d) {
+        var centerpoint = offset + radius(d);
+        offset += radius(d) * 2 + 20;
+        return "translate(" + centerpoint + ", 0)"
+      });
+
+    scale_items.append("circle")
+      .attr('cy', chart.dimensions.height * .15 / 2)
+      .attr('r', radius)
+      .attr('fill', '#d3d3d3');
+
+    scale_items.append("text")
+      .attr("y", 70)
+      .style("text-anchor", "middle")
+      .text(function(d) {
+        return "$" + d;
+      })
+
+    scale.insert("rect", ":first-child")
+      .attr("width", offset)
+      .attr("height", chart.dimensions.height * .2)
       .attr("fill", "#f0f0f0");
 
+    scale.append("text")
+      .attr("x", offset / 2)
+      .attr("dy", ".35em")
+      .style("text-anchor", "middle")
+      .text("Total donations from each ZIP code");
 
-    var scale_data = [50000, 10000, 1000];
-    var scale_height = Math.sqrt(scale_data[0]) / 8;
-    scale.selectAll("circle")
-      .data(scale_data)
-      .enter()
-      .append("circle")
-      .attr('cx', 50)
-      .attr('cy', function(d) {
-        return 50 + scale_height - Math.sqrt(d) / 8
+  },
+
+  addListeners: function(updateBubbles) {
+    var chart = this;
+
+    chart.legend
+      .on("click", function() {
+        var selection = d3.select(this)
+        chart.update({
+          selection: selection,
+          updateBubbles: updateBubbles
+        });
       })
-      .attr('r', function(d) {
-        return Math.sqrt(d) / 8;
+      .on("mouseover", function() {
+        d3.select(this)
+          .classed('hover', true);
       })
-      .attr('stroke', '#000000')
-      .attr('fill', 'none');
+      .on("mouseout", function() {
+        d3.select(this)
+          .classed('hover', false);
+      });
+  },
+
+  update: function(opts) {
+    opts.updateBubbles(opts.selection);
   }
   
 });

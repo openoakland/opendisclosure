@@ -54,9 +54,6 @@ OpenDisclosure.ChartView = Backbone.View.extend({
     $(window).on("resize", function() {
       this.resize();
     }.bind(this));
-
-    //_.debounce(_.bind(this.render, this), 100));
-    this.render();
   },
   resize: function() {
     this.get_dimensions();
