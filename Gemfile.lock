@@ -17,7 +17,10 @@ GEM
     arel (5.0.1.20140414130214)
     backports (3.6.0)
     builder (3.2.2)
+    csv-mapper (0.5.1)
+      fastercsv
     dotenv (0.7.0)
+    fastercsv (1.5.5)
     foreman (0.67.0)
       dotenv (~> 0.7.0)
       thor (~> 0.17.0)
@@ -55,6 +58,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord
+  csv-mapper
   foreman
   haml
   pg
