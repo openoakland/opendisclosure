@@ -14,7 +14,7 @@ class Party < ActiveRecord::Base
     SCHAAF = 1362261,
     TUMAN = 1359017,
     MCCULLOUGH = 0,   # TODO: Fill in with Filer_ID when he has one
-    RUBY = 0, # TODO: Fill in this too
+    RUBY = 1342695,   # TODO: This is wrong, fix it!!!
   ]
 
   CANDIDATE_INFO = {
