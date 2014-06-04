@@ -2,9 +2,9 @@ require_relative 'socrata_fetcher.rb'
 require 'active_record'
 require 'open-uri'
 
-# Connect and set up the sqlite database
+# Connect and set up the database
 $LOAD_PATH << '.'
-ENV['DATABASE_URL'] ||= "sqlite3:#{File.dirname(__FILE__)}/db.sqlite3"
+ENV['DATABASE_URL'] ||= "postgres://localhost/postgres"
 ActiveRecord::Base.establish_connection ENV['DATABASE_URL']
 require_relative 'schema.rb'
 Dir[File.dirname(__FILE__) + '/models/*.rb'].each { |f| require f }
