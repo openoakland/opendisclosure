@@ -17,7 +17,7 @@ OpenDisclosure.Candidate = Backbone.Model.extend({
 
   avgContribution : function () {
     return this.friendlyNumber(
-      this.attributes.latest_summary['total_contributions_received']/
+      this.attributes.summary['total_contributions_received']/
       this.attributes.received_contributions_count);
   },
 
