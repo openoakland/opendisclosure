@@ -13,7 +13,8 @@ class Party < ActiveRecord::Base
     QUAN = 1354678,
     SCHAAF = 1362261,
     TUMAN = 1359017,
-    # MCCULLOUGH = 0,   # TODO: Fill in with Filer_ID when he has one
+    MCCULLOUGH = 0,   # TODO: Fill in with Filer_ID when he has one
+    RUBY = 1342695,   # TODO: This is wrong, fix it!!!
   ]
 
   CANDIDATE_INFO = {
@@ -37,11 +38,16 @@ class Party < ActiveRecord::Base
       profession: 'University Professor',
       party: 'Independent'
     },
-    # MCCULLOUGH => {
-    #   name: 'Patrick McCullough',
-    #   profession: '<current profession>',
-    #   party: 'Unknown',
-    # },
+    MCCULLOUGH => {
+      name: 'Patrick McCullough',
+      profession: '<current profession>',
+      party: 'Unknown',
+    },
+    RUBY => {
+      name: 'Courtney Ruby',
+      profession: '<current profession>',
+      party: 'Unknown',
+    }
   }
 
   def self.mayoral_candidates

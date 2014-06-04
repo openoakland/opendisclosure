@@ -12,10 +12,12 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
           <p><%= profession %></p>\
         </div>\
         <div class='col-sm-4'>\
+          <% if (typeof summary !== 'undefined') { %>\
           <p>Total Raised: $ <%= summary.total_contributions_received %></p>\
           <p>Total Expenditures: $<%= summary.total_expenditures_made %></p>\
           <p>Ending Cash On Hand: $<%= summary.ending_cash_balance %></p>\
           <p>Last Updated: <%= summary.last_summary_date %> </p>\
+          <% } %>\
         </div>\
       </div>\
     </section>\
