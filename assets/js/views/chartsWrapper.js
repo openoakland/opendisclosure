@@ -19,9 +19,9 @@ OpenDisclosure.ChartView = Backbone.View.extend({
       aspect: .6,
       margin: {
         top: 10,
-        right: 10,
+        right: 0,
         bottom: 15,
-        left: 15
+        left: 0
       },
       type: ""
     };

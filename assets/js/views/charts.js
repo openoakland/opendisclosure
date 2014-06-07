@@ -31,6 +31,11 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       .attr("viewBox", "0 0 " + chart.dimensions.width + " " + chart.dimensions.height)
       .attr("preserveAspectRatio", "xMidYMid");
 
+    chart.svg.append("rect")
+      .attr("id", "background")
+      .attr("width", chart.dimensions.width)
+      .attr("height", chart.dimensions.height);
+
     chart.drawMap();
   },
 
@@ -68,10 +73,12 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
     _.map(amounts, function(val, zip) {
       var candidate_list = _.map(val, function(donation, candidate) {
-        return { 'name' : candidate,
-                 'total' : donation }
+        return {
+          'name': candidate,
+          'total': donation
+        }
       });
-      var max =  _.max(candidate_list, function(candidate) {
+      var max = _.max(candidate_list, function(candidate) {
         return candidate.total;
       });
       amounts[zip]['max'] = max.name;
@@ -99,13 +106,15 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       var zips = zipcodes.selectAll("path")
         .data(chart.zips)
         .enter().append("svg:path")
+        .attr("class", "zip")
         .attr("id", function(d) {
           zip = d.properties.ZIP;
         })
         .attr("d", chart.path)
-        .attr('fill', '#d3d3d3')
-        .attr('stroke', '#9c9c9c')
-        
+        .attr('class', function(d) {
+          var leader = chart.data.amounts[d.properties.ZIP];
+          return leader ? chart.color(leader.max) : 'zip';
+        });
 
       zips.append("svg:title")
         .text(function(d) {
@@ -116,10 +125,10 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         if ($(selection).select('text').text() == 'Overview') {
           zips.attr('class', function(d) {
             var leader = chart.data.amounts[d.properties.ZIP];
-            return leader? chart.color(leader.max) : 'null';
+            return leader ? chart.color(leader.max) : 'zip';
           })
         } else {
-          zips.attr('class', '');
+          zips.attr('class', 'zip');
         }
       }
 
@@ -144,10 +153,10 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         .attr('stroke', '#303030')
         .append("svg:title");
 
-      var bubbleUpdater = chart.drawBubbles();
+      chart.drawBubbles();
       chart.drawScale();
       chart.drawLegend();
-      chart.addListeners(bubbleUpdater, zipUpdater);
+      chart.addListeners(chart.updateBubbles, zipUpdater);
     });
   },
 
@@ -157,15 +166,6 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     var candidate = chart.data.candidates[0];
     var circles = chart.svg.append("g")
       .attr('id', 'circles');
-
-    chart.bubbleScale = chart.dimensions.width * .00015;
-
-    var radius = function(d) {
-      if (chart.data.amounts[d.properties.ZIP]) {
-        return Math.sqrt(chart.data.amounts[d.properties.ZIP][candidate] || 0) * chart.bubbleScale;
-      }
-      return 0;
-    }
 
     // Add a circle at the center of each zip
     var dorling = circles.selectAll("circle")
@@ -183,19 +183,32 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       .attr('cy', function(d) {
         return d.properties.c[1];
       })
-      .attr('r', radius)
+      //.attr('r', radius)
       .attr('class', chart.color(candidate));
+  },
 
-    // Update the chart when a user clicks on a candidate's name
-    var updateBubbles = function(selection) {
-      candidate = $(selection).select('text').text();
-      dorling.attr('class', chart.color(candidate))
-        .transition()
-        .attr('r', radius);
+  // Update the chart when a user clicks on a candidate's name
+  updateBubbles: function(selection) {
+    var chart = this;
+    var circles = d3.selectAll("svg circle")
+    candidate = $(selection).select('text').text();
+    circles.attr('class', chart.color(candidate))
+      .transition()
+      .attr('r', chart.radius.bind(chart));
+  },
+
+  radius: function(d) {
+    var chart = this;
+    var bubbleScale = chart.dimensions.width * .00015;
+    var area = 0;
+    if (d.properties) {
+      if (chart.data.amounts[d.properties.ZIP]) {
+        area = chart.data.amounts[d.properties.ZIP][candidate] || 0;
+      }
+    } else {
+      area = d;
     }
-
-    return updateBubbles;
-
+    return Math.sqrt(area) * bubbleScale;
   },
 
   drawLegend: function() {
@@ -236,10 +249,9 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       .attr("fill", "white");
 
     chart.legend.append("text")
-      .attr("x", legend.width / 2 - 5)
-      .attr("y", offset / 2)
+      .attr("x", legend.width - 22) //legend.width / 2 - 5)
+    .attr("y", offset / 2)
       .attr("dy", ".35em")
-      .style("text-anchor", "middle")
       .text(function(d) {
         return d;
       });
@@ -249,49 +261,53 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     // Show the scale of bubbles on the chart
     var chart = this;
 
-    var radius = function(area) {
-      return Math.sqrt(area) * chart.bubbleScale;
-    }
+    var scale = {
+      dimensions: {
+        width: chart.dimensions.width * .232,
+        height: chart.dimensions.height * .2,
+        left: chart.dimensions.width * .768,
+        top: chart.dimensions.height * .8
+      },
+      data: [1000, 10000, 30000]
+    };
 
-    var scale = chart.svg.append("g")
+    scale.el = chart.svg.append("g")
       .attr('id', 'scale')
       .attr("transform", "translate(" +
-        chart.dimensions.width * .725 + ", " +
-        chart.dimensions.height * .05 + ")");
+        scale.dimensions.left + ", " +
+        scale.dimensions.top + ")");
 
-    var scale_data = [1000, 10000, 50000];
     var offset = 20;
-    var scale_items = scale.selectAll("g")
-      .data(scale_data)
+    var scale_items = scale.el.selectAll("g")
+      .data(scale.data)
       .enter().append('g')
       .attr("transform", function(d) {
-        var centerpoint = offset + radius(d);
-        offset += radius(d) * 2 + 20;
+        var centerpoint = offset + chart.radius(d);
+        offset += chart.radius(d) * 2 + 25;
         return "translate(" + centerpoint + ", 0)"
       });
 
     scale_items.append("circle")
-      .attr('cy', chart.dimensions.height * .15 / 2)
-      .attr('r', radius)
+      .attr('cy', scale.dimensions.height / 2)
       .attr('fill', '#d3d3d3');
 
     scale_items.append("text")
       .attr("y", 70)
       .style("text-anchor", "middle")
       .text(function(d) {
-        return "$" + d;
-      })
+        return "$" + d / 1000 + "k";
+      });
 
-    scale.insert("rect", ":first-child")
-      .attr("width", offset)
-      .attr("height", chart.dimensions.height * .2)
+    scale.el.insert("rect", ":first-child")
+      .attr("width", scale.dimensions.width)
+      .attr("height", scale.dimensions.height)
       .attr("fill", "#f0f0f0");
 
-    scale.append("text")
-      .attr("x", offset / 2)
+    scale.el.append("text")
+      .attr("x", 0)
       .attr("dy", ".35em")
-      .style("text-anchor", "middle")
-      .text("Total donations from each ZIP code");
+      .text("Total donations from each zip code.")
+      .call(this.wrap, scale.dimensions.width)
 
   },
 
@@ -320,20 +336,65 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
   update: function(opts) {
     var chart = this;
     // Update chart
-    opts.updateBubbles(opts.selection);
+    chart.updateBubbles(opts.selection)
     opts.updateZips(opts.selection);
 
-    // Update legend
-    if ($(opts.selection).select('text').text() == 'Overview'){
-      chart.legend.classed('selected', true);
-    } else {
-      chart.legend.classed('selected', false);
-      opts.selection.classed('selected', true);
+    var legend = {
+      width: chart.dimensions.width / 6
     }
-    
-    $('rect.status').not('g.legend.selected rect.status').fadeOut();
-    $('g.legend.selected rect.status').fadeIn();
 
+    var label = $(opts.selection).select('text').text();
+
+    // Update legend
+
+    if (label == 'Overview') { // Overview
+      chart.legend.classed('selected', true);
+      $('g#scale').fadeOut()
+
+    } else { // Candidates
+      // Return previously selected bar to normal size
+      chart.legend.select('.selected .status')
+        .transition()
+        .attr("x", legend.width - 10)
+        .attr("width", 10)
+        .each("end", function() {
+          chart.legend.attr("class", "legend deselected");
+          opts.selection.attr("class", "legend selected")
+        });
+
+      // Expand selected bar
+      opts.selection.select('.status')
+        .transition()
+        .attr("x", 0)
+        .attr("width", legend.width);
+
+      $('g#scale').fadeIn();
+    }
+  },
+
+  // From http://bl.ocks.org/mbostock/7555321
+  wrap: function(text, width) {
+    text.each(function() {
+      var text = d3.select(this),
+        words = text.text().split(/\s+/).reverse(),
+        word,
+        line = [],
+        lineNumber = 0,
+        lineHeight = 1.1, // ems
+        y = text.attr("y"),
+        dy = parseFloat(text.attr("dy")),
+        tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+      while (word = words.pop()) {
+        line.push(word);
+        tspan.text(line.join(" "));
+        if (tspan.node().getComputedTextLength() > width) {
+          line.pop();
+          tspan.text(line.join(" "));
+          line = [word];
+          tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+        }
+      }
+    });
   }
   
 });
