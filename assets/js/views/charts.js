@@ -86,6 +86,9 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
     var candidates = _.keys(candidates);
     candidates.unshift('Overview');
+    candidates.push('Lauren Conrad');
+    candidates.push('Drake');
+    candidates.push('Ace Ventura');
 
     return {
       candidates: candidates,
@@ -149,8 +152,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         .data(data)
         .enter().append("svg:path")
         .attr("d", chart.path)
-        .attr('fill', 'none')
-        .attr('stroke', '#303030')
+        .attr('class', 'city')
         .append("svg:title");
 
       chart.drawBubbles();
@@ -199,7 +201,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
   radius: function(d) {
     var chart = this;
-    var bubbleScale = chart.dimensions.width * .00015;
+    var bubbleScale = chart.dimensions.width * .00018;
     var area = 0;
     if (d.properties) {
       if (chart.data.amounts[d.properties.ZIP]) {
@@ -232,6 +234,9 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       .attr("width", legend.width)
       .attr("height", offset)
       .attr("class", "name");
+
+    chart.legend.append("rect")
+      .attr()
 
     // Show which candidate is selected
     chart.legend.append("rect")

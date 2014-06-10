@@ -4,8 +4,13 @@
 }
 
 .zip {
-	fill: #ebebeb;
-  stroke: #9c9c9c
+	fill: white;/*#f8f8f8;#ebebeb;*/
+  stroke: #bfbfbf
+}
+
+.city {
+	fill: none;
+	stroke: #595959;
 }
 
 path.q0-12{fill: #FBA723} 
@@ -37,6 +42,11 @@ circle.q10-12{fill: #2FB788}
 circle.q11-12{fill: #BA0012}
 circle.q12-12{fill: #B9A101}
 circle.q13-12{fill: #480A6A}
+
+/*circle {
+	stroke: #595959;
+	stroke-opacity: 50%;
+}*/
 
 .legend.hover .q0-12{fill: #FBA723} 
 .legend.hover .q1-12{fill: #0087E5} 
@@ -70,6 +80,7 @@ circle.q13-12{fill: #480A6A}
 
 svg rect#background{
 	fill: #FFFFFF;
+	fill-opacity: 0;
 }
 
 .legend { 
@@ -83,10 +94,11 @@ svg rect#background{
 
 .legend rect.name {
 	fill : #ffffff;
+	fill-opacity: 0;
 }
 
 .legend rect.status {
-	fill: #ebebeb;
+	fill: #9c9c9c;
 }
 
 /*.legend.hover rect.name {
