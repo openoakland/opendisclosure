@@ -2,7 +2,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
   draw: function() {
     var chart = this;
-    
+
     chart.data = this.processData(this.collection);
 
     chart.color = d3.scale.ordinal()
@@ -89,13 +89,10 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
     var candidates = _.keys(candidates);
     candidates.unshift('Overview');
-    candidates.push('Lauren Conrad');
-    candidates.push('Drake');
+    candidates.push('Patrick McCullough');
+    candidates.push('Courtney Ruby');
     candidates.push('Ace Ventura');
-    candidates.push('Kristen Wig');
-    candidates.push('Mouse Detective');
     candidates.push('Buzz Aldrin');
-    candidates.push('Naomi Watts');
 
     return {
       candidates: candidates,
@@ -120,11 +117,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         .attr("id", function(d) {
           zip = d.properties.ZIP;
         })
-        .attr("d", chart.path)
-      // .attr('class', function(d) {
-      //   var leader = chart.data.amounts[d.properties.ZIP];
-      //   return leader ? chart.color(leader.max) : 'zip';
-      // });
+        .attr("d", chart.path);
 
       zips.append("svg:title")
         .text(function(d) {
@@ -222,10 +215,12 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
     var offset = chart.dimensions.height / chart.data.candidates.length;
     var legend = {
-      width: chart.dimensions.width / 6,
+      width: chart.dimensions.width / 4.8,
       right_bar: {
         width: chart.dimensions.width / 80
-      }
+      },
+      margin: chart.dimensions.width / 100,
+      font_size: chart.dimensions.width / 50
     }
 
     chart.legend = chart.svg.selectAll('.legend')
@@ -242,7 +237,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     // Hold candidate name
     chart.legend.append("rect")
       .attr("width", legend.width)
-      .attr("height", offset)
+      .attr("height", offset + 2) // Align to bottom spacer
       .attr("class", "name");
 
     // Show which candidate is selected
@@ -260,8 +255,9 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       .attr("height", 2);
 
     chart.legend.append("text")
-      .attr("x", legend.width - 22)
+      .attr("x", legend.width - legend.margin - legend.right_bar.width)
       .attr("y", offset / 2)
+      .attr("font-size", legend.font_size)
       .attr("dy", ".35em")
       .text(function(d) {
         return d;
