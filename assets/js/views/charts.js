@@ -2,7 +2,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
   draw: function() {
     var chart = this;
-
+    
     chart.data = this.processData(this.collection);
 
     chart.color = d3.scale.ordinal()
@@ -36,7 +36,8 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         chart.drawBubbles();
         chart.drawScale();
         chart.drawLegend();
-        chart.addListeners();
+        chart.clickListener();
+        chart.click(d3.select('.overview'), 'Overview');
       });
     });
   },
@@ -320,52 +321,55 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
   },
 
-  addListeners: function() {
+  clickListener: function() {
     var chart = this;
-    //chart.setHover();
 
-    chart.legend
-      .on("click", function() {
-        var selection = d3.select(this)
-        chart.update({
-          selection: selection,
-        });
-      })
+    chart.legend.on("click", function() {
+      var clicked = d3.select(this);
+      var label = $(this).select('text').text();
+      chart.click(clicked, label)
+    });
   },
 
-  update: function(opts) {
+  click: function(clicked, label) {
     var chart = this;
-    // Update chart
-    chart.updateBubbles(opts.selection);
-    chart.updateZips(opts.selection);
-
-    var label = $(opts.selection).select('text').text();
+    chart.updateBubbles(clicked);
+    chart.updateZips(clicked);
 
     // Update legend
     chart.legend.classed("selected", false);
-    opts.selection.classed("selected", true);
-    if (label == 'Overview') { // Overview
-      chart.legend.each(function() {
-        var color = chart.color($(this).select('text').text());
-        d3.select(this).select('.status')
-          .attr("class", color + " status");
-      });
-      chart.setOverviewHover();
-      $('g#scale').fadeOut()
-
-    } else { // Candidates
-      var color = chart.color(label);
-      chart.legend.select('.status')
-        .attr("class", "status");
-      opts.selection.select('.status')
-        .attr("class", color + " status");
-
-      chart.legend.select('.name')
-        .attr("class", "name");
-
-      chart.setCandidateHover();
-      $('g#scale').fadeIn();
+    clicked.classed("selected", true);
+    if (label == 'Overview') {
+      chart.clickOverview(clicked, label);
+    } else {
+      chart.clickCandidate(clicked, label)
     }
+  },
+
+  clickOverview: function(clicked, label) {
+    var chart = this;
+    chart.legend.each(function() {
+      var key_color = chart.color($(this).select('text').text());
+      d3.select(this).select('.status')
+        .attr("class", key_color + " status");
+    });
+    chart.setOverviewHover();
+    $('g#scale').fadeOut();
+  },
+
+  clickCandidate: function(clicked, label) {
+    var chart = this;
+    var color = chart.color(label);
+    chart.legend.select('.status')
+      .attr("class", "status");
+    clicked.select('.status')
+      .attr("class", color + " status");
+
+    chart.legend.select('.name')
+      .attr("class", "name");
+
+    chart.setCandidateHover();
+    $('g#scale').fadeIn();
   },
 
   setOverviewHover: function() {
@@ -386,8 +390,8 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
     // Add new hover functionality
     $('.legend').not('.selected').hover(function() {
-      var candidate = $(this).find('text').text();
-      var color = chart.color(candidate);
+      var label = $(this).find('text').text();
+      var color = chart.color(label);
       d3.select(this).select('.status')
         .attr("class", color + " status");
     }, function() {
@@ -395,8 +399,6 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         .attr("class", "status");
     });
   },
-
-
 
   // From http://bl.ocks.org/mbostock/7555321
   wrap: function(text, width) {
