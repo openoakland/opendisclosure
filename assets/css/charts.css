@@ -26,23 +26,6 @@
 	text-anchor: end;
 }
 
-.legend.overview text {
-	font-weight: bold;
-}
-
-.legend.overview rect.divider {
-	display: none;
-}
-
-.legend.overview.selected rect.name{
-	fill: black;
-	fill-opacity: 100%;
-}
-
-.legend.overview.selected text {
-	fill: white;
-}
-
 .status {
 	fill: #bfbfbf;
 }
@@ -65,10 +48,33 @@
 	fill: white;
 }
 
+/* -- Overview Bar -- */
+
+.legend.overview text {
+	font-weight: bold;
+}
+
+.legend.overview rect.divider {
+	display: none;
+}
+
+.legend.overview.selected rect.name{
+	fill: black;
+	fill-opacity: 100%;
+}
+
+.legend.overview.selected text {
+	fill: white;
+}
+
 /* ------------------- SCALE -------------------- */
 
 #scale {
 	display: none;
+}
+
+#scale text.label {
+	text-anchor: middle;
 }
 
 rect.scale {
