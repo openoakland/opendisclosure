@@ -26,12 +26,20 @@
 	text-anchor: end;
 }
 
-.legend.overview rect.name{
+.legend.overview text {
+	font-weight: bold;
+}
+
+.legend.overview rect.divider {
+	display: none;
+}
+
+.legend.overview.selected rect.name{
 	fill: black;
 	fill-opacity: 100%;
 }
 
-.legend.overview text {
+.legend.overview.selected text {
 	fill: white;
 }
 

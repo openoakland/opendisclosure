@@ -31,11 +31,6 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       .attr("viewBox", "0 0 " + chart.dimensions.width + " " + chart.dimensions.height)
       .attr("preserveAspectRatio", "xMidYMid");
 
-    // chart.svg.append("rect")
-    //   .attr("id", "background")
-    //   .attr("width", chart.dimensions.width)
-    //   .attr("height", chart.dimensions.height);
-
     chart.drawMap();
   },
 
@@ -330,12 +325,10 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
   setCandidateHover: function() {
     var chart = this;
-
-    // Clear existing hover
     $('.legend').unbind('mouseenter mouseleave');
 
     // Add new hover functionality
-    $('.legend.deselected').hover(function() {
+    $('.legend').not('.selected').hover(function() {
       var candidate = $(this).find('text').text();
       var color = chart.color(candidate);
       d3.select(this).select('.status')
@@ -369,9 +362,12 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
     var label = $(opts.selection).select('text').text();
 
+    chart.legend = chart.legend
+
     // Update legend
+    chart.legend.classed("selected", false)
+    opts.selection.classed("selected", true);
     if (label == 'Overview') { // Overview
-      chart.legend.attr("class", "legend");
       chart.legend.each(function() {
           var color = chart.color($(this).select('text').text());
           d3.select(this).select('.status')
@@ -382,11 +378,6 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
     } else { // Candidates
       var color = chart.color(label);
-      chart.legend
-        .attr("class", "legend deselected");
-      opts.selection
-        .attr("class", "legend selected");
-
       chart.legend.select('.status')
         .attr("class", "status");
       opts.selection.select('.status')
