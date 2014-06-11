@@ -31,10 +31,10 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       .attr("viewBox", "0 0 " + chart.dimensions.width + " " + chart.dimensions.height)
       .attr("preserveAspectRatio", "xMidYMid");
 
-    chart.svg.append("rect")
-      .attr("id", "background")
-      .attr("width", chart.dimensions.width)
-      .attr("height", chart.dimensions.height);
+    // chart.svg.append("rect")
+    //   .attr("id", "background")
+    //   .attr("width", chart.dimensions.width)
+    //   .attr("height", chart.dimensions.height);
 
     chart.drawMap();
   },
@@ -218,7 +218,10 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
     var offset = chart.dimensions.height / chart.data.candidates.length;
     var legend = {
-      width: chart.dimensions.width / 6
+      width: chart.dimensions.width / 6,
+      right_bar: {
+        width: chart.dimensions.width / 80
+      }
     }
 
     chart.legend = chart.svg.selectAll('.legend')
@@ -229,32 +232,31 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         return "translate(0, " + i * offset + ")";
       });
 
+    d3.select('g.legend')
+      .attr("class", "legend overview")
+
     // Hold candidate name
     chart.legend.append("rect")
       .attr("width", legend.width)
       .attr("height", offset)
       .attr("class", "name");
 
-    chart.legend.append("rect")
-      .attr()
-
     // Show which candidate is selected
     chart.legend.append("rect")
-      .attr('x', legend.width - 10)
-      .attr("width", 10)
+      .attr('x', legend.width - legend.right_bar.width)
+      .attr("width", legend.right_bar.width)
       .attr("height", offset)
-      .attr("class", function(d) {
-        return 'status ' + chart.color(d);
-      });
+      .attr("class", 'status');
 
     // Dividers between candidates
     chart.legend.append("rect")
-      .attr("width", legend.width)
-      .attr("height", 3)
-      .attr("fill", "white");
+      .attr('x', legend.width - legend.right_bar.width)
+      .attr("class", "divider")
+      .attr("width", legend.right_bar.width)
+      .attr("height", 2);
 
     chart.legend.append("text")
-      .attr("x", legend.width - 22) //legend.width / 2 - 5)
+      .attr("x", legend.width - 22)
     .attr("y", offset / 2)
       .attr("dy", ".35em")
       .text(function(d) {
@@ -293,12 +295,10 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       });
 
     scale_items.append("circle")
-      .attr('cy', scale.dimensions.height / 2)
-      .attr('fill', '#d3d3d3');
+      .attr('cy', scale.dimensions.height / 2);
 
     scale_items.append("text")
       .attr("y", 70)
-      .style("text-anchor", "middle")
       .text(function(d) {
         return "$" + d / 1000 + "k";
       });
@@ -306,7 +306,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     scale.el.insert("rect", ":first-child")
       .attr("width", scale.dimensions.width)
       .attr("height", scale.dimensions.height)
-      .attr("fill", "#f0f0f0");
+      .attr("class", "scale");
 
     scale.el.append("text")
       .attr("x", 0)
@@ -316,8 +316,39 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
   },
 
+  setOverviewHover: function() {
+    $('.legend').unbind('mouseenter mouseleave');
+
+    $('.legend').hover(function() {
+      d3.select(this).select('.name')
+        .attr("class", "name highlight");
+    }, function() {
+      d3.select(this).select('.name')
+        .attr("class", "name");
+    });
+  },
+
+  setCandidateHover: function() {
+    var chart = this;
+
+    // Clear existing hover
+    $('.legend').unbind('mouseenter mouseleave');
+
+    // Add new hover functionality
+    $('.legend.deselected').hover(function() {
+      var candidate = $(this).find('text').text();
+      var color = chart.color(candidate);
+      d3.select(this).select('.status')
+        .attr("class", color + " status");
+    }, function() {
+      d3.select(this).select('.status')
+        .attr("class", "status");
+    });
+  },
+
   addListeners: function(updateBubbles, updateZips) {
     var chart = this;
+    //chart.setHover();
 
     chart.legend
       .on("click", function() {
@@ -328,14 +359,6 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
           updateZips: updateZips
         });
       })
-      .on("mouseover", function() {
-        d3.select(this)
-          .classed('hover', true);
-      })
-      .on("mouseout", function() {
-        d3.select(this)
-          .classed('hover', false);
-      });
   },
 
   update: function(opts) {
@@ -344,35 +367,35 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     chart.updateBubbles(opts.selection)
     opts.updateZips(opts.selection);
 
-    var legend = {
-      width: chart.dimensions.width / 6
-    }
-
     var label = $(opts.selection).select('text').text();
 
     // Update legend
-
     if (label == 'Overview') { // Overview
-      chart.legend.classed('selected', true);
+      chart.legend.attr("class", "legend");
+      chart.legend.each(function() {
+          var color = chart.color($(this).select('text').text());
+          d3.select(this).select('.status')
+            .attr("class", color + " status");
+        });
+      chart.setOverviewHover();
       $('g#scale').fadeOut()
 
     } else { // Candidates
-      // Return previously selected bar to normal size
-      chart.legend.select('.selected .status')
-        .transition()
-        .attr("x", legend.width - 10)
-        .attr("width", 10)
-        .each("end", function() {
-          chart.legend.attr("class", "legend deselected");
-          opts.selection.attr("class", "legend selected")
-        });
+      var color = chart.color(label);
+      chart.legend
+        .attr("class", "legend deselected");
+      opts.selection
+        .attr("class", "legend selected");
 
-      // Expand selected bar
+      chart.legend.select('.status')
+        .attr("class", "status");
       opts.selection.select('.status')
-        .transition()
-        .attr("x", 0)
-        .attr("width", legend.width);
+        .attr("class", color + " status");
 
+      chart.legend.select('.name')
+        .attr("class", "name");
+
+      chart.setCandidateHover();
       $('g#scale').fadeIn();
     }
   },

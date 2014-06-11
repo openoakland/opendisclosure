@@ -3,85 +3,19 @@
 	margin: 0;
 }
 
+/* ------------------- MAP -------------------- */
+
 .zip {
-	fill: white;/*#f8f8f8;#ebebeb;*/
-  stroke: #bfbfbf
+	fill: white;
+  stroke: #bfbfbf;
 }
 
 .city {
 	fill: none;
-	stroke: #595959;
+	stroke: #4c4c4c;
 }
 
-path.q0-12{fill: #FBA723} 
-path.q1-12{fill: #0087E5} 
-path.q2-12{fill: #26D5F5} 
-path.q3-12{fill: #A8E938} 
-path.q4-12{fill: #FED35E} 
-path.q5-12{fill: #FD2D2D} 
-path.q6-12{fill: #E1266C} 
-path.q7-12{fill: #DA9EE7} 
-path.q8-12{fill: #0A588f} 
-path.q9-12{fill: #8E34F4}
-path.q10-12{fill: #2FB788} 
-path.q11-12{fill: #BA0012}
-path.q12-12{fill: #B9A101}
-path.q13-12{fill: #480A6A}
-
-circle.q0-12{fill: #FBA723} 
-circle.q1-12{fill: #0087E5} 
-circle.q2-12{fill: #26D5F5} 
-circle.q3-12{fill: #A8E938} 
-circle.q4-12{fill: #FED35E} 
-circle.q5-12{fill: #FD2D2D} 
-circle.q6-12{fill: #E1266C} 
-circle.q7-12{fill: #DA9EE7} 
-circle.q8-12{fill: #0A588f} 
-circle.q9-12{fill: #8E34F4}
-circle.q10-12{fill: #2FB788} 
-circle.q11-12{fill: #BA0012}
-circle.q12-12{fill: #B9A101}
-circle.q13-12{fill: #480A6A}
-
-/*circle {
-	stroke: #595959;
-	stroke-opacity: 50%;
-}*/
-
-.legend.hover .q0-12{fill: #FBA723} 
-.legend.hover .q1-12{fill: #0087E5} 
-.legend.hover .q2-12{fill: #26D5F5} 
-.legend.hover .q3-12{fill: #A8E938} 
-.legend.hover .q4-12{fill: #FED35E} 
-.legend.hover .q5-12{fill: #FD2D2D} 
-.legend.hover .q6-12{fill: #E1266C} 
-.legend.hover .q7-12{fill: #DA9EE7} 
-.legend.hover .q8-12{fill: #0A588f} 
-.legend.hover .q9-12{fill: #8E34F4}
-.legend.hover .q10-12{fill: #2FB788} 
-.legend.hover .q11-12{fill: #BA0012}
-.legend.hover .q12-12{fill: #B9A101}
-.legend.hover .q13-12{fill: #480A6A}
-
-.legend.selected .q0-12{fill: #FBA723} 
-.legend.selected .q1-12{fill: #0087E5} 
-.legend.selected .q2-12{fill: #26D5F5} 
-.legend.selected .q3-12{fill: #A8E938} 
-.legend.selected .q4-12{fill: #FED35E} 
-.legend.selected .q5-12{fill: #FD2D2D} 
-.legend.selected .q6-12{fill: #E1266C} 
-.legend.selected .q7-12{fill: #DA9EE7} 
-.legend.selected .q8-12{fill: #0A588f} 
-.legend.selected .q9-12{fill: #8E34F4}
-.legend.selected .q10-12{fill: #2FB788} 
-.legend.selected .q11-12{fill: #BA0012}
-.legend.selected .q12-12{fill: #B9A101}
-.legend.selected .q13-12{fill: #480A6A}
-
-svg rect#background{
-	fill: #FFFFFF;
-	fill-opacity: 0;
-}
+/* ------------------- LEGEND -------------------- */
 
 .legend { 
 	cursor: pointer;
@@ -92,33 +26,60 @@ svg rect#background{
 	text-anchor: end;
 }
 
+.legend.overview rect.name{
+	fill: black;
+	fill-opacity: 100%;
+}
+
+.legend.overview text {
+	fill: white;
+}
+
+.status {
+	fill: #bfbfbf;
+}
+
 .legend rect.name {
-	fill : #ffffff;
 	fill-opacity: 0;
 }
 
-.legend rect.status {
-	fill: #9c9c9c;
-}
-
-/*.legend.hover rect.name {
-	fill: #f5f5f5;
-}*/
-
-.legend.hover text{
-	fill: black;
-}
-
 .legend.selected rect.name {
-	fill: #fafafa;
+	fill : #ffffff;
+	fill-opacity: 100%;
 }
 
-
-
-.legend.selected text{
-	fill: black;
+.legend rect.name.highlight {
+	fill : #ffffff;
+	fill-opacity: 100%;
 }
+
+.divider {
+	fill: white;
+}
+
+/* ------------------- SCALE -------------------- */
 
 #scale {
 	display: none;
 }
+
+rect.scale {
+	fill: white;
+}
+
+/* ------------------- COLOR SCALE -------------------- */
+
+.q0-12{fill: #000000} 
+.q1-12{fill: #0087E5} 
+.q2-12{fill: #26D5F5} 
+.q3-12{fill: #A8E938} 
+.q4-12{fill: #FED35E} 
+.q5-12{fill: #FD2D2D} 
+.q6-12{fill: #E1266C} 
+.q7-12{fill: #DA9EE7} 
+.q8-12{fill: #0A588f} 
+.q9-12{fill: #8E34F4}
+.q10-12{fill: #2FB788} 
+.q11-12{fill: #BA0012}
+.q12-12{fill: #B9A101}
+.q13-12{fill: #480A6A}
