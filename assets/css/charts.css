@@ -50,9 +50,9 @@
 
 /* -- Overview Bar -- */
 
-.legend.overview text {
+/*.legend.overview text {
 	font-weight: bold;
-}
+}*/
 
 .legend.overview rect.divider {
 	display: none;

@@ -196,9 +196,13 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       .attr('r', chart.radius.bind(chart));
   },
 
+  clearBubbles: function() {
+    d3.selectAll("g#circles circle").attr('r', 0);
+  },
+
   radius: function(d) {
     var chart = this;
-    var bubbleScale = chart.dimensions.width * .00018;
+    var bubbleScale = chart.dimensions.width * .00015;
     var area = 0;
     if (d.properties) {
       if (chart.data.amounts[d.properties.ZIP]) {
@@ -213,9 +217,9 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
   drawLegend: function() {
     var chart = this;
 
-    var offset = chart.dimensions.height / chart.data.candidates.length;
     var legend = {
       width: chart.dimensions.width / 4.8,
+      offset: chart.dimensions.height / chart.data.candidates.length,
       right_bar: {
         width: chart.dimensions.width / 80
       },
@@ -228,23 +232,17 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       .enter().append('g')
       .attr("class", "legend")
       .attr("transform", function(d, i) {
-        return "translate(0, " + i * offset + ")";
+        return "translate(0, " + i*legend.offset + ")";
       });
 
     d3.select('g.legend')
       .attr("class", "legend overview")
 
-    // Hold candidate name
-    chart.legend.append("rect")
-      .attr("width", legend.width)
-      .attr("height", offset + 2) // Align to bottom spacer
-      .attr("class", "name");
-
     // Show which candidate is selected
     chart.legend.append("rect")
       .attr('x', legend.width - legend.right_bar.width)
       .attr("width", legend.right_bar.width)
-      .attr("height", offset)
+      .attr("height", legend.offset)
       .attr("class", 'status');
 
     // Dividers between candidates
@@ -256,12 +254,30 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
     chart.legend.append("text")
       .attr("x", legend.width - legend.margin - legend.right_bar.width)
-      .attr("y", offset / 2)
+      .attr("y", legend.offset / 2)
       .attr("font-size", legend.font_size)
       .attr("dy", ".35em")
-      .text(function(d) {
-        return d;
-      });
+      .text(function(d) { return d; })
+
+    d3.select('.legend.overview text')
+      .attr("font-size", legend.font_size + 4)
+
+    // Hightlighted candidate name (fitted to text length)
+    chart.legend.insert("rect", ":first-child")
+      .attr("width", function() {
+        var text = $(this).parent().find('text').get()[0]
+        var width = text.getBBox().width;
+        return width + legend.margin*3;
+      })
+      .attr("x", function() {
+        var right_edge = legend.width - legend.right_bar.width
+        return right_edge - this.width.animVal.value;
+      })
+      .attr("height", legend.offset + 2) // Align to bottom spacer
+      .attr("class", "name");
+
+    d3.select('.legend.overview .name')
+      .attr("height", legend.offset)
   },
 
   drawScale: function() {
@@ -329,7 +345,6 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
   click: function(clicked, label) {
     var chart = this;
-    chart.updateBubbles(clicked);
     chart.updateZips(clicked);
 
     // Update legend
@@ -344,6 +359,9 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
   clickOverview: function(clicked, label) {
     var chart = this;
+
+    chart.clearBubbles();
+
     chart.legend.each(function() {
       var key_color = chart.color($(this).select('text').text());
       d3.select(this).select('.status')
@@ -356,6 +374,9 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
   clickCandidate: function(clicked, label) {
     var chart = this;
     var color = chart.color(label);
+
+    chart.updateBubbles(clicked);
+    
     chart.legend.select('.status')
       .attr("class", "status");
     clicked.select('.status')
