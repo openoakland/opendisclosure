@@ -87,6 +87,12 @@ get '/api/contributions' do
     .to_json(fields)
 end
 
+get '/api/employer_contributions' do
+  headers 'Content-Type' => 'application/json'
+  EmployerContribution.all.to_json;
+
+end
+
 get '/api/party/:id' do |id|
   # TODO: Include names of the people contributing?
   headers 'Content-Type' => 'application/json'

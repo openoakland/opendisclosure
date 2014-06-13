@@ -5,12 +5,10 @@ gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'activerecord'
 gem 'haml'
+gem 'pg'
+gem 'csv-mapper'
 
 group :development do
-  gem 'sqlite3'
   gem 'foreman'
 end
 
-group :production do
-  gem 'pg'
-end

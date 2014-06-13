@@ -1,30 +1,25 @@
 OpenDisclosure.CandidateView = Backbone.View.extend({
 
   template: _.template("<section id='candidate'>\
-      <h1><%= short_name %></h1>\
-      <div class='row'>\
+      <h1><%= attributes.short_name %></h1>\
+      <div class='row candidate'>\
         <div class='col-sm-4'>\
-          <img class='mayor-picture' src='<%= imagePath %>' /> \
+          <img class='mayor-picture' src='<%= attributes.imagePath %>' /> \
         </div>\
         <div class='col-sm-4'>\
           <p><%= name %></p>\
-          <p>Party Affiliation: <%= party_affiliation %></p>\
-          <p><%= profession %></p>\
+          <p>Party Affiliation: <%= attributes.party_affiliation %></p>\
+          <p><%= attributes.profession %></p>\
         </div>\
         <div class='col-sm-4'>\
-          <% if (typeof summary !== 'undefined') { %>\
-          <p>Total Raised: $ <%= summary.total_contributions_received %></p>\
-          <p>Total Expenditures: $<%= summary.total_expenditures_made %></p>\
-          <p>Ending Cash On Hand: $<%= summary.ending_cash_balance %></p>\
-          <p>Last Updated: <%= summary.last_summary_date %> </p>\
+          <% if (typeof attributes.summary !== 'undefined') { %>\
+          <p>Total Raised:  <%= friendlySummaryNumber('total_contributions_received') %></p>\
+          <p>Total Expenditures: <%= friendlySummaryNumber('total_expenditures_made') %></p>\
+          <p>Ending Cash On Hand: <%= friendlySummaryNumber('ending_cash_balance') %></p>\
+          <p>Last Updated: <%= attributes.summary.last_summary_date %> </p>\
           <% } %>\
         </div>\
-      </div>\
-    </section>\
-    <section>\
-      <h2>Contributions</h2>\
-      <div class='contributions clearfix'></div>\
-    </section>"),
+     "),
 
   initialize: function(){
     // debugger;
@@ -33,7 +28,7 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
   },
 
   render: function(){
-    $('#mayoral-candidates').html(this.template(this.model.attributes));
+    $('#mayoral-candidates').html(this.template(this.model));
     $('#charts').parent().html('');
     $('.sidebar li').removeClass('active');
     $('#nav-'+this.model.attributes.id).addClass('active');
