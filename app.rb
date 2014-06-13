@@ -89,8 +89,8 @@ end
 
 get '/api/employer_contributions' do
   headers 'Content-Type' => 'application/json'
-  EmployerContribution.all.to_json;
 
+  EmployerContribution.all.to_json
 end
 
 get '/api/party/:id' do |id|

@@ -26,7 +26,7 @@ Install postgres:
 
 Now you can install the other dependencies with:
 
-    bundle install --without=production
+    bundle install
 
 You should be all set. Run the app like this:
 
