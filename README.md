@@ -11,7 +11,7 @@ Meeting notes can be found in [this Google Doc](https://docs.google.com/document
 
 To start, you'll need ruby installed.
 
-    rbenv install 2.1.0
+    rbenv install 2.1.2
 
 Then install bundler and foreman:
 
