@@ -28,6 +28,13 @@ Now you can install the other dependencies with:
 
     bundle install
 
+Create your postgresql user: (may be unnecessary, depending on how postgres is
+installed):
+
+    sudo -upostgres createuser $USER -P
+    # enter a password you're not terribly worried to share
+    echo DATABASE_URL="postgres://$USER:[your password]@localhost/postgres" > .env
+
 You should be all set. Run the app like this:
 
     foreman start
