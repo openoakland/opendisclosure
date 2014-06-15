@@ -77,20 +77,19 @@
 	display: none;
 }
 
-#scale rect{
-	display: none;
-}
-
-#scale text {
-	fill: #555555;
-}
-
 #scale text.name {
 	text-anchor: middle;
+	fill: #555555;
 }
 
 rect.scale {
 	fill: white;
+}
+
+/* ------------------- OVERVIEW DESCRIPTION -------------------- */
+
+text.grey {
+	fill: #555555;
 }
 
 /* ------------------- COLOR SCALE -------------------- */

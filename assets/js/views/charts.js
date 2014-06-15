@@ -36,6 +36,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         chart.drawBubbles();
         chart.drawScale();
         chart.drawLegend();
+        chart.drawOverviewDescription();
         chart.clickListener();
         chart.click(d3.select('.overview'), 'Overview');
       });
@@ -283,13 +284,12 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
   drawScale: function() {
     // Show the scale of bubbles on the chart
     var chart = this;
-
     var scale = {
       dimensions: {
-        width: chart.dimensions.width * .22,
-        height: chart.dimensions.height * .17,
+        width: chart.dimensions.width * .225,
+        height: chart.dimensions.height * .21,
         left: chart.dimensions.width * .44,
-        top: chart.dimensions.height * .83
+        top: chart.dimensions.height * .79
       },
       data: [1000, 10000, 25000],
       font_size: chart.dimensions.width / 54,
@@ -302,7 +302,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         scale.dimensions.left + ", " +
         scale.dimensions.top + ")");
 
-    var offset = scale.bubble_spacer * .5;
+    var offset = scale.bubble_spacer * .6;
     var scale_items = scale.el.selectAll("g")
       .data(scale.data)
       .enter().append('g')
@@ -326,11 +326,46 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       });
 
     scale.el.append("text")
-      .attr("dy", ".35em")
+      .attr("dy", "1.4em")
       .attr("font-size", scale.font_size)
       .text("Total donations from each zip code.")
       .call(this.wrap, scale.dimensions.width)
 
+  },
+
+  drawOverviewDescription: function() {
+    var chart = this;
+    var scale = {
+      dimensions: {
+        width: chart.dimensions.width * .24,
+        height: chart.dimensions.height * .21,
+        left: chart.dimensions.width * .44,
+        top: chart.dimensions.height * .79
+      },
+      data: [1000, 10000, 25000],
+      font_size: chart.dimensions.width / 54,
+      bubble_spacer: chart.dimensions.width * .046
+    };
+
+    scale.el = chart.svg.append("g")
+      .attr('id', 'overview-description')
+      .attr("transform", "translate(" +
+        scale.dimensions.left + ", " +
+        scale.dimensions.top + ")");
+
+    scale.el.append("text")
+      .attr("dy", "1.4em")
+      .attr("font-size", scale.font_size)
+      .text("Candidate who raised the most money in each ZIP code. ")
+      .call(this.wrap, scale.dimensions.width)
+
+    scale.el.append("text")
+      .attr("dy", "1.4em")
+      .attr("font-size", scale.font_size)
+      .attr("class", "grey")
+      .text("Click the candidates to see where they raised money.")
+      .call(this.wrap, scale.dimensions.width)
+      .attr("y", "3.2em")
   },
 
   clickListener: function() {
@@ -368,6 +403,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         .attr("class", key_color + " status");
     });
     chart.setOverviewHover();
+    $('g#overview-description').fadeIn();
     $('g#scale').fadeOut();
   },
 
@@ -387,6 +423,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
     chart.setCandidateHover();
     $('g#scale').fadeIn();
+    $('g#overview-description').fadeOut();
   },
 
   setOverviewHover: function() {
@@ -425,10 +462,12 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         word,
         line = [],
         lineNumber = 0,
-        lineHeight = 1.1, // ems
+        lineHeight = 0,//1.1, // ems
         y = text.attr("y"),
         dy = parseFloat(text.attr("dy")),
         tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+        console.log({ y: y,
+                      dy: dy });
       while (word = words.pop()) {
         line.push(word);
         tspan.text(line.join(" "));
