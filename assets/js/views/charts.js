@@ -202,7 +202,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
   radius: function(d) {
     var chart = this;
-    var bubbleScale = chart.dimensions.width * .00015;
+    var bubbleScale = chart.dimensions.width * .00014;
     var area = 0;
     if (d.properties) {
       if (chart.data.amounts[d.properties.ZIP]) {
@@ -286,12 +286,14 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
     var scale = {
       dimensions: {
-        width: chart.dimensions.width * .232,
-        height: chart.dimensions.height * .2,
-        left: chart.dimensions.width * .768,
-        top: chart.dimensions.height * .8
+        width: chart.dimensions.width * .22,
+        height: chart.dimensions.height * .17,
+        left: chart.dimensions.width * .44,
+        top: chart.dimensions.height * .83
       },
-      data: [1000, 10000, 25000]
+      data: [1000, 10000, 25000],
+      font_size: chart.dimensions.width / 54,
+      bubble_spacer: chart.dimensions.width * .046
     };
 
     scale.el = chart.svg.append("g")
@@ -300,34 +302,32 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         scale.dimensions.left + ", " +
         scale.dimensions.top + ")");
 
-    var offset = 20;
+    var offset = scale.bubble_spacer * .5;
     var scale_items = scale.el.selectAll("g")
       .data(scale.data)
       .enter().append('g')
       .attr("transform", function(d) {
         var centerpoint = offset + chart.radius(d);
-        offset += chart.radius(d) * 2 + 25;
+        offset += chart.radius(d) * 2 + scale.bubble_spacer;
         return "translate(" + centerpoint + ", 0)"
       });
 
     scale_items.append("circle")
-      .attr('cy', scale.dimensions.height / 2);
+      .attr('cy', function(d) {
+        return scale.dimensions.height*.72 - chart.radius(d);
+      });
 
     scale_items.append("text")
-      .attr("y", 70)
-      .attr("class", "label")
+      .attr("y", scale.dimensions.height*.95)
+      .attr("font-size", scale.font_size)
+      .attr("class", "name")
       .text(function(d) {
         return "$" + d / 1000 + "k";
       });
 
-    scale.el.insert("rect", ":first-child")
-      .attr("width", scale.dimensions.width)
-      .attr("height", scale.dimensions.height)
-      .attr("class", "scale");
-
     scale.el.append("text")
-      .attr("x", 0)
       .attr("dy", ".35em")
+      .attr("font-size", scale.font_size)
       .text("Total donations from each zip code.")
       .call(this.wrap, scale.dimensions.width)
 

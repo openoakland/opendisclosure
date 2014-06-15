@@ -67,13 +67,25 @@
 	fill: white;
 }
 
+.legend.selected text {
+	fill: black;
+}
+
 /* ------------------- SCALE -------------------- */
 
 #scale {
 	display: none;
 }
 
-#scale text.label {
+#scale rect{
+	display: none;
+}
+
+#scale text {
+	fill: #555555;
+}
+
+#scale text.name {
 	text-anchor: middle;
 }
 
