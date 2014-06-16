@@ -24,6 +24,8 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         .scale(s)
         .translate(t));
 
+    console.log(chart.dimensions);
+
     chart.svg = d3.select(this.el).append("svg")
       .attr("id", "map")
       .attr("width", chart.dimensions.width)
@@ -92,10 +94,6 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
     var candidates = _.keys(candidates);
     candidates.unshift('Overview');
-    candidates.push('Patrick McCullough');
-    candidates.push('Courtney Ruby');
-    candidates.push('Ace Ventura');
-    candidates.push('Buzz Aldrin');
 
     return {
       candidates: candidates,

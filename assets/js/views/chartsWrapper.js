@@ -69,9 +69,8 @@ OpenDisclosure.ChartView = Backbone.View.extend({
 
     wrapperHeight = height + this.options.margin.top + this.options.margin.bottom;
 
-    //console.log('VIEW OPTIONS', this.options);
-    this.$el
-      .height(wrapperHeight);
+    // this.$el
+    //   .height(wrapperHeight);
 
     this.dimensions = {
       width: width,
