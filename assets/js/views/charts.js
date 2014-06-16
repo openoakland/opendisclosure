@@ -337,7 +337,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
   drawCandidateDescription: function() {
     this.$el.prepend("<div class='candidate description'>" +
-      "<h3>Total donations from each zip code</h3>" +
+      "<h3>Total contributions from each zip code</h3>" +
       "<h4 class='return'>Return to overview map.</h4>" +
       "</div>");
   },
