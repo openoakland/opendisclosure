@@ -36,11 +36,13 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         chart.drawBubbles();
         chart.drawScale();
         chart.drawLegend();
-        chart.drawOverviewDescription();
         chart.clickListener();
-        chart.click(d3.select('.overview'), 'Overview');
+        chart.click(d3.select('.legend.overview'), 'Overview');
       });
     });
+
+    chart.drawOverviewDescription();
+    chart.drawCandidateDescription();
   },
 
   processData: function(data) {
@@ -233,7 +235,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       .enter().append('g')
       .attr("class", "legend")
       .attr("transform", function(d, i) {
-        return "translate(0, " + i*legend.offset + ")";
+        return "translate(0, " + i * legend.offset + ")";
       });
 
     d3.select('g.legend')
@@ -258,7 +260,9 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       .attr("y", legend.offset / 2)
       .attr("font-size", legend.font_size)
       .attr("dy", ".35em")
-      .text(function(d) { return d; })
+      .text(function(d) {
+        return d;
+      })
 
     d3.select('.legend.overview text')
       .attr("font-size", legend.font_size + 4)
@@ -268,14 +272,14 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       .attr("width", function() {
         var text = $(this).parent().find('text').get()[0]
         var width = text.getBBox().width;
-        return width + legend.margin*3;
+        return width + legend.margin * 3;
       })
       .attr("x", function() {
         var right_edge = legend.width - legend.right_bar.width
         return right_edge - this.width.animVal.value;
       })
       .attr("height", legend.offset + 2) // Align to bottom spacer
-      .attr("class", "name");
+    .attr("class", "name");
 
     d3.select('.legend.overview .name')
       .attr("height", legend.offset)
@@ -314,58 +318,30 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
     scale_items.append("circle")
       .attr('cy', function(d) {
-        return scale.dimensions.height*.72 - chart.radius(d);
+        return scale.dimensions.height * .72 - chart.radius(d);
       });
 
     scale_items.append("text")
-      .attr("y", scale.dimensions.height*.95)
+      .attr("y", scale.dimensions.height * .95)
       .attr("font-size", scale.font_size)
       .attr("class", "name")
       .text(function(d) {
         return "$" + d / 1000 + "k";
       });
-
-    scale.el.append("text")
-      .attr("dy", "1.4em")
-      .attr("font-size", scale.font_size)
-      .text("Total donations from each zip code.")
-      .call(this.wrap, scale.dimensions.width)
-
   },
 
   drawOverviewDescription: function() {
-    var chart = this;
-    var scale = {
-      dimensions: {
-        width: chart.dimensions.width * .24,
-        height: chart.dimensions.height * .21,
-        left: chart.dimensions.width * .44,
-        top: chart.dimensions.height * .79
-      },
-      data: [1000, 10000, 25000],
-      font_size: chart.dimensions.width / 54,
-      bubble_spacer: chart.dimensions.width * .046
-    };
+    this.$el.prepend("<div class='overview description'>" +
+      "<h3>Candidate who raised the most money in each ZIP code</h3>" +
+      "<h4>Click the candidates to see where they raised money.</h4>" +
+      "</div>");
+  },
 
-    scale.el = chart.svg.append("g")
-      .attr('id', 'overview-description')
-      .attr("transform", "translate(" +
-        scale.dimensions.left + ", " +
-        scale.dimensions.top + ")");
-
-    scale.el.append("text")
-      .attr("dy", "1.4em")
-      .attr("font-size", scale.font_size)
-      .text("Candidate who raised the most money in each ZIP code. ")
-      .call(this.wrap, scale.dimensions.width)
-
-    scale.el.append("text")
-      .attr("dy", "1.4em")
-      .attr("font-size", scale.font_size)
-      .attr("class", "grey")
-      .text("Click the candidates to see where they raised money.")
-      .call(this.wrap, scale.dimensions.width)
-      .attr("y", "3.2em")
+  drawCandidateDescription: function() {
+    this.$el.prepend("<div class='candidate description'>" +
+      "<h3>Total donations from each zip code</h3>" +
+      "<h4 class='return'>Return to overview map.</h4>" +
+      "</div>");
   },
 
   clickListener: function() {
@@ -376,6 +352,10 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       var label = $(this).select('text').text();
       chart.click(clicked, label)
     });
+
+    $('.candidate.description .return').click(function() {
+      chart.click(d3.select('.legend.overview'), 'Overview');
+    })
   },
 
   click: function(clicked, label) {
@@ -403,7 +383,10 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         .attr("class", key_color + " status");
     });
     chart.setOverviewHover();
-    $('g#overview-description').fadeIn();
+    
+    $('.candidate.description').fadeOut(function() {
+      $('.overview.description').fadeIn();
+    });
     $('g#scale').fadeOut();
   },
 
@@ -412,7 +395,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     var color = chart.color(label);
 
     chart.updateBubbles(clicked);
-    
+
     chart.legend.select('.status')
       .attr("class", "status");
     clicked.select('.status')
@@ -423,7 +406,9 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
     chart.setCandidateHover();
     $('g#scale').fadeIn();
-    $('g#overview-description').fadeOut();
+    $('.overview.description').fadeOut(function() {
+      $('.candidate.description').fadeIn();
+    });
   },
 
   setOverviewHover: function() {
@@ -451,33 +436,6 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     }, function() {
       d3.select(this).select('.status')
         .attr("class", "status");
-    });
-  },
-
-  // From http://bl.ocks.org/mbostock/7555321
-  wrap: function(text, width) {
-    text.each(function() {
-      var text = d3.select(this),
-        words = text.text().split(/\s+/).reverse(),
-        word,
-        line = [],
-        lineNumber = 0,
-        lineHeight = 0,//1.1, // ems
-        y = text.attr("y"),
-        dy = parseFloat(text.attr("dy")),
-        tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
-        console.log({ y: y,
-                      dy: dy });
-      while (word = words.pop()) {
-        line.push(word);
-        tspan.text(line.join(" "));
-        if (tspan.node().getComputedTextLength() > width) {
-          line.pop();
-          tspan.text(line.join(" "));
-          line = [word];
-          tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
-        }
-      }
     });
   }
   

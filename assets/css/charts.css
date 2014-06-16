@@ -1,8 +1,27 @@
-#zip-bubble-chart {
+#charts div {
 	padding: 0;
 	margin: 0;
+	border: none;
 }
 
+#charts h3 {
+	font-size: 20px;
+	text-align: right;
+}
+
+#charts h4 {
+	font-size: 16px;
+	text-align: right;
+}
+
+#charts div.candidate.description {
+	display: none;
+}
+
+
+#charts div.candidate.description .return{
+	text-decoration: underline;
+}
 /* ------------------- MAP -------------------- */
 
 .zip {

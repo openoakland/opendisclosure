@@ -1,22 +1,3 @@
-<<<<<<< HEAD
-=======
-// OpenDisclosure.AppView = Backbone.View.extend({
-
-//   initialize : function() {
-
-//     this.candidates = new OpenDisclosure.Candidates();
-//     new OpenDisclosure.CandidateTable({ collection : this.candidates });
-
-//     this.contributions = new OpenDisclosure.ContributionCollection();
-//     new OpenDisclosure.ChartsView({ collection : this.contributions });
-
-//   }
-
-// });
-
-
-
->>>>>>> Chart loads via backbone chart wrapper
 OpenDisclosure.App = Backbone.Router.extend({
   routes: {
     '/': 'home',
@@ -24,7 +5,6 @@ OpenDisclosure.App = Backbone.Router.extend({
     'contributor/:id': 'contributor'
   },
 
-<<<<<<< HEAD
   initialize : function() {
     if(!this.candidates){this.candidates = new OpenDisclosure.Candidates();}
     if(!this.contributions){this.contributions = new OpenDisclosure.Contributions();}
@@ -34,7 +14,11 @@ OpenDisclosure.App = Backbone.Router.extend({
 
   home: function(){
     new OpenDisclosure.CandidateTable({ collection : this.candidates });
-    new OpenDisclosure.ChartsView({ collection : this.contributions });
+    new OpenDisclosure.ZipcodeChartView({
+      el: '#zip-bubble-chart',
+      collection: this.contributions, 
+      base_height: 480
+    })
   },
 
   candidate: function(id){
@@ -62,51 +46,11 @@ OpenDisclosure.App = Backbone.Router.extend({
 
   contributor : function(){
 
-=======
-  initialize: function() {
-    this.homepage();
-  },
-
-  homepage: function() {
-    this.candidates = new OpenDisclosure.Candidates();
-    new OpenDisclosure.CandidateTable({
-      collection: this.candidates
-    });
-
-    this.contributions = new OpenDisclosure.ContributionCollection();
-    new OpenDisclosure.ZipcodeChartView({
-      el: '#zip-bubble-chart',
-      collection: this.contributions, //,
-      base_height: 480
-    })
-  },
-
-  candidateView: function(id) {
-
-    if (!this.candidates) {
-      this.candidates = new OpenDisclosure.Candidates();
-    }
-
-    this.candidate = this.candidates.get(id);
-    console.log('candidate', this.candidate);
-
-    new OpenDisclosure.CandidateView({
-      model: this.candidate
-    });
->>>>>>> Chart loads via backbone chart wrapper
   }
 
 });
 
-
-<<<<<<< HEAD
 $(function(){
   Backbone.history.start();
   app = new OpenDisclosure.App();
 });
-=======
-$(function() {
-  app = new OpenDisclosure.App();
-  Backbone.history.start();
-});
->>>>>>> Chart loads via backbone chart wrapper
