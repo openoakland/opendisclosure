@@ -1,0 +1,130 @@
+#charts div {
+	padding: 0;
+	margin: 0;
+	border: none;
+}
+
+#charts h3 {
+	font-size: 20px;
+	text-align: right;
+}
+
+#charts h4 {
+	font-size: 16px;
+	text-align: right;
+}
+
+#charts div.candidate.description {
+	display: none;
+}
+
+
+#charts div.candidate.description .return{
+	text-decoration: underline;
+	cursor: pointer;
+}
+/* ------------------- MAP -------------------- */
+
+.zip {
+	fill: white;
+  stroke: #bfbfbf;
+}
+
+.city {
+	fill: none;
+	stroke: #4c4c4c;
+}
+
+/* ------------------- LEGEND -------------------- */
+
+.legend { 
+	cursor: pointer;
+}
+
+.legend text{
+	fill: #555555;
+	text-anchor: end;
+}
+
+.status {
+	fill: #bfbfbf;
+}
+
+.legend rect.name {
+	fill-opacity: 0;
+}
+
+.legend.selected rect.name {
+	fill : #ffffff;
+	fill-opacity: 100%;
+}
+
+.legend rect.name.highlight {
+	fill : #ffffff;
+	fill-opacity: 100%;
+}
+
+.divider {
+	fill: white;
+}
+
+/* -- Overview Bar -- */
+
+/*.legend.overview text {
+	font-weight: bold;
+}*/
+
+.legend.overview rect.divider {
+	display: none;
+}
+
+.legend.overview.selected rect.name{
+	fill: black;
+	fill-opacity: 100%;
+}
+
+.legend.overview.selected text {
+	fill: white;
+}
+
+.legend.selected text {
+	fill: black;
+}
+
+/* ------------------- SCALE -------------------- */
+
+#scale {
+	display: none;
+}
+
+#scale text.name {
+	text-anchor: middle;
+	fill: #555555;
+}
+
+rect.scale {
+	fill: white;
+}
+
+/* ------------------- OVERVIEW DESCRIPTION -------------------- */
+
+text.grey {
+	fill: #555555;
+}
+
+/* ------------------- COLOR SCALE -------------------- */
+
+.q0-12{fill: #000000} 
+.q1-12{fill: #0087E5} 
+.q2-12{fill: #26D5F5} 
+.q3-12{fill: #A8E938} 
+.q4-12{fill: #FED35E} 
+.q5-12{fill: #FD2D2D} 
+.q6-12{fill: #E1266C} 
+.q7-12{fill: #DA9EE7} 
+.q8-12{fill: #0A588f} 
+.q9-12{fill: #8E34F4}
+.q10-12{fill: #2FB788} 
+.q11-12{fill: #BA0012}
+.q12-12{fill: #B9A101}
+.q13-12{fill: #480A6A}
