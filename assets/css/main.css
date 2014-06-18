@@ -147,7 +147,7 @@ header .title {
 }
 
 #charts div {
-  padding-top:30px;
+  padding-top:10px;
   border-bottom: 2px solid #539137;
 }
 
@@ -223,4 +223,3 @@ ul#contributions {
   text-decoration: none;
   list-style: none;
 }
-

@@ -14,7 +14,11 @@ OpenDisclosure.App = Backbone.Router.extend({
 
   home: function(){
     new OpenDisclosure.CandidateTable({ collection : this.candidates });
-    new OpenDisclosure.ChartsView({ collection : this.contributions });
+    new OpenDisclosure.ZipcodeChartView({
+      el: '#zip-bubble-chart',
+      collection: this.contributions, 
+      base_height: 480
+    })
   },
 
   candidate: function(id){
@@ -45,7 +49,6 @@ OpenDisclosure.App = Backbone.Router.extend({
   }
 
 });
-
 
 $(function(){
   Backbone.history.start();
