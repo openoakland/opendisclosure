@@ -16,7 +16,7 @@ OpenDisclosure.App = Backbone.Router.extend({
     new OpenDisclosure.CandidateTable({ collection : this.candidates });
     new OpenDisclosure.ZipcodeChartView({
       el: '#zip-bubble-chart',
-      collection: this.contributions, 
+      collection: this.contributions,
       base_height: 480
     })
   },
