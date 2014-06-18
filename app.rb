@@ -36,7 +36,7 @@ get '/party/:id' do |id|
   haml :party, locals: {
     party: party,
     contributions: contributions,
-    summary: party.latest_summary,
+    summary: party.summary,
   }
 end
 
@@ -64,7 +64,7 @@ get '/api/candidates' do
   fields = {
     only: %w[id name committee_id received_contributions_count contributions_count received_contributions_from_oakland small_donations],
     methods: [
-      :latest_summary,
+      :summary,
       :short_name,
       :profession,
       :party_affiliation,
@@ -85,6 +85,12 @@ get '/api/contributions' do
     .where(recipient_id: Party.mayoral_candidates.to_a)
     .includes(:recipient, :contributor)
     .to_json(fields)
+end
+
+get '/api/employer_contributions' do
+  headers 'Content-Type' => 'application/json'
+  EmployerContribution.all.to_json;
+
 end
 
 get '/api/party/:id' do |id|

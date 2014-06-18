@@ -8,6 +8,7 @@ OpenDisclosure.App = Backbone.Router.extend({
   initialize : function() {
     if(!this.candidates){this.candidates = new OpenDisclosure.Candidates();}
     if(!this.contributions){this.contributions = new OpenDisclosure.Contributions();}
+    if(!this.employerContributions){this.employerContributions = new OpenDisclosure.EmployerContributions();}
     this.home();
   },
 
@@ -20,6 +21,15 @@ OpenDisclosure.App = Backbone.Router.extend({
     if (!this.candidates){ this.candidates = new OpenDisclosure.Candidates();}
     this.currentCandidate = this.candidates.get(id);
     new OpenDisclosure.CandidateView({model: this.currentCandidate});
+
+    // Render Top Contributions
+    var that = this;
+    var count = 0;
+    this.topContributions = _.filter(this.employerContributions.models, function(c) {
+      return c.attributes.recipient_id == that.currentCandidate.id && ++count <= 10;
+    });
+
+    new OpenDisclosure.TopContributorsView({collection: this.topContributions});
 
     // Render Contributions
     var that = this;

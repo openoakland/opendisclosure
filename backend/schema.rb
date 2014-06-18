@@ -34,15 +34,57 @@ ActiveRecord::Schema.define do
     t.index :contributor_id
   end
 
+  create_table :payments do |t|
+    t.integer :payer_id, null: false
+    t.integer :recipient_id, null: false
+    t.integer :amount
+    t.date :date
+
+    t.index :payer_id
+    t.index :recipient_id
+  end
+
   create_table :summaries do |t|
     t.integer :party_id, null: false
-    t.date :date
+    t.date :last_summary_date
     t.integer :total_unitemized_contributions
     t.integer :total_monetary_contributions
     t.integer :total_contributions_received
     t.integer :total_expenditures_made
     t.integer :ending_cash_balance
 
-    t.index [:party_id, :date], unique: true
+    t.index :party_id, unique: true
   end
+  create_table :maps do |t|
+    t.string :emp1, null: false
+    t.string :emp2, null: false
+    t.string :type, null: true
+
+    t.index [:emp2 ], unique: true
+  end
+  create_table :category_contributions do |t|
+    t.integer :recipient_id, null: false
+    t.string :name, null: false
+    t.string :contype, null: false
+    t.integer :number, null: false
+    t.integer :amount, null: false
+
+    t.index [:recipient_id]
+  end  
+  create_table :employer_contributions do |t|
+    t.integer :recipient_id, null: false
+    t.string :name, null: false
+    t.string :contrib, null: false
+    t.integer :amount, null: false
+
+    t.index [:recipient_id]
+  end
+  create_table :lobbyists do |t|
+    t.string :name
+    t.string :firm
+
+    t.index [:name], unique: true
+    t.index [:firm]
+  end
+
 end

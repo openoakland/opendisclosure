@@ -5,13 +5,16 @@ class Party < ActiveRecord::Base
   has_many :contributions,
     foreign_key: :contributor_id,
     class_name: 'Contribution'
-  has_many :summaries, primary_key: :committee_id
+  has_one :summary, primary_key: :committee_id
 
+  # These are the Filer_IDs of the candidates
   MAYORAL_CANDIDATE_IDS = [
     PARKER = 1357609,
     QUAN = 1354678,
     SCHAAF = 1362261,
     TUMAN = 1359017,
+    MCCULLOUGH = 0,   # TODO: Fill in with Filer_ID when he has one
+    RUBY = 1342695,   # TODO: This is wrong, fix it!!!
   ]
 
   CANDIDATE_INFO = {
@@ -35,14 +38,20 @@ class Party < ActiveRecord::Base
       profession: 'University Professor',
       party: 'Independent'
     },
+    MCCULLOUGH => {
+      name: 'Patrick McCullough',
+      profession: '<current profession>',
+      party: 'Unknown',
+    },
+    RUBY => {
+      name: 'Courtney Ruby',
+      profession: '<current profession>',
+      party: 'Unknown',
+    }
   }
 
   def self.mayoral_candidates
     where(committee_id: MAYORAL_CANDIDATE_IDS)
-  end
-
-  def latest_summary
-    summaries.order(date: :desc).first
   end
 
   def short_name

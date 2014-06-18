@@ -45,15 +45,11 @@
             %li
               %a{href: '/'} Candidates
               %ul.nav.nav-sidebar.compressed
-                %li#nav-1285
-                  %a{ href: '/#candidate/1285'} Bryan Parker
-                %li#nav-1496
-                  %a{ href: '/#candidate/1496' } Jean Quan
-                %li#nav-1664
-                  %a{ href: '/#candidate/1664' } Libby Schaff
-                %li#nav-1909
-                  %a{ href: '/#candidate/1909' } Joe Tuman
-        .main.rightCol
+                - Party.mayoral_candidates.each do |c|
+                  %li
+                    %a{ href: "/#candidate/#{c.id}" }= c.short_name
+
+        .main.col-sm-offset-1.col-sm-8
           .row= yield
 
     / Third Party (cdn)
@@ -71,6 +67,7 @@
     %script{src: "/js/vendor/topojson.v1.min.js"}
     %script{src: "/js/vendor/bootstrap.min.js"}
     %script{src: "/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"}
+    %script{src: "/js/vendor/accounting.min.js"}
 
 
     %script{src: "/js/config.js"}
@@ -88,6 +85,7 @@
     %script{src: "/js/views/candidateTable.js"}
     %script{src: "/js/views/charts.js"}
     %script{src: "/js/views/contributorsView.js"}
+    %script{src: "/js/views/topContributorsView.js"}
 
     / App
     %script{src: "/js/app.js"}

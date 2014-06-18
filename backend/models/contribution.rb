@@ -11,9 +11,11 @@ class Contribution < ActiveRecord::Base
     end
   end
   def increment_small_donor_ammount
-    if amount.to_f < 100
+    if amount.to_f < 100 && amount.to_f > -100
       recipient.small_donations += amount.to_f
       recipient.save
     end
   end
 end
+
+class EmployerContribution < ActiveRecord::Base; end

@@ -34,7 +34,7 @@
           <th></th>
           <th></th>
           <th>Total Raised</th>
-          <th>Number of Contributions</th>
+          <th>Number of itemized contributions</th>
           <th>Percentage from outside Oakland</th>
           <th>Percentage from small donations*</th>
           <th>Average of itemized contributions</th>
@@ -52,12 +52,16 @@
                 <p class='mayor-profession'><%- m.attributes.profession %></p>
                 <p class='mayor-party'><%- m.attributes.party_affiliation %></p>
               </div>
-            </td>
-            <td><%= m.friendlySummaryNumber('total_contributions_received') %></td>
-            <td><%= m.attributes.received_contributions_count %></td>
-            <td><%= m.pctContributionsFromOakland() %></td>
-            <td><%= m.pctSmallContributions() %></td>
-            <td><%= m.avgContribution() %></td>
+            </th>
+            <% if (m.attributes.summary) { %>
+              <td><%= m.friendlySummaryNumber('total_contributions_received') %></td>
+              <td><%= m.attributes.received_contributions_count %></td>
+              <td><%= m.pctContributionsFromOakland() %></td>
+              <td><%= m.pctSmallContributions() %></td>
+              <td><%= m.avgContribution() %></td>
+            <% } else { %>
+              <td colspan="5">No Data Available :(</td>
+            <% } %>
           </tr>
         <% }); %>
       </tbody>

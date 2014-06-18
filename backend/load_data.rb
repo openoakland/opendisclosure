@@ -1,52 +1,23 @@
-$LOAD_PATH << '.'
-
+require_relative 'socrata_fetcher.rb'
 require 'active_record'
 require 'open-uri'
+require 'csv-mapper'
 
-if ENV['LOG'] == "true"
-  ActiveRecord::Base.logger = Logger.new(STDOUT)
-end
+# Connect and set up the database
+$LOAD_PATH << '.'
+ENV['DATABASE_URL'] ||= "postgres://localhost/postgres"
+ActiveRecord::Base.establish_connection ENV['DATABASE_URL']
+require_relative 'schema.rb'
+Dir[File.dirname(__FILE__) + '/models/*.rb'].each { |f| require f }
 
 URLS = {
   'Schedule A' => 'http://data.oaklandnet.com/resource/3xq4-ermg.json',
+  'Schedule E' => 'http://data.oaklandnet.com/resource/bvfu-nq99.json',
   'Summary'    => 'http://data.oaklandnet.com/resource/rsxe-vvuw.json',
 }.freeze
 
-# In order to connect, set ENV['DATABASE_URL'] to the database you wish to
-# populate
-ENV['DATABASE_URL'] ||= "sqlite3://./#{File.dirname(__FILE__)}/db.sqlite3"
-ActiveRecord::Base.establish_connection
-Dir[File.dirname(__FILE__) + '/models/*.rb'].each { |f| require f }
-require_relative 'schema.rb'
-
-class SocrataFetcher
-  include Enumerable
-
-  def initialize(uri)
-    @uri = URI(uri)
-  end
-
-  def each(&block)
-    more = true
-    offset = 0
-    while more
-      url = @uri
-      url.query = URI.encode_www_form(
-        '$limit' => 1000,
-        '$offset' => offset
-      )
-
-      puts '    Downloading: ' + url.to_s
-
-      response = JSON.parse(open(url.to_s).read)
-      response.each(&block)
-
-      # preparation for next loop!
-      more = response.length > 0
-      offset = offset + 1000
-    end
-  end
-end
+class Map < ActiveRecord::Base; end
+class Lobbyist < ActiveRecord::Base; end
 
 def parse_contributions(row)
   recipient = Party::Committee.where(committee_id: row['filer_id'])
@@ -85,6 +56,41 @@ def parse_contributions(row)
                       date: row['tran_date'])
 end
 
+def parse_payments(row)
+  payer = Party::Committee.where(committee_id: row['filer_id'])
+                          .first_or_create(name: row['filer_naml'])
+  recipient =
+    case row['entity_cd']
+    when 'COM', 'SCC'
+      # entity being paid is a Committee and Cmte_ID will be set. Same thing as
+      # Filer_ID but some names disagree
+      Party::Committee.where(committee_id: row['cmte_id'])
+                      .first_or_create(name: row['payee_naml'])
+
+    when 'IND'
+      # entity being paid is an Individual
+      full_name = row.values_at('payee_namt', 'payee_naml', 'payee_namf', 'payee_nams')
+                     .join(' ')
+                     .strip
+      Party::Individual.where(name: full_name,
+                              city: row['payee_city'],
+                              state: row['payee_state'],
+                              zip: row['payee_zip4'])
+                       .first_or_create
+    when 'OTH'
+      # payee is "Other"
+      Party::Other.where(name: row['payee_naml'])
+                  .first_or_create(city: row['payee_city'],
+                                   state: row['payee_state'],
+                                   zip: row['payee_zip4'])
+    end
+
+  Payment.create(payer: payer,
+                 recipient: recipient,
+                 amount: row['amount'],
+                 date: row['expn_date'])
+end
+
 # Hash of:
 # Form_Type => { Line_Item => SQL Column name }
 SUMMARY_LINES = {
@@ -106,20 +112,59 @@ def parse_summary(row)
 
   column = SUMMARY_LINES[row['form_type']][row['line_item']]
   value = row['amount_a']
+  summary = Summary.where(party_id: row['filer_id'])
+                   .first_or_create
 
-  Summary.where(party_id: row['filer_id'],
-                date: row['rpt_date'].to_date)
-         .first_or_create
-         .update_attribute(column, value)
+  # HACK / Naming convention:
+  # The "Total" fields (i.e. :total_monetary_contributions) are reported
+  # on each summary sheet for that period only. This means to calculate a true
+  # total, we need to add the values from each of the summary sheets.
+  if column =~ /^total/
+    summary.update_attributes(
+      column => (summary[column] || 0) + value.to_i,
+      :last_summary_date => row['thru_date']
+    )
+  else
+    summary.update_attributes(
+      column => value,
+      :last_summary_date => row['thru_date']
+    )
+  end
 end
 
 if __FILE__ == $0
-  # ActiveRecord::Base.logger = Logger.new(STDOUT)
+  if ENV['LOG'] == "true"
+    ActiveRecord::Base.logger = Logger.new(STDOUT)
+  end
+
+  puts "Loading Employer Map"
+  include CsvMapper
+  results = import('backend/map.csv') do
+    map_to Map
+    after_row lambda{|row, map| map.save}
+    start_at_row 1
+    [id, emp1, emp2, type]
+  end
+
+  puts "Loading Lobbyist data"
+  results = import('backend/2013_Lobbyist_Directory.csv') do
+    map_to Lobbyist
+    after_row lambda{|row, lobbyist| lobbyist.save}
+    start_at_row 1
+    [id, name, firm]
+  end
 
   puts "Fetching Contribution data (Schedule A) from Socrata:"
   Party.transaction do #        <- speed hack for sqlite3
     SocrataFetcher.new(URLS['Schedule A']).each do |record|
       parse_contributions(record)
+    end
+  end
+
+  puts "Fetching Expense data (Schedule E) from Socrata:"
+  Party.transaction do
+    SocrataFetcher.new(URLS['Schedule E']).each do |record|
+      parse_payments(record)
     end
   end
 
@@ -129,4 +174,60 @@ if __FILE__ == $0
       parse_summary(record)
     end
   end
+
+  puts "Run analysis"
+  ActiveRecord::Base.connection.execute("
+        INSERT into category_contributions(recipient_id, name, contype, number, amount)
+	SELECT
+	  r.id,
+	  r.name,
+	  case
+	    when c.type = 'Party::Other' then
+	      case
+		when maps.type = 'Union' then 'Union'
+		when l.firm is not null then 'Lobbyist'
+		else 'Company'
+	      end
+	    when c.type = 'Party::Individual' AND
+	        l.name is not null OR l.firm is not null then 'Lobbyist'
+	    else substring(c.type, 8)
+	  end as ConType, count(*), sum(amount)
+	FROM
+	  contributions cont,
+	  parties r,
+	  (parties c
+	  left outer join maps on name = emp2
+	  left outer join lobbyists l on
+	     c.name = l.name or c.name = l.firm or c.employer = l.firm)
+	WHERE
+	  r.committee_id in (1357609, 1354678, 1362261, 1359017) AND
+	  r.id = recipient_id AND
+	  c.id = contributor_id
+	GROUP BY
+	  r.id, r.name, ConType
+	ORDER BY
+	  r.id, r.name, sum(amount) desc;")
+
+  ActiveRecord::Base.connection.execute("
+        INSERT into employer_contributions(recipient_id, name, contrib, amount)
+	SELECT s.id, candidate, contrib, sum(amount) as amount from
+	  (
+	    SELECT r.id, r.name as candidate,
+		   case
+		     when p.Emp1 = 'N/A' then c.occupation
+		     else p.Emp1
+		   end as contrib, amount
+	      FROM contributions b, parties r, parties c, maps p
+	      WHERE b.recipient_id = r.id AND b.contributor_id = c.id and
+	      r.committee_id in (1357609, 1354678, 1362261, 1359017) AND
+	      c.employer = p.Emp2 AND c.type = 'Party::Individual'
+	    UNION ALL
+	    SELECT r.id, r.name as candidate, p.Emp1 as contrib, amount
+	      FROM contributions b, parties r, parties c, maps p
+	      WHERE b.recipient_id = r.id AND b.contributor_id = c.id and
+	      r.committee_id in (1357609, 1354678, 1362261, 1359017) AND
+	      c.name = p.Emp2 AND c.type <> 'Party::Individual'
+	   ) s
+	GROUP BY s.id, candidate, contrib
+	ORDER BY s.id, candidate, sum(amount) desc;")
 end

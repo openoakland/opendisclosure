@@ -18,6 +18,12 @@ Then install bundler and foreman:
     gem install bundler
     gem install foreman
 
+Install postgres:
+    brew install postgres
+    ln -sfv /usr/local/opt/postgresql/*.plist ~/Library/LaunchAgents
+    launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
+    ARCHFLAGS="-arch x86_64" gem install pg
+
 Now you can install the other dependencies with:
 
     bundle install --without=production

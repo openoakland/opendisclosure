@@ -1,3 +1,4 @@
 .idea
 .bundle
 **/.DS_Store
+**/*.sqlite3
