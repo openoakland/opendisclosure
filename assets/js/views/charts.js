@@ -1,5 +1,7 @@
 OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
+  el: '#zip-bubble-chart',
+
   draw: function() {
     var chart = this;
 
@@ -381,7 +383,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         .attr("class", key_color + " status");
     });
     chart.setOverviewHover();
-    
+
     $('.candidate.description').fadeOut(function() {
       $('.overview.description').fadeIn();
     });
@@ -436,5 +438,5 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         .attr("class", "status");
     });
   }
-  
+
 });

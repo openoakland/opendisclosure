@@ -14,6 +14,8 @@
 
 %script{ type: 'text/template', id: 'mayoral-table-template' }
   :plain
+    <h3>How much the mayoral candidates have raised and spent</h3>
+    <h5>Includes candidates who have submitted fundraising data; may not include all those who have declared their candidacies.</h5>
     <table id='mayoral-table'>
       <thead>
         <tr>
@@ -32,9 +34,9 @@
             <td>
               <a href= '/#candidate/<%-m.attributes.id %>'><img class='mayor-picture' src="<%= m.imagePath() %>" /></a>
             </td>
-            <th scope='row'>
+            <td scope='row'>
               <div class='mayor-info'>
-                <a href= '/#candidate/<%-m.attributes.id %>'><h3 class='mayor-name'><%- m.attributes.short_name %></h3>
+                <a href= '/#candidate/<%-m.attributes.id %>'><p class='mayor-name green'><%- m.attributes.short_name %></p>
                 <p class='mayor-profession'><%- m.attributes.profession %></p>
                 <p class='mayor-party'><%- m.attributes.party_affiliation %></p>
               </div>
@@ -52,4 +54,5 @@
         <% }); %>
       </tbody>
     </table>
-    <p> * Candidates do not need to itemize contributions less than $100 </p>
+    <p>Last Updated on March 31, 2014</P>
+    <p> * Candidates do not need itemize contributions less than $100 </p>
