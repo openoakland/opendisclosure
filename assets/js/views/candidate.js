@@ -22,16 +22,35 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
      "),
 
   initialize: function(){
-    // debugger;
     this.model.attributes.imagePath = this.model.imagePath();
     this.render();
   },
 
   render: function(){
-    $('#mayoral-candidates').html(this.template(this.model));
-    $('#charts').parent().html('');
+    this.updateNav();
+    $('.main').html(this.template(this.model));
+
+    // // Render Top Contributions
+    var that = this;
+    // var count = 0;
+    // this.topContributions = _.filter(this.employerContributions.models, function(c) {
+    //   return c.attributes.recipient_id == that.currentCandidate.id && ++count <= 10;
+    // });
+
+    // new OpenDisclosure.TopContributorsView({collection: this.topContributions});
+
+    // Render Contributions
+    this.filteredContributions = _.filter(app.contributions.models, function(c) {
+      return c.attributes.recipient.id == that.model.attributes.id;
+    });
+
+    new OpenDisclosure.ContributorsView({collection: this.filteredContributions});
+
+  },
+
+  updateNav: function(){
+    //Update Nav
     $('.sidebar li').removeClass('active');
     $('#nav-'+this.model.attributes.id).addClass('active');
   }
-
 });

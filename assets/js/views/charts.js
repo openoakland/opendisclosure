@@ -1,5 +1,7 @@
 OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
+  el: '#zip-bubble-chart',
+
   draw: function() {
     var chart = this;
 
