@@ -8,9 +8,9 @@ OpenDisclosure.ContributorsView = Backbone.View.extend({
     <span class="col-sm-4">$<%= amount %> </span>\
     </a></div>'),
 
-  // events: {
-  //   "keyup #contribSearch"  : "filterContributors",
-  // },
+  events: {
+    "keyup #contribSearch"  : "filterContributors",
+  },
 
   initialize: function() {
     this.render();
@@ -18,44 +18,42 @@ OpenDisclosure.ContributorsView = Backbone.View.extend({
 
   render: function() {
     $('.contributions').empty();
-   //  $('<section>\
-   //    <style>\
-			// 	h2 {text-align:center;}\
-   //    </style>\
-			// <br/>\
-			// <div class="col-sm-12">\
-			// 	<h2>Contributions</h2>\
-			// </div>\
-   //    <div class="contributions clearfix"></div>\
-   //   </div>\
-   //  </section>').appendTo('.top_contributions');
+    $('<section>\
+			<br/>\
+			<div class="col-sm-12">\
+				<h2>Contributions</h2>\
+        <label>Search: <input type="search" id="contribSearch"></input></label>\
+			</div>\
+      <div class="contributions clearfix"></div>\
+     </div>\
+    </section>').appendTo('.main');
 
     var that = this;
     _.each(this.collection, function( c ){
-      $('.main').append(that.template(c.attributes));
+      $('.contributions').append(that.template(c.attributes));
     });
 
-    // that = this;
-    // $('body').keyup(function(){
-    //   that.filterContributors();
-    // });
+    that = this;
+    $('body').keyup(function(){
+      that.filterContributors();
+    });
   },
 
-  // filterContributors: function() {
-  // // Adding this bit for the search feature on the contributors page
-  // // Adding as a separate bit to make it easier to remove if something
-  // // breaks due to its inclusion.
-  //   var filterval = $('#contribSearch').val().trim().toLowerCase();
-  //   $('.contribution').each(function(el) {
-  //     var check_name = $(this).text().trim().toLowerCase();
-  //     if ( check_name.indexOf(filterval) >= 0 ) {
-  //       // $(this).css('background-color','cyan');
-  //       $(this).show();
-  //     } else {
-  //       // $(this).css('background-color','magenta');
-  //       $(this).hide();
-  //     }
-  //   });
-  // }
+  filterContributors: function() {
+  // Adding this bit for the search feature on the contributors page
+  // Adding as a separate bit to make it easier to remove if something
+  // breaks due to its inclusion.
+    var filterval = $('#contribSearch').val().trim().toLowerCase();
+    $('.contribution').each(function(el) {
+      var check_name = $(this).text().trim().toLowerCase();
+      if ( check_name.indexOf(filterval) >= 0 ) {
+        // $(this).css('background-color','cyan');
+        $(this).show();
+      } else {
+        // $(this).css('background-color','magenta');
+        $(this).hide();
+      }
+    });
+  }
 
 });

@@ -22,11 +22,11 @@ OpenDisclosure.App = Backbone.Router.extend({
 
   candidate: function(id){
     new OpenDisclosure.CandidateView({model: this.candidates.get(id)});
+  },
+
+  contributor : function() {
+
   }
-
-  // contributor : function(){
-
-  // }
 
 });
 

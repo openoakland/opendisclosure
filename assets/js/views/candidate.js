@@ -1,8 +1,8 @@
 OpenDisclosure.CandidateView = Backbone.View.extend({
 
   template: _.template("<section id='candidate'>\
-      <h1><%= attributes.short_name %></h1>\
-      <div class='row candidate'>\
+    <h1><%= attributes.short_name %></h1>\
+      <section class='row candidate'>\
         <div class='col-sm-4'>\
           <img class='mayor-picture' src='<%= attributes.imagePath %>' /> \
         </div>\
@@ -18,7 +18,7 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
           <p>Ending Cash On Hand: <%= friendlySummaryNumber('ending_cash_balance') %></p>\
           <p>Last Updated: <%= attributes.summary.last_summary_date %> </p>\
           <% } %>\
-        </div>\
+      </section>\
      "),
 
   initialize: function(){
@@ -32,12 +32,12 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
 
     // // Render Top Contributions
     var that = this;
-    // var count = 0;
-    // this.topContributions = _.filter(this.employerContributions.models, function(c) {
-    //   return c.attributes.recipient_id == that.currentCandidate.id && ++count <= 10;
-    // });
+    var count = 0;
+    this.topContributions = _.filter(app.employerContributions.models, function(c) {
+      return c.attributes.recipient_id == that.model.attributes.id && ++count <= 10;
+    });
 
-    // new OpenDisclosure.TopContributorsView({collection: this.topContributions});
+    new OpenDisclosure.TopContributorsView({collection: this.topContributions});
 
     // Render Contributions
     this.filteredContributions = _.filter(app.contributions.models, function(c) {
