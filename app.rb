@@ -94,6 +94,11 @@ get '/api/employer_contributions' do
   EmployerContribution.all.to_json
 end
 
+get '/api/category_contributions' do
+  headers 'Content-Type' => 'application/json'
+  CategoryContribution.all.to_json;
+end
+
 get '/api/party/:id' do |id|
   # TODO: Include names of the people contributing?
   headers 'Content-Type' => 'application/json'

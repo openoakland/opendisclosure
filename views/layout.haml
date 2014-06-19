@@ -59,6 +59,13 @@
     %script{src: "http://cdnjs.cloudflare.com/ajax/libs/d3/3.3.3/d3.min.js"}
     %script{src: '//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js'}
 
+    / Google apis
+    %script{src: "https://www.google.com/jsapi"}
+    %script{src: "js/vendor/GoogleChart.js"}
+    :javascript
+      google.load('visualization', '1.0', {'packages':['corechart']});
+
+
     / Third Party (local)
     / %script{src: "/js/vendor/underscore.js"}
     / %script{src: "/js/vendor/jquery-1.10.1.min.js"}
@@ -88,6 +95,7 @@
     %script{src: "/js/views/charts.js"}
     %script{src: "/js/views/contributorsView.js"}
     %script{src: "/js/views/topContributorsView.js"}
+    %script{src: "/js/views/categoryView.js"}
 
     / App
     %script{src: "/js/app.js"}

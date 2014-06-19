@@ -30,7 +30,15 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
     this.updateNav();
     $('.main').html(this.template(this.model));
 
-    // // Render Top Contributions
+    // Render Category chart
+    var that = this;
+    this.categories = _.filter(app.categoryContributions.models, function(c) {
+      return c.attributes.recipient_id == that.model.attributes.id;
+    });
+
+    new OpenDisclosure.CategoryView({collection: this.categories});
+
+    // Render Top Contributions
     var that = this;
     var count = 0;
     this.topContributions = _.filter(app.employerContributions.models, function(c) {

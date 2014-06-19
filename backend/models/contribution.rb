@@ -17,3 +17,6 @@ class Contribution < ActiveRecord::Base
     end
   end
 end
+
+class EmployerContribution < ActiveRecord::Base; end
+class CategoryContribution < ActiveRecord::Base; end

@@ -9,6 +9,7 @@ OpenDisclosure.App = Backbone.Router.extend({
     this.candidates = new OpenDisclosure.Candidates();
     this.contributions = new OpenDisclosure.Contributions();
     this.employerContributions = new OpenDisclosure.EmployerContributions();
+    this.categoryContributions = new OpenDisclosure.CategoryContributions();
     this.home();
   },
 
