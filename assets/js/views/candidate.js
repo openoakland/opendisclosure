@@ -36,7 +36,7 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
       return c.attributes.recipient_id == that.model.attributes.id;
     });
 
-    new OpenDisclosure.CategoryView({collection: this.categories});
+    new OpenDisclosure.CategoryView({collection: this.categories, summary: this.model.attributes.summary});
 
     // Render Top Contributions
     var that = this;
