@@ -23,22 +23,18 @@
         You can help us finish it!
 
     %header
-      .container-fluid
-        .row
-          #logo.col-sm-2
-            %a{ href: '/' }
-              %img{ src: '/images/OaklandCityTree.png'}
-          / #sloganContainer.col-sm-3.green
-          /   Open Disclosure:<br>
-          /   Bringing Campaign<br>
-          /   Money to Light
-          #titleContainer.col-sm-offset-1.col-sm-8
-            %p.subtitle 2014 Oakland Mayoral Election
-            %p.title Campaign Finance Analysis
+      / .container-fluid
+      .row
+        #logo.leftCol
+          %a{ href: '/' }
+            %img{ src: '/images/OaklandCityTree.png'}
+        #titleContainer.rightCol
+          %p.subtitle 2014 Oakland Mayoral Election
+          %p.title.green Campaign Finance Analysis
 
     .container-fluid
       .row
-        .sidebar.col-sm-2{ role: 'navigation'}
+        .sidebar.leftCol{ role: 'navigation'}
           %ul.nav.nav-sidebar
             / Hiding these until we have some content there - KW 5/19/14
             / %li
@@ -68,6 +64,7 @@
     / %script{src: "/js/vendor/jquery-1.10.1.min.js"}
     / %script{src: "/js/vendor/backbone-min.js"}
     / %script{src: "/js/vendor/d3.v3.min.js"}
+
     %script{src: "/js/vendor/topojson.v1.min.js"}
     %script{src: "/js/vendor/bootstrap.min.js"}
     %script{src: "/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"}

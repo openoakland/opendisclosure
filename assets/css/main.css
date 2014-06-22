@@ -18,6 +18,10 @@ a {
   color: inherit;
 }
 
+h2, h4 {
+  text-align: center;
+}
+
 a:hover {
   text-decoration: none;
   color: inherit;
@@ -28,6 +32,19 @@ a:hover {
   color: #539137;
 }
 
+.leftCol {
+  padding-left: 10px;
+  width:160px;;
+  float:left;
+}
+
+.rightCol {
+  margin-left:6%;
+  width: 70%;
+  min-width: 450px;
+  float: left;
+  padding-right:40px;
+}
 /* ------------------- disclaimer -------------------- */
 
 .disclaimer {
@@ -51,35 +68,24 @@ header {
   padding: 0;
   margin: 0;
   position:relative;
-  /*min-height: 128px;*/
-}
-
-#logo {
-  text-align: center;
-  max-height:140px;
-  max-width:200px;
-  vertical-align: bottom;
-  min-width: 165px;
+  width: 100%;
+  /*min-height:132px;*/
 }
 
 #logo img{
-  width:100%;
+  width:160px;
 }
-
-/*header #sloganContainer {
-  font-size: 20px;
-  font-style: italic;
-  font-weight:300;
-  margin-top: 32px;
-}*/
 
 header #titleContainer {
   text-align:right;
-  margin-top:44px;
+  position: absolute;
+  bottom: 0;
+  right: 8%;
 }
 
 header #titleContainer p{
   margin-bottom:0;
+
 }
 
 header .subtitle {
@@ -101,7 +107,6 @@ header .title {
   font-size: 16px;
   list-style: none;
   background-color: #f0f0f0;
-  min-width: 160px;
 }
 
 /*.sidebar ul {
@@ -178,34 +183,62 @@ header .title {
   margin: 0;
 }
 
-#mayoral-candidates thead th {
-  max-width: 150px;
-  text-align: center;
-  padding: 10px;
+#mayoral-table {
+  margin: 40px 0;
 }
 
-#mayoral-candidates tbody th {
+#mayoral-candidates thead th {
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px;
+  border-right:2px solid #539137;
+}
+
+#mayoral-candidates thead th:nth-child(1) {
+  border-right:none;
+}
+
+#mayoral-candidates tbody td:nth-child(1) {
+  border-right:none;
+}
+
+#mayoral-candidates td:nth-child(3), #mayoral-candidates th:nth-child(3) {
+  background-color: #c5c5c5;
+}
+
+#mayoral-candidates th {
   padding: 0 10px 10px 0;
+  width: 130px;
+  font-size: 12px;
 }
 
 #mayoral-candidates td {
   text-align: center;
+  border-right:2px solid #539137;
+  border-top: 2px white solid;
+  border-bottom: 2px white solid;
+  font-size: 18px;
 }
 
 .mayor-info {
   display: inline-block;
   vertical-align: middle;
+  text-align: left;
+  font-size: 12px;
+  padding: 10px 5px;
 }
 
 .mayor-picture {
-  padding: 0 10px 10px 0;
+  padding: 10px 10px;
   width: 80px;
+  border-right: none;
 }
 
 .mayor-name {
   font-size: 18px;
-  font-weight: 700;
-  margin: 0;
+  font-weight: 500;
+  /*margin: 0;*/
 }
 
 /* ------------------- Candidate Page -------------------- */
