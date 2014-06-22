@@ -1,4 +1,14 @@
 OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
+  dateSortAsc: function (date1, date2) {
+    // This is a comparison function that will result in dates being sorted in
+    // ASCENDING order. As you can see, JavaScript's native comparison operators
+    // can be used to compare dates. This was news to me.
+    date1 = new Date (date1)
+    date2 = new Date (date2)
+    if (date1 > date2) return 1;
+    if (date1 < date2) return -1;
+    return 0;
+  },
 
   draw: function(){ 
     console.log("yay!")
@@ -24,7 +34,7 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
 
   processData: function(data) {
     var tempAmounts = {}
-    var amounts = {}
+    amounts = {}
     regex = new RegExp("mayor")
     for (var i = 0; i < data.length; i++) {
       el = data.models[i].attributes
@@ -51,19 +61,9 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
         }
       }
     }
-    var date_sort_asc = function (date1, date2) {
-      // This is a comparison function that will result in dates being sorted in
-      // ASCENDING order. As you can see, JavaScript's native comparison operators
-      // can be used to compare dates. This was news to me.
-      date1 = new Date (date1)
-      date2 = new Date (date2)
-      if (date1 > date2) return 1;
-      if (date1 < date2) return -1;
-      return 0;
-    };
 
     for (var key in tempAmounts){
-      sorted_dates = _.keys(tempAmounts[key]).sort(date_sort_asc)
+      sorted_dates = _.keys(tempAmounts[key]).sort(this.dateSortAsc)
       amounts[key] = []
       for (i = 0; i < sorted_dates.length; i ++) {
         if (tempAmounts[key][sorted_dates[i - 1]]) { 
