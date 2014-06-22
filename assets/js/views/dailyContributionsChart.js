@@ -14,13 +14,71 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
 
 
       
-      .attr("width", chart.dimensions.width)
-      .attr("height", chart.dimensions.height)
-      .attr("viewBox", "0 0 " + chart.dimensions.width + " " + chart.dimensions.height)
-      .attr("preserveAspectRatio", "xMidYMid");
+      // .attr("width", chart.dimensions.width)
+      // .attr("height", chart.dimensions.height)
+      // .attr("viewBox", "0 0 " + chart.dimensions.width + " " + chart.dimensions.height)
+      // .attr("preserveAspectRatio", "xMidYMid");
 
 
+  },
+
+  processData: function(data) {
+    var tempAmounts = {}
+    var amounts = {}
+    regex = new RegExp("mayor")
+    for (var i = 0; i < data.length; i++) {
+      el = data.models[i].attributes
+      if (regex.exec( el.recipient.name.toLowerCase() )){
+        if (tempAmounts[el.recipient.name]) {
+          console.log('broke into first condition')
+          if (tempAmounts[el.recipient.name][new Date(el.date)]) {
+            console.log('broke into second condition')
+            tempAmounts[el.recipient.name][new Date(el.date)] += el.amount
+          }
+          else {
+            console.log('got elsed by second condition')
+            tempAmounts[el.recipient.name][new Date(el.date)] = el.amount
+            tempAmounts[el.recipient.name][new Date(new Date(el.date) - 300000000)] = 0
+            tempAmounts[el.recipient.name][new Date] = 0
+          }
+        }
+        else {
+          console.log('got elsed by first condition')
+          tempAmounts[el.recipient.name] = {}
+          tempAmounts[el.recipient.name][new Date(new Date(el.date) - 300000000)] = 0
+          tempAmounts[el.recipient.name][new Date] = 0
+          tempAmounts[el.recipient.name][new Date(el.date)] = el.amount;
+        }
+      }
+    }
+    var date_sort_asc = function (date1, date2) {
+      // This is a comparison function that will result in dates being sorted in
+      // ASCENDING order. As you can see, JavaScript's native comparison operators
+      // can be used to compare dates. This was news to me.
+      date1 = new Date (date1)
+      date2 = new Date (date2)
+      if (date1 > date2) return 1;
+      if (date1 < date2) return -1;
+      return 0;
+    };
+
+    for (var key in tempAmounts){
+      sorted_dates = _.keys(tempAmounts[key]).sort(date_sort_asc)
+      amounts[key] = []
+      for (i = 0; i < sorted_dates.length; i ++) {
+        if (tempAmounts[key][sorted_dates[i - 1]]) { 
+          amounts[key].push({date: new Date(sorted_dates[i]), amount: (tempAmounts[key][sorted_dates[i]] + tempAmounts[key][sorted_dates[i - 1]] ) })
+          tempAmounts[key][sorted_dates[i]] += tempAmounts[key][sorted_dates[i - 1]]
+        }
+        else {
+          amounts[key].push({date: new Date(sorted_dates[i]), amount: tempAmounts[key][sorted_dates[i]]})
+        }
+
+      }
+    }
+    return amounts
   }
+})
 
         // App.prototype.tempAmounts = {};
 
@@ -214,4 +272,3 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
         //   }
 
         // }
-})
