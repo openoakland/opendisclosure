@@ -18,6 +18,12 @@ OpenDisclosure.App = Backbone.Router.extend({
       el: '#zip-bubble-chart',
       collection: this.contributions, 
       base_height: 480
+    });
+
+    new OpenDisclosure.DailyContributionsChartView({
+      el: '#daily-contributions-chart',
+      collection: this.contributions,
+      base_height: 480
     })
   },
 
