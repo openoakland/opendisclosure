@@ -22,8 +22,11 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
      "),
 
   initialize: function(){
-    this.model.attributes.imagePath = this.model.imagePath();
-    this.render();
+    // added this due to error "cannot read property attributes of undefined" didn't really look what caused it
+    if ( this.model ) { 
+      this.model.attributes.imagePath = this.model.imagePath();
+      this.render();
+    }
   },
 
   render: function(){
