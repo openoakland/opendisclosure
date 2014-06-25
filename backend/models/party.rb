@@ -6,6 +6,9 @@ class Party < ActiveRecord::Base
     foreign_key: :contributor_id,
     class_name: 'Contribution'
   has_one :summary, primary_key: :committee_id
+  has_many :whales,
+    foreign_key: :contributor_id,
+    class_name: 'Whale'
 
   # These are the Filer_IDs of the candidates
   MAYORAL_CANDIDATE_IDS = [

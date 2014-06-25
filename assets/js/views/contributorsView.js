@@ -12,7 +12,8 @@ OpenDisclosure.ContributorsView = Backbone.View.extend({
     "keyup #contribSearch"  : "filterContributors",
   },
 
-  initialize: function() {
+  initialize: function(options) {
+    this.options = options;
     this.render();
   },
 
@@ -21,7 +22,7 @@ OpenDisclosure.ContributorsView = Backbone.View.extend({
     $('<section>\
 			<br/>\
 			<div class="col-sm-12">\
-				<h2>Contributions</h2>\
+				<h2>' + this.options.headline + '</h2>\
         <label>Search: <input type="search" id="contribSearch"></input></label>\
 			</div>\
       <div class="contributions clearfix"></div>\

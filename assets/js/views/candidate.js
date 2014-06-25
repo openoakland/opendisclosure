@@ -52,7 +52,7 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
       return c.attributes.recipient.id == that.model.attributes.id;
     });
 
-    new OpenDisclosure.ContributorsView({collection: this.filteredContributions});
+    new OpenDisclosure.ContributorsView({collection: this.filteredContributions, headline: 'Contributions'});
 
   },
 

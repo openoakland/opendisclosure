@@ -99,6 +99,15 @@ get '/api/category_contributions' do
   CategoryContribution.all.to_json;
 end
 
+get '/api/whales' do
+  headers 'Content-Type' => 'application/json'
+  fields = {
+    only: %[amount],
+    include: [:contributor],
+  }
+  Whale.includes(:contributor).to_json(fields);
+end
+
 get '/api/party/:id' do |id|
   # TODO: Include names of the people contributing?
   headers 'Content-Type' => 'application/json'
