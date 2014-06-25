@@ -12,11 +12,12 @@ path {
   shape-rendering: crispEdges;
 }
 
+
 .bar {
   fill: steelblue;
 }
 
 
 div#daily-contributions-chart {
-  margin: 30px
+  margin-top: 30px
 }
