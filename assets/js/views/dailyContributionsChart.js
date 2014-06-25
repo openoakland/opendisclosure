@@ -77,36 +77,36 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
 
     x.domain(d3.extent(xRange));
     y.domain(d3.extent(yRange));
+
+    chart.svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + chart.dimensions.height + ")")
+      .call(xAxis);
+
+    chart.svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+      .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Total Raised ($)");
+
     for (var key in chart.data){
       var data = chart.data[key]
-      if ( data.length <= 1 ){
+      if ( data.length > 1 ){
+        // shit breaks when there's only data point
+        data.forEach(function(d) {
+          d.close = d.amount
+        })
 
-      }
-      else {
-      data.forEach(function(d) {
-        d.close = d.amount
-      })
-      chart.svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + chart.dimensions.height + ")")
-        .call(xAxis);
-
-      chart.svg.append("g")
-        .attr("class", "y axis")
-        .call(yAxis)
-        .append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 6)
-        .attr("dy", ".71em")
-        .style("text-anchor", "end")
-        .text("Total Raised ($)");
-
-      chart.svg.append("path")
-        .datum(data)
-        .attr("class", "line")
-        .attr("id", key)
-        .attr("d", line)
-        .text(key);
+        chart.svg.append("path")
+          .datum(data)
+          .attr("class", "line")
+          .attr("id", key)
+          .attr("d", line)
+          .text(key);
       }
     };
 
@@ -158,35 +158,3 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
   }
 })
 
-        // App.prototype.appendButtons = function(){
-        //     for (var key in this.amounts){
-        //         buttonDiv = document.getElementById('buttons')
-        //         buttonDiv.append("<input class='update_dates_graph' type='button' value=" + key + " data-key=" + key + ">")
-        //     }
-        // }
-
-        // App.prototype.updateData = function(key) {
-        //     // console.log(key)
-
-        //         // x.domain(d3.extent(this.xRange));
-        //         // y.domain(d3.extent(this.yRange));
-
-        //     if ( document.getElementById(key) ){
-        //         document.getElementById(key).remove()
-        //     } else {
-
-        //         data = this.amounts[key]
-        //             data.forEach(function(d) {
-        //                 d.close = d.amount
-        //             })
-
-        //         var svg = d3.select("g")
-        //                 svg.append("path")
-        //                     .datum(data)
-        //                     .attr("class", "line")
-        //                     .attr("id", key)
-        //                     .attr("d", line);
-        //     }
-        //   }
-
-        // }
