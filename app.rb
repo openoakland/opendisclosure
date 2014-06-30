@@ -4,6 +4,7 @@ require 'active_record'
 require 'haml'
 
 # Load ActiveRecord models (and connect to the database)
+ENV['DATABASE_URL'] ||= "postgres://localhost/postgres"
 ActiveRecord::Base.establish_connection
 Dir['./backend/models/*.rb'].each { |f| require f }
 
