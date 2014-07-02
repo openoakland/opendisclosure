@@ -1,22 +1,16 @@
 
-path { 
-    stroke: steelblue;
-    stroke-width: 2;
+div#daily-contributions-chart path { 
+    /*stroke: steelblue;*/
+    stroke-width: 4;
     fill: none;
 }
 
-.axis path,
+div#daily-contributions-chart .axis path,
 .axis line {
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges;
 }
-
-
-.bar {
-  fill: steelblue;
-}
-
 
 div#daily-contributions-chart {
   margin-top: 30px
