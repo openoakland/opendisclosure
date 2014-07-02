@@ -22,7 +22,7 @@ OpenDisclosure.App = Backbone.Router.extend({
     });
     this.listenTo(this.whales, 'sync', function() {
       console.log('Received whale data!');
-      new OpenDisclosure.ContributorsView({collection: this.whales.models, headline:'Top Contributors This Cycle'});
+      new OpenDisclosure.ContributorsView({collection: this.whales.models, headline:'Top Contributors To All Candidates in This Election'});
     });
   },
 
