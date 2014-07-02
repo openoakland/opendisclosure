@@ -176,58 +176,70 @@ if __FILE__ == $0
   end
 
   puts "Run analysis"
-  ActiveRecord::Base.connection.execute("
-        INSERT into category_contributions(recipient_id, name, contype, number, amount)
-	SELECT
-	  r.id,
-	  r.name,
-	  case
-	    when c.type = 'Party::Other' then
-	      case
-		when maps.type = 'Union' then 'Union'
-		when l.firm is not null then 'Lobbyist'
-		else 'Company'
-	      end
-	    when c.type = 'Party::Individual' AND
-	        l.name is not null OR l.firm is not null then 'Lobbyist'
-	    else substring(c.type, 8)
-	  end as ConType, count(*), sum(amount)
-	FROM
-	  contributions cont,
-	  parties r,
-	  (parties c
-	  left outer join maps on name = emp2
-	  left outer join lobbyists l on
-	     c.name = l.name or c.name = l.firm or c.employer = l.firm)
-	WHERE
-	  r.committee_id in (1357609, 1354678, 1362261, 1359017) AND
-	  r.id = recipient_id AND
-	  c.id = contributor_id
-	GROUP BY
-	  r.id, r.name, ConType
-	ORDER BY
-	  r.id, r.name, sum(amount) desc;")
+  ActiveRecord::Base.connection.execute <<-QUERY
+    INSERT into category_contributions(recipient_id, name, contype, number, amount)
+    SELECT
+      r.id,
+      r.name,
+      case
+        when c.type = 'Party::Other' then
+          case
+            when maps.type = 'Union' then 'Union'
+            when l.firm is not null then 'Lobbyist'
+          else 'Company'
+          end
+        when c.type = 'Party::Individual' AND
+            l.name is not null OR l.firm is not null then 'Lobbyist'
+        else substring(c.type, 8)
+      end as ConType, count(*), sum(amount)
+    FROM
+      contributions cont,
+      parties r,
+      (parties c
+      left outer join maps on name = emp2
+      left outer join lobbyists l on
+         c.name = l.name or c.name = l.firm or c.employer = l.firm)
+    WHERE
+      r.committee_id in (#{Party::MAYORAL_CANDIDATE_IDS.join ','}) AND
+      r.id = recipient_id AND
+      c.id = contributor_id
+    GROUP BY
+      r.id, r.name, ConType
+    ORDER BY
+      r.id, r.name, sum(amount) desc;
+  QUERY
+
+  ActiveRecord::Base.connection.execute <<-QUERY
+    INSERT into employer_contributions(recipient_id, name, contrib, amount)
+    SELECT s.id, candidate, contrib, sum(amount) as amount from
+      (
+        SELECT r.id, r.name as candidate,
+         case
+           when p.Emp1 = 'N/A' then c.occupation
+           else p.Emp1
+         end as contrib, amount
+          FROM contributions b, parties r, parties c, maps p
+          WHERE b.recipient_id = r.id AND b.contributor_id = c.id and
+          r.committee_id in (#{Party::MAYORAL_CANDIDATE_IDS.join ','}) AND
+          c.employer = p.Emp2 AND c.type = 'Party::Individual'
+        UNION ALL
+        SELECT r.id, r.name as candidate, p.Emp1 as contrib, amount
+          FROM contributions b, parties r, parties c, maps p
+          WHERE b.recipient_id = r.id AND b.contributor_id = c.id and
+          r.committee_id in (#{Party::MAYORAL_CANDIDATE_IDS.join ','}) AND
+          c.name = p.Emp2 AND c.type <> 'Party::Individual'
+       ) s
+    GROUP BY s.id, candidate, contrib
+    ORDER BY s.id, candidate, sum(amount) desc;
+  QUERY
+end
 
   ActiveRecord::Base.connection.execute("
-        INSERT into employer_contributions(recipient_id, name, contrib, amount)
-	SELECT s.id, candidate, contrib, sum(amount) as amount from
-	  (
-	    SELECT r.id, r.name as candidate,
-		   case
-		     when p.Emp1 = 'N/A' then c.occupation
-		     else p.Emp1
-		   end as contrib, amount
-	      FROM contributions b, parties r, parties c, maps p
-	      WHERE b.recipient_id = r.id AND b.contributor_id = c.id and
-	      r.committee_id in (1357609, 1354678, 1362261, 1359017) AND
-	      c.employer = p.Emp2 AND c.type = 'Party::Individual'
-	    UNION ALL
-	    SELECT r.id, r.name as candidate, p.Emp1 as contrib, amount
-	      FROM contributions b, parties r, parties c, maps p
-	      WHERE b.recipient_id = r.id AND b.contributor_id = c.id and
-	      r.committee_id in (1357609, 1354678, 1362261, 1359017) AND
-	      c.name = p.Emp2 AND c.type <> 'Party::Individual'
-	   ) s
-	GROUP BY s.id, candidate, contrib
-	ORDER BY s.id, candidate, sum(amount) desc;")
-end
+        INSERT into whales(contributor_id, amount)
+	SELECT contributor_id, sum(amount)
+	FROM contributions
+	WHERE amount IS NOT NULL AND date > '2013-11-01'
+	GROUP BY contributor_id
+	ORDER BY sum(amount) desc
+	LIMIT 10;")
+

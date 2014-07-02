@@ -11,7 +11,7 @@ Meeting notes can be found in [this Google Doc](https://docs.google.com/document
 
 To start, you'll need ruby installed.
 
-    rbenv install 2.1.0
+    rbenv install 2.1.2
 
 Then install bundler and foreman:
 
@@ -26,7 +26,14 @@ Install postgres:
 
 Now you can install the other dependencies with:
 
-    bundle install --without=production
+    bundle install
+
+Create your postgresql user: (may be unnecessary, depending on how postgres is
+installed):
+
+    sudo -upostgres createuser $USER -P
+    # enter a password you're not terribly worried to share
+    echo DATABASE_URL="postgres://$USER:[your password]@localhost/postgres" > .env
 
 You should be all set. Run the app like this:
 

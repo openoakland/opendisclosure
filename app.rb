@@ -4,6 +4,7 @@ require 'active_record'
 require 'haml'
 
 # Load ActiveRecord models (and connect to the database)
+ENV['DATABASE_URL'] ||= "postgres://localhost/postgres"
 ActiveRecord::Base.establish_connection
 Dir['./backend/models/*.rb'].each { |f| require f }
 
@@ -89,8 +90,22 @@ end
 
 get '/api/employer_contributions' do
   headers 'Content-Type' => 'application/json'
-  EmployerContribution.all.to_json;
 
+  EmployerContribution.all.to_json
+end
+
+get '/api/category_contributions' do
+  headers 'Content-Type' => 'application/json'
+  CategoryContribution.all.to_json;
+end
+
+get '/api/whales' do
+  headers 'Content-Type' => 'application/json'
+  fields = {
+    only: %[amount],
+    include: [:contributor],
+  }
+  Whale.includes(:contributor).to_json(fields);
 end
 
 get '/api/party/:id' do |id|

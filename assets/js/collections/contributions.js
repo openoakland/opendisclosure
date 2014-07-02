@@ -19,3 +19,10 @@ OpenDisclosure.EmployerContributions = Backbone.Collection.extend({
     this.fetch();
   }
 });
+OpenDisclosure.Whales = Backbone.Collection.extend({
+  url: '/api/whales',
+  model: OpenDisclosure.Whale,
+  initialize: function(){
+    this.fetch();
+  }
+});

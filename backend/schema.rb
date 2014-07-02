@@ -79,6 +79,11 @@ ActiveRecord::Schema.define do
 
     t.index [:recipient_id]
   end
+  create_table :whales do |t|
+    t.integer :contributor_id, null: false
+    t.integer :amount
+  end
+
   create_table :lobbyists do |t|
     t.string :name
     t.string :firm

@@ -19,3 +19,7 @@ class Contribution < ActiveRecord::Base
 end
 
 class EmployerContribution < ActiveRecord::Base; end
+class CategoryContribution < ActiveRecord::Base; end
+class Whale < ActiveRecord::Base
+  belongs_to :contributor, class_name: 'Party'
+end
