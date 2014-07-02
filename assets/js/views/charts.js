@@ -48,19 +48,12 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
   },
 
   processData: function(data) {
-    var candidateNames = {
-      'Parker for Oakland Mayor 2014': 'Brian Parker',
-      'Re-Elect Mayor Quan 2014': 'Jean Quan',
-      'Libby Schaaf for Oakland Mayor 2014': 'Libby Schaaf',
-      'Joe Tuman for Mayor 2014': 'Joe Tuman'
-    };
-
     var amounts = {};
     var candidates = {};
 
     for (var i = 0; i < data.length; i++) {
       var el = data.models[i].attributes,
-        candidate = el.recipient.name,
+        candidate = el.recipient.short_name,
         amount = (!isNaN(parseInt(el.amount))) ? parseInt(el.amount) : 0,
         zip = el.contributor.zip;
 
@@ -68,14 +61,14 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       if (!amounts[zip]) {
         amounts[zip] = {};
       }
-      if (!amounts[zip][candidateNames[candidate]]) {
-        amounts[zip][candidateNames[candidate]] = 0;
+      if (!amounts[zip][candidate]) {
+        amounts[zip][candidate] = 0;
       }
-      amounts[zip][candidateNames[candidate]] += amount;
+      amounts[zip][candidate] += amount;
 
       // Create a list of all candidates
-      if (!candidates[candidateNames[candidate]]) {
-        candidates[candidateNames[candidate]] = true;
+      if (!candidates[candidate]) {
+        candidates[candidate] = true;
       }
     }
 
