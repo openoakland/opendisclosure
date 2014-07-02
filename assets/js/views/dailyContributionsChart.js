@@ -46,14 +46,14 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
 
 
     var margin = {top: 20, right: 20, bottom: 30, left: 50},
-      width = 1200 - margin.left - margin.right,
-      height = 800 - margin.top - margin.bottom;
+      width = chart.dimensions.width - margin.left - margin.right,
+      height = chart.dimensions.height - margin.top - margin.bottom;
 
     var x = d3.time.scale()
-      .range([0, chart.dimensions.width]);
+      .range([0, width]);
 
     var y = d3.scale.linear()
-      .range([chart.dimensions.height, 0]);
+      .range([height, 0]);
 
      xAxis = d3.svg.axis()
       .scale(x)
@@ -68,8 +68,8 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
       .y(function(d) { return y(d.close); });
 
     chart.svg = d3.select(chart.el).append("svg")
-      .attr("width", chart.dimensions.width)
-      .attr("height", chart.dimensions.height)
+      .attr("width", width)
+      .attr("height", height)
       .attr("viewBox", "0 0 " + chart.dimensions.width + " " + chart.dimensions.height)
       .attr("preserveAspectRatio", "xMidYMid")
       .append("g")
@@ -80,7 +80,7 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
 
     chart.svg.append("g")
       .attr("class", "x axis")
-      .attr("transform", "translate(0," + chart.dimensions.height + ")")
+      .attr("transform", "translate(0," + height + ")")
       .call(xAxis);
 
     chart.svg.append("g")
