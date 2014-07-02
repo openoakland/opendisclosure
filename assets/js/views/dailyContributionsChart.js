@@ -16,7 +16,7 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
   draw: function(){ 
     var xRange = []
     var yRange = []
-    var chart = this;
+    chart = this;
 
     chart.data = this.processData(this.collection);
 
@@ -106,10 +106,18 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
           .attr("class", "line")
           .attr("id", key)
           .attr("d", line)
+          .style("stroke", chart.candidateColors[key]) //function(d) { return color(d.name); }
           .text(key);
       }
     };
 
+  },
+
+  candidateColors: {
+    "Parker for Oakland Mayor 2014": "#26D5F5",
+    "Re-Elect Mayor Quan 2014": "#A8E938",
+    "Libby Schaaf for Oakland Mayor 2014": "#FED35E",
+    "Joe Tuman for Mayor 2014": "#FD2D2D"
   },
 
   processData: function(data) {
@@ -155,6 +163,10 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
       }
     }
     return amounts
+  },
+
+  prePendButtons: function(){
+
   }
 })
 
