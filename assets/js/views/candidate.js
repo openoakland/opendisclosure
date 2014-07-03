@@ -22,8 +22,12 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
      "),
 
   initialize: function(){
-    this.model.attributes.imagePath = this.model.imagePath();
-    this.render();
+    if (this.model) {
+      this.model.attributes.imagePath = this.model.imagePath();
+      this.render();}
+    else { 
+      app.navigate('home',true)
+    }
   },
 
   render: function(){
