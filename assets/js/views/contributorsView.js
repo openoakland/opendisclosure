@@ -3,7 +3,7 @@ OpenDisclosure.ContributorsView = Backbone.View.extend({
   el: '.contributions',
 
   template: _.template(' \
-    <div class="col-sm-6 contribution"><a href="/party/<%= contributor.id %>/contributions">\
+    <div class="col-sm-6 contribution"><a href="#contributor/<%= contributor.id %>">\
     <span class="col-sm-8"><%= contributor.name %></span>\
     <span class="col-sm-4"><%= OpenDisclosure.friendlyMoney(amount) %> </span>\
     </a></div>'),
@@ -20,11 +20,10 @@ OpenDisclosure.ContributorsView = Backbone.View.extend({
   render: function() {
     $('.contributions').empty();
     $('<section>\
-			<br/>\
-			<div class="col-sm-12">\
-				<h2>' + this.options.headline + '</h2>\
-        <label>Search: <input type="search" id="contribSearch"></input></label>\
-			</div>\
+	<div class="col-sm-12">\
+		<h2>' + this.options.headline + '</h2>\
+<label>Search: <input type="search" id="contribSearch"></input></label>\
+	</div>\
       <div class="contributions clearfix"></div>\
      </div>\
     </section>').appendTo('.main');
@@ -33,6 +32,8 @@ OpenDisclosure.ContributorsView = Backbone.View.extend({
     _.each(this.collection, function( c ){
       $('.contributions').append(that.template(c.attributes));
     });
+    // Leave a little space at the bottom.
+    $('.contributions').append('<div class="col-sm-12"><h2></h2></div>');
 
     that = this;
     $('body').keyup(function(){

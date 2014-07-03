@@ -26,3 +26,10 @@ OpenDisclosure.Whales = Backbone.Collection.extend({
     this.fetch();
   }
 });
+OpenDisclosure.Contributor = Backbone.Collection.extend({
+  model: OpenDisclosure.Contributor,
+  initialize: function(){
+    this.url = '/party/' + arguments[0] + '/contributions';
+    this.fetch();
+  }
+});
