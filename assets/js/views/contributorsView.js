@@ -21,8 +21,8 @@ OpenDisclosure.ContributorsView = Backbone.View.extend({
     $('.contributions').empty();
     $('<section>\
 	<div class="col-sm-12">\
-		<h2>' + this.options.headline + '</h2>\
-<label>Search: <input type="search" id="contribSearch"></input></label>\
+	  <h2>' + this.options.headline + '</h2>\
+	  <label>Search: <input type="search" id="contribSearch"></input></label>\
 	</div>\
       <div class="contributions clearfix"></div>\
      </div>\

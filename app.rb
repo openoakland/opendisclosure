@@ -29,7 +29,7 @@ end
 #   http://apidock.com/rails/ActiveRecord/Serialization/to_json
 #
 # This is data of contributions from an individual/company to various campaigns.
-get '/party/:id/contributions' do |id|
+get '/api/contributor/:id' do |id|
   headers 'Content-Type' => 'application/json'
   fields = {
     include: [:recipient, :contributor],
