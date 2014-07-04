@@ -17,7 +17,30 @@ class Party < ActiveRecord::Base
     SCHAAF = 1362261,
     TUMAN = 1359017,
     MCCULLOUGH = 0,   # TODO: Fill in with Filer_ID when he has one
-    RUBY = 1342695,   # TODO: This is wrong, fix it!!!
+    RUBY = 1284364,   # TODO: This is wrong, fix it!!!
+  ]
+
+  # Filer_IDs of other races this cycle
+  CANDIDATE_IDS = [
+    # Auditor
+    ROBERTS = 0,
+    # Council 2
+    BLACKBURN = 0,
+    COLBRUNO = 0,
+    GUILLEN = 0,
+    KING = 0,
+    MAO = 0,
+    PARK = 0,
+    # Council 4
+    BROADHURST = 0,
+    WASHINGTON = 0,
+    HEIDORN = 0,
+    LIM = 0,
+    SINCLAIR = 0,
+    # Council 6
+    JOHNSON = 0,
+    MOORE = 0,
+    NOSAKHARE = 0,
   ]
 
   CANDIDATE_INFO = {
@@ -48,7 +71,7 @@ class Party < ActiveRecord::Base
     },
     RUBY => {
       name: 'Courtney Ruby',
-      profession: '<current profession>',
+      profession: 'City Auditor',
       party: 'Unknown',
     }
   }
