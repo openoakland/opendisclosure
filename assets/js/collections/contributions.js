@@ -26,6 +26,13 @@ OpenDisclosure.Whales = Backbone.Collection.extend({
     this.fetch();
   }
 });
+OpenDisclosure.Multiples = Backbone.Collection.extend({
+  url: '/api/multiples',
+  model: OpenDisclosure.Multiple,
+  initialize: function(){
+    this.fetch();
+  }
+});
 OpenDisclosure.Contributors = Backbone.Collection.extend({
   model: OpenDisclosure.Contributor,
   url: function() {

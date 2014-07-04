@@ -91,6 +91,15 @@ get '/api/whales' do
   Whale.includes(:contributor).to_json(fields);
 end
 
+get '/api/multiples' do
+  headers 'Content-Type' => 'application/json'
+  fields = {
+    only: %[number],
+    include: [:contributor],
+  }
+  Multiple.includes(:contributor).to_json(fields);
+end
+
 get '/api/party/:id' do |id|
   # TODO: Include names of the people contributing?
   headers 'Content-Type' => 'application/json'

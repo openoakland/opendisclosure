@@ -11,6 +11,7 @@ OpenDisclosure.App = Backbone.Router.extend({
     this.employerContributions = new OpenDisclosure.EmployerContributions();
     this.categoryContributions = new OpenDisclosure.CategoryContributions();
     this.whales = new OpenDisclosure.Whales();
+    this.multiples = new OpenDisclosure.Multiples();
     this.home();
   },
 
@@ -23,6 +24,10 @@ OpenDisclosure.App = Backbone.Router.extend({
     this.listenTo(this.whales, 'sync', function() {
       console.log('Received whale data!');
       new OpenDisclosure.ContributorsView({collection: this.whales.models, headline:'Top Contributors To All Candidates in This Election'});
+    });
+    this.listenTo(this.multiples, 'sync', function() {
+      console.log('Received multiples data!');
+      new OpenDisclosure.MultiplesView({collection: this.multiples.models, headline:'Contributors To More Than One Mayoral Candidate'});
     });
   },
 
