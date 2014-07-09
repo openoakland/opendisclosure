@@ -137,6 +137,9 @@ if __FILE__ == $0
     ActiveRecord::Base.logger = Logger.new(STDOUT)
   end
 
+  # This table maps spellings of employers to a common spelling.
+  # It needs to be updated when a new batch of data is available
+  # as there is no check on spelling on the forms.
   puts "Loading Employer Map"
   include CsvMapper
   results = import('backend/map.csv') do
@@ -146,6 +149,7 @@ if __FILE__ == $0
     [id, emp1, emp2, type]
   end
 
+  # !! Need a new Lobbyist Directory for 2014
   puts "Loading Lobbyist data"
   results = import('backend/2013_Lobbyist_Directory.csv') do
     map_to Lobbyist
@@ -232,14 +236,27 @@ if __FILE__ == $0
     GROUP BY s.id, candidate, contrib
     ORDER BY s.id, candidate, sum(amount) desc;
   QUERY
+
+  ActiveRecord::Base.connection.execute <<-QUERY
+    INSERT into whales(contributor_id, amount)
+    SELECT contributor_id, sum(amount)
+    FROM contributions, parties
+    WHERE amount IS NOT NULL AND recipient_id = parties.id AND committee_id <> 0 AND
+      ( committee_id in (#{Party::MAYORAL_CANDIDATE_IDS.join ','}) OR
+	committee_id in (#{Party::CANDIDATE_IDS.join ','}))
+    GROUP BY contributor_id
+    ORDER BY sum(amount) desc
+    LIMIT 10;
+  QUERY
+
+  ActiveRecord::Base.connection.execute <<-QUERY
+    INSERT into multiples(contributor_id, number)
+    SELECT contributor_id, count(distinct recipient_id) 
+    FROM contributions, parties r
+    WHERE r.id = recipient_id AND
+      r.committee_id in (#{Party::MAYORAL_CANDIDATE_IDS.join ','})
+    GROUP BY contributor_id
+    HAVING count(distinct recipient_id) > 1
+    ORDER BY count(distinct recipient_id) desc;
+  QUERY
 end
-
-  ActiveRecord::Base.connection.execute("
-        INSERT into whales(contributor_id, amount)
-	SELECT contributor_id, sum(amount)
-	FROM contributions
-	WHERE amount IS NOT NULL AND date > '2013-11-01'
-	GROUP BY contributor_id
-	ORDER BY sum(amount) desc
-	LIMIT 10;")
-

@@ -10,3 +10,9 @@ OpenDisclosure.CategoryContribution = Backbone.Model.extend({
 OpenDisclosure.Whale = Backbone.Model.extend({
 
 });
+OpenDisclosure.Multiple = Backbone.Model.extend({
+
+});
+OpenDisclosure.Contributor = Backbone.Model.extend({
+
+});
