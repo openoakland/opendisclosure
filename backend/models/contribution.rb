@@ -23,3 +23,6 @@ class CategoryContribution < ActiveRecord::Base; end
 class Whale < ActiveRecord::Base
   belongs_to :contributor, class_name: 'Party'
 end
+class Multiple < ActiveRecord::Base
+  belongs_to :contributor, class_name: 'Party'
+end

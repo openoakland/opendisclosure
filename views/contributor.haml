@@ -1,7 +1,0 @@
-%h1= party.name
-%h2 Made #{contributions.count} contributions:
-%ul
-  - contributions.each do |c|
-    %li
-      %a{ href: "/party/#{c.recipient.id}"}
-        = c.recipient.name

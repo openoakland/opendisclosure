@@ -83,6 +83,10 @@ ActiveRecord::Schema.define do
     t.integer :contributor_id, null: false
     t.integer :amount
   end
+  create_table :multiples do |t|
+    t.integer :contributor_id, null: false
+    t.integer :number
+  end
 
   create_table :lobbyists do |t|
     t.string :name
