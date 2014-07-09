@@ -79,7 +79,10 @@ get '/api/contributions' do
   headers 'Content-Type' => 'application/json'
   fields = {
     only: %w[amount date],
-    include: [:recipient, :contributor],
+    include: [
+      { recipient: { methods: :short_name } },
+      { contributor: { methods: :short_name } },
+    ],
   }
 
   Contribution

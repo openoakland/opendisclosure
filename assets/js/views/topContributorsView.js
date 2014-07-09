@@ -2,7 +2,7 @@ OpenDisclosure.TopContributorsView = Backbone.View.extend({
   template: _.template(' \
     <div class="col-sm-6">\
     <span class="col-sm-8"><%= contrib %></span>\
-    <span class="col-sm-4">$<%= amount %> </span>\
+    <span class="col-sm-4"><%= OpenDisclosure.friendlyMoney(amount) %> </span>\
     </div>'),
 
   initialize: function() {

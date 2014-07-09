@@ -5,7 +5,7 @@ OpenDisclosure.ContributorsView = Backbone.View.extend({
   template: _.template(' \
     <div class="col-sm-6 contribution"><a href="/party/<%= contributor.id %>/contributions">\
     <span class="col-sm-8"><%= contributor.name %></span>\
-    <span class="col-sm-4">$<%= amount %> </span>\
+    <span class="col-sm-4"><%= OpenDisclosure.friendlyMoney(amount) %> </span>\
     </a></div>'),
 
   events: {
