@@ -1,4 +1,5 @@
 OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
+  
     el: '#daily-contributions-chart',
 
 
@@ -78,20 +79,6 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
     x.domain(d3.extent(xRange));
     y.domain(d3.extent(yRange));
 
-    chart.svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis);
-
-    chart.svg.append("g")
-      .attr("class", "y axis")
-      .call(yAxis)
-      .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      .text("Total Raised ($)");
 
     for (var key in chart.data){
       var data = chart.data[key]
@@ -107,10 +94,27 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
           .attr("id", key)
           .attr("d", line)
           .style("stroke", chart.candidateColors[key]) //function(d) { return color(d.name); }
-          .text(key);
+          // .text(key);
       }
     };
+  
+    chart.svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
 
+    chart.svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+      .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Total Raised ($)");
+
+      
+    // chart.drawLegend()
   },
 
   candidateColors: {
@@ -119,6 +123,13 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
     "Libby Schaaf for Oakland Mayor 2014": "#FED35E",
     "Joe Tuman for Mayor 2014": "#FD2D2D"
   },
+
+  candidates: [
+    "Bryan Parker",
+    "Jean Quan",
+    "Libby Schaaf",
+    "Joe Tuman"
+  ],
 
   processData: function(data) {
     var tempAmounts = {}
@@ -167,6 +178,74 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
 
   prePendButtons: function(){
 
+  },
+
+  drawLegend: function() {
+    var chart = this;
+
+    var legend = {
+      width: chart.dimensions.width / 4.8,
+      offset: chart.dimensions.height / chart.candidates.length,
+      right_bar: {
+        width: chart.dimensions.width / 80
+      },
+      margin: chart.dimensions.width / 100,
+      font_size: chart.dimensions.width / 50
+    }
+
+    chart.legend = chart.svg.selectAll('.legend')
+      .data(chart.candidates)
+      .enter().append('g')
+      .attr("class", "legend")
+      .attr("transform", function(d, i) {
+        return "translate(0, " + i * legend.offset + ")";
+      });
+
+    d3.select('g.legend')
+      .attr("class", "legend overview")
+
+    // Show which candidate is selected
+    chart.legend.append("rect")
+      .attr('x', legend.width - legend.right_bar.width)
+      .attr("width", legend.right_bar.width)
+      .attr("height", legend.offset)
+      .attr("class", 'status');
+
+    // Dividers between candidates
+    chart.legend.append("rect")
+      .attr('x', legend.width - legend.right_bar.width)
+      .attr("class", "divider")
+      .attr("width", legend.right_bar.width)
+      .attr("height", 2);
+
+    chart.legend.append("text")
+      .attr("x", legend.width - legend.margin - legend.right_bar.width)
+      .attr("y", legend.offset / 2)
+      .attr("font-size", legend.font_size)
+      .attr("dy", ".35em")
+      .text(function(d) {
+        return d;
+      })
+
+    d3.select('.legend.overview text')
+      .attr("font-size", legend.font_size + 4)
+
+    // Hightlighted candidate name (fitted to text length)
+    chart.legend.insert("rect", ":first-child")
+      .attr("width", function() {
+        var text = $(this).parent().find('text').get()[0]
+        var width = text.getBBox().width;
+        return width + legend.margin * 3;
+      })
+      .attr("x", function() {
+        var right_edge = legend.width - legend.right_bar.width
+        return right_edge - this.width.animVal.value;
+      })
+      .attr("height", legend.offset + 2) // Align to bottom spacer
+    .attr("class", "name");
+
+    d3.select('.legend.overview .name')
+      .attr("height", legend.offset)
   }
 })
 
