@@ -17,6 +17,8 @@ class OpenDisclosureApp < Sinatra::Application
 
   register Sinatra::AssetPipeline
 
+  set :assets_precompile, %w(application.js application.css *.png *.jpg *.svg *.eot *.ttf *.woff)
+
   get '/' do
     # This renders the file views/index.haml inside of the 'yield' in
     # views/layout.haml:

@@ -8,6 +8,10 @@
     %link{ rel: 'stylesheet', href: '//fonts.googleapis.com/css?family=Merriweather:300,400,700' }
     %link{ rel: 'stylesheet', href: '//fonts.googleapis.com/css?family=Crete+Round' }
     = stylesheet_tag '//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'
+    -#
+      Include the assets/css/application.css.scss manifest. If you want to
+      include another manifest here, you must also add it to the
+      "assets_precompile" array in app.rb
     = stylesheet_tag 'application'
 
   %body
@@ -62,6 +66,10 @@
     :javascript
       google.load('visualization', '1.0', {'packages':['corechart']});
 
+    -#
+      Include the assets/js/application.js manifest. If you want to include
+      another manifest here, you must also add it to the "assets_precompile"
+      array in app.rb
     = javascript_tag 'application.js'
 
     :javascript
