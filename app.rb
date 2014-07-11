@@ -34,7 +34,11 @@ class OpenDisclosureApp < Sinatra::Application
   #
   # This is data of contributions from an individual/company to various campaigns.
   get '/api/contributor/:id' do |id|
+    cache_control :public
+    last_modified Import.last.import_time
+
     headers 'Content-Type' => 'application/json'
+
     fields = {
       include: [:recipient, :contributor],
     }
@@ -45,7 +49,11 @@ class OpenDisclosureApp < Sinatra::Application
   end
 
   get '/api/candidates' do
+    cache_control :public
+    last_modified Import.last.import_time
+
     headers 'Content-Type' => 'application/json'
+
     fields = {
       only: %w[id name committee_id received_contributions_count contributions_count received_contributions_from_oakland small_donations],
       methods: [
@@ -63,7 +71,11 @@ class OpenDisclosureApp < Sinatra::Application
   end
 
   get '/api/contributions' do
+    cache_control :public
+    last_modified Import.last.import_time
+
     headers 'Content-Type' => 'application/json'
+
     fields = {
       only: %w[amount date],
       include: [
@@ -79,27 +91,42 @@ class OpenDisclosureApp < Sinatra::Application
   end
 
   get '/api/employer_contributions' do
+    cache_control :public
+    last_modified Import.last.import_time
+
     headers 'Content-Type' => 'application/json'
 
     EmployerContribution.all.to_json
   end
 
   get '/api/category_contributions' do
+    cache_control :public
+    last_modified Import.last.import_time
+
     headers 'Content-Type' => 'application/json'
-    CategoryContribution.all.to_json;
+
+    CategoryContribution.all.to_json
   end
 
   get '/api/whales' do
+    cache_control :public
+    last_modified Import.last.import_time
+
     headers 'Content-Type' => 'application/json'
+
     fields = {
       only: %[amount],
       include: [:contributor],
     }
-    Whale.includes(:contributor).to_json(fields);
+    Whale.includes(:contributor).to_json(fields)
   end
 
   get '/api/multiples' do
+    cache_control :public
+    last_modified Import.last.import_time
+
     headers 'Content-Type' => 'application/json'
+
     fields = {
       only: %[number],
       include: [:contributor],
@@ -108,6 +135,9 @@ class OpenDisclosureApp < Sinatra::Application
   end
 
   get '/api/party/:id' do |id|
+    cache_control :public
+    last_modified Import.last.import_time
+
     # TODO: Include names of the people contributing?
     headers 'Content-Type' => 'application/json'
 
