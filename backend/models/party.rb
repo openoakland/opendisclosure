@@ -115,6 +115,15 @@ class Party < ActiveRecord::Base
     CANDIDATE_INFO.fetch(committee_id, {})[:bio]
   end
 
+  def image
+    # Depends on Sinatra being initialized, so this cannot be called from
+    # backend/load_data.rb script. But why would you want to?
+    return nil unless defined?(OpenDisclosureApp)
+
+    last_name = short_name.split.last
+    OpenDisclosureApp.image_path(last_name + '.png')
+  end
+
   def from_oakland?
     city =~ /Oakland/i
   end

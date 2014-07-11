@@ -5,12 +5,11 @@
     %meta{content: "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}
     %title Open Disclosure
     %meta{content: "width=device-width", name: "viewport"}
-    %link{ href: '/css/bootstrap.min.css', rel: 'stylesheet' }
-    %link{ href: '//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css', rel: 'stylesheet' }
     %link{ href: 'http://fonts.googleapis.com/css?family=Merriweather:300,400,700|Open+Sans:400,300,800', rel:"stylesheet" }
     %link{ href:'http://fonts.googleapis.com/css?family=Crete+Round', rel:"stylesheet", type:'text/css'}
-    %link{ href: "/css/main.css", rel: "stylesheet" }
-    %link{ href: "/css/charts.css", rel: "stylesheet" }
+    = stylesheet_tag '//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'
+    = stylesheet_tag 'main.css'
+    = stylesheet_tag 'charts.css'
 
   %body
     .disclaimer
@@ -27,7 +26,7 @@
       .row
         #logo.leftCol
           %a{ href: '/' }
-            %img{ src: '/images/OaklandCityTree.png'}
+            %img{ src: image_path('OaklandCityTree.png') }
         #titleContainer.rightCol
           %p.subtitle 2014 Oakland Mayoral Election
           %p.title.green Campaign Finance Analysis
@@ -61,48 +60,41 @@
 
     / Google apis
     %script{src: "https://www.google.com/jsapi"}
-    %script{src: "/js/vendor/GoogleChart.js"}
+    = javascript_tag '/vendor/GoogleChart.js'
     :javascript
       google.load('visualization', '1.0', {'packages':['corechart']});
 
-
-    / Third Party (local)
-    / %script{src: "/js/vendor/underscore.js"}
-    / %script{src: "/js/vendor/jquery-1.10.1.min.js"}
-    / %script{src: "/js/vendor/backbone-min.js"}
-    / %script{src: "/js/vendor/d3.v3.min.js"}
-
-    %script{src: "/js/vendor/topojson.v1.min.js"}
-    %script{src: "/js/vendor/bootstrap.min.js"}
-    %script{src: "/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"}
-    %script{src: "/js/vendor/accounting.min.js"}
+    = javascript_tag '/vendor/topojson.v1.min.js'
+    = javascript_tag '/vendor/bootstrap.min.js'
+    = javascript_tag '/vendor/modernizr-2.6.2-respond-1.1.0.min.js'
+    = javascript_tag '/vendor/accounting.min.js'
 
 
-    %script{src: "/js/config.js"}
+    = javascript_tag 'config.js'
 
     / Models
-    %script{src: "/js/models/candidate.js"}
-    %script{src: "/js/models/contribution.js"}
+    = javascript_tag 'models/candidate.js'
+    = javascript_tag 'models/contribution.js'
 
     / Collections
-    %script{src: "/js/collections/candidates.js"}
-    %script{src: "/js/collections/contributions.js"}
+    = javascript_tag 'collections/candidates.js'
+    = javascript_tag 'collections/contributions.js'
 
     / Views
-    %script{src: "/js/views/about.js"}
-    %script{src: "/js/views/candidate.js"}
-    %script{src: "/js/views/candidateTable.js"}
-    %script{src: "/js/views/chartsWrapper.js"}
-    %script{src: "/js/views/charts.js"}
-    %script{src: "/js/views/contributorsView.js"}
-    %script{src: "/js/views/contributorView.js"}
-    %script{src: "/js/views/topContributorsView.js"}
-    %script{src: "/js/views/categoryView.js"}
-    %script{src: "/js/views/multiplesView.js"}
+    = javascript_tag 'views/about.js'
+    = javascript_tag 'views/candidate.js'
+    = javascript_tag 'views/candidateTable.js'
+    = javascript_tag 'views/chartsWrapper.js'
+    = javascript_tag 'views/charts.js'
+    = javascript_tag 'views/contributorsView.js'
+    = javascript_tag 'views/contributorView.js'
+    = javascript_tag 'views/topContributorsView.js'
+    = javascript_tag 'views/categoryView.js'
+    = javascript_tag 'views/multiplesView.js'
 
     / App
-    %script{src: "/js/util.js"}
-    %script{src: "/js/app.js"}
+    = javascript_tag 'util.js'
+    = javascript_tag 'app.js'
 
     :javascript
       <!-- Google Analytics -->
