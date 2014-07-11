@@ -60,41 +60,10 @@
 
     / Google apis
     %script{src: "https://www.google.com/jsapi"}
-    = javascript_tag '/vendor/GoogleChart.js'
     :javascript
       google.load('visualization', '1.0', {'packages':['corechart']});
 
-    = javascript_tag '/vendor/topojson.v1.min.js'
-    = javascript_tag '/vendor/bootstrap.min.js'
-    = javascript_tag '/vendor/modernizr-2.6.2-respond-1.1.0.min.js'
-    = javascript_tag '/vendor/accounting.min.js'
-
-
-    = javascript_tag 'config.js'
-
-    / Models
-    = javascript_tag 'models/candidate.js'
-    = javascript_tag 'models/contribution.js'
-
-    / Collections
-    = javascript_tag 'collections/candidates.js'
-    = javascript_tag 'collections/contributions.js'
-
-    / Views
-    = javascript_tag 'views/about.js'
-    = javascript_tag 'views/candidate.js'
-    = javascript_tag 'views/candidateTable.js'
-    = javascript_tag 'views/chartsWrapper.js'
-    = javascript_tag 'views/charts.js'
-    = javascript_tag 'views/contributorsView.js'
-    = javascript_tag 'views/contributorView.js'
-    = javascript_tag 'views/topContributorsView.js'
-    = javascript_tag 'views/categoryView.js'
-    = javascript_tag 'views/multiplesView.js'
-
-    / App
-    = javascript_tag 'util.js'
-    = javascript_tag 'app.js'
+    = javascript_tag 'application.js'
 
     :javascript
       <!-- Google Analytics -->
