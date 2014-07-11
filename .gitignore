@@ -4,3 +4,4 @@
 **/.DS_Store
 **/*.sqlite3
 .sass-cache
+public/assets
