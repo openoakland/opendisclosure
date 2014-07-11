@@ -96,6 +96,7 @@ DEPENDENCIES
   haml
   pg
   pry
+  rake
   sinatra
   sinatra-asset-pipeline
   sinatra-contrib
