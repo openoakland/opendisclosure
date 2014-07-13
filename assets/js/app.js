@@ -1,6 +1,7 @@
 OpenDisclosure.App = Backbone.Router.extend({
   routes: {
     '/': 'home',
+    'about': 'about',
     'candidate/:id': 'candidate',
     'contributor/:id': 'contributor'
   },
@@ -29,6 +30,10 @@ OpenDisclosure.App = Backbone.Router.extend({
       console.log('Received multiples data!');
       new OpenDisclosure.MultiplesView({collection: this.multiples.models, headline:'Contributors To More Than One Mayoral Candidate'});
     });
+  },
+
+  about: function () {
+    new OpenDisclosure.AboutView();
   },
 
   candidate: function(id){
