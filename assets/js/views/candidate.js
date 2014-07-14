@@ -11,6 +11,7 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
           <p>Party Affiliation: <%= attributes.party_affiliation %></p>\
           <p><%= attributes.profession %></p>\
           <p><a id='twitter' href='https://twitter.com/'+ <%= attributes.twitter %>><%= attributes.twitter %></a></p>\
+          <p><%= attributes.bio %></p>\
         </div>\
         <div class='col-sm-4'>\
           <% if (typeof attributes.summary !== 'undefined') { %>\
@@ -26,8 +27,8 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
     if (this.model) {
       this.model.attributes.imagePath = this.model.imagePath();
       this.render();}
-    else { 
-      app.navigate('home',true)
+    else {
+      app.navigate('home',true);
     }
   },
 
@@ -44,7 +45,7 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
     new OpenDisclosure.CategoryView({collection: this.categories, summary: this.model.attributes.summary});
 
     // Render Top Contributions
-    var that = this;
+    that = this;
     var count = 0;
     this.topContributions = _.filter(app.employerContributions.models, function(c) {
       return c.attributes.recipient_id == that.model.attributes.id && ++count <= 10;

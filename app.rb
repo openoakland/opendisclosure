@@ -49,7 +49,8 @@ get '/api/candidates' do
       :short_name,
       :profession,
       :party_affiliation,
-      :twitter
+      :twitter,
+      :bio
     ],
   }
 
