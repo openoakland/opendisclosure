@@ -256,3 +256,9 @@ ul#contributions {
   text-decoration: none;
   list-style: none;
 }
+
+/* ------------------- About Page -------------------- */
+.about {
+  font-size: 16px
+}
+
