@@ -10,6 +10,7 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
           <p><%= name %></p>\
           <p>Party Affiliation: <%= attributes.party_affiliation %></p>\
           <p><%= attributes.profession %></p>\
+          <p><a id='twitter' href='https://twitter.com/'+ <%= attributes.twitter %>><%= attributes.twitter %></a></p>\
         </div>\
         <div class='col-sm-4'>\
           <% if (typeof attributes.summary !== 'undefined') { %>\
