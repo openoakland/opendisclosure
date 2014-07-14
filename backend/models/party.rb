@@ -50,32 +50,39 @@ class Party < ActiveRecord::Base
     PARKER => {
       name: 'Bryan Parker',
       profession: 'Health Care and Tecnology Professional',
-      party: 'Democrat'
+      party: 'Democrat',
+      twitter:'@bryanparker2014'
     },
     QUAN => {
       name: 'Jean Quan',
       profession: 'Incumbant Oakland Mayor',
-      party: 'Democrat'
+      party: 'Democrat',
+      twitter:'@jeanquan'
     },
     SCHAAF => {
       name: 'Libby Schaaf',
       profession: 'Councilmember for District 4',
-      party: 'Democrat'
+      party: 'Democrat',
+      twitter: '@libbyformayor'
     },
     TUMAN => {
       name: 'Joe Tuman',
       profession: 'University Professor',
-      party: 'Independent'
+      party: 'Independent',
+      twitter:'@joe4mayor'
+
     },
     MCCULLOUGH => {
       name: 'Patrick McCullough',
       profession: '<current profession>',
       party: 'Unknown',
+      twitter:''
     },
     RUBY => {
       name: 'Courtney Ruby',
       profession: 'City Auditor',
       party: 'Unknown',
+      twitter:'@Ruby4Oakland'
     }
   }
 
@@ -93,6 +100,10 @@ class Party < ActiveRecord::Base
 
   def party_affiliation
     CANDIDATE_INFO.fetch(committee_id, {})[:party]
+  end
+
+  def twitter
+    CANDIDATE_INFO.fetch(committee_id, {})[:twitter]
   end
 
   def from_oakland?
