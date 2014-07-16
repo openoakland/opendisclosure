@@ -24,8 +24,7 @@
       %a{ href: 'http://www.meetup.com/OpenOakland/' }
         You can help us finish it!
 
-    %header
-      / .container-fluid
+    %header.container
       .row
         #logo.leftCol
           %a{ href: '/' }
@@ -34,9 +33,9 @@
           %p.subtitle 2014 Oakland Mayoral Election
           %p.title.green Campaign Finance Analysis
 
-    .container-fluid
+    .container
       .row
-        .sidebar.leftCol{ role: 'navigation'}
+        %aside.col-sm-2.sidebar{ role: 'navigation'}
           %ul.nav.nav-sidebar
             %li
               %a{ href: '/#about' } About Us
@@ -52,8 +51,8 @@
                   %li
                     %a{ href: "/#candidate/#{c.id}" }= c.short_name
 
-        .main.col-sm-offset-1.col-sm-8
-          .row= yield
+        .main.col-sm-10
+          = yield
 
     / Third Party (cdn)
     %script{src: "http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"}

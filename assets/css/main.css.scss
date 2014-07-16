@@ -30,19 +30,6 @@ a:hover {
   color: #539137;
 }
 
-.leftCol {
-  padding-left: 10px;
-  width:160px;;
-  float:left;
-}
-
-.rightCol {
-  margin-left:6%;
-  width: 70%;
-  min-width: 450px;
-  float: left;
-  padding-right:40px;
-}
 /* ------------------- disclaimer -------------------- */
 
 .disclaimer {
@@ -174,12 +161,14 @@ header .title {
 /* ------------------- HOMEPAGE MAYOR TABLE -------------------- */
 
 
-#mayoral-candidates th {
-  font-weight: normal;
-}
+#mayoral-candidates {
+  th {
+    font-weight: normal;
+  }
 
-#mayoral-candidates p {
-  margin: 0;
+  p {
+    margin: 0;
+  }
 }
 
 #mayoral-table {
