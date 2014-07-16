@@ -70,7 +70,7 @@ ActiveRecord::Schema.define do
     t.integer :amount, null: false
 
     t.index [:recipient_id]
-  end  
+  end
   create_table :employer_contributions do |t|
     t.integer :recipient_id, null: false
     t.string :name, null: false
@@ -96,4 +96,7 @@ ActiveRecord::Schema.define do
     t.index [:firm]
   end
 
+  create_table :imports do |t|
+    t.datetime :import_time
+  end
 end

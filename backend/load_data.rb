@@ -259,4 +259,6 @@ if __FILE__ == $0
     HAVING count(distinct recipient_id) > 1
     ORDER BY count(distinct recipient_id) desc;
   QUERY
+
+  Import.create(import_time: Time.now)
 end
