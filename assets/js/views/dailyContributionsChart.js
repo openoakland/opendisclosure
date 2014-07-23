@@ -1,5 +1,4 @@
 OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
-  
     el: '#daily-contributions-chart',
 
 

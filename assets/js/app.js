@@ -16,6 +16,7 @@ OpenDisclosure.App = Backbone.Router.extend({
   },
 
   home: function(){
+
     new OpenDisclosure.CandidateTable({ collection : this.candidates });
     new OpenDisclosure.ZipcodeChartView({
       collection: this.contributions,
@@ -24,7 +25,7 @@ OpenDisclosure.App = Backbone.Router.extend({
     new OpenDisclosure.DailyContributionsChartView({
       collection: this.contributions,
       base_height: 480
-    })
+    });
     this.listenTo(this.whales, 'sync', function() {
       console.log('Received whale data!');
       new OpenDisclosure.ContributorsView({collection: this.whales.models, headline:'Top Contributors To All Candidates in This Election'});
