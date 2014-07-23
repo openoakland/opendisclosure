@@ -26,6 +26,14 @@ OpenDisclosure.App = Backbone.Router.extend({
       collection: this.contributions,
       base_height: 480
     })
+    this.listenTo(this.whales, 'sync', function() {
+      console.log('Received whale data!');
+      new OpenDisclosure.ContributorsView({collection: this.whales.models, headline:'Top Contributors To All Candidates in This Election'});
+    });
+    this.listenTo(this.multiples, 'sync', function() {
+      console.log('Received multiples data!');
+      new OpenDisclosure.MultiplesView({collection: this.multiples.models, headline:'Contributors To More Than One Mayoral Candidate'});
+    });
   },
 
   candidate: function(id){
@@ -38,17 +46,10 @@ OpenDisclosure.App = Backbone.Router.extend({
     var count = 0;
     this.topContributions = _.filter(this.employerContributions.models, function(c) {
       return c.attributes.recipient_id == that.currentCandidate.id && ++count <= 10;
+    })
     new OpenDisclosure.DailyContributionsChartView({
       collection: this.contributions,
       base_height: 480
-    });
-    this.listenTo(this.whales, 'sync', function() {
-      console.log('Received whale data!');
-      new OpenDisclosure.ContributorsView({collection: this.whales.models, headline:'Top Contributors To All Candidates in This Election'});
-    });
-    this.listenTo(this.multiples, 'sync', function() {
-      console.log('Received multiples data!');
-      new OpenDisclosure.MultiplesView({collection: this.multiples.models, headline:'Contributors To More Than One Mayoral Candidate'});
     });
   },
 
