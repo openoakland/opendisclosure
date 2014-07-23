@@ -1,6 +1,7 @@
 OpenDisclosure.App = Backbone.Router.extend({
   routes: {
-    '/': 'home',
+    '': 'home',
+    'about': 'about',
     'candidate/:id': 'candidate',
     'contributor/:id': 'contributor'
   },
@@ -12,7 +13,6 @@ OpenDisclosure.App = Backbone.Router.extend({
     this.categoryContributions = new OpenDisclosure.CategoryContributions();
     this.whales = new OpenDisclosure.Whales();
     this.multiples = new OpenDisclosure.Multiples();
-    this.home();
   },
 
   home: function(){
@@ -35,8 +35,17 @@ OpenDisclosure.App = Backbone.Router.extend({
     });
   },
 
+  about: function () {
+    new OpenDisclosure.AboutView();
+  },
+
   candidate: function(id){
-    new OpenDisclosure.CandidateView({model: this.candidates.get(id)});
+    if (this.candidates.loaded)
+      new OpenDisclosure.CandidateView({model: this.candidates.get(id)});
+    else
+      this.listenTo(this.candidates, 'sync', function() {
+	new OpenDisclosure.CandidateView({model: this.candidates.get(id)});
+      });
   },
 
   contributor : function(id) {

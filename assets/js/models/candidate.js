@@ -1,6 +1,6 @@
 OpenDisclosure.Candidate = Backbone.Model.extend({
   imagePath : function() {
-    return '/images/' + this.attributes.short_name.split(' ').slice(-1) + '.png';
+    return this.attributes.image;
   },
 
   pctContributionsFromOakland : function() {

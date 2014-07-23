@@ -3,5 +3,8 @@ OpenDisclosure.Candidates = Backbone.Collection.extend({
   model: OpenDisclosure.Candidate,
   initialize: function(){
     this.fetch();
+    this.listenTo(this, 'sync', function() {
+      this.loaded = true;
+    });
   }
 });
