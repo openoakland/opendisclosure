@@ -44,6 +44,7 @@ OpenDisclosure.ChartView = Backbone.View.extend({
     Backbone.View.apply(this, arguments);
   },
   initialize: function(options) {
+    console.log("in the initialize")
     this.get_dimensions();
 
     if (this.collection)

@@ -17,6 +17,7 @@
 //= require views/candidateTable
 //= require views/chartsWrapper
 //= require views/charts
+//= require views/dailyContributionsChart
 //= require views/contributorsView
 //= require views/contributorView
 //= require views/topContributorsView

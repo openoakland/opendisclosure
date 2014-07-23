@@ -16,12 +16,12 @@ OpenDisclosure.App = Backbone.Router.extend({
   },
 
   home: function(){
+
     new OpenDisclosure.CandidateTable({ collection : this.candidates });
     new OpenDisclosure.ZipcodeChartView({
       collection: this.contributions,
       base_height: 480
     });
-
     new OpenDisclosure.DailyContributionsChartView({
       collection: this.contributions,
       base_height: 480
@@ -38,6 +38,9 @@ OpenDisclosure.App = Backbone.Router.extend({
     var count = 0;
     this.topContributions = _.filter(this.employerContributions.models, function(c) {
       return c.attributes.recipient_id == that.currentCandidate.id && ++count <= 10;
+    new OpenDisclosure.DailyContributionsChartView({
+      collection: this.contributions,
+      base_height: 480
     });
     this.listenTo(this.whales, 'sync', function() {
       console.log('Received whale data!');
