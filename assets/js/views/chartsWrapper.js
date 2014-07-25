@@ -85,7 +85,7 @@ OpenDisclosure.ChartView = Backbone.View.extend({
       this.data = this.collection.toJSON();
     this.$el.empty();
     this.get_dimensions();
-    this.draw();
+    this.draw(this.$el);
   },
   draw: function() {
     console.log("override ChartView's draw function with your d3 code");

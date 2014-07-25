@@ -1,17 +1,10 @@
-%section#mayoral-candidates
+%section#bodyContainer
   Loading data...
-
-%section#charts
-  %h2 Charts
-  #charts
-    #zip-bubble-chart
-    #zip-leader-chart
-    #daily-contributions-chart
 
 - content_for :sidebar do
   %ul
     %li
-      %a{ href: '#mayoral-candidates' } Mayoral Candidates
+      %a{ href: '#bodyContainer' } Mayoral Candidates
 
 %script{ type: 'text/template', id: 'mayoral-table-template' }
   :plain

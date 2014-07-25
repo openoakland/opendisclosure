@@ -1,8 +1,5 @@
 OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
-
-  el: '#zip-bubble-chart',
-
-  draw: function() {
+  draw: function(el) {
     var chart = this;
 
     chart.data = this.processData(this.collection);
@@ -26,7 +23,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         .scale(s)
         .translate(t));
 
-    chart.svg = d3.select(this.el).append("svg")
+    chart.svg = d3.select(el[0]).append("svg")
       .attr("id", "map")
       .attr("width", chart.dimensions.width)
       .attr("height", chart.dimensions.height)
