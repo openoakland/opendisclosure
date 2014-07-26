@@ -7,6 +7,7 @@
 /* ------------------- BASE STYLES -------------------- */
 
 $color-green-accent: #539137;
+$color-green-dark: #0F4800;
 $color-gray-text: #555;
 
 body, html {
@@ -127,6 +128,7 @@ header {
 /* ------------------- GENERAL LAYOUT -------------------- */
 
 .main {
+  min-height: 600px;
 }
 
 .main section{
@@ -138,21 +140,18 @@ header {
   border-bottom: 2px solid #539137;
 }
 
-/*#gallery .gallery-item {
-  width: 200px;
-  background: rgba(255, 255, 255, 0.5);
-  height: 200px;
-  padding: 10px;
-  margin: 10px;
-  float: left;
+/* ------------------- FOOTER -------------------- */
+.main-footer {
+  background-color: $color-green-dark;
+  margin-top: 36px;
+  padding: 12px;
+  width: 100%;
+  text-align: right;
+
+  .footer-logos {
+    height: 90px;
+  }
 }
-
-#gallery .gallery-item h3{
-  margin: 0;
-}
-
-*/
-
 
 /* ------------------- HOMEPAGE MAYOR TABLE -------------------- */
 
