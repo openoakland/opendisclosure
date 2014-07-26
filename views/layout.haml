@@ -24,16 +24,15 @@
       %a{ href: 'http://www.meetup.com/OpenOakland/' }
         You can help us finish it!
 
-    %header.main-header.container
-      .row
-        .col-xs-4.col-sm-2.header-oakland-logo
-          %a{ href: '/#home' }
-            %img{ src: image_path('OaklandCityTree.png') }
-        .col-sm-3.hidden-xs
-          %h1.header-main-title Open Disclosure: Bringing Campaign Finance Money to Light
-        .col-xs-8.col-sm-7.header-right
-          %p.header-right-subtitle 2014 Oakland Mayoral Election
-          %p.header-right-title Campaign Finance Analysis
+    %header.main-header
+      .container
+        .row
+          .col-xs-4.col-sm-2.header-oakland-logo
+            %a{ href: '/#home' }
+              %img{ src: image_path('OaklandCityTree.png') }
+          .col-xs-8.col-sm-10.header-title-container
+            %h1.header-main-title Open Disclosure
+            %h2.header-catchphrase Bringing Campaign Money to Light
 
     .container
       .row
@@ -54,7 +53,8 @@
                     %a{ href: "/#candidate/#{c.id}" }= c.short_name
 
         .main.col-sm-10
-          = yield
+          .row
+            .col-xs-12= yield
 
     / Third Party (cdn)
     %script{src: "http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"}
@@ -66,7 +66,6 @@
     %script{src: "https://www.google.com/jsapi"}
     :javascript
       google.load('visualization', '1.0', {'packages':['corechart']});
-
 
     -#
       Include the assets/js/application.js manifest. If you want to include

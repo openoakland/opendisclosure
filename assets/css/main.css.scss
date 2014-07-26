@@ -37,7 +37,6 @@ h2, h4 {
   box-shadow: 0px -2px 7px rgba(0,0,0,0.2) inset;
   font-size: 14px;
   padding: 1em;
-  margin-bottom: 10px;
   text-align: center;
   width: 100%;
 }
@@ -59,7 +58,14 @@ header {
 }
 
 .main-header {
-  margin-bottom: 12px;
+  background-color: #fff;
+  margin-bottom: 30px;
+  padding: 12px;
+  width: 100%;
+
+  .header-oakland-logo, .header-title-container {
+    height: 100%;
+  }
 
   .header-oakland-logo {
     text-align: center;
@@ -69,35 +75,20 @@ header {
     }
   }
 
+  .header-title-container {
+    padding-top: 26px;
+  }
+
   .header-main-title {
     color: $color-green-accent;
+    font-size: 40px;
+    display: inline-block;
+  }
+
+  .header-catchphrase {
+    display: inline-block;
     font-size: 20px;
-  }
-
-  .header-right {
-    font-size: 20px;
-    text-align: right;
-  }
-
-  .header-right-subtitle {
-    font-size: 24px;
-    font-variant: small-caps;
-    letter-spacing: 3px;
-  }
-
-  .header-right-title {
-    color: $color-green-accent;
-    font-size: 42px;
-    margin-top: -18px;
-  }
-
-  @include degrade(extra-small) {
-    .header-right-subtitle, .header-right-title {
-      color: $color-gray-text;
-      display: inline;
-      font-size: 20px;
-      letter-spacing: 0px;
-    }
+    margin-left: 12px;
   }
 }
 
@@ -105,7 +96,6 @@ header {
 /* ------------------- SIDEBAR -------------------- */
 
 .sidebar {
-  border-top: 3px solid white;
   font-size: 16px;
   list-style: none;
   background-color: #f0f0f0;
@@ -137,7 +127,6 @@ header {
 /* ------------------- GENERAL LAYOUT -------------------- */
 
 .main {
-  border-top: 3px solid white;
 }
 
 .main section{
