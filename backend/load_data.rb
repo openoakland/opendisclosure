@@ -1,12 +1,8 @@
 require_relative 'environment.rb'
 require_relative 'socrata_fetcher.rb'
 require_relative 'schema.rb' # wipe the database and start anew
-require 'csv-mapper'
 
 class DataLoader
-  class << self
-    include CsvMapper
-  end
 
   URLS = {
     'Schedule A' => 'http://data.oaklandnet.com/resource/3xq4-ermg.json',
@@ -136,21 +132,11 @@ class DataLoader
     # It needs to be updated when a new batch of data is available
     # as there is no check on spelling on the forms.
     puts "Loading Employer Map"
-    results = import('backend/map.csv') do
-      map_to Map
-      after_row lambda{|row, map| map.save}
-      start_at_row 1
-      [id, emp1, emp2, type]
-    end
+    Map.load_mappings('backend/map.csv')
 
     # !! Need a new Lobbyist Directory for 2014
     puts "Loading Lobbyist data"
-    results = import('backend/2013_Lobbyist_Directory.csv') do
-      map_to Lobbyist
-      after_row lambda{|row, lobbyist| lobbyist.save}
-      start_at_row 1
-      [id, name, firm]
-    end
+    Lobbyist.load_from_file('backend/2013_Lobbyist_Directory.csv')
 
     puts "Fetching Contribution data (Schedule A) from Socrata:"
     Party.transaction do #        <- speed hack for sqlite3
