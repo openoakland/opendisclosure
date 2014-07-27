@@ -7,6 +7,8 @@
 #   puts record       # { "key" => "value" }
 # end
 #
+require 'open-uri'
+
 class SocrataFetcher
   include Enumerable
 
