@@ -94,11 +94,11 @@
                             </div>
                           </td>
                           <% if (m.attributes.summary) { %>
-                            <td><%= m.friendlySummaryNumber('total_contributions_received') %></td>
-                            <td><%= m.attributes.received_contributions_count %></td>
-                            <td><%= m.pctContributionsFromOakland() %></td>
-                            <td><%= m.pctSmallContributions() %></td>
-                            <td><%= m.avgContribution() %></td>
+                            <td class='mayoral-table-number'><%= m.friendlySummaryNumber('total_contributions_received') %></td>
+                            <td class='mayoral-table-number'><%= m.attributes.received_contributions_count %></td>
+                            <td class='mayoral-table-number'><%= m.pctContributionsFromOakland() %></td>
+                            <td class='mayoral-table-number'><%= m.pctSmallContributions() %></td>
+                            <td class='mayoral-table-number'><%= m.avgContribution() %></td>
                           <% } else { %>
                             <td colspan="5">No Data Available :(</td>
                           <% } %>

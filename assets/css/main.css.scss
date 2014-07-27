@@ -169,12 +169,10 @@ header {
 
   .mayor-info {
     font-size: 12px;
-    padding: 10px 0;
     text-align: left;
   }
 
   .mayor-picture {
-    padding: 10px 0;
     width: 80px;
   }
 
@@ -183,22 +181,28 @@ header {
     font-weight: 700;
   }
 
+  .mayoral-table-number {
+    vertical-align: middle;
+  }
+
   th {
     font-size: 16px;
     font-weight: bold;
-    padding: 10px 0;
-    text-align: center;
     width: 130px;
   }
 
   td {
     border-top: 2px white solid;
     font-size: 18px;
-    text-align: center;
   }
 
-  td:nth-child(3), th:nth-child(3) {
-    background-color: rgba(0, 0, 0, 0.1);
+  td, th {
+    padding: 18px 8px;
+    text-align: center;
+
+    &:nth-child(3) {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
   }
 
   p {
