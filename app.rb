@@ -20,8 +20,7 @@ class OpenDisclosureApp < Sinatra::Application
   set :assets_precompile, %w(application.js application.css *.png *.jpg *.svg *.eot *.ttf *.woff)
 
   get '/' do
-    # This renders the file views/index.haml inside of the 'yield' in
-    # views/layout.haml:
+    # This renders views/index.haml
     haml :index, locals: {
       organizations: Party.mayoral_candidates
     }
