@@ -25,25 +25,20 @@ class DataFetcher
     Lobbyist.load_from_file('backend/2013_Lobbyist_Directory.csv')
 
     puts "Fetching Contribution data (Schedule A) from Socrata:"
-    SocrataFetcher.new(URLS['Schedule A']).each do |record|
-      DataFetcher::Contribution.parse_contributions(record)
-    end
+    DataFetcher::Contribution.fetch_and_parse(URLS['Schedule A'])
 
     puts "Fetching Expense data (Schedule E) from Socrata:"
-    SocrataFetcher.new(URLS['Schedule E']).each do |record|
-      DataFetcher::Payment.parse_payments(record)
-    end
+    DataFetcher::Expense.fetch_and_parse(URLS['Schedule A'])
 
     puts "Fetching Summary data from Socrata:"
-    SocrataFetcher.new(URLS['Summary']).each do |record|
-      DataFetcher::Summary.parse_summary(record)
-    end
+    DataFetcher::Summary.fetch_and_parse(URLS['Schedule A'])
 
     puts "Run analysis"
     DataFetcher::CategoryContributions.run!
     DataFetcher::EmployerContributions.run!
     DataFetcher::Multiples.run!
     DataFetcher::Whales.run!
+
     Import.create(import_time: Time.now)
   end
 end

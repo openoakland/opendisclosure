@@ -1,5 +1,11 @@
 class DataFetcher
   class Payment
+    def self.fetch_and_parse(url)
+      SocrataFetcher.new(url).each do |record|
+        parse_payments(record)
+      end
+    end
+
     def self.parse_payments(row)
       payer = Party::Committee.where(committee_id: row['filer_id'])
                               .first_or_create(name: row['filer_naml'])

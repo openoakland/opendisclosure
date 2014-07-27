@@ -1,5 +1,11 @@
 class DataFetcher
   class Contribution
+    def self.fetch_and_parse(url)
+      SocrataFetcher.new(url).each do |record|
+        parse_contributions(record)
+      end
+    end
+
     def self.parse_contributions(row)
       recipient = Party::Committee.where(committee_id: row['filer_id'])
                                   .first_or_create(name: row['filer_naml'])
