@@ -66,7 +66,11 @@ class OpenDisclosureApp < Sinatra::Application
       ],
     }
 
-    Party.mayoral_candidates.to_json(fields)
+    Party.mayoral_candidates
+         .includes(:summary)
+         .joins(:summary)
+         .order('summaries.total_contributions_received DESC')
+         .to_json(fields)
   end
 
   get '/api/contributions' do
