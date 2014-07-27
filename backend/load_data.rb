@@ -16,9 +16,6 @@ URLS = {
   'Summary'    => 'http://data.oaklandnet.com/resource/rsxe-vvuw.json',
 }.freeze
 
-class Map < ActiveRecord::Base; end
-class Lobbyist < ActiveRecord::Base; end
-
 def parse_contributions(row)
   recipient = Party::Committee.where(committee_id: row['filer_id'])
                               .first_or_create(name: row['filer_naml'])
