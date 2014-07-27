@@ -14,6 +14,12 @@ class DataFetcher
       },
     }.freeze
 
+    def self.fetch_and_parse(url)
+      SocrataFetcher.new(url).each do |record|
+        parse_summary(record)
+      end
+    end
+
     def self.parse_summary(row)
       return unless SUMMARY_LINES.include? row['form_type']
       return unless SUMMARY_LINES[row['form_type']].include? row['line_item']
