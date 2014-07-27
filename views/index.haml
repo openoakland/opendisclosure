@@ -64,11 +64,6 @@
                   #zip-leader-chart
                   #daily-contributions-chart
 
-              - content_for :sidebar do
-                %ul
-                  %li
-                    %a{ href: '#mayoral-candidates' } Mayoral Candidates
-
               %script{ type: 'text/template', id: 'mayoral-table-template' }
                 :plain
                   <h3>How much the mayoral candidates have raised and spent</h3>
@@ -76,8 +71,8 @@
                   <table id='mayoral-table' class='table'>
                     <thead>
                       <tr>
-                        <th></th>
-                        <th></th>
+                        <th id='mayoral-table-picture-column'></th>
+                        <th id='mayoral-table-name-column'></th>
                         <th>Total Raised</th>
                         <th>Number of itemized contributions</th>
                         <th>Percentage from outside Oakland</th>
@@ -97,7 +92,7 @@
                               <p class='mayor-profession'><%- m.attributes.profession %></p>
                               <p class='mayor-party'><%- m.attributes.party_affiliation %></p>
                             </div>
-                          </th>
+                          </td>
                           <% if (m.attributes.summary) { %>
                             <td><%= m.friendlySummaryNumber('total_contributions_received') %></td>
                             <td><%= m.attributes.received_contributions_count %></td>

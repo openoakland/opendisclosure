@@ -160,70 +160,50 @@ header {
 /* ------------------- HOMEPAGE MAYOR TABLE -------------------- */
 
 
-#mayoral-candidates {
+#mayoral-table {
+  margin: 40px 0;
+
+  #mayoral-table-picture-column, #mayoral-table-name-column {
+    width: auto;
+  }
+
+  .mayor-info {
+    font-size: 12px;
+    padding: 10px 0;
+    text-align: left;
+  }
+
+  .mayor-picture {
+    padding: 10px 0;
+    width: 80px;
+  }
+
+  .mayor-name {
+    font-size: 18px;
+    font-weight: 700;
+  }
+
   th {
-    font-weight: normal;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 0;
+    text-align: center;
+    width: 130px;
+  }
+
+  td {
+    border-top: 2px white solid;
+    font-size: 18px;
+    text-align: center;
+  }
+
+  td:nth-child(3), th:nth-child(3) {
+    background-color: rgba(0, 0, 0, 0.1);
   }
 
   p {
     margin: 0;
   }
-}
-
-#mayoral-table {
-  margin: 40px 0;
-}
-
-#mayoral-candidates thead th {
-  font-size: 16px;
-  font-weight: bold;
-  text-align: center;
-  padding: 10px;
-  border-right:2px solid #539137;
-}
-
-#mayoral-candidates thead th:nth-child(1) {
-  border-right:none;
-}
-
-#mayoral-candidates tbody td:nth-child(1) {
-  border-right:none;
-}
-
-#mayoral-candidates td:nth-child(3), #mayoral-candidates th:nth-child(3) {
-  background-color: #c5c5c5;
-}
-
-#mayoral-candidates th {
-  padding: 0 10px 10px 0;
-  width: 130px;
-  font-size: 12px;
-}
-
-#mayoral-candidates td {
-  text-align: center;
-  border-right:2px solid #539137;
-  border-top: 2px white solid;
-  border-bottom: 2px white solid;
-  font-size: 18px;
-}
-
-.mayor-info {
-  text-align: left;
-  font-size: 12px;
-  padding: 10px 5px;
-}
-
-.mayor-picture {
-  padding: 10px 10px;
-  width: 80px;
-  border-right: none;
-}
-
-.mayor-name {
-  font-size: 18px;
-  font-weight: 500;
-  /*margin: 0;*/
 }
 
 /* ------------------- Candidate Page -------------------- */
