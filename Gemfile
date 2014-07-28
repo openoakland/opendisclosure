@@ -11,9 +11,11 @@ gem 'sinatra-asset-pipeline'
 
 group :development do
   gem 'pry'
+  gem 'rb-readline'
   gem 'foreman'
 end
 
 group :test do
   gem 'rspec'
+  gem 'factory_girl'
 end

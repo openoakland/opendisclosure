@@ -2,10 +2,9 @@ require 'sinatra'
 require 'sinatra/content_for'
 require 'sinatra/asset_pipeline'
 require 'active_record'
+require 'sass'
 require 'haml'
 
-ENV['DATABASE_URL'] ||= "postgres://localhost/postgres"
-ActiveRecord::Base.establish_connection
 Dir['./backend/models/*.rb'].each { |f| require f }
 
 class OpenDisclosureApp < Sinatra::Application
@@ -13,6 +12,12 @@ class OpenDisclosureApp < Sinatra::Application
     # Include helpers like image_path so that the ActiveRecord models can use
     # them to generate urls.
     include Sprockets::Helpers
+  end
+
+  configure do
+    ENV['DATABASE_URL'] ||= "postgres://localhost/postgres"
+    ActiveRecord::Base.establish_connection
+    ActiveRecord::Base.connection.verify!
   end
 
   register Sinatra::AssetPipeline
