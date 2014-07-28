@@ -8,6 +8,7 @@ gem 'activerecord'
 gem 'haml'
 gem 'pg'
 gem 'sinatra-asset-pipeline'
+gem 'dotenv'
 
 group :development do
   gem 'pry'

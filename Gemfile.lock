@@ -104,6 +104,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord
+  dotenv
   factory_girl
   foreman
   haml
