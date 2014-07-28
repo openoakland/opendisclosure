@@ -22,6 +22,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.7.1)
+    diff-lcs (1.2.5)
     dotenv (0.7.0)
     execjs (2.2.1)
     foreman (0.67.0)
@@ -46,6 +47,18 @@ GEM
     rack-test (0.6.2)
       rack (>= 1.0)
     rake (10.3.2)
+    rspec (3.0.0)
+      rspec-core (~> 3.0.0)
+      rspec-expectations (~> 3.0.0)
+      rspec-mocks (~> 3.0.0)
+    rspec-core (3.0.3)
+      rspec-support (~> 3.0.0)
+    rspec-expectations (3.0.3)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.0.0)
+    rspec-mocks (3.0.3)
+      rspec-support (~> 3.0.0)
+    rspec-support (3.0.3)
     sass (3.3.9)
     sinatra (1.4.5)
       rack (~> 1.4)
@@ -93,6 +106,7 @@ DEPENDENCIES
   pg
   pry
   rake
+  rspec
   sinatra
   sinatra-asset-pipeline
   sinatra-contrib
