@@ -9,7 +9,11 @@ gem 'haml'
 gem 'pg'
 gem 'sinatra-asset-pipeline'
 
-gem 'pry'
 group :development do
+  gem 'pry'
   gem 'foreman'
+end
+
+group :test do
+  gem 'rspec'
 end
