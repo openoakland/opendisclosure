@@ -25,13 +25,23 @@ OpenDisclosure.App = Backbone.Router.extend({
     ').appendTo('#bodyContainer');
     new OpenDisclosure.CandidateTable({el : '#candidateTable',
 				      collection : this.candidates});
-    new OpenDisclosure.ZipcodeChartView({el : '#zipcodeChart',
-					collection : this.contributions,
-					base_height: 480
-    });
-    new OpenDisclosure.DailyContributionsChartView({el : "#dailyChart",
-						   collection: this.contributions,
-						   base_height: 480 })
+
+    doChart = function(that){
+      new OpenDisclosure.ZipcodeChartView({el : '#zipcodeChart',
+					  collection : that.contributions,
+					  base_height: 480
+      });
+      new OpenDisclosure.DailyContributionsChartView({el : "#dailyChart",
+						     collection: that.contributions,
+						     base_height: 480 })
+    }
+    if (this.contributions.loaded)
+      doChart(this);
+    else
+      this.listenTo(this.contributions, 'sync', function() {
+	doChart(this);
+      });
+
     doWhalesView = function(that){
       new OpenDisclosure.ContributorsView({el : '#topContributions',
 					  collection : that.whales.models,

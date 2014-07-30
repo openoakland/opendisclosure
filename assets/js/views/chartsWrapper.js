@@ -47,7 +47,7 @@ OpenDisclosure.ChartView = Backbone.View.extend({
     this.get_dimensions();
 
     if (this.collection)
-      this.collection.on("sync", _.bind(this.render, this));
+      this.render();
     else if (this.options.data)
       this.data = this.options.data;
 
