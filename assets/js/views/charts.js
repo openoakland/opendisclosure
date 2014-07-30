@@ -23,7 +23,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         .scale(s)
         .translate(t));
 
-    chart.svg = d3.select(el[0]).append("svg")
+    chart.svg = d3.select(el).append("svg")
       .attr("id", "map")
       .attr("width", chart.dimensions.width)
       .attr("height", chart.dimensions.height)
