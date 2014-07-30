@@ -2,47 +2,39 @@
    Author's custom styles
    ========================================================================== */
 
+@import '_sass-enhance';
 
 /* ------------------- BASE STYLES -------------------- */
 
+$color-green-accent: #539137;
+$color-green-dark: #0F4800;
+$color-gray-text: #555;
+
 body, html {
   background-image: image_url('squairy_light.png');
-  font-family: 'Crete Round', 'Merriweather', serif;
-  color: #555555;
+  font-family: 'Open Sans', sans-serif;
+  color: $color-gray-text;
 }
 
 a {
   text-decoration: none;
   color: inherit;
+
+  &:hover {
+    text-decoration: none;
+    color: inherit;
+    outline:none;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Crete Round', serif;
 }
 
 h2, h4 {
   text-align: center;
 }
 
-a:hover {
-  text-decoration: none;
-  color: inherit;
-  outline:none;
-}
-
-.green {
-  color: #539137;
-}
-
-.leftCol {
-  padding-left: 10px;
-  width:160px;;
-  float:left;
-}
-
-.rightCol {
-  margin-left:6%;
-  width: 70%;
-  min-width: 450px;
-  float: left;
-  padding-right:40px;
-}
 /* ------------------- disclaimer -------------------- */
 
 .disclaimer {
@@ -50,7 +42,6 @@ a:hover {
   box-shadow: 0px -2px 7px rgba(0,0,0,0.2) inset;
   font-size: 14px;
   padding: 1em;
-  margin-bottom: 10px;
   text-align: center;
   width: 100%;
 }
@@ -65,56 +56,55 @@ a:hover {
 header {
   padding: 0;
   margin: 0;
+  overflow: hidden;
   position:relative;
   width: 100%;
   /*min-height:132px;*/
 }
 
-#logo img{
-  width:160px;
-}
+.main-header {
+  background-color: #fff;
+  margin-bottom: 30px;
+  padding: 12px;
+  width: 100%;
 
-header #titleContainer {
-  text-align:right;
-  position: absolute;
-  bottom: 0;
-  right: 8%;
-}
+  .header-oakland-logo, .header-title-container {
+    height: 100%;
+  }
 
-header #titleContainer p{
-  margin-bottom:0;
+  .header-oakland-logo {
+    text-align: center;
 
-}
+    img {
+      width: 75%;
+    }
+  }
 
-header .subtitle {
-  font-size: 24px;
-  font-variant: small-caps;
-  /*font-weight: 700;*/
-}
+  .header-title-container {
+    padding-top: 26px;
+  }
 
-header .title {
-  margin-top: -18px;
-  font-size: 42px;
+  .header-main-title {
+    color: $color-green-accent;
+    font-size: 40px;
+    display: inline-block;
+  }
+
+  .header-catchphrase {
+    display: inline-block;
+    font-size: 20px;
+    margin-left: 12px;
+  }
 }
 
 
 /* ------------------- SIDEBAR -------------------- */
 
 .sidebar {
-  border-top: 3px solid white;
   font-size: 16px;
   list-style: none;
   background-color: #f0f0f0;
 }
-
-/*.sidebar ul {
-  list-style: none;
-  padding: 4px 4px 4px 20px;
-}*/
-
-/*.sidebar li{
-  padding: 4px 0;
-}*/
 
 .sidebar a{
   display: block;
@@ -142,7 +132,7 @@ header .title {
 /* ------------------- GENERAL LAYOUT -------------------- */
 
 .main {
-  border-top: 3px solid white;
+  min-height: 600px;
 }
 
 .main section{
@@ -154,89 +144,70 @@ header .title {
   border-bottom: 2px solid #539137;
 }
 
-/*#gallery .gallery-item {
-  width: 200px;
-  background: rgba(255, 255, 255, 0.5);
-  height: 200px;
-  padding: 10px;
-  margin: 10px;
-  float: left;
+/* ------------------- FOOTER -------------------- */
+.main-footer {
+  background-color: $color-green-dark;
+  margin-top: 36px;
+  padding: 12px;
+  width: 100%;
+  text-align: right;
+
+  .footer-logos {
+    height: 90px;
+  }
 }
-
-#gallery .gallery-item h3{
-  margin: 0;
-}
-
-*/
-
 
 /* ------------------- HOMEPAGE MAYOR TABLE -------------------- */
 
 
-#mayoral-candidates th {
-  font-weight: normal;
-}
-
-#mayoral-candidates p {
-  margin: 0;
-}
-
 #mayoral-table {
   margin: 40px 0;
-}
 
-#mayoral-candidates thead th {
-  font-size: 16px;
-  font-weight: bold;
-  text-align: center;
-  padding: 10px;
-  border-right:2px solid #539137;
-}
+  #mayoral-table-picture-column, #mayoral-table-name-column {
+    width: auto;
+  }
 
-#mayoral-candidates thead th:nth-child(1) {
-  border-right:none;
-}
+  .mayor-info {
+    font-size: 12px;
+    text-align: left;
+  }
 
-#mayoral-candidates tbody td:nth-child(1) {
-  border-right:none;
-}
+  .mayor-picture {
+    width: 80px;
+  }
 
-#mayoral-candidates td:nth-child(3), #mayoral-candidates th:nth-child(3) {
-  background-color: #c5c5c5;
-}
+  .mayor-name {
+    font-size: 18px;
+    font-weight: 700;
+  }
 
-#mayoral-candidates th {
-  padding: 0 10px 10px 0;
-  width: 130px;
-  font-size: 12px;
-}
+  .mayoral-table-number {
+    vertical-align: middle;
+  }
 
-#mayoral-candidates td {
-  text-align: center;
-  border-right:2px solid #539137;
-  border-top: 2px white solid;
-  border-bottom: 2px white solid;
-  font-size: 18px;
-}
+  th {
+    font-size: 16px;
+    font-weight: bold;
+    width: 130px;
+  }
 
-.mayor-info {
-  display: inline-block;
-  vertical-align: middle;
-  text-align: left;
-  font-size: 12px;
-  padding: 10px 5px;
-}
+  td {
+    border-top: 2px white solid;
+    font-size: 18px;
+  }
 
-.mayor-picture {
-  padding: 10px 10px;
-  width: 80px;
-  border-right: none;
-}
+  td, th {
+    padding: 18px 8px;
+    text-align: center;
 
-.mayor-name {
-  font-size: 18px;
-  font-weight: 500;
-  /*margin: 0;*/
+    &:nth-child(3) {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  p {
+    margin: 0;
+  }
 }
 
 /* ------------------- Candidate Page -------------------- */

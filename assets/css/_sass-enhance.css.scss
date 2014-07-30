@@ -1,0 +1,107 @@
+// To configure your breakpoints, set the $breakpoint-max-widths variable
+// before importing sass-enhance.
+//
+// This variable is a comma separated list of breakpoint names and max-width
+// pairs. You can choose whatever names and widths you prefer.
+$breakpoint-max-widths: extra-small      767px,
+                        small            991px,
+                        medium           1199px,
+                        large            99999px !default;
+
+// Helper method to find the width of the named breakpoint for the given edge
+// (i.e. min-width or max-width)
+@function _breakpoint-width($breakpoint, $edge: min) {
+  // Because we are only listing breakpoints and their max-widths, we need to
+  // store the width of the previous breakpoint + 1 here. Since we haven't
+  // started running through the breakpoints yet, we want it to start at 0px.
+  $min-width: 0px;
+  @each $breakpoint-max-width in $breakpoint-max-widths {
+    $breakpoint-name: nth($breakpoint-max-width, 1);
+    $breakpoint-px:   nth($breakpoint-max-width, 2);
+    @if $breakpoint-name == $breakpoint {
+      // We found the requested breakpoint in our list of breakpoints and
+      // max-widths
+      @if ($edge == min) {
+        @return $min-width;
+      } @else {
+        @return $breakpoint-px;
+      }
+    } @else {
+      // We have not found the requested breakpoint in our list of breakpoints
+      // and max-widths yet, so we need to store the width of the current
+      // breakpoint + 1px as the min-width of the next breakpoint in our
+      // iteration.
+      $min-width: $breakpoint-px + 1px;
+    }
+  }
+  // The requested breakpoint was not in our list of breakpoints and
+  // max-widths, so we want to return the breakpoint as-is. This allows us to
+  // enhance or degrade for arbitrary viewport widths.
+  @return $breakpoint;
+}
+
+// Convenience method that returns the min-width of the named breakpoint
+@function _breakpoint-min-width($breakpoint-name) {
+  @return _breakpoint-width($breakpoint-name, min);
+}
+
+// Convenience method that returns the max-width of the named breakpoint
+@function _breakpoint-max-width($breakpoint-name) {
+  @return _breakpoint-width($breakpoint-name, max);
+}
+
+// Returns a parsed version of the breakpoint provided to enhance() or
+// degrade()
+@function _parse-breakpoint($breakpoint) {
+  @if length($breakpoint) == 3 and nth($breakpoint, 2) == 'until' {
+    // ranged breakpoint in the form of "breakpoint-a until breakpoint-b"
+    @return (nth($breakpoint, 1) nth($breakpoint, 3));
+  } @else {
+    // non-ranged breakpoint
+    @return $breakpoint;
+  }
+}
+
+// Accepts a breakpoint (non-ranged or ranged) and a block of styles. Wraps the
+// block of styles in a media query that applies the styles as the viewport
+// gets wider. This can be used to progressively enhance a page.
+@mixin enhance($breakpoint) {
+  $breakpoint: _parse-breakpoint($breakpoint);
+  @if length($breakpoint) == 1 {
+    // non-ranged breakpoint
+    @media only screen and (min-width: _breakpoint-min-width($breakpoint)) {
+      @content;
+    }
+  } @else {
+    // ranged breakpoint
+    $from:  nth($breakpoint, 1);
+    $until: nth($breakpoint, 2);
+    @media only screen and
+      (min-width: _breakpoint-min-width($from)) and
+      (max-width: _breakpoint-min-width($until) - 1) {
+      @content;
+    }
+  }
+}
+
+// Accepts a breakpoint (non-ranged or ranged) and a block of styles. Wraps the
+// block of styles in a media query that applies the styles as the viewport
+// gets narrower. This can be used to gracefully degrade a page.
+@mixin degrade($breakpoint) {
+  $breakpoint: _parse-breakpoint($breakpoint);
+  @if length($breakpoint) == 1 {
+    // non-ranged breakpoint
+    @media only screen and (max-width: _breakpoint-max-width($breakpoint)) {
+      @content;
+    }
+  } @else {
+    // ranged breakpoint
+    $from:  nth($breakpoint, 1);
+    $until: nth($breakpoint, 2);
+    @media only screen and
+      (max-width: _breakpoint-max-width($from)) and
+      (min-width: _breakpoint-max-width($until) + 1) {
+      @content;
+    }
+  }
+}
