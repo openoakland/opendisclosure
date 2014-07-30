@@ -1,7 +1,5 @@
 OpenDisclosure.ContributorsView = Backbone.View.extend({
 
-  el: '.contributions',
-
   template: _.template(' \
     <div class="col-sm-6 contribution"><a href="#contributor/<%= contributor.id %>">\
     <span class="col-sm-8"><%= contributor.name %></span>\
@@ -18,15 +16,13 @@ OpenDisclosure.ContributorsView = Backbone.View.extend({
   },
 
   render: function() {
-    $('.contributions').empty();
-    $('<section>\
-	<div class="col-sm-12">\
+    this.$el.empty();
+    $('<div class="col-sm-12">\
 	  <h2>' + this.options.headline + '</h2>\
 	  <label>Search: <input type="search" id="contribSearch"></input></label>\
 	</div>\
       <div class="contributions clearfix"></div>\
-     </div>\
-    </section>').appendTo('.main');
+     </div>').appendTo(this.$el);
 
     var that = this;
     _.each(this.collection, function( c ){
@@ -35,7 +31,6 @@ OpenDisclosure.ContributorsView = Backbone.View.extend({
     // Leave a little space at the bottom.
     $('.contributions').append('<div class="col-sm-12"><h2></h2></div>');
 
-    that = this;
     $('body').keyup(function(){
       that.filterContributors();
     });

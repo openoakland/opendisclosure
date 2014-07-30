@@ -16,24 +16,57 @@ OpenDisclosure.App = Backbone.Router.extend({
   },
 
   home: function(){
+    $('#bodyContainer').empty();
+    $('<div id="candidateTable"></div> \
+       <div id="zipcodeChart"></div> \
+       <div id="dailyChart"></div> \
+       <div id="topContributions"></div> \
+       <div id="multiples"></div> \
+    ').appendTo('#bodyContainer');
+    new OpenDisclosure.CandidateTable({el : '#candidateTable',
+				      collection : this.candidates});
 
-    new OpenDisclosure.CandidateTable({ collection : this.candidates });
-    new OpenDisclosure.ZipcodeChartView({
-      collection: this.contributions,
-      base_height: 480
-    });
-    new OpenDisclosure.DailyContributionsChartView({
-      collection: this.contributions,
-      base_height: 480
-    })
-    this.listenTo(this.whales, 'sync', function() {
-      console.log('Received whale data!');
-      new OpenDisclosure.ContributorsView({collection: this.whales.models, headline:'Top Contributors To All Candidates in This Election'});
-    });
-    this.listenTo(this.multiples, 'sync', function() {
-      console.log('Received multiples data!');
-      new OpenDisclosure.MultiplesView({collection: this.multiples.models, headline:'Contributors To More Than One Mayoral Candidate'});
-    });
+    doChart = function(that){
+      new OpenDisclosure.ZipcodeChartView({el : '#zipcodeChart',
+					  collection : that.contributions,
+					  base_height: 480
+      });
+      new OpenDisclosure.DailyContributionsChartView({el : "#dailyChart",
+						     collection: that.contributions,
+						     base_height: 480 })
+    }
+    if (this.contributions.loaded)
+      doChart(this);
+    else
+      this.listenTo(this.contributions, 'sync', function() {
+	doChart(this);
+      });
+
+    doWhalesView = function(that){
+      new OpenDisclosure.ContributorsView({el : '#topContributions',
+					  collection : that.whales.models,
+					  headline :'Top Contributors To All Candidates in This Election'});
+    }
+    if (this.whales.loaded) 
+      doWhalesView(this);
+    else 
+      this.listenTo(this.whales, 'sync', function() {
+	console.log('Received whale data!');
+	doWhalesView(this);
+      });
+
+    doMultiView = function (that) {
+      new OpenDisclosure.MultiplesView({el : '#multiples',
+				       collection: that.multiples.models,
+				       headline:'Contributors To More Than One Mayoral Candidate'});
+    }
+    if (this.multiples.loaded)
+      doMultiView(this);
+    else
+      this.listenTo(this.multiples, 'sync', function() {
+	console.log('Received multiples data!');
+	doMultiView(this);
+      });
   },
 
   candidate: function(id){
@@ -58,18 +91,27 @@ OpenDisclosure.App = Backbone.Router.extend({
   },
 
   candidate: function(id){
+    $('#bodyContainer').empty();
+    $('<div id="candidate"></div>').appendTo('#bodyContainer');
+    doView = function(that) {
+      new OpenDisclosure.CandidateView({el: '#candidate',
+				       model: that.candidates.get(id)});
+    }
     if (this.candidates.loaded)
-      new OpenDisclosure.CandidateView({model: this.candidates.get(id)});
+      doView(this);
     else
       this.listenTo(this.candidates, 'sync', function() {
-	new OpenDisclosure.CandidateView({model: this.candidates.get(id)});
+	doView(this);
       });
   },
 
   contributor : function(id) {
+    $('#bodyContainer').empty();
+    $('<div id = "contirbutor"></div> \
+    ').appendTo('#bodyContainer');
     var contrib = new OpenDisclosure.Contributors({contributor: id} );
     this.listenTo(contrib, 'sync', function() {
-      new OpenDisclosure.ContributorView({collection: contrib.models});
+      new OpenDisclosure.ContributorView({el: '#contirbutor', collection: contrib.models});
     });
   }
 

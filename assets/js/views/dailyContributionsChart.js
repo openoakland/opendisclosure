@@ -1,7 +1,4 @@
 OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
-    el: '#daily-contributions-chart',
-
-
   dateSortAsc: function (date1, date2) {
     // This is a comparison function that will result in dates being sorted in
     // ASCENDING order. As you can see, JavaScript's native comparison operators
@@ -13,7 +10,7 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
     return 0;
   },
 
-  draw: function(){ 
+  draw: function(el){ 
     var xRange = []
     var yRange = []
     chart = this;
@@ -69,7 +66,7 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
       .x(function(d) { return x(d.date); })
       .y(function(d) { return y(d.close); });
 
-    chart.svg = d3.select(chart.el).append("svg")
+    chart.svg = d3.select(el[0]).append("svg")
       .attr("width", svgWidth)
       .attr("height", svgHeight)
       .attr("viewBox", "0 0 " + svgWidth + " " + svgHeight)

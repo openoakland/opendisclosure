@@ -1,7 +1,4 @@
 OpenDisclosure.ContributorView = Backbone.View.extend({
-
-  el: '.contributions',
-
   template: _.template(' \
     <div class="col-sm-6 contribution"><a href="/#candidate/<%= recipient.id %>">\
     <span class="col-sm-8"><%= recipient.name %></span>\
@@ -14,13 +11,13 @@ OpenDisclosure.ContributorView = Backbone.View.extend({
   },
 
   render: function() {
-    $('.main').empty();
+    $(this.$el).empty();
     $('<section>\
 	<div class="col-sm-12">\
 	  <h1>' + this.collection[0].attributes.contributor.name + '</h1>\
 	</div>\
 	<div class="contributions clearfix"></div>\
-      </section>').appendTo('.main');
+      </section>').appendTo(this.$el);
 
     var that = this;
     _.each(this.collection, function( c ){

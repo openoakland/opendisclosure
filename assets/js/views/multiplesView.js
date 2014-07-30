@@ -1,7 +1,5 @@
 OpenDisclosure.MultiplesView = Backbone.View.extend({
 
-  el: '.multiples',
-
   template: _.template(' \
     <div class="col-sm-6 contribution"><a href="#contributor/<%= contributor.id %>">\
     <span class="col-sm-8"><%= contributor.name %></span>\
@@ -14,21 +12,21 @@ OpenDisclosure.MultiplesView = Backbone.View.extend({
   },
 
   render: function() {
-    $('.multiples').empty();
+    $(this.$el).empty();
     $('<section>\
 	<div class="col-sm-12">\
 	  <h2>Contributors Who Gave to More Than One Mayoral Candidate</h2>\
 	</div>\
       <div class="multples clearfix"></div>\
      </div>\
-    </section>').appendTo('.contributions');
+    </section>').appendTo(this.$el);
 
     var that = this;
     _.each(this.collection, function( c ){
-      $('.multples').append(that.template(c.attributes));
+      $(that.$el).append(that.template(c.attributes));
     });
     // Leave a little space at the bottom.
-    $('.multples').append('<div class="col-sm-12"><h2></h2></div>');
+    $(this.$el).append('<div class="col-sm-12"><h2></h2></div>');
 
   }
 

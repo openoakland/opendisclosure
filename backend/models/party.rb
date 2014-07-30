@@ -49,7 +49,7 @@ class Party < ActiveRecord::Base
   CANDIDATE_INFO = {
     PARKER => {
       name: 'Bryan Parker',
-      profession: 'Health Care and Tecnology Professional',
+      profession: 'Health Care and Technology Professional',
       party: 'Democrat',
       twitter:'@bryanparker2014',
       bio: "Bryan Parker is a Senior Vice President at HealthDev, a division of Physicians' Capital Investments, and a Texas-based medical real-estate and financial company. Additionally, he also holds the role of Vice President, General Manager of Real Estate & Internal Growth DaVita, the dialysis division of DaVita HealthCare Partners Inc. He also is a current Port of Oakland Commissioner. He studied Political Economy at UC Berkeley and graduated from law school at NYU in 1995. Bryan is engaged to Kamela Peart, a local Artist and Mental Health Care Professional."
