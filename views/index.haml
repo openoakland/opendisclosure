@@ -1,59 +1,139 @@
-%section#mayoral-candidates
-  Loading data...
+!!! 5
+%html
+  %head
+    %meta{charset: "utf-8"}
+    %meta{content: "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}
+    %title Open Disclosure
+    %meta{content: "width=device-width", name: "viewport"}
+    %link{ rel: 'stylesheet', href: '//fonts.googleapis.com/css?family=Open+Sans:400,700|Crete+Round' }
+    = stylesheet_tag '//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'
+    -#
+      Include the assets/css/application.css.scss manifest. If you want to
+      include another manifest here, you must also add it to the
+      "assets_precompile" array in app.rb
+    = stylesheet_tag 'application'
 
-%section#charts
-  %h2 Charts
-  #charts
-    #zip-bubble-chart
-    #zip-leader-chart
-    #daily-contributions-chart
+  %body
+    .disclaimer
+      %i.glyphicon.glyphicon-exclamation-sign
+      This site is
+      %a{ href: 'https://github.com/openoakland/opendisclosure' }
+        under active development
+      and all data is unfinalized.
+      %a{ href: 'http://www.meetup.com/OpenOakland/' }
+        You can help us finish it!
 
-- content_for :sidebar do
-  %ul
-    %li
-      %a{ href: '#mayoral-candidates' } Mayoral Candidates
+    %header.main-header
+      .container
+        .row
+          .col-xs-4.col-sm-2.header-oakland-logo
+            %a{ href: '/#home' }
+              %img{ src: image_path('OaklandCityTree.png') }
+          .col-xs-8.col-sm-10.header-title-container
+            %h1.header-main-title Open Disclosure
+            %h2.header-catchphrase Bringing Campaign Money to Light
 
-%script{ type: 'text/template', id: 'mayoral-table-template' }
-  :plain
-    <h3>How much the mayoral candidates have raised and spent</h3>
-    <h5>Includes candidates who have submitted fundraising data; may not include all those who have declared their candidacies.</h5>
-    <table id='mayoral-table'>
-      <thead>
-        <tr>
-          <th></th>
-          <th></th>
-          <th>Total Raised</th>
-          <th>Number of itemized contributions</th>
-          <th>Percentage from outside Oakland</th>
-          <th>Percentage from small donations*</th>
-          <th>Average of itemized contributions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% _.each(models, function(m) { %>
-          <tr>
-            <td>
-              <a href= '/#candidate/<%-m.attributes.id %>'><img class='mayor-picture' src="<%= m.imagePath() %>" /></a>
-            </td>
-            <td scope='row'>
-              <div class='mayor-info'>
-                <a href= '/#candidate/<%-m.attributes.id %>'><p class='mayor-name green'><%- m.attributes.short_name %></p>
-                <p class='mayor-profession'><%- m.attributes.profession %></p>
-                <p class='mayor-party'><%- m.attributes.party_affiliation %></p>
-              </div>
-            </th>
-            <% if (m.attributes.summary) { %>
-              <td><%= m.friendlySummaryNumber('total_contributions_received') %></td>
-              <td><%= m.attributes.received_contributions_count %></td>
-              <td><%= m.pctContributionsFromOakland() %></td>
-              <td><%= m.pctSmallContributions() %></td>
-              <td><%= m.avgContribution() %></td>
-            <% } else { %>
-              <td colspan="5">No Data Available :(</td>
-            <% } %>
-          </tr>
-        <% }); %>
-      </tbody>
-    </table>
-    <p>Last Updated on March 31, 2014</P>
-    <p> * Candidates do not need to itemize contributions less than $100 </p>
+    .container
+      .row
+        %aside.col-sm-2.sidebar{ role: 'navigation'}
+          %ul.nav.nav-sidebar
+            %li
+              %a{ href: '/#about' } About Us
+            / Hiding these until we have some content there - KW 5/19/14
+            / %li
+            /   %a{ href: '#' } Where does the data come from?
+            / %li
+            /   %a{ href: '#' } Contribute
+            %li
+              %a{href: '/'} Candidates
+              %ul.nav.nav-sidebar.compressed
+                - Party.mayoral_candidates.each do |c|
+                  %li
+                    %a{ href: "/#candidate/#{c.id}" }= c.short_name
+
+        .main.col-sm-10
+          .row
+            .col-xs-12
+              %section#mayoral-candidates
+                Loading data...
+
+              %section#charts
+                %h2 Charts
+                #charts
+                  #zip-bubble-chart
+                  #zip-leader-chart
+                  #daily-contributions-chart
+
+              %script{ type: 'text/template', id: 'mayoral-table-template' }
+                :plain
+                  <h2>2014 Oakland Mayor Candidates</h2>
+                  <table id='mayoral-table' class='table'>
+                    <thead>
+                      <tr>
+                        <th id='mayoral-table-picture-column'></th>
+                        <th id='mayoral-table-name-column'></th>
+                        <th>Total Raised</th>
+                        <th>Number of itemized contributions</th>
+                        <th>Percentage from outside Oakland</th>
+                        <th>Percentage from small donations*</th>
+                        <th>Average of itemized contributions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% _.each(models, function(m) { %>
+                        <tr>
+                          <td>
+                            <a href= '/#candidate/<%-m.attributes.id %>'><img class='mayor-picture' src="<%= m.imagePath() %>" /></a>
+                          </td>
+                          <td scope='row'>
+                            <div class='mayor-info'>
+                              <a href= '/#candidate/<%-m.attributes.id %>'><p class='mayor-name green'><%- m.attributes.short_name %></p>
+                              <p class='mayor-profession'><%- m.attributes.profession %></p>
+                              <p class='mayor-party'><%- m.attributes.party_affiliation %></p>
+                            </div>
+                          </td>
+                          <% if (m.attributes.summary) { %>
+                            <td class='mayoral-table-number'><%= m.friendlySummaryNumber('total_contributions_received') %></td>
+                            <td class='mayoral-table-number'><%= m.attributes.received_contributions_count %></td>
+                            <td class='mayoral-table-number'><%= m.pctContributionsFromOakland() %></td>
+                            <td class='mayoral-table-number'><%= m.pctSmallContributions() %></td>
+                            <td class='mayoral-table-number'><%= m.avgContribution() %></td>
+                          <% } else { %>
+                            <td colspan="5">No Data Available :(</td>
+                          <% } %>
+                        </tr>
+                      <% }); %>
+                    </tbody>
+                  </table>
+                  <p>This table includes all candidates who have submitted campaign finance disclosure forms as of January 1, 2014.</p>
+                  <p> * Candidates do not need to itemize contributions less than $100 </p>
+
+    %footer.main-footer
+      %img.footer-logos{ src: image_path('footer_logos.png') }
+
+    / Third Party (cdn)
+    %script{src: "http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"}
+    %script{src: "http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"}
+    %script{src: "http://cdnjs.cloudflare.com/ajax/libs/d3/3.3.3/d3.min.js"}
+    %script{src: '//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js'}
+
+    / Google apis
+    %script{src: "https://www.google.com/jsapi"}
+    :javascript
+      google.load('visualization', '1.0', {'packages':['corechart']});
+
+    -#
+      Include the assets/js/application.js manifest. If you want to include
+      another manifest here, you must also add it to the "assets_precompile"
+      array in app.rb
+    = javascript_tag 'application.js'
+
+    :javascript
+      <!-- Google Analytics -->
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-50973042-1', 'auto');
+      ga('send', 'pageview');
