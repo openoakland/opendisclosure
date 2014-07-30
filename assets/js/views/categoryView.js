@@ -5,7 +5,7 @@ OpenDisclosure.CategoryView = Backbone.View.extend({
   },
 
   render: function() {
-    $('.categories').empty();
+    this.$el.empty();
 
       // Create the data table.
       var data = new google.visualization.DataTable();
@@ -28,10 +28,10 @@ OpenDisclosure.CategoryView = Backbone.View.extend({
 	dataTable: data,
       });
 
-    $('.candidate').append('<section>\
+    this.$el.append('<section>\
 			<div class="categories clearfix">');
-    $('.candidate').append(pieChart.render().el);
-    $('.candidate').append('</div></section>');
+    this.$el.append(pieChart.render().el);
+    this.$el.append('</div></section>');
   },
 
 });

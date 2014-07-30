@@ -3,6 +3,9 @@ OpenDisclosure.Contributions = Backbone.Collection.extend({
   model: OpenDisclosure.Contribution,
   initialize: function(){
     this.fetch();
+    this.listenTo(this, 'sync', function() {
+      this.loaded = true;
+   });
   }
 });
 OpenDisclosure.CategoryContributions = Backbone.Collection.extend({
@@ -10,6 +13,9 @@ OpenDisclosure.CategoryContributions = Backbone.Collection.extend({
   model: OpenDisclosure.CategoryContribution,
   initialize: function(){
     this.fetch();
+    this.listenTo(this, 'sync', function() {
+      this.loaded = true;
+   });
   }
 });
 OpenDisclosure.EmployerContributions = Backbone.Collection.extend({
@@ -17,6 +23,9 @@ OpenDisclosure.EmployerContributions = Backbone.Collection.extend({
   model: OpenDisclosure.EmployerContribution,
   initialize: function(){
     this.fetch();
+    this.listenTo(this, 'sync', function() {
+      this.loaded = true;
+   });
   }
 });
 OpenDisclosure.Whales = Backbone.Collection.extend({
@@ -24,6 +33,9 @@ OpenDisclosure.Whales = Backbone.Collection.extend({
   model: OpenDisclosure.Whale,
   initialize: function(){
     this.fetch();
+    this.listenTo(this, 'sync', function() {
+      this.loaded = true;
+   });
   }
 });
 OpenDisclosure.Multiples = Backbone.Collection.extend({
@@ -31,6 +43,9 @@ OpenDisclosure.Multiples = Backbone.Collection.extend({
   model: OpenDisclosure.Multiple,
   initialize: function(){
     this.fetch();
+    this.listenTo(this, 'sync', function() {
+      this.loaded = true;
+   });
   }
 });
 OpenDisclosure.Contributors = Backbone.Collection.extend({
@@ -41,5 +56,8 @@ OpenDisclosure.Contributors = Backbone.Collection.extend({
   initialize: function(options){
     this.options = options;
     this.fetch();
+    this.listenTo(this, 'sync', function() {
+      this.loaded = true;
+   });
   }
 });
