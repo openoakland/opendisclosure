@@ -66,7 +66,7 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
       .x(function(d) { return x(d.date); })
       .y(function(d) { return y(d.close); });
 
-    chart.svg = d3.select(el[0]).append("svg")
+    chart.svg = d3.select(el).append("svg")
       .attr("width", svgWidth)
       .attr("height", svgHeight)
       .attr("viewBox", "0 0 " + svgWidth + " " + svgHeight)
