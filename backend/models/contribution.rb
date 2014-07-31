@@ -10,19 +10,11 @@ class Contribution < ActiveRecord::Base
       Party.increment_counter(:received_contributions_from_oakland, recipient.id)
     end
   end
+
   def increment_small_donor_ammount
     if amount.to_f < 100 && amount.to_f > -100
       recipient.small_donations += amount.to_f
       recipient.save
     end
   end
-end
-
-class EmployerContribution < ActiveRecord::Base; end
-class CategoryContribution < ActiveRecord::Base; end
-class Whale < ActiveRecord::Base
-  belongs_to :contributor, class_name: 'Party'
-end
-class Multiple < ActiveRecord::Base
-  belongs_to :contributor, class_name: 'Party'
 end

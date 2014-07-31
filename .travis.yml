@@ -1,0 +1,10 @@
+language: ruby
+bundler_args: --without production development
+rvm:
+  - 2.1.2
+env:
+  - "DATABASE_URL=postgres://postgres@127.0.0.1/travis_ci_test"
+before_script:
+  - psql -c 'create database travis_ci_test;' -U postgres
+  - bundle exec ruby -ractive_record -e 'ActiveRecord::Base.establish_connection; load "backend/schema.rb"'
+script: bundle exec rspec
