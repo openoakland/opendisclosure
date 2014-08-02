@@ -28,10 +28,10 @@ class DataFetcher
     DataFetcher::Contribution.fetch_and_parse(URLS['Schedule A'])
 
     puts "Fetching Expense data (Schedule E) from Socrata:"
-    DataFetcher::Expense.fetch_and_parse(URLS['Schedule A'])
+    DataFetcher::Payment.fetch_and_parse(URLS['Schedule E'])
 
     puts "Fetching Summary data from Socrata:"
-    DataFetcher::Summary.fetch_and_parse(URLS['Schedule A'])
+    DataFetcher::Summary.fetch_and_parse(URLS['Summary'])
 
     puts "Run analysis"
     DataFetcher::CategoryContributions.run!
