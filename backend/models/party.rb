@@ -19,8 +19,9 @@ class Party < ActiveRecord::Base
     QUAN = 1354678,
     SCHAAF = 1362261,
     TUMAN = 1359017,
-    MCCULLOUGH = 0,   # TODO: Fill in with Filer_ID when he has one
-    RUBY = 1284364,   # TODO: This is wrong, fix it!!!
+    RUBY = 1364278,
+    KAPLAN = 1367270,
+    SIEGEL = 1362877,
   ]
 
   # Filer_IDs of other races this cycle
@@ -75,19 +76,21 @@ class Party < ActiveRecord::Base
       twitter:'@joe4mayor',
       bio: 'Joe Tuman has been a political analyst and commentator on government and politics for CBS for 12 years as well as a Department Chair and Professor at San Francisco State University for over 25 years. Joe graduated from UC Berkeley with a B.A. in Political Science and a Juris Doctorate from Boalt Hall School of Law. Joe has been married for 30 years to Kirsten Weisser, an Executive Vice President of Wealth Management at Mechanics Bank, a local financial institution. They have raised two children in Oakland.'
     },
-    MCCULLOUGH => {
-      name: 'Patrick McCullough',
-      profession: '<current profession>',
-      party: 'Unknown',
-      twitter:'',
-      bio:"According to Patrick’s website for his 2008 run for City Council for District 1, he is an Attorney/Electronics Technician. Patrick graduated with a J.D. from San Francisco Law School and earned a B.A. from Golden Gate University. He was honorably discharged U.S. Navy. In 2005, Patrick shot his 15-year-old neighbor in a confrontation with several youths over McCullough’s previously reporting suspicious activities to the police. The Oakland District Attorney found that McCullough had acted in self-defense, and no charges were brought against anyone involved in the incident. Patrick and his wife, Daphne, have been residents of the Bushrod neighborhood for over 30 years. "
-    },
     RUBY => {
       name: 'Courtney Ruby',
       profession: 'City Auditor',
       party: 'Unknown',
       twitter:'@Ruby4Oakland',
       bio:"Courtney is Oakland’s City Auditor, since 2007. She is a Certified Public Accountant and Certified Fraud Examiner. Previously, she served as vice-chair of the Budget Advisory Committee for the City of Oakland and Board Finance Chair for a local nonprofit dedicated to ending the cycle of homelessness. In 2005, she became the Chief Financial Officer and Director of Administration of the East Bay Conservation Corps, a nonprofit organization dedicated to promoting youth development through environmental stewardship and community service. She graduated from the Kogod School of Business at American University in 1989. She lives in East Oakland with her two young sons."
+    },
+    KAPLAN => {
+      name: 'Rebecca Kaplan',
+    },
+    WASHINGTON => {
+      name: 'Sammuel Washington',
+    },
+    SIEGEL => {
+      name: 'Dan Siegel',
     }
   }
 
