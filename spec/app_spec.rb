@@ -15,4 +15,8 @@ describe OpenDisclosureApp do
     # test suite.
     it { should be_ok }
   end
+
+  describe '/api/candidates' do
+    subject { get '/api/candidates' }
+  end
 end
