@@ -45,6 +45,8 @@ class DataFetcher
           :last_summary_date => row['thru_date']
         )
       end
+
+      summary
     end
   end
 end

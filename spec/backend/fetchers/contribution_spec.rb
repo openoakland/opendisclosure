@@ -17,6 +17,11 @@ describe DataFetcher::Contribution do
         expect(Party.where(committee_id: row['filer_id'])).to be_present
       end
 
+      it 'creates a Contribution record with the right values' do
+        subject
+        expect(Contribution.first.amount).to equal(row['tran_amt1'].to_i)
+      end
+
       context 'when the recipient exists already' do
         it "doesn't create a Party for the recipient" do
           FactoryGirl.create(:committee, committee_id: row['filer_id'])
