@@ -1,8 +1,8 @@
 OpenDisclosure.CandidateView = Backbone.View.extend({
 
-  template: _.template("<div id='candidate'>\
+  template: _.template("\
     <h1><%= attributes.short_name %></h1>\
-    <section class='candidateDetails clearfix'>\
+    <section class='clearfix' id= 'candidateDetails'>\
         <div class='col-sm-4'>\
           <img class='mayor-picture' src='<%= attributes.imagePath %>' /> \
         </div>\
@@ -19,11 +19,11 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
           <p>Ending Cash On Hand: <%= friendlySummaryNumber('ending_cash_balance') %></p>\
           <p>Last Updated: <%= attributes.summary.last_summary_date %> </p>\
           <% } %>\
-      </section>\
-      <section class='clearfix'><div id = 'category'></div></section>\
-      <section class='clearfix'><div id = 'topContributors'></div></section>\
-      <section class='clearfix'><div id = 'contributors'></div></section>\
-     "),
+    </section>\
+    <section class='clearfix' id= 'category'></section>\
+    <section class='clearfix' id= 'topContributors'></section>\
+    <section class='clearfix' id= 'contributors'></section>\
+  "),
 
   initialize: function(){
     if (this.model) {
@@ -38,24 +38,15 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
     this.updateNav();
     this.$el.html(this.template(this.model));
 
-    if (app.employerContributions.loaded) {
-      this.renderTopContributors();
-    } else {
-      this.listenTo(app.employerContributions, 'sync', this.renderTopContributors);
-    }
+    //Render Subviews
+    this.renderTopContributors();
+    this.renderCategoryChart();
+    this.renderAllContributions();
 
-    if (app.categoryContributions.loaded) {
-      renderCategoryChart();
-    } else {
-      this.listenTo(app.categoryContributions, 'sync', this.renderCategoryChart);
-    }
-
-    if (app.contributions.loaded) {
-      this.renderAllContributions();
-    } else {
-      this.listenTo(app.contributions, 'sync', this.renderAllContributions);
-    }
-
+    //Listen for new data
+    this.listenTo(app.employerContributions, 'sync', this.renderTopContributors);
+    this.listenTo(app.categoryContributions, 'sync', this.renderCategoryChart);
+    this.listenTo(app.contributions, 'sync', this.renderAllContributions);
   },
 
   renderTopContributors: function(){

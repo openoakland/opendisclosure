@@ -220,7 +220,7 @@ div#candidate {
     text-align: left;
   }
 
-  .candidateDetails{
+  section#candidateDetails{
     div {
       padding: 0 4px;
     }
@@ -229,15 +229,6 @@ div#candidate {
       width: 90%;
     }
 
-  }
-
-  .mayor-picture {
-    width:70%;
-    margin: auto;
-  }
-
-  .contributions {
-    margin-top: 20px;
   }
 
   ul#contributions {
