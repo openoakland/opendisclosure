@@ -85,12 +85,23 @@ class Party < ActiveRecord::Base
     },
     KAPLAN => {
       name: 'Rebecca Kaplan',
+      profession: 'Oakland City Council President Pro Tem',
+      party: 'Democrat',
+      twitter: '@kaplan4oakland',
+      bio: "She is the Council President Pro Tem and has been a City Councilmember At-Large since 2008. She was elected unopposed in 2002 and then re-elected in 2006 as a Member At-Large on the Alameda - Contra Costa Transit Board of Directors. She studied at MIT and has a masters from Tufts in Urban & Environmental policy and a Juris Doctorate from Stanford Law School. Rebecca got engaged to her partner, Pamela Rosin, who is a Somatic Counselor and Restorative Yoga Teacher, in May 2014."
     },
     WASHINGTON => {
       name: 'Sammuel Washington',
     },
     SIEGEL => {
       name: 'Dan Siegel',
+      profession: 'Civil-Rights Attorney',
+      party: 'Unknown',
+      twitter:'@DanMSiegel',
+      bio:"Dan Siegel is a partner and civil-rights attorney at the law firm, Siegel & Yee. He was a former legal adviser to Mayor Jean Quan until November 14, 2011. He was an Oakland Unified School District Board member from 1998 to 2006 and former president of both the Oakland School Board and the Oakland Housing Authority Commission. Dan graduated from Boalt Hall School of Law at UC Berkeley in 1970. Siegel and his wife, Anne Butterfield Weills, have been Oakland residents since 1977. They have two sons and a grandson. Anne is an attorney and her and Dan’s younger son, Michael Siegel, is an associate attorney with Siegel & Yee. Their older son, Christopher, teaches at Skyline High School."
+
+
+
     }
   }
 
