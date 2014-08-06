@@ -36,17 +36,32 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
 
   render: function(){
     this.updateNav();
+
+    //Render main view
     this.$el.html(this.template(this.model));
 
     //Render Subviews
-    this.renderTopContributors();
     this.renderCategoryChart();
+    this.renderTopContributors();
     this.renderAllContributions();
 
     //Listen for new data
-    this.listenTo(app.employerContributions, 'sync', this.renderTopContributors);
     this.listenTo(app.categoryContributions, 'sync', this.renderCategoryChart);
+    this.listenTo(app.employerContributions, 'sync', this.renderTopContributors);
     this.listenTo(app.contributions, 'sync', this.renderAllContributions);
+  },
+
+  renderCategoryChart: function() {
+    var candidateId = this.model.attributes.id;
+    this.categories = _.filter(app.categoryContributions.models, function(c) {
+      return c.attributes.recipient_id == candidateId;
+    });
+
+    new OpenDisclosure.CategoryView({
+      el: '#category',
+      collection: this.categories,
+      summary: this.model.attributes.summary
+    });
   },
 
   renderTopContributors: function(){
@@ -64,19 +79,6 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
     });
   },
 
-  renderCategoryChart: function() {
-    var candidateId = this.model.attributes.id;
-    this.categories = _.filter(app.categoryContributions.models, function(c) {
-      return c.attributes.recipient_id == candidateId;
-    });
-
-    new OpenDisclosure.CategoryView({
-      el: '#category',
-      collection: this.categories,
-      summary: this.model.attributes.summary
-    });
-  },
-
   renderAllContributions: function(){
     var candidateId = this.model.attributes.id;
     this.filteredContributions = _.filter(app.contributions.models, function(c) {
@@ -85,7 +87,7 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
 
     new OpenDisclosure.ContributorsView({el: "#contributors",
       collection: this.filteredContributions,
-      headline: 'Contributions'
+      headline: 'All Contributions'
     });
   },
 
