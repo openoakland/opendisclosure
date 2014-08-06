@@ -100,8 +100,6 @@ class Party < ActiveRecord::Base
       twitter:'@DanMSiegel',
       bio:"Dan Siegel is a partner and civil-rights attorney at the law firm, Siegel & Yee. He was a former legal adviser to Mayor Jean Quan until November 14, 2011. He was an Oakland Unified School District Board member from 1998 to 2006 and former president of both the Oakland School Board and the Oakland Housing Authority Commission. Dan graduated from Boalt Hall School of Law at UC Berkeley in 1970. Siegel and his wife, Anne Butterfield Weills, have been Oakland residents since 1977. They have two sons and a grandson. Anne is an attorney and her and Dan’s younger son, Michael Siegel, is an associate attorney with Siegel & Yee. Their older son, Christopher, teaches at Skyline High School."
 
-
-
     }
   }
 
