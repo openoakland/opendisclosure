@@ -1,6 +1,6 @@
 OpenDisclosure.CandidateView = Backbone.View.extend({
 
-  template: _.template("<section id='candidate'>\
+  template: _.template("<div id='candidate'>\
     <h1><%= attributes.short_name %></h1>\
     <section class='candidateDetails clearfix'>\
         <div class='col-sm-4'>\
