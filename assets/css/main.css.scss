@@ -35,6 +35,7 @@ h2, h4 {
   text-align: center;
 }
 
+
 /* ------------------- disclaimer -------------------- */
 
 .disclaimer {
@@ -137,6 +138,7 @@ header {
 
 .main section{
   border-bottom: 2px solid #539137;
+  padding: 15px 0;
 }
 
 #charts div {
@@ -212,19 +214,29 @@ header {
 
 /* ------------------- Candidate Page -------------------- */
 
-#candidate .mayor-picture {
-  width:70%;
-  margin: auto;
+div#candidate {
+
+  h2, h4 {
+    text-align: left;
+  }
+
+  section#candidateDetails{
+    div {
+      padding: 0 4px;
+    }
+
+    img {
+      width: 90%;
+    }
+
+  }
+
+  ul#contributions {
+    text-decoration: none;
+    list-style: none;
+  }
 }
 
-.contributions {
-  margin-top: 20px;
-}
-
-ul#contributions {
-  text-decoration: none;
-  list-style: none;
-}
 
 /* ------------------- About Page -------------------- */
 #about {

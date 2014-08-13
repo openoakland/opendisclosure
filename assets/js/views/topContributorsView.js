@@ -11,17 +11,12 @@ OpenDisclosure.TopContributorsView = Backbone.View.extend({
 
   render: function() {
     this.$el.empty();
-    $('<section>\
-      <div class="col-sm-12">\
-        <h2>Top Contributors</h2>\
-        <h4> by Employer/Business</h4>\
-      </div>\
-      <div class="topContributions clearfix"></div>\
-     </div>\
-    </section>').appendTo(this.$el);
+    $('<h2>Top Contributions (grouped by Employer/Business)</h2>\
+      <div class="topContributions clearfix"></div>')
+    .appendTo(this.$el);
     var that = this;
-    _.each(this.collection, function( c ){
-      that.$el.append(that.template(c.attributes));
+    _.each(this.collection, function(c){
+      that.$el.find('.topContributions').append(that.template(c.attributes));
     });
   },
 

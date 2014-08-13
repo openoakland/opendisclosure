@@ -16,13 +16,13 @@ OpenDisclosure.App = Backbone.Router.extend({
   },
 
   home: function(){
-    $('#bodyContainer').empty();
+    $('.main').empty();
     $('<div id="candidateTable"></div> \
        <div id="zipcodeChart"></div> \
        <div id="dailyChart"></div> \
        <div id="topContributions"></div> \
        <div id="multiples"></div> \
-    ').appendTo('#bodyContainer');
+    ').appendTo('.main');
     new OpenDisclosure.CandidateTable({el : '#candidateTable',
 				      collection : this.candidates});
 
@@ -47,9 +47,9 @@ OpenDisclosure.App = Backbone.Router.extend({
 					  collection : that.whales.models,
 					  headline :'Top Contributors To All Candidates in This Election'});
     }
-    if (this.whales.loaded) 
+    if (this.whales.loaded)
       doWhalesView(this);
-    else 
+    else
       this.listenTo(this.whales, 'sync', function() {
 	console.log('Received whale data!');
 	doWhalesView(this);
@@ -59,13 +59,13 @@ OpenDisclosure.App = Backbone.Router.extend({
       new OpenDisclosure.MultiplesView({el : '#multiples',
 				       collection: that.multiples.models,
 				       headline:'Contributors To More Than One Mayoral Candidate'});
-    }
+    };
     if (this.multiples.loaded)
       doMultiView(this);
     else
       this.listenTo(this.multiples, 'sync', function() {
-	console.log('Received multiples data!');
-	doMultiView(this);
+        console.log('Received multiples data!');
+        doMultiView(this);
       });
   },
 
@@ -74,8 +74,8 @@ OpenDisclosure.App = Backbone.Router.extend({
   },
 
   candidate: function(id){
-    $('#bodyContainer').empty();
-    $('<div id="candidate"></div>').appendTo('#bodyContainer');
+    $('.main').empty();
+    $('<div id="candidate"></div>').appendTo('.main');
     doView = function(that) {
       new OpenDisclosure.CandidateView({el: '#candidate',
 				       model: that.candidates.get(id)});
@@ -89,9 +89,9 @@ OpenDisclosure.App = Backbone.Router.extend({
   },
 
   contributor : function(id) {
-    $('#bodyContainer').empty();
+    $('.main').empty();
     $('<div id = "contirbutor"></div> \
-    ').appendTo('#bodyContainer');
+    ').appendTo('.main');
     var contrib = new OpenDisclosure.Contributors({contributor: id} );
     this.listenTo(contrib, 'sync', function() {
       new OpenDisclosure.ContributorView({el: '#contirbutor', collection: contrib.models});

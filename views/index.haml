@@ -27,7 +27,7 @@
       .container
         .row
           .col-xs-4.col-sm-2.header-oakland-logo
-            %a{ href: '/#home' }
+            %a{ href: '/#' }
               %img{ src: image_path('OaklandCityTree.png') }
           .col-xs-8.col-sm-10.header-title-container
             %h1.header-main-title Open Disclosure
@@ -45,61 +45,57 @@
             / %li
             /   %a{ href: '#' } Contribute
             %li
-              %a{href: '/'} Candidates
+              %a{href: '/#'} Candidates
               %ul.nav.nav-sidebar.compressed
                 - Party.mayoral_candidates.each do |c|
                   %li
                     %a{ href: "/#candidate/#{c.id}" }= c.short_name
 
         .main.col-sm-10
-          .row
-            .col-xs-12
-              %section#bodyContainer
-                Loading data...
-
-              %script{ type: 'text/template', id: 'mayoral-table-template' }
-                :plain
-                  <h2>2014 Oakland Mayor Candidates</h2>
-                  <table id='mayoral-table' class='table'>
-                    <thead>
-                      <tr>
-                        <th id='mayoral-table-picture-column'></th>
-                        <th id='mayoral-table-name-column'></th>
-                        <th>Total Raised</th>
-                        <th>Number of itemized contributions</th>
-                        <th>Percentage from outside Oakland</th>
-                        <th>Percentage from small donations*</th>
-                        <th>Average of itemized contributions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <% _.each(models, function(m) { %>
-                        <tr>
-                          <td>
-                            <a href= '/#candidate/<%-m.attributes.id %>'><img class='mayor-picture' src="<%= m.imagePath() %>" /></a>
-                          </td>
-                          <td scope='row'>
-                            <div class='mayor-info'>
-                              <a href= '/#candidate/<%-m.attributes.id %>'><p class='mayor-name green'><%- m.attributes.short_name %></p>
-                              <p class='mayor-profession'><%- m.attributes.profession %></p>
-                              <p class='mayor-party'><%- m.attributes.party_affiliation %></p>
-                            </div>
-                          </td>
-                          <% if (m.attributes.summary) { %>
-                            <td class='mayoral-table-number'><%= m.friendlySummaryNumber('total_contributions_received') %></td>
-                            <td class='mayoral-table-number'><%= m.attributes.received_contributions_count %></td>
-                            <td class='mayoral-table-number'><%= m.pctContributionsFromOakland() %></td>
-                            <td class='mayoral-table-number'><%= m.pctSmallContributions() %></td>
-                            <td class='mayoral-table-number'><%= m.avgContribution() %></td>
-                          <% } else { %>
-                            <td colspan="5">No Data Available :(</td>
-                          <% } %>
-                        </tr>
-                      <% }); %>
-                    </tbody>
-                  </table>
-                  <p>This table includes all candidates who have submitted campaign finance disclosure forms as of January 1, 2014.</p>
-                  <p> * Candidates do not need to itemize contributions less than $100 </p>
+          %span Loading data...
+          %script{ type: 'text/template', id: 'mayoral-table-template' }
+            :plain
+              <h2>2014 Oakland Mayor Candidates</h2>
+              <table id='mayoral-table' class='table'>
+                <thead>
+                  <tr>
+                    <th id='mayoral-table-picture-column'></th>
+                    <th id='mayoral-table-name-column'></th>
+                    <th>Total Raised</th>
+                    <th>Number of itemized contributions</th>
+                    <th>Percentage from outside Oakland</th>
+                    <th>Percentage from small donations*</th>
+                    <th>Average of itemized contributions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% _.each(models, function(m) { %>
+                    <tr>
+                      <td>
+                        <a href= '/#candidate/<%-m.attributes.id %>'><img class='mayor-picture' src="<%= m.imagePath() %>" /></a>
+                      </td>
+                      <td scope='row'>
+                        <div class='mayor-info'>
+                          <a href= '/#candidate/<%-m.attributes.id %>'><p class='mayor-name green'><%- m.attributes.short_name %></p>
+                          <p class='mayor-profession'><%- m.attributes.profession %></p>
+                          <p class='mayor-party'><%- m.attributes.party_affiliation %></p>
+                        </div>
+                      </td>
+                      <% if (m.attributes.summary) { %>
+                        <td class='mayoral-table-number'><%= m.friendlySummaryNumber('total_contributions_received') %></td>
+                        <td class='mayoral-table-number'><%= m.attributes.received_contributions_count %></td>
+                        <td class='mayoral-table-number'><%= m.pctContributionsFromOakland() %></td>
+                        <td class='mayoral-table-number'><%= m.pctSmallContributions() %></td>
+                        <td class='mayoral-table-number'><%= m.avgContribution() %></td>
+                      <% } else { %>
+                        <td colspan="5">No Data Available :(</td>
+                      <% } %>
+                    </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+              <p>This table includes all candidates who have submitted campaign finance disclosure forms as of January 1, 2014.</p>
+              <p> * Candidates do not need to itemize contributions less than $100 </p>
 
     %footer.main-footer
       %img.footer-logos{ src: image_path('footer_logos.png') }

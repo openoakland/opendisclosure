@@ -1,13 +1,12 @@
 OpenDisclosure.CandidateView = Backbone.View.extend({
 
-  template: _.template("<section id='candidate'>\
+  template: _.template("\
     <h1><%= attributes.short_name %></h1>\
-      <section class='row candidate'>\
+    <section class='clearfix' id= 'candidateDetails'>\
         <div class='col-sm-4'>\
           <img class='mayor-picture' src='<%= attributes.imagePath %>' /> \
         </div>\
         <div class='col-sm-4'>\
-          <p><%= name %></p>\
           <p>Party Affiliation: <%= attributes.party_affiliation %></p>\
           <p><%= attributes.profession %></p>\
           <p><a id='twitter' href='https://twitter.com/'+ <%= attributes.twitter %>><%= attributes.twitter %></a></p>\
@@ -20,11 +19,11 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
           <p>Ending Cash On Hand: <%= friendlySummaryNumber('ending_cash_balance') %></p>\
           <p>Last Updated: <%= attributes.summary.last_summary_date %> </p>\
           <% } %>\
-      </section>\
-      <section><div id = 'category'></div></section>\
-      <section><div id = 'topContributors'></div></section>\
-      <section><div id = 'contributors'></div></section>\
-     "),
+    </section>\
+    <section class='clearfix' id= 'category'></section>\
+    <section class='clearfix' id= 'topContributors'></section>\
+    <section class='clearfix' id= 'contributors'></section>\
+  "),
 
   initialize: function(){
     if (this.model) {
@@ -37,66 +36,64 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
 
   render: function(){
     this.updateNav();
+
+    //Render main view
     this.$el.html(this.template(this.model));
 
-    // Render Category chart
-    var categories = function(that) {
-      that.categories = _.filter(app.categoryContributions.models, function(c) {
-	return c.attributes.recipient_id == that.model.attributes.id;
-      });
+    //Render Subviews
+    this.renderCategoryChart();
+    this.renderTopContributors();
+    this.renderAllContributions();
 
-      new OpenDisclosure.CategoryView({el: '#category', collection: that.categories,
-				      summary: that.model.attributes.summary});
-    };
-    if (app.categoryContributions.loaded)
-      categories(this);
-    else
-      this.listenTo(app.categoryContributions, 'sync', function() {
-	categories(this);
-      });
+    //Listen for new data
+    this.listenTo(app.categoryContributions, 'sync', this.renderCategoryChart);
+    this.listenTo(app.employerContributions, 'sync', this.renderTopContributors);
+    this.listenTo(app.contributions, 'sync', this.renderAllContributions);
+  },
 
-    var topContributions = function(that) {
-      // Render Top Contributions
-      var count = 0;
-      that.topContributions = _.filter(app.employerContributions.models, function(c) {
-	return c.attributes.recipient_id == that.model.attributes.id;
-      }).sort(function(a, b){return b.attributes.amount - a.attributes.amount});
-      that.topContributions = _.filter(that.topContributions, function() { return count++ < 10; });
+  renderCategoryChart: function() {
+    var candidateId = this.model.attributes.id;
+    this.categories = _.filter(app.categoryContributions.models, function(c) {
+      return c.attributes.recipient_id == candidateId;
+    });
 
-      new OpenDisclosure.TopContributorsView({el: "#topContributors",
-					     collection: that.topContributions});
+    new OpenDisclosure.CategoryView({
+      el: '#category',
+      collection: this.categories,
+      summary: this.model.attributes.summary
+    });
+  },
 
-    }
-    if (app.employerContributions.loaded)
-      topContributions(this);
-    else
-      this.listenTo(app.employerContributions, 'sync', function() {
-	topContributions(this);
-      });
+  renderTopContributors: function(){
+    // Filter contributors based on cadidateId
+    var count = 0;
+    var candidateId = this.model.attributes.id;
+    this.topContributions = _.filter(app.employerContributions.models, function(c) {
+      return (c.attributes.recipient_id == candidateId) && (++count <= 10);
+    });
 
-    // Render Contributions
-    var contributions = function(that) {
-      this.filteredContributions = _.filter(app.contributions.models, function(c) {
-	return c.attributes.recipient.id == that.model.attributes.id;
-      });
+    // Create a new subview
+    new OpenDisclosure.TopContributorsView({
+      el: "#topContributors",
+      collection: this.topContributions
+    });
+  },
 
-      new OpenDisclosure.ContributorsView({el: "#contributors",
-					  collection: this.filteredContributions,
-					  headline: 'Contributions'});
-    }
+  renderAllContributions: function(){
+    var candidateId = this.model.attributes.id;
+    this.filteredContributions = _.filter(app.contributions.models, function(c) {
+      return c.attributes.recipient.id == candidateId;
+    });
 
-    if (app.contributions.loaded)
-      contributions(this);
-    else
-      this.listenTo(app.contributions, 'sync', function() {
-	contributions(this);
-      });
-
+    new OpenDisclosure.ContributorsView({el: "#contributors",
+      collection: this.filteredContributions,
+      headline: 'All Contributions'
+    });
   },
 
   updateNav: function(){
-    //Update Nav
     $('.sidebar li').removeClass('active');
     $('#nav-'+this.model.attributes.id).addClass('active');
   }
+
 });
