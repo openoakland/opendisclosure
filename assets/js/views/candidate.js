@@ -59,8 +59,9 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
       // Render Top Contributions
       var count = 0;
       that.topContributions = _.filter(app.employerContributions.models, function(c) {
-	return c.attributes.recipient_id == that.model.attributes.id && ++count <= 10;
-      });
+	return c.attributes.recipient_id == that.model.attributes.id;
+      }).sort(function(a, b){return b.attributes.amount - a.attributes.amount});
+      that.topContributions = _.filter(that.topContributions, function() { return count++ < 10; });
 
       new OpenDisclosure.TopContributorsView({el: "#topContributors",
 					     collection: that.topContributions});
