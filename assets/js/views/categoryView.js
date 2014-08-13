@@ -6,7 +6,7 @@ OpenDisclosure.CategoryView = Backbone.View.extend({
 
   render: function() {
     this.$el.empty();
-    this.$el.append('<h2>Total Contributions by Category');
+    this.$el.append('<h2>Total Contributions by Category</h2>');
     // Create the data table.
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Category');
