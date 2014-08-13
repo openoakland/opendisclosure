@@ -22,10 +22,19 @@ Then install bundler and foreman:
 
 Install postgres:
 
-    brew install postgres
-    ln -sfv /usr/local/opt/postgresql/*.plist ~/Library/LaunchAgents
-    launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
-    ARCHFLAGS="-arch x86_64" gem install pg
+```bash
+brew install postgres
+
+# choose one:
+# A) to start postgres on startup:
+ln -sfv /usr/local/opt/postgresql/*.plist ~/Library/LaunchAgents
+launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
+
+# B) or, to run postgres in a terminal (you will have to leave it running)
+postgres -D /usr/local/var/postgres
+
+ARCHFLAGS="-arch x86_64" gem install pg
+```
 
 Now you can install the other dependencies with:
 
