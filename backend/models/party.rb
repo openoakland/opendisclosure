@@ -28,23 +28,25 @@ class Party < ActiveRecord::Base
   CANDIDATE_IDS = [
     # Auditor
     ROBERTS = 0,
+    RAPHAEL = 0,
     # Council 2
-    BLACKBURN = 0,
+    BLACKBURN = 1366244,
     COLBRUNO = 0,
-    GUILLEN = 0,
-    KING = 0,
+    GUILLEN = 1365384,
+    KING = 1364029,
     MAO = 0,
     PARK = 0,
     # Council 4
-    BROADHURST = 0,
-    WASHINGTON = 0,
-    HEIDORN = 0,
+    BROADHURST = 1362843,
+    WASHINGTON = 1365610,
+    HEIDORN = 1363584,
     LIM = 0,
     SINCLAIR = 0,
     # Council 6
-    JOHNSON = 0,
+    BROOKS = 1236617,
+    JOHNSON = 1360826,
     MOORE = 0,
-    NOSAKHARE = 0,
+    NOSAKHARE = 1365766,
   ]
 
   CANDIDATE_INFO = {

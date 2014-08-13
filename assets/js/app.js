@@ -69,23 +69,6 @@ OpenDisclosure.App = Backbone.Router.extend({
       });
   },
 
-  candidate: function(id){
-    if (!this.candidates){ this.candidates = new OpenDisclosure.Candidates();}
-    this.currentCandidate = this.candidates.get(id);
-    new OpenDisclosure.CandidateView({model: this.currentCandidate});
-
-    // Render Top Contributions
-    var that = this;
-    var count = 0;
-    this.topContributions = _.filter(this.employerContributions.models, function(c) {
-      return c.attributes.recipient_id == that.currentCandidate.id && ++count <= 10;
-    })
-    new OpenDisclosure.DailyContributionsChartView({
-      collection: this.contributions,
-      base_height: 480
-    });
-  },
-
   about: function () {
     new OpenDisclosure.AboutView();
   },
