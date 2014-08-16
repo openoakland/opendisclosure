@@ -26,7 +26,9 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         .scale(s)
         .translate(t));
 
-    chart.svg = d3.select(this.el).append("svg")
+    chart.svg = d3.select(this.el).append("div")
+      .attr("id", "svg-wrapper")
+    .append("svg")
       .attr("id", "map")
       .attr("width", chart.dimensions.width)
       .attr("height", chart.dimensions.height)
@@ -40,6 +42,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         chart.drawLegend();
         chart.clickListener();
         chart.click(d3.select('.legend.overview'), 'Overview');
+        chart.drawTooltip();
       });
     });
 
@@ -111,15 +114,24 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         .attr("id", function(d) {
           zip = d.properties.ZIP;
         })
-        .attr("d", chart.path);
-
-      zips.append("svg:title")
-        .text(function(d) {
-          return d.properties.ZIP + ": " + d.properties.PO_NAME;
+        .attr("d", chart.path)
+        .on('mousemove', function(d) {
+          chart.tooltip(d, this, chart);
         });
 
       done(chart.zipUpdater);
     });
+  },
+
+  tooltip: function(d, path, chart) {
+    var x = d3.mouse(path)[0];
+    var y = d3.mouse(path)[1];
+    console.log(chart.data);
+    d3.select("#tooltip")
+      .style("left", x + "px")
+      .style("top", y+20 + "px")
+      .html("<div>CITY: " + d.properties.PO_NAME + "</div>" +
+        "<div>ZIP: " + d.properties.ZIP + "</div>");
   },
 
   updateZips: function(selection) {
@@ -333,6 +345,11 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       "<h3>Total contributions from each zip code</h3>" +
       "<h4 class='return'>Return to overview map.</h4>" +
       "</div>");
+  },
+
+  drawTooltip: function() {
+    $('#svg-wrapper').prepend('<div id="tooltip">TOOLTIP!</div>');
+    // this.placeTooltip();
   },
 
   clickListener: function() {
