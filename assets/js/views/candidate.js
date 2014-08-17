@@ -2,6 +2,12 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
 
   template: _.template("\
     <h1><%= attributes.short_name %></h1>\
+    <section class='clearfix' id='mathbar'>\
+          <div class='col-sm-3 money-label'>Total Contributions <br><span class='money-number'><%= friendlySummaryNumber('total_contributions_received') %></span><span class='mathsign'>–</span></div>\
+          <div class='col-sm-3 money-label'>Expenditures <br><span class='money-number'><%= friendlySummaryNumber('total_expenditures_made') %></span><span class='mathsign'>=</span></div>\
+          <div class='col-sm-3 money-label'>Cash On Hand <br><span class='money-number'><%= friendlySummaryNumber('ending_cash_balance') %></span></div>\
+          <div class='col-sm-3 money-label count'> No. of Contributions <br><span class='money-number'><%= attributes.received_contributions_count %></span></div>\
+          </section>\
     <section class='clearfix' id= 'candidateDetails'>\
         <div class='col-sm-4'>\
           <img class='mayor-picture' src='<%= attributes.imagePath %>' /> \

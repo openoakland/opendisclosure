@@ -9,6 +9,7 @@
 $color-green-accent: #539137;
 $color-green-dark: #0F4800;
 $color-gray-text: #555;
+$color-gold-highlight: #FFDD1F;
 
 body, html {
   background-image: image_url('squairy_light.png');
@@ -18,12 +19,13 @@ body, html {
 
 a {
   text-decoration: none;
-  color: inherit;
+  color: $color-green-accent;
 
   &:hover {
-    text-decoration: none;
-    color: inherit;
-    outline:none;
+    color: #303030;
+    outline: none;
+    text-decoration: underline;
+
   }
 }
 
@@ -115,13 +117,13 @@ header {
 .sidebar .compressed a:hover{
   display: block;
   color:inherit;
-  background-color: #ffdd1f
+  background-color: $color-gold-highlight;
 }
 
 .sidebar .active > a {
   font-weight: bold;
   color: #539137;
-  background-color: #ffdd1f
+  background-color: $color-gold-highlight;
 }
 
 .compressed li {
@@ -236,6 +238,41 @@ div#candidate {
     list-style: none;
   }
 }
+
+#mathbar {
+  border-bottom: none;
+  color: white;
+  font-family: 'Crete Round', serif;
+  line-height: 20px;
+  width: 100%; 
+  padding: 0;
+  margin: 0;
+
+  .money-label {
+    background-color: $color-green-accent;
+    font-size: 15px;
+    display: inline-block;
+    letter-spacing: 0.7px;
+    padding: 6px 12px;
+  }
+
+  .money-number {
+    font-size: 24px;
+  }
+
+  .mathsign {
+    float: right;
+    font-size: 32px;
+    line-height: 2px;
+  }
+
+  .money-label.count{
+    background-color: $color-gold-highlight;
+    color: #303030;
+  }
+
+}
+
 
 
 /* ------------------- About Page -------------------- */
