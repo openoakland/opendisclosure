@@ -22,7 +22,7 @@ class DataFetcher
 
     # !! Need a new Lobbyist Directory for 2014
     puts "Loading Lobbyist data"
-    Lobbyist.load_from_file('backend/2013_Lobbyist_Directory.csv')
+    Lobbyist.load_from_file('backend/2014_Lobbyist_Directory.csv')
 
     puts "Fetching Contribution data (Schedule A) from Socrata:"
     DataFetcher::Contribution.fetch_and_parse(URLS['Schedule A'])
