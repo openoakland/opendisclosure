@@ -2,6 +2,7 @@ OpenDisclosure.App = Backbone.Router.extend({
   routes: {
     '': 'home',
     'about': 'about',
+    'rules': 'rules',
     'candidate/:id': 'candidate',
     'contributor/:id': 'contributor'
   },
@@ -71,6 +72,10 @@ OpenDisclosure.App = Backbone.Router.extend({
 
   about: function () {
     new OpenDisclosure.AboutView();
+  },
+
+  rules: function () {
+    new OpenDisclosure.RulesView();
   },
 
   candidate: function(id){
