@@ -13,6 +13,7 @@
 //= require collections/contributions
 
 //= require views/about
+//= require views/rules
 //= require views/candidate
 //= require views/candidateTable
 //= require views/chartsWrapper
