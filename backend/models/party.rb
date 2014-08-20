@@ -241,7 +241,7 @@ class Party < ActiveRecord::Base
     # Candidates without data are below. Since they're not in the database,
     # these should have the same schema as the party table (see
     # backend/schema.rb) -- city, state, zip, employer, occupation
-    WASHINGTON => {
+    'WASHINGTON' => {
       name: 'Sammuel Washington',
       bio: "test test test",
     },
@@ -287,6 +287,10 @@ class Party < ActiveRecord::Base
 
     last_name = short_name.split.last
     OpenDisclosureApp.image_path(last_name + '.png')
+  end
+
+  def link_path
+    '/#candidate/' + short_name.downcase.gsub(/[^a-z]/, '-')
   end
 
   def from_oakland?
