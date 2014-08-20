@@ -68,6 +68,7 @@ class OpenDisclosureApp < Sinatra::Application
         :image,
         :twitter,
         :bio,
+        :sources,
       ],
     }
 

@@ -24,8 +24,7 @@ a {
   &:hover {
     color: #303030;
     outline: none;
-    text-decoration: underline;
-
+    text-decoration: none;
   }
 }
 
@@ -228,7 +227,26 @@ div#candidate {
     }
 
     img {
+      border: 1px solid #c0c0c0;
+      margin: 0 0 6px 8px;
       width: 90%;
+    }
+
+    p {
+      font-size: 13px;
+      line-height: 19px;
+      margin-bottom: 5px;
+      padding: 0 8px;
+    }
+
+    .sources{
+      font-size: 11px;
+      padding: 0 6px;
+      margin-bottom: 10px;
+    }
+
+    .sources span{
+      font-size: 13px;
     }
 
   }
@@ -251,7 +269,6 @@ div#candidate {
   .money-label {
     background-color: $color-green-accent;
     font-size: 15px;
-    display: inline-block;
     letter-spacing: 0.7px;
     padding: 6px 12px;
   }
