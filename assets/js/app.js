@@ -78,19 +78,22 @@ OpenDisclosure.App = Backbone.Router.extend({
     new OpenDisclosure.RulesView();
   },
 
-  candidate: function(id){
+  candidate: function(name){
     $('.main').empty();
     $('<div id="candidate"></div>').appendTo('.main');
+
     doView = function(that) {
-      new OpenDisclosure.CandidateView({el: '#candidate',
-				       model: that.candidates.get(id)});
+      var candidate = that.candidates.find(function(c) { return c.linkPath().indexOf(name) >= 0; });
+      new OpenDisclosure.CandidateView({el: '#candidate', model: candidate});
     }
-    if (this.candidates.loaded)
+
+    if (this.candidates.loaded) {
       doView(this);
-    else
+    } else {
       this.listenTo(this.candidates, 'sync', function() {
-	doView(this);
+        doView(this);
       });
+    }
   },
 
   contributor : function(id) {

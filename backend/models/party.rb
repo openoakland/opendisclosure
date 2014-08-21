@@ -92,7 +92,7 @@ class Party < ActiveRecord::Base
           uri: 'http://www.jeanquanforoakland.org/'
         },
         {
-          name: '“Becoming mayor after years of fighting authority” (01/02/2011)',
+          name: '"Becoming mayor after years of fighting authority" (01/02/2011)',
           uri: 'http://www.sfgate.com/politics/article/Becoming-mayor-after-years-of-fighting-authority-2479776.php'
         },
         {
@@ -212,9 +212,6 @@ class Party < ActiveRecord::Base
         },
       ]
     },
-    WASHINGTON => {
-      name: 'Sammuel Washington',
-    },
     SIEGEL => {
       name: 'Dan Siegel',
       profession: 'Civil-Rights Attorney',
@@ -229,7 +226,7 @@ class Party < ActiveRecord::Base
         {
           name: 'Dan Siegel bio on Siegel & Yee website',
           uri: 'http://www.siegelyee.com/dansiegel.html”'
-        },        
+        },
         {
           name: 'Facebook campaign page',
           uri: 'https://www.facebook.com/pages/Dan-Siegel-for-Oakland/250855065091322”'
@@ -239,8 +236,15 @@ class Party < ActiveRecord::Base
           uri: 'http://oaklandwiki.org/Dan_Siegel'
         },
       ]
+    },
 
-    }
+    # Candidates without data are below. Since they're not in the database,
+    # these should have the same schema as the party table (see
+    # backend/schema.rb) -- city, state, zip, employer, occupation
+    'WASHINGTON' => {
+      name: 'Sammuel Washington',
+      bio: "test test test",
+    },
   }
 
   def self.mayoral_candidates
@@ -251,24 +255,29 @@ class Party < ActiveRecord::Base
     CANDIDATE_INFO.fetch(committee_id, {})[:name] || name
   end
 
+  # These fields aren't persisted in the database, but instead loaded from the
+  # at the top of this file
+
+  attr_accessor :profession, :party, :twitter, :bio, :sources
+
   def profession
-    CANDIDATE_INFO.fetch(committee_id, {})[:profession]
+    CANDIDATE_INFO.fetch(committee_id, {})[:profession] || @profession
   end
 
   def party_affiliation
-    CANDIDATE_INFO.fetch(committee_id, {})[:party]
+    CANDIDATE_INFO.fetch(committee_id, {})[:party] || @party
   end
 
   def twitter
-    CANDIDATE_INFO.fetch(committee_id, {})[:twitter]
+    CANDIDATE_INFO.fetch(committee_id, {})[:twitter] || @twitter
   end
 
   def bio
-    CANDIDATE_INFO.fetch(committee_id, {})[:bio]
+    CANDIDATE_INFO.fetch(committee_id, {})[:bio] || @bio
   end
 
   def sources
-    CANDIDATE_INFO.fetch(committee_id, {})[:sources]
+    CANDIDATE_INFO.fetch(committee_id, {})[:sources] || @sources
   end
 
   def image
@@ -278,6 +287,10 @@ class Party < ActiveRecord::Base
 
     last_name = short_name.split.last
     OpenDisclosureApp.image_path(last_name + '.png')
+  end
+
+  def link_path
+    '/#candidate/' + short_name.downcase.gsub(/[^a-z]/, '-')
   end
 
   def from_oakland?
