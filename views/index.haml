@@ -31,7 +31,7 @@
               %img{ src: image_path('OaklandCityTree.png') }
           .col-xs-8.col-sm-10.header-title-container
             %h1.header-main-title Open Disclosure
-            %h2.header-catchphrase Bringing Campaign Money to Light
+            %h2.header-catchphrase Bringing Oakland Campaign Money to Light
 
     .container
       .row
@@ -57,17 +57,17 @@
           %span Loading data...
           %script{ type: 'text/template', id: 'mayoral-table-template' }
             :plain
-              <h2>2014 Oakland Mayor Candidates</h2>
+              <h2 class='mayor2014'>Campaign Finance for the 2014 Oakland Mayoral Election</h2>
               <table id='mayoral-table' class='table'>
                 <thead>
                   <tr>
                     <th id='mayoral-table-picture-column'></th>
                     <th id='mayoral-table-name-column'></th>
-                    <th>Total Raised</th>
-                    <th>Number of itemized contributions</th>
-                    <th>Percentage from outside Oakland</th>
-                    <th>Percentage from small donations*</th>
-                    <th>Average of itemized contributions</th>
+                    <th class='mayoral-table-head bold'>Total Raised</th>
+                    <th class='mayoral-table-head'>Number of itemized contributions</th>
+                    <th class='mayoral-table-head'>Percentage from outside Oakland</th>
+                    <th class='mayoral-table-head'>Percentage from small donations*</th>
+                    <th class='mayoral-table-head'>Average of itemized contributions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -78,9 +78,10 @@
                       </td>
                       <td scope='row'>
                         <div class='mayor-info'>
-                          <a href= '/#candidate/<%-m.attributes.id %>'><p class='mayor-name green'><%- m.attributes.short_name %></p>
+                          <a href= '/#candidate/<%-m.attributes.id %>'>
+                          <p class='mayor-name'>
+                            <a href= '/#candidate/<%-m.attributes.id %>'><%- m.attributes.short_name %></a></p>
                           <p class='mayor-profession'><%- m.attributes.profession %></p>
-                          <p class='mayor-party'><%- m.attributes.party_affiliation %></p>
                         </div>
                       </td>
                       <% if (m.attributes.summary) { %>

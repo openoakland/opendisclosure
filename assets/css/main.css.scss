@@ -94,18 +94,29 @@ header {
 
   .header-catchphrase {
     display: inline-block;
-    font-size: 20px;
+    font-size: 16px;
     margin-left: 12px;
   }
 }
 
+h2.mayor2014 {
+  border-bottom: 1px solid #fff;
+  font-size: 22px;
+  letter-spacing: 1px;
+  margin: 5px;
+  padding-bottom: 4px;
+  text-align: left;
+  text-transform: uppercase;
+}
 
 /* ------------------- SIDEBAR -------------------- */
 
 .sidebar {
+  background-color: rgba(255, 255, 255, 0.5);
+  border-top: 2px solid #fff;
   font-size: 16px;
   list-style: none;
-  background-color: #f0f0f0;
+  padding: 0;
 }
 
 .sidebar a{
@@ -126,10 +137,17 @@ header {
 }
 
 .compressed li {
+  font-size: 14px;
+  line-height: 14px;
   padding: 0 0 0 10px;
-  /*margin-top: -16px;*/
+
 }
 
+.sidebar .nav>li>a:hover, 
+.sidebar .nav>li>a:active {
+text-decoration: none;
+background-color: $color-gold-highlight;
+}
 
 /* ------------------- GENERAL LAYOUT -------------------- */
 
@@ -164,24 +182,38 @@ header {
 
 
 #mayoral-table {
-  margin: 40px 0;
+  margin: 20px 0;
 
   #mayoral-table-picture-column, #mayoral-table-name-column {
     width: auto;
   }
 
+  .mayoral-table-head {
+    font-size: 14px;
+    line-height: 18px;
+    padding: 4px 8px 8px 8px;
+  }
+  
   .mayor-info {
     font-size: 12px;
+    line-height: 16px;
     text-align: left;
   }
 
   .mayor-picture {
+    border: 1px solid #c0c0c0;
     width: 80px;
+  }
+
+  .mayor-picture:hover {
+    opacity:0.9;
   }
 
   .mayor-name {
     font-size: 18px;
     font-weight: 700;
+    line-height: 21px;
+    padding-bottom: 3px;
   }
 
   .mayoral-table-number {
@@ -190,8 +222,12 @@ header {
 
   th {
     font-size: 16px;
-    font-weight: bold;
+    font-weight: normal;
     width: 130px;
+  }
+
+  th.bold {
+   font-weight:bold;
   }
 
   td {
@@ -200,7 +236,7 @@ header {
   }
 
   td, th {
-    padding: 18px 8px;
+    padding: 14px 8px;
     text-align: center;
 
     &:nth-child(3) {
@@ -241,8 +277,9 @@ div#candidate {
 
     .sources{
       font-size: 11px;
-      padding: 0 6px;
+      line-height: 15px;
       margin-bottom: 10px;
+      padding: 0 6px;
     }
 
     .sources span{
@@ -294,6 +331,6 @@ div#candidate {
 
 /* ------------------- About Page -------------------- */
 #about {
-  font-size: 16px
+  font-size: 14;
+  max-width: 800px;
 }
-
