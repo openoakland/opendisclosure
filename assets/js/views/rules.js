@@ -14,7 +14,7 @@ OpenDisclosure.RulesView = Backbone.View.extend({
 		       <p class='rules'>\
 		       For more information on Oakland’s campaign finance rules, please review the Oakland Campaign Reform Act (<a href='https://library.municode.com/HTML/16308/level1/TIT3MUEL.html#TOPTITLE'>OCRA</a>) and the Public Ethics Commission’s <a href='http://www2.oaklandnet.com/oakca1/groups/ceda/documents/report/oak045165.pdf'>Guide to OCRA</a>.</p>\
 		       <p class='rules'>\
-		       Contact the <a href='http://www2.oaklandnet.com/Government/o/CityAdministration/d/PublicEthics/index.htm'>City of Oakland Public Ethics Commission</a> with any questions at ethicscommission@oaklandnet.com or (510) 238-3593. </p>\
+		       Contact the <a href='http://www2.oaklandnet.com/Government/o/CityAdministration/d/PublicEthics/index.htm'>City of Oakland Public Ethics Commission</a> with any questions at <a href='mailto:ethicscommission@oaklandnet.com'>ethicscommission@oaklandnet.com</a> or (510) 238-3593. </p>\
 		       </section>\
      "),
 
