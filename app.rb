@@ -72,11 +72,18 @@ class OpenDisclosureApp < Sinatra::Application
       ],
     }
 
-    Party.mayoral_candidates
-         .includes(:summary)
-         .joins(:summary)
-         .order('summaries.total_contributions_received DESC')
-         .to_json(fields)
+    candidates_with_data = Party.mayoral_candidates
+                                .includes(:summary)
+                                .joins(:summary)
+                                .order('summaries.total_contributions_received DESC')
+
+    candidates_without_data = Party::CANDIDATE_INFO
+                                .dup
+                                .keep_if { |k, _v| Party::MAYORAL_CANDIDATE_IDS.exclude?(k) }
+                                .values
+                                .map { |p| Party.new(p) }
+
+    [candidates_with_data + candidates_without_data].flatten.to_json(fields)
   end
 
   get '/api/contributions' do

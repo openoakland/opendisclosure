@@ -51,7 +51,7 @@
               %ul.nav.nav-sidebar.compressed
                 - Party.mayoral_candidates.each do |c|
                   %li
-                    %a{ href: "/#candidate/#{c.id}" }= c.short_name
+                    %a{ href: c.link_path }= c.short_name
 
         .main.col-sm-10
           %span Loading data...
@@ -74,12 +74,13 @@
                   <% _.each(models, function(m) { %>
                     <tr>
                       <td>
-                        <a href= '/#candidate/<%-m.attributes.id %>'><img class='mayor-picture' src="<%= m.imagePath() %>" /></a>
+                        <a href='<%= m.linkPath() %>'><img class='mayor-picture' src="<%= m.imagePath() %>" /></a>
                       </td>
                       <td scope='row'>
                         <div class='mayor-info'>
                           <p class='mayor-name'>
-                            <a href= '/#candidate/<%-m.attributes.id %>'><%- m.attributes.short_name %></a></p>
+                            <a href= '<%= m.linkPath() %>'><%- m.attributes.short_name %></a>
+                          </p>
                           <p class='mayor-profession'><%- m.attributes.profession %></p>
                         </div>
                       </td>

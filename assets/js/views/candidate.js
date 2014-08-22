@@ -2,14 +2,16 @@
 OpenDisclosure.CandidateView = Backbone.View.extend({
 
   template: _.template("\
-<h2 class='mayor2014'>Campaign Finance for the 2014 Oakland Mayoral Election</h2>\
-<h1><%= attributes.short_name %></h1>\
-    <section class='clearfix' id='mathbar'>\
-      <div class='col-sm-3 money-label'>Total Contributions <br><span class='money-number'><%= friendlySummaryNumber('total_contributions_received') %></span><span class='mathsign'>–</span></div>\
-      <div class='col-sm-3 money-label'>Expenditures <br><span class='money-number'><%= friendlySummaryNumber('total_expenditures_made') %></span><span class='mathsign'>=</span></div>\
-      <div class='col-sm-3 money-label'>Cash On Hand <br><span class='money-number'><%= friendlySummaryNumber('ending_cash_balance') %></span></div>\
-      <div class='col-sm-3 money-label count'> No. of Contributions <br><span class='money-number'><%= attributes.received_contributions_count %></span></div>\
-    </section>\
+    <h2 class='mayor2014'>Campaign Finance for the 2014 Oakland Mayoral Election</h2>\
+    <h1><%= attributes.short_name %></h1>\
+    <% if (attributes.summary !== null) { %>\
+      <section class='clearfix' id='mathbar'>\
+        <div class='col-sm-3 money-label'>Total Contributions <br><span class='money-number'><%= friendlySummaryNumber('total_contributions_received') %></span><span class='mathsign'>–</span></div>\
+        <div class='col-sm-3 money-label'>Expenditures <br><span class='money-number'><%= friendlySummaryNumber('total_expenditures_made') %></span><span class='mathsign'>=</span></div>\
+        <div class='col-sm-3 money-label'>Cash On Hand <br><span class='money-number'><%= friendlySummaryNumber('ending_cash_balance') %></span></div>\
+        <div class='col-sm-3 money-label count'> No. of Contributions <br><span class='money-number'><%= attributes.received_contributions_count %></span></div>\
+      </section>\
+    <% } %>\
     <section class='clearfix' id= 'candidateDetails'>\
         <div class='col-sm-3'>\
           <img class='mayor-picture' src='<%= attributes.imagePath %>' />\
@@ -27,15 +29,16 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
           </div>\
         </div>\
         <div class='col-sm-4'>\
-          <% if (typeof attributes.summary !== 'undefined') { %>\
-          <% //TODO - The numbers below still need to be computed -- %>\
-          <p>Percentage of small donors*: 20%</p>\
-          <p>Personal funds loaned and contributed to campaign: <%= friendlySummaryNumber('total_contributions_received') %></p>\
-          <p>% of the total amount raised is personal funds: <%= friendlySummaryNumber('total_expenditures_made') %></p>\
-          <p>Declared candidacy: <%= attributes.summary.last_summary_date %> </p>\
-          <p>Data last updated: <%= attributes.summary.last_summary_date %> </p>\
+          <% if (attributes.summary !== null) { %>\
+            <% //TODO - The numbers below still need to be computed -- %>\
+            <p>Percentage of small donors*: 20%</p>\
+            <p>Personal funds loaned and contributed to campaign: <%= friendlySummaryNumber('total_contributions_received') %></p>\
+            <p>% of the total amount raised is personal funds: <%= friendlySummaryNumber('total_expenditures_made') %></p>\
+            <p>Declared candidacy: <%= attributes.summary.last_summary_date %> </p>\
+            <p>Data last updated: <%= attributes.summary.last_summary_date %> </p>\
           <% } %>\
           <p class='sources'>* Candidates do not need to itemize contributions less than $100 by contributor, but do need to include all contributions in their total reported amount. </p>\
+        </div>\
     </section>\
     <section class='clearfix' id= 'category'></section>\
     <section class='clearfix' id= 'topContributors'></section>\
