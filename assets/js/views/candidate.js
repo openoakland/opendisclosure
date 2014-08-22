@@ -17,7 +17,7 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
           <img class='mayor-picture' src='<%= attributes.imagePath %>' />\
           <p><%= attributes.profession %></p>\
           <p>Party Affiliation: <%= attributes.party_affiliation %></p>\
-          <p><a id='twitter' href='https://twitter.com/'+ <%= attributes.twitter %>><%= attributes.twitter %></a></p>\
+          <p><a id='twitter' href='https://twitter.com/<%= attributes.twitter %>'><%= attributes.twitter %></a></p>\
         </div>\
         <div class='col-sm-5'>\
           <p><%= attributes.bio %></p>\
