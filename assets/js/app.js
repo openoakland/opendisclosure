@@ -120,10 +120,16 @@ $(function(){
     var $link = $(e.target).closest('a');
 
     if ($link.length) {
-      app.navigate($link.attr('href').replace(/^\//,''), { trigger: true });
+      var linkUrl = $link.attr('href'),
+          externalUrl = linkUrl.indexOf('http') === 0,
+          dontIntercept = e.altKey || e.ctrlKey || e.metaKey || e.shiftKey;
 
+      if (externalUrl || dontIntercept) {
+        return;
+      }
+
+      app.navigate(linkUrl.replace(/^\//,''), { trigger: true });
       e.preventDefault();
-      e.stopPropagation();
     }
   });
 });
