@@ -1,6 +1,13 @@
 OpenDisclosure.Contribution = Backbone.Model.extend({
-  linkPath : function() {
+  contributorLinkPath : function() {
+    // TODO: maybe DRY this up by calling OpenDisclosure.Contributor, but I like
+    // this here for performance reasons.
     return '/contributor/' + this.attributes.contributor.id;
+  },
+
+  recipientLinkPath : function() {
+    var recipient = new OpenDisclosure.Candidate(this.attributes.recipient);
+    return recipient.linkPath();
   }
 });
 
@@ -17,4 +24,7 @@ OpenDisclosure.Multiple = Backbone.Model.extend({
 });
 
 OpenDisclosure.Contributor = Backbone.Model.extend({
+  linkPath : function() {
+    return '/contributor/' + this.attributes.id;
+  },
 });

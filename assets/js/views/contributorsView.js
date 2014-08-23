@@ -5,15 +5,16 @@ OpenDisclosure.ContributorsView = Backbone.View.extend({
       <label>Search: <input type="search" id="contribSearch"></input></label>\
     </div>\
     <div class="contributions clearfix">\
-    <% _.each(contributions, function(contribution) { %>\
+    <%= contributions %>\
+    </div>'),
+
+  contributionTemplate: _.template('\
       <div class="col-sm-6 contribution">\
-        <a href="<%= contribution.linkPath() %>">\
+        <a href="<%= contribution.contributorLinkPath() %>">\
           <span class="col-sm-8"><%= contribution.attributes.contributor.name %></span>\
           <span class="col-sm-4"><%= OpenDisclosure.friendlyMoney(contribution.attributes.amount) %></span>\
         </a>\
-      </div>\
-    <% }); %>\
-    </div>'),
+      </div>'),
 
   events: {
     'keyup #contribSearch' : 'filterContributors',
@@ -22,14 +23,24 @@ OpenDisclosure.ContributorsView = Backbone.View.extend({
   initialize: function(options) {
     this.headline = options.headline;
 
+    _.bindAll(this, 'renderContribution', 'filterContributors');
+
     this.render();
   },
 
   render: function() {
     this.$el.html(this.template({
       headline : this.headline,
-      contributions : this.collection
+      contributions : _.map(this.collection, this.renderContribution).join('')
     }));
+  },
+
+  renderContribution: function(contribution) {
+    var contribution = new OpenDisclosure.Contribution(contribution.attributes);
+
+    return this.contributionTemplate({
+      contribution: contribution
+    })
   },
 
   filterContributors: function() {

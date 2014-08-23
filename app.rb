@@ -37,7 +37,10 @@ class OpenDisclosureApp < Sinatra::Application
     headers 'Content-Type' => 'application/json'
 
     fields = {
-      include: [:recipient, :contributor],
+      include: [
+        { recipient: { methods: :short_name } },
+        { contributor: { methods: :short_name } },
+      ],
     }
     party         = Party.find(id)
     Contribution
@@ -127,6 +130,7 @@ class OpenDisclosureApp < Sinatra::Application
       only: %[amount],
       include: [:contributor],
     }
+
     Whale.includes(:contributor).to_json(fields)
   end
 
@@ -140,6 +144,7 @@ class OpenDisclosureApp < Sinatra::Application
       only: %[number],
       include: [:contributor],
     }
+
     Multiple.includes(:contributor).to_json(fields);
   end
 
