@@ -290,7 +290,7 @@ class Party < ActiveRecord::Base
   end
 
   def link_path
-    '/#candidate/' + short_name.downcase.gsub(/[^a-z]/, '-')
+    '/candidate/' + short_name.downcase.gsub(/[^a-z]/, '-')
   end
 
   def from_oakland?

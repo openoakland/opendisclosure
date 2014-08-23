@@ -32,9 +32,13 @@ OpenDisclosure.App = Backbone.Router.extend({
 					  collection : that.contributions,
 					  base_height: 480
       });
-      new OpenDisclosure.DailyContributionsChartView({el : "#dailyChart",
-						     collection: that.contributions,
-						     base_height: 480 })
+      // Temporarily disabled until the black-background bug is fixed:
+      //
+      // new OpenDisclosure.DailyContributionsChartView({
+      //   el : "#dailyChart",
+      //   collection: that.contributions,
+      //   base_height: 480
+      // })
     }
     if (this.contributions.loaded)
       doChart(this);
@@ -110,5 +114,16 @@ OpenDisclosure.App = Backbone.Router.extend({
 
 $(function(){
   app = new OpenDisclosure.App();
-  Backbone.history.start();
+  Backbone.history.start({ pushState: true });
+
+  $(document).click(function(e) {
+    var $link = $(e.target).closest('a');
+
+    if ($link.length) {
+      app.navigate($link.attr('href').replace(/^\//,''), { trigger: true });
+
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  });
 });

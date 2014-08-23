@@ -37,12 +37,12 @@ class DataFetcher
       if column =~ /^total/
         summary.update_attributes(
           column => (summary[column] || 0) + value.to_i,
-          :last_summary_date => row['thru_date']
+          :last_summary_date => row['rpt_date']
         )
       else
         summary.update_attributes(
           column => value,
-          :last_summary_date => row['thru_date']
+          :last_summary_date => row['rpt_date']
         )
       end
 
