@@ -38,16 +38,16 @@
         %aside.col-sm-2.sidebar{ role: 'navigation'}
           %ul.nav.nav-sidebar
             %li
-              %a{ href: '/#about' } About Us
+              %a{ href: '/about' } About Us
             %li
-              %a{ href: '/#rules' } Oakland Campaign Finance Rules
+              %a{ href: '/rules' } Oakland Campaign Finance Rules
             / Hiding these until we have some content there - KW 5/19/14
             / %li
             /   %a{ href: '#' } Where does the data come from?
             / %li
             /   %a{ href: '#' } Contribute
             %li
-              %a{href: '/#'} Candidates
+              %a{href: '/'} Candidates
               %ul.nav.nav-sidebar.compressed
                 - Party.mayoral_candidates.each do |c|
                   %li

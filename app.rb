@@ -166,6 +166,10 @@ class OpenDisclosureApp < Sinatra::Application
     Party.find(id).to_json(fields)
   end
 
+  get '/sitemap.xml' do
+    send_file 'public/sitemap.xml.gz'
+  end
+
   get '*' do
     # This renders views/index.haml
     haml :index, locals: {
