@@ -7,6 +7,8 @@ class DataFetcher
     end
 
     def self.parse_loan(row)
+      return if row['loan_amt1'].to_i == 0
+
       recipient = Party::Committee.where(committee_id: row['filer_id'])
                                   .first_or_create(name: row['filer_naml'])
 
@@ -40,7 +42,7 @@ class DataFetcher
       ::Contribution.create(
         recipient: recipient,
         contributor: contributor,
-        amount: row['loan_amt2'], # "amount received this period"
+        amount: row['loan_amt1'], # "amount received this period"
         date: row['loan_date1'],
         type: 'loan',
       )
