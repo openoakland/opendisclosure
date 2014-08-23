@@ -89,8 +89,9 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
     var count = 0;
     var candidateId = this.model.attributes.id;
     this.topContributions = _.filter(app.employerContributions.models, function(c) {
-      return (c.attributes.recipient_id == candidateId) && (++count <= 10);
-    });
+      return c.attributes.recipient_id == that.model.attributes.id;
+    }).sort(function(a, b){return b.attributes.amount - a.attributes.amount});
+    this.topContributions = _.filter(this.topContributions, function() { return count++ < 10; });
 
     // Create a new subview
     new OpenDisclosure.TopContributorsView({
