@@ -24,13 +24,6 @@ class OpenDisclosureApp < Sinatra::Application
 
   set :assets_precompile, %w(application.js application.css *.png *.jpg *.svg *.eot *.ttf *.woff)
 
-  get '/' do
-    # This renders views/index.haml
-    haml :index, locals: {
-      organizations: Party.mayoral_candidates
-    }
-  end
-
   # Below here are some API endpoints for the frontend JS to use to fetch data.
   # This uses a special ActiveRecord syntax for converting models to JSON. It is
   # documented here:
@@ -166,6 +159,13 @@ class OpenDisclosureApp < Sinatra::Application
     }
 
     Party.find(id).to_json(fields)
+  end
+
+  get '*' do
+    # This renders views/index.haml
+    haml :index, locals: {
+      organizations: Party.mayoral_candidates
+    }
   end
 
   after do
