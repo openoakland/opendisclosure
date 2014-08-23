@@ -37,10 +37,13 @@ class DataFetcher
                                        zip: row['tran_zip4'])
         end
 
-      ::Contribution.create(recipient: recipient,
-                            contributor: contributor,
-                            amount: row['tran_amt1'],
-                            date: row['tran_date'])
+      ::Contribution.create(
+        recipient: recipient,
+        contributor: contributor,
+        amount: row['tran_amt1'],
+        date: row['tran_date'],
+        type: 'contribution'
+      )
     end
   end
 end

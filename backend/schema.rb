@@ -29,6 +29,7 @@ ActiveRecord::Schema.define do
     t.integer :recipient_id, null: false
     t.integer :amount
     t.date :date
+    t.integer :type
 
     t.index :recipient_id
     t.index :contributor_id

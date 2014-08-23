@@ -6,6 +6,7 @@ class DataFetcher
   URLS = {
     'Schedule A' => 'http://data.oaklandnet.com/resource/3xq4-ermg.json',
     'Schedule E' => 'http://data.oaklandnet.com/resource/bvfu-nq99.json',
+    'Schedule B1' => 'http://data.oaklandnet.com/resource/qaa7-q29f.json',
     'Summary'    => 'http://data.oaklandnet.com/resource/rsxe-vvuw.json',
   }.freeze
 
@@ -29,6 +30,9 @@ class DataFetcher
 
     puts "Fetching Expense data (Schedule E) from Socrata:"
     DataFetcher::Payment.fetch_and_parse(URLS['Schedule E'])
+
+    puts 'Fetching Loan data (Schedule B1) from Socrata:'
+    DataFetcher::Loan.fetch_and_parse(URLS['Schedule B1'])
 
     puts "Fetching Summary data from Socrata:"
     DataFetcher::Summary.fetch_and_parse(URLS['Summary'])
