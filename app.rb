@@ -169,7 +169,8 @@ class OpenDisclosureApp < Sinatra::Application
   get '*' do
     # This renders views/index.haml
     haml :index, locals: {
-      organizations: Party.mayoral_candidates
+      organizations: Party.mayoral_candidates,
+      last_updated: Summary.order(:last_summary_date).last.last_summary_date
     }
   end
 
