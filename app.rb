@@ -170,6 +170,10 @@ class OpenDisclosureApp < Sinatra::Application
     send_file 'public/sitemap.xml.gz'
   end
 
+  get '/robots.txt' do
+    send_file 'public/robots.txt'
+  end
+
   get '*' do
     # This renders views/index.haml
     haml :index, locals: {
