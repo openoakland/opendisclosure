@@ -61,6 +61,7 @@ class OpenDisclosureApp < Sinatra::Application
       methods: [
         :summary,
         :short_name,
+	:declared,
         :profession,
         :party_affiliation,
         :image,
