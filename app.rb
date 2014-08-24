@@ -55,7 +55,9 @@ class OpenDisclosureApp < Sinatra::Application
     headers 'Content-Type' => 'application/json'
 
     fields = {
-      only: %w[id name committee_id received_contributions_count contributions_count received_contributions_from_oakland small_donations],
+      only: %w[
+        id name committee_id received_contributions_count contributions_count
+        received_contributions_from_oakland self_contributions_total small_donations],
       methods: [
         :summary,
         :short_name,
@@ -89,7 +91,7 @@ class OpenDisclosureApp < Sinatra::Application
     headers 'Content-Type' => 'application/json'
 
     fields = {
-      only: %w[amount date],
+      only: %w[amount date type],
       include: [
         { recipient: { methods: :short_name } },
         { contributor: { methods: :short_name } },
