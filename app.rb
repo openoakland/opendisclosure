@@ -91,7 +91,7 @@ class OpenDisclosureApp < Sinatra::Application
     headers 'Content-Type' => 'application/json'
 
     fields = {
-      only: %w[amount date],
+      only: %w[amount date type],
       include: [
         { recipient: { methods: :short_name } },
         { contributor: { methods: :short_name } },
