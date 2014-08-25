@@ -2,14 +2,10 @@ OpenDisclosure.CandidateTable = Backbone.View.extend({
   template: _.template($('#mayoral-table-template').html()),
 
   initialize : function() {
-    if (this.collection.loaded) {
+    if (this.collection.length > 0) {
       this.render();
-    } else {
-      this.listenTo(this.collection, 'sync', function() {
-        console.log('Received candidate data!');
-        this.render();
-      });
     }
+    this.listenTo(this.collection, 'sync', this.render);
   },
 
   render : function() {

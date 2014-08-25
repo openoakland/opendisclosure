@@ -1,4 +1,4 @@
-OpenDisclosure.RulesView = Backbone.View.extend({
+OpenDisclosure.Views.Rules = Backbone.View.extend({
 
   template: _.template("\
 		       <section id='rules'>\
@@ -19,13 +19,10 @@ OpenDisclosure.RulesView = Backbone.View.extend({
      "),
 
   initialize: function(){
-      this.render();
+    this.render();
   },
 
-  render: function(){
-    $('.main').empty();
-    $('.main').html(this.template());
-
-  },
-
+  render: function() {
+    this.$el.html(this.template());
+  }
 });

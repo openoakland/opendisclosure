@@ -11,7 +11,11 @@ OpenDisclosure.MultiplesView = Backbone.View.extend({
 
     _.bindAll(this, 'renderContributor');
 
-    this.render();
+    this.listenTo(this.collection, 'sync', this.render);
+
+    if (this.collection.length > 0) {
+      this.render();
+    }
   },
 
   render: function() {
@@ -24,7 +28,7 @@ OpenDisclosure.MultiplesView = Backbone.View.extend({
       </div>\
       </section>').appendTo(this.$el);
 
-    this.$el.append(_.map(this.collection, this.renderContributor).join(' '));
+    this.$el.append(this.collection.map(this.renderContributor).join(' '));
   },
 
   renderContributor: function(c) {

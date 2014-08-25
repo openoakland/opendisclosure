@@ -21,6 +21,7 @@ class OpenDisclosureApp < Sinatra::Application
   end
 
   register Sinatra::AssetPipeline
+  use Rack::Deflater
 
   set :assets_precompile, %w(application.js application.css *.png *.jpg *.svg *.eot *.ttf *.woff)
 

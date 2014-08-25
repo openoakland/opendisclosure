@@ -10,7 +10,7 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
     return 0;
   },
 
-  draw: function(el){ 
+  draw: function(el){
     var xRange = []
     var yRange = []
     chart = this;
@@ -39,7 +39,7 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
       }
     }
     xRange.sort(this.dateSortAsc)
-      //SETTING SCALE  
+      //SETTING SCALE
 
 
     var margin = {top: 20, right: 20, bottom: 30, left: 50},
@@ -95,7 +95,7 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
           // .text(key);
       }
     };
-  
+
     chart.svg.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + (chartHeight + 1) + ")")
@@ -111,7 +111,7 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
       .style("text-anchor", "end")
       .text("Total Raised ($)");
 
-      
+
     // chart.drawLegend()
   },
 
@@ -161,7 +161,7 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
       sorted_dates = _.keys(tempAmounts[key]).sort(this.dateSortAsc)
       amounts[key] = []
       for (i = 0; i < sorted_dates.length; i ++) {
-        if (tempAmounts[key][sorted_dates[i - 1]]) { 
+        if (tempAmounts[key][sorted_dates[i - 1]]) {
           amounts[key].push({date: new Date(sorted_dates[i]), amount: (tempAmounts[key][sorted_dates[i]] + tempAmounts[key][sorted_dates[i - 1]] ) })
           tempAmounts[key][sorted_dates[i]] += tempAmounts[key][sorted_dates[i - 1]]
         }
@@ -246,4 +246,3 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
       .attr("height", legend.offset)
   }
 })
-

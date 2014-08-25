@@ -13,17 +13,18 @@
 //= require collections/contributions
 
 //= require views/about
-//= require views/rules
 //= require views/candidate
-//= require views/candidateTable
-//= require views/chartsWrapper
-//= require views/charts
-//= require views/dailyContributionsChart
-//= require views/contributorsView
-//= require views/contributorView
-//= require views/topContributorsView
-//= require views/categoryView
-//= require views/multiplesView
+//= require views/home
+//= require views/rules
+//= require views/contributor
+//= require views/_candidateTable
+//= require views/_chartsWrapper
+//= require views/_zipcodeChartView
+//= require views/_dailyContributionsChart
+//= require views/_contributorsView
+//= require views/_topContributorsView
+//= require views/_categoryView
+//= require views/_multiplesView
 
 //= require util
 //= require app
