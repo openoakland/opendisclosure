@@ -64,12 +64,15 @@ OpenDisclosure.App = Backbone.Router.extend({
   },
 
   employer : function(employer_name, employer_id, recipient_id) {
-    $('.main').empty();
-    $('<div id = "employer"></div> \
-    ').appendTo('.main');
+    $('.main').html('<div id="employer"></div>');
     var contrib = new OpenDisclosure.Employees({employer_id: employer_id, recipient_id: recipient_id } );
+
     this.listenTo(contrib, 'sync', function() {
-      new OpenDisclosure.ContributorsView({el: '#employer', collection: contrib.models, headline: employer_name});
+      new OpenDisclosure.ContributorsView({
+        el: '#employer',
+        collection: contrib,
+        headline: employer_name
+      });
     });
   },
 
