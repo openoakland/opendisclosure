@@ -10,18 +10,19 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
     return 0;
   },
 
-  draw: function(el){ 
+  draw: function(el){
     var xRange = []
     var yRange = []
-    chart = this;
+    var chart = this;
+    processedData = this.processData(this.collection);
+    chart.data = processedData.amounts
+    chart.candidates = processedData.candidates
 
-    chart.data = this.processData(this.collection);
-
-    // chart.color = d3.scale.ordinal()
-    //   .domain(chart.data.candidates)
-    //   .range(d3.range(12).map(function(i) {
-    //     return "q" + i + "-12";
-    //   }));
+    chart.color = d3.scale.ordinal()
+      .domain(chart.candidates)
+      .range(d3.range(12).map(function(i) {
+        return "q" + (i + 1) + "-12";
+      }));
 
 
       //SETTING SCALE
@@ -39,14 +40,22 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
       }
     }
     xRange.sort(this.dateSortAsc)
-      //SETTING SCALE  
+      //SETTING SCALE
 
 
-    var margin = {top: 20, right: 20, bottom: 30, left: 50},
+    var margin = {top: 0, right: 0, bottom: 30, left: 70},
       svgWidth = chart.dimensions.width;
       svgHeight = chart.dimensions.height;
       chartWidth = svgWidth - margin.left - margin.right;
-      chartHeight = svgHeight - margin.top - margin.right;
+      chartHeight = svgHeight - margin.top - margin.bottom;
+
+    console.log({
+      margin: margin,
+      svgHeight: svgHeight,
+      svgWidth: svgWidth,
+      chartWidth: chartWidth,
+      chartHeight: chartHeight
+    })
 
     var x = d3.time.scale()
       .range([0, chartWidth]);
@@ -54,9 +63,21 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
     var y = d3.scale.linear()
       .range([chartHeight, 0]);
 
+    var format = d3.time.format.multi([ // "%b" );
+    //   function(d){
+    //   console.log(d);
+    //   return "%b";
+    // });
+        ["%b '%y", function(d) { return (d.getMonth() == 0 && d.getYear() != 113) } ],
+        ["%b '%y", function(d) { return (d.getMonth() == 4 && d.getYear() == 113) } ],
+        ["%b", function() { return true; } ]
+      ]);
+
      xAxis = d3.svg.axis()
       .scale(x)
-      .orient("bottom");
+      .orient("bottom")
+      .ticks(d3.time.months, 1)
+      .tickFormat(format);
 
      yAxis = d3.svg.axis()
       .scale(y)
@@ -71,8 +92,8 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
       .attr("height", svgHeight)
       .attr("viewBox", "0 0 " + svgWidth + " " + svgHeight)
       .attr("preserveAspectRatio", "xMidYMid")
-      .append("g")
-      // .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     x.domain(d3.extent(xRange));
     y.domain(d3.extent(yRange));
@@ -91,14 +112,14 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
           .attr("class", "line")
           .attr("id", key)
           .attr("d", line)
-          .style("stroke", chart.candidateColors[key]) //function(d) { return color(d.name); }
+          .attr("class", chart.color(key)); //chart.candidateColors[key])
           // .text(key);
       }
     };
-  
+
     chart.svg.append("g")
       .attr("class", "x axis")
-      .attr("transform", "translate(0," + (chartHeight + 1) + ")")
+      .attr("transform", "translate(0," + (chartHeight) + ")")
       .call(xAxis);
 
     chart.svg.append("g")
@@ -111,12 +132,12 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
       .style("text-anchor", "end")
       .text("Total Raised ($)");
 
-      
+
     // chart.drawLegend()
   },
 
   candidateColors: {
-    "Parker for Oakland Mayor 2014": "#26D5F5",
+    "Bryan Parker": "#26D5F5",
     "Re-Elect Mayor Quan 2014": "#A8E938",
     "Libby Schaaf for Oakland Mayor 2014": "#FED35E",
     "Joe Tuman for Mayor 2014": "#FD2D2D"
@@ -129,30 +150,34 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
     "Joe Tuman"
   ],
 
+
   processData: function(data) {
     var tempAmounts = {}
     var amounts = {}
-    var regex = new RegExp("mayor")
+    var candidates = {};
     for (var i = 0; i < data.length; i++) {
       if (data.models[i].attributes ){
         el = data.models[i].attributes
-        if (regex.exec( el.recipient.name.toLowerCase() )){
-          if (tempAmounts[el.recipient.name]) {
-            if (tempAmounts[el.recipient.name][new Date(el.date)]) {
-              tempAmounts[el.recipient.name][new Date(el.date)] += el.amount
-            }
-            else {
-              tempAmounts[el.recipient.name][new Date(el.date)] = el.amount
-              tempAmounts[el.recipient.name][new Date(new Date(el.date) - 300000000)] = 0
-              tempAmounts[el.recipient.name][new Date] = 0
-            }
+        candidate = el.recipient.short_name
+        // Create a list of all candidates
+        if (!candidates[candidate]) {
+          candidates[candidate] = true;
+        }
+        if (tempAmounts[candidate]) {
+          if (tempAmounts[candidate][new Date(el.date)]) {
+            tempAmounts[candidate][new Date(el.date)] += el.amount
           }
           else {
-            tempAmounts[el.recipient.name] = {}
-            tempAmounts[el.recipient.name][new Date(new Date(el.date) - 300000000)] = 0
-            tempAmounts[el.recipient.name][new Date] = 0
-            tempAmounts[el.recipient.name][new Date(el.date)] = el.amount;
+            tempAmounts[candidate][new Date(el.date)] = el.amount
+            tempAmounts[candidate][new Date(new Date(el.date) - 300000000)] = 0
+            tempAmounts[candidate][new Date] = 0
           }
+        }
+        else {
+          tempAmounts[candidate] = {}
+          tempAmounts[candidate][new Date(new Date(el.date) - 300000000)] = 0
+          tempAmounts[candidate][new Date] = 0
+          tempAmounts[candidate][new Date(el.date)] = el.amount;
         }
       }
     }
@@ -161,7 +186,7 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
       sorted_dates = _.keys(tempAmounts[key]).sort(this.dateSortAsc)
       amounts[key] = []
       for (i = 0; i < sorted_dates.length; i ++) {
-        if (tempAmounts[key][sorted_dates[i - 1]]) { 
+        if (tempAmounts[key][sorted_dates[i - 1]]) {
           amounts[key].push({date: new Date(sorted_dates[i]), amount: (tempAmounts[key][sorted_dates[i]] + tempAmounts[key][sorted_dates[i - 1]] ) })
           tempAmounts[key][sorted_dates[i]] += tempAmounts[key][sorted_dates[i - 1]]
         }
@@ -171,7 +196,9 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
 
       }
     }
-    return amounts
+    candidates = _.keys(candidates);
+    console.log( candidates )
+    return { amounts: amounts, candidates: candidates }
   },
 
   prePendButtons: function(){
