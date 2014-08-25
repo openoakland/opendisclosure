@@ -16,12 +16,12 @@
 //= require views/candidate
 //= require views/home
 //= require views/rules
+//= require views/contributor
 //= require views/_candidateTable
 //= require views/_chartsWrapper
 //= require views/_zipcodeChartView
 //= require views/_dailyContributionsChart
 //= require views/_contributorsView
-//= require views/_contributorView
 //= require views/_topContributorsView
 //= require views/_categoryView
 //= require views/_multiplesView

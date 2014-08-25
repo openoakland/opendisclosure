@@ -1,20 +1,20 @@
-OpenDisclosure.ContributorView = Backbone.View.extend({
+OpenDisclosure.Views.Contributor = Backbone.View.extend({
   template: _.template(' \
+    <div id="contirbutor">\
     <div class="col-sm-6 contribution"><a href="<%= contribution.recipientLinkPath() %>">\
     <span class="col-sm-8"><%= contribution.attributes.recipient.name %></span>\
     <span class="col-sm-4"><%= OpenDisclosure.friendlyMoney(contribution.attributes.amount) %> </span>\
-    </a></div>'),
+                       </a></div></div>'),
 
   initialize: function(options) {
+    _.bindAll(this, 'render', 'renderContribution');
+
     this.options = options;
 
-    _.bindAll(this, 'renderContribution');
-
-    this.listenTo(this.collection, 'sync', this.render);
-
-    if (this.collection.length > 0) {
-      this.render();
-    }
+    this.collection = new OpenDisclosure.Contributors([], {
+      contributor: this.options.contributorId
+    });
+    this.collection.fetch({ success: this.render });
   },
 
   contributorName: function() {
@@ -22,7 +22,6 @@ OpenDisclosure.ContributorView = Backbone.View.extend({
   },
 
   render: function() {
-    console.log(this.collection);
     this.$el.html('<section>\
          <div class="col-sm-12">\
            <h1>' + this.contributorName() + '</h1>\

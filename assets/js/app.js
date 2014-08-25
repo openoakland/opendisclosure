@@ -56,16 +56,9 @@ OpenDisclosure.App = Backbone.Router.extend({
   },
 
   contributor : function(id) {
-    $('.main').html('<div id="contirbutor"></div>');
-
-    var contributors = new OpenDisclosure.Contributors([], {
-      contributor: id
-    });
-    contributors.fetch();
-
-    new OpenDisclosure.ContributorView({
-      el: '#contirbutor',
-      collection: contributors
+    new OpenDisclosure.Views.Contributor({
+      el: '.main',
+      contributorId: id
     });
   },
 
