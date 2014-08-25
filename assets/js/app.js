@@ -34,11 +34,11 @@ OpenDisclosure.App = Backbone.Router.extend({
       });
       // Temporarily disabled until the black-background bug is fixed:
       //
-      // new OpenDisclosure.DailyContributionsChartView({
-      //   el : "#dailyChart",
-      //   collection: that.contributions,
-      //   base_height: 480
-      // })
+      new OpenDisclosure.DailyContributionsChartView({
+        el : "#dailyChart",
+        collection: that.contributions,
+        base_height: 480
+      })
     }
     if (this.contributions.loaded)
       doChart(this);
