@@ -29,12 +29,12 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
           </div>\
         </div>\
         <div class='col-sm-4'>\
-          <p>Percentage of small donors*: 20%</p>\
+          <p>Percentage of small donors*: <%= pctSmallContributions() %></p>\
           <p>Personal funds loaned and contributed to campaign: <%= OpenDisclosure.friendlyMoney(attributes.self_contributions_total) %></p>\
           <% if (attributes.summary !== null) { %>\
             <p>% of the total amount raised is personal funds: <%= OpenDisclosure.friendlyPct(attributes.self_contributions_total / attributes.summary.total_contributions_received) %></p>\
           <% } %>\
-          <p>Declared candidacy: <%= attributes.summary.last_summary_date %> </p>\
+          <p>Declared candidacy: <%= attributes.declared %> </p>\
           <p>Data last updated: <%= attributes.summary.last_summary_date %> </p>\
           <p class='sources'>* Candidates do not need to itemize contributions less than $100 by contributor, but do need to include all contributions in their total reported amount. </p>\
         </div>\
