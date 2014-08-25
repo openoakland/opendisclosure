@@ -9,6 +9,7 @@ OpenDisclosure.App = Backbone.Router.extend({
 
   initialize : function() {
     // Store all the data globally, as a convenience.
+    //
     // We should try to minimize the amount of data we need to fetch here,
     // since each fetch makes an HTTP request.
     OpenDisclosure.Data = {
@@ -25,6 +26,8 @@ OpenDisclosure.App = Backbone.Router.extend({
     for (var dataset in OpenDisclosure.Data) {
       OpenDisclosure.Data[dataset].fetch();
     }
+
+    Backbone.history.start({ pushState: true });
   },
 
   home: function(){
@@ -64,15 +67,9 @@ OpenDisclosure.App = Backbone.Router.extend({
       el: '#contirbutor',
       collection: contributors
     });
-  }
+  },
 
-});
-
-$(function(){
-  app = new OpenDisclosure.App();
-  Backbone.history.start({ pushState: true });
-
-  $(document).click(function(e) {
+  handleLinkClicked: function(e) {
     var $link = $(e.target).closest('a');
 
     if ($link.length) {
@@ -82,10 +79,16 @@ $(function(){
 
       if (externalUrl || dontIntercept) {
         return;
+      } else {
+        e.preventDefault();
       }
 
-      app.navigate(linkUrl.replace(/^\//,''), { trigger: true });
-      e.preventDefault();
+      this.navigate(linkUrl.replace(/^\//,''), { trigger: true });
     }
-  });
+  }
+});
+
+$(function() {
+  var app = new OpenDisclosure.App();
+  $(document).click(app.handleLinkClicked.bind(app));
 });
