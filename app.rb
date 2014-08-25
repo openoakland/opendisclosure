@@ -169,6 +169,22 @@ class OpenDisclosureApp < Sinatra::Application
     Party.find(id).to_json(fields)
   end
 
+  get '/api/employees/:employer_id/:recipient_id' do |employer_id, recipient_id|
+    cache_control :public
+    last_modified Import.last.import_time
+
+    headers 'Content-Type' => 'application/json'
+
+    fields = {
+      only: %w[amount date type],
+      include: [
+        { recipient: { methods: :short_name } },
+        { contributor: { methods: :short_name } },
+      ],
+    }
+    Contribution.joins('JOIN parties on contributor_id = parties.id').where("parties.employer_id = ? and recipient_id = ?", params[:employer_id], params[:recipient_id]).to_json(fields)
+  end
+
   get '/sitemap.xml' do
     send_file 'public/sitemap.xml.gz'
   end
