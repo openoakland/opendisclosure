@@ -6,6 +6,7 @@
     %title Open Disclosure
     %meta{content: "width=device-width", name: "viewport"}
     %link{ rel: 'stylesheet', href: '//fonts.googleapis.com/css?family=Open+Sans:400,700|Crete+Round' }
+    %meta{ name: 'google-site-verification', content: 'yXhjc2AToqKzxrNc5p03ZIaaNiid07AB0_-VoNFP-pw' }
     = stylesheet_tag '//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'
     -#
       Include the assets/css/application.css.scss manifest. If you want to
@@ -31,56 +32,57 @@
               %img{ src: image_path('OaklandCityTree.png') }
           .col-xs-8.col-sm-10.header-title-container
             %h1.header-main-title Open Disclosure
-            %h2.header-catchphrase Bringing Campaign Money to Light
+            %h2.header-catchphrase Bringing Oakland Campaign Money to Light
 
     .container
       .row
         %aside.col-sm-2.sidebar{ role: 'navigation'}
           %ul.nav.nav-sidebar
             %li
-              %a{ href: '/#about' } About Us
+              %a{ href: '/about' } About Us
             %li
-              %a{ href: '/#rules' } Oakland Campaing Finance Rules
+              %a{ href: '/rules' } Oakland Campaign Finance Rules
             / Hiding these until we have some content there - KW 5/19/14
             / %li
             /   %a{ href: '#' } Where does the data come from?
             / %li
             /   %a{ href: '#' } Contribute
             %li
-              %a{href: '/#'} Candidates
+              %a{href: '/'} Candidates
               %ul.nav.nav-sidebar.compressed
                 - Party.mayoral_candidates.each do |c|
                   %li
-                    %a{ href: "/#candidate/#{c.id}" }= c.short_name
+                    %a{ href: c.link_path }= c.short_name
 
         .main.col-sm-10
           %span Loading data...
           %script{ type: 'text/template', id: 'mayoral-table-template' }
             :plain
-              <h2>2014 Oakland Mayor Candidates</h2>
+              <h2 class='mayor2014'>Campaign Finance for the 2014 Oakland Mayoral Election</h2>
               <table id='mayoral-table' class='table'>
                 <thead>
                   <tr>
                     <th id='mayoral-table-picture-column'></th>
                     <th id='mayoral-table-name-column'></th>
-                    <th>Total Raised</th>
-                    <th>Number of itemized contributions</th>
-                    <th>Percentage from outside Oakland</th>
-                    <th>Percentage from small donations*</th>
-                    <th>Average of itemized contributions</th>
+                    <th class='mayoral-table-head bold'>Total Raised</th>
+                    <th class='mayoral-table-head'>Number of itemized contributions</th>
+                    <th class='mayoral-table-head'>Percentage from outside Oakland</th>
+                    <th class='mayoral-table-head'>Percentage from small donations*</th>
+                    <th class='mayoral-table-head'>Average of itemized contributions</th>
                   </tr>
                 </thead>
                 <tbody>
                   <% _.each(models, function(m) { %>
                     <tr>
                       <td>
-                        <a href= '/#candidate/<%-m.attributes.id %>'><img class='mayor-picture' src="<%= m.imagePath() %>" /></a>
+                        <a href='<%= m.linkPath() %>'><img class='mayor-picture' src="<%= m.imagePath() %>" /></a>
                       </td>
                       <td scope='row'>
                         <div class='mayor-info'>
-                          <a href= '/#candidate/<%-m.attributes.id %>'><p class='mayor-name green'><%- m.attributes.short_name %></p>
+                          <p class='mayor-name'>
+                            <a href= '<%= m.linkPath() %>'><%- m.attributes.short_name %></a>
+                          </p>
                           <p class='mayor-profession'><%- m.attributes.profession %></p>
-                          <p class='mayor-party'><%- m.attributes.party_affiliation %></p>
                         </div>
                       </td>
                       <% if (m.attributes.summary) { %>
@@ -96,11 +98,16 @@
                   <% }); %>
                 </tbody>
               </table>
-              <p>This table includes all candidates who have submitted campaign finance disclosure forms as of January 1, 2014.</p>
+              <p>This table includes all candidates who have submitted campaign finance disclosure forms as of #{last_updated.strftime '%B %e, %Y'}.</p>
               <p> * Candidates do not need to itemize contributions less than $100 </p>
 
     %footer.main-footer
-      %img.footer-logos{ src: image_path('footer_logos.png') }
+      %a{ href: 'http://openoakland.org/'}
+        %img.footer-logos{ src: image_path('footer_logo1.png') }
+      %a{ href: 'https://github.com/openoakland/opendisclosure'}
+        %img.footer-logos{ src: image_path('footer_logo_plus.png') }
+      %a{ href: 'http://www2.oaklandnet.com/Government/o/CityAdministration/d/PublicEthics/index.htm'}
+        %img.footer-logos{ src: image_path('footer_logo2.png') }
 
     / Third Party (cdn)
     %script{src: "http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"}

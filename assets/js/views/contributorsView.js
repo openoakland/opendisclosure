@@ -1,46 +1,53 @@
 OpenDisclosure.ContributorsView = Backbone.View.extend({
+  template: _.template('\
+    <div class="col-sm-12">\
+      <h2><%= headline %></h2>\
+      <label>Search: <input type="search" id="contribSearch"></input></label>\
+    </div>\
+    <div class="contributions clearfix">\
+    <%= contributions %>\
+    </div>'),
 
-  template: _.template(' \
-    <div class="col-sm-6 contribution"><a href="#contributor/<%= contributor.id %>">\
-    <span class="col-sm-8"><%= contributor.name %></span>\
-    <span class="col-sm-4"><%= OpenDisclosure.friendlyMoney(amount) %> </span>\
-    </a></div>'),
+  contributionTemplate: _.template('\
+      <div class="col-sm-6 contribution">\
+        <a href="<%= contribution.contributorLinkPath() %>">\
+          <span class="col-sm-8"><%= contribution.attributes.contributor.name %></span>\
+          <span class="col-sm-4"><%= OpenDisclosure.friendlyMoney(contribution.attributes.amount) %><%= contribution.typeName() %></span>\
+        </a>\
+      </div>'),
 
   events: {
-    "keyup #contribSearch"  : "filterContributors",
+    'keyup #contribSearch' : 'filterContributors',
   },
 
   initialize: function(options) {
-    this.options = options;
+    this.headline = options.headline;
+
+    _.bindAll(this, 'renderContribution', 'filterContributors');
+
     this.render();
   },
 
   render: function() {
-    this.$el.empty();
-    $('<div class="col-sm-12">\
-	  <h2>' + this.options.headline + '</h2>\
-	  <label>Search: <input type="search" id="contribSearch"></input></label>\
-	</div>\
-      <div class="contributions clearfix"></div>\
-     </div>').appendTo(this.$el);
+    this.$el.html(this.template({
+      headline : this.headline,
+      contributions : _.map(this.collection, this.renderContribution).join('')
+    }));
+  },
 
-    var that = this;
-    _.each(this.collection, function( c ){
-      $('.contributions').append(that.template(c.attributes));
-    });
-    // Leave a little space at the bottom.
-    $('.contributions').append('<div class="col-sm-12"><h2></h2></div>');
+  renderContribution: function(contribution) {
+    var contribution = new OpenDisclosure.Contribution(contribution.attributes);
 
-    $('body').keyup(function(){
-      that.filterContributors();
-    });
+    return this.contributionTemplate({
+      contribution: contribution
+    })
   },
 
   filterContributors: function() {
-  // Adding this bit for the search feature on the contributors page
-  // Adding as a separate bit to make it easier to remove if something
-  // breaks due to its inclusion.
-    var filterval = $('#contribSearch').val().trim().toLowerCase();
+    // Adding this bit for the search feature on the contributors page
+    // Adding as a separate bit to make it easier to remove if something
+    // breaks due to its inclusion.
+    var filterval = this.$('#contribSearch').val().trim().toLowerCase();
     $('.contribution').each(function(el) {
       var check_name = $(this).text().trim().toLowerCase();
       if ( check_name.indexOf(filterval) >= 0 ) {

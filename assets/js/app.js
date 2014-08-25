@@ -32,9 +32,13 @@ OpenDisclosure.App = Backbone.Router.extend({
 					  collection : that.contributions,
 					  base_height: 480
       });
-      new OpenDisclosure.DailyContributionsChartView({el : "#dailyChart",
-						     collection: that.contributions,
-						     base_height: 480 })
+      // Temporarily disabled until the black-background bug is fixed:
+      //
+      // new OpenDisclosure.DailyContributionsChartView({
+      //   el : "#dailyChart",
+      //   collection: that.contributions,
+      //   base_height: 480
+      // })
     }
     if (this.contributions.loaded)
       doChart(this);
@@ -78,19 +82,22 @@ OpenDisclosure.App = Backbone.Router.extend({
     new OpenDisclosure.RulesView();
   },
 
-  candidate: function(id){
+  candidate: function(name){
     $('.main').empty();
     $('<div id="candidate"></div>').appendTo('.main');
+
     doView = function(that) {
-      new OpenDisclosure.CandidateView({el: '#candidate',
-				       model: that.candidates.get(id)});
+      var candidate = that.candidates.find(function(c) { return c.linkPath().indexOf(name) >= 0; });
+      new OpenDisclosure.CandidateView({el: '#candidate', model: candidate});
     }
-    if (this.candidates.loaded)
+
+    if (this.candidates.loaded) {
       doView(this);
-    else
+    } else {
       this.listenTo(this.candidates, 'sync', function() {
-	doView(this);
+        doView(this);
       });
+    }
   },
 
   contributor : function(id) {
@@ -107,5 +114,22 @@ OpenDisclosure.App = Backbone.Router.extend({
 
 $(function(){
   app = new OpenDisclosure.App();
-  Backbone.history.start();
+  Backbone.history.start({ pushState: true });
+
+  $(document).click(function(e) {
+    var $link = $(e.target).closest('a');
+
+    if ($link.length) {
+      var linkUrl = $link.attr('href'),
+          externalUrl = linkUrl.indexOf('http') === 0,
+          dontIntercept = e.altKey || e.ctrlKey || e.metaKey || e.shiftKey;
+
+      if (externalUrl || dontIntercept) {
+        return;
+      }
+
+      app.navigate(linkUrl.replace(/^\//,''), { trigger: true });
+      e.preventDefault();
+    }
+  });
 });
