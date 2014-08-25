@@ -12,9 +12,10 @@
 //= require collections/candidates
 //= require collections/contributions
 
-//= require views/_about
-//= require views/_rules
+//= require views/about
 //= require views/candidate
+//= require views/home
+//= require views/rules
 //= require views/_candidateTable
 //= require views/_chartsWrapper
 //= require views/_zipcodeChartView

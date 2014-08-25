@@ -1,5 +1,4 @@
 OpenDisclosure.CandidateView = Backbone.View.extend({
-
   template: _.template("\
     <h2 class='mayor2014'>Campaign Finance for the 2014 Oakland Mayoral Election</h2>\
     <h1><%= attributes.short_name %></h1>\
@@ -53,33 +52,31 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
   },
 
   render: function(){
-    this.updateNav();
-
     //Render main view
     this.$el.html(this.template(this.model));
 
     //Render Subviews
-    if (app.categoryContributions.length > 0) {
+    if (OpenDisclosure.Data.categoryContributions.length > 0) {
       this.renderCategoryChart();
     }
 
-    if (app.employerContributions.length > 0) {
+    if (OpenDisclosure.Data.employerContributions.length > 0) {
       this.renderTopContributors();
     }
 
-    if (app.contributions.length > 0) {
+    if (OpenDisclosure.Data.contributions.length > 0) {
       this.renderAllContributions();
     }
 
     //Listen for new data
-    this.listenTo(app.categoryContributions, 'sync', this.renderCategoryChart);
-    this.listenTo(app.employerContributions, 'sync', this.renderTopContributors);
-    this.listenTo(app.contributions, 'sync', this.renderAllContributions);
+    this.listenTo(OpenDisclosure.Data.categoryContributions, 'sync', this.renderCategoryChart);
+    this.listenTo(OpenDisclosure.Data.employerContributions, 'sync', this.renderTopContributors);
+    this.listenTo(OpenDisclosure.Data.contributions, 'sync', this.renderAllContributions);
   },
 
   renderCategoryChart: function() {
     var candidateId = this.model.attributes.id;
-    this.categories = _.filter(app.categoryContributions.models, function(c) {
+    this.categories = _.filter(OpenDisclosure.Data.categoryContributions.models, function(c) {
       return c.attributes.recipient_id == candidateId;
     });
 
@@ -95,7 +92,7 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
     var count = 0;
     var candidateId = this.model.attributes.id;
 
-    this.topContributions = _.filter(app.employerContributions.models, function(c) {
+    this.topContributions = _.filter(OpenDisclosure.Data.employerContributions.models, function(c) {
       return c.attributes.recipient_id == candidateId;
     }).sort(function(a, b){return b.attributes.amount - a.attributes.amount});
 
@@ -108,7 +105,7 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
 
   renderAllContributions: function(){
     var candidateId = this.model.attributes.id;
-    var filteredContributions = _.filter(app.contributions.models, function(c) {
+    var filteredContributions = _.filter(OpenDisclosure.Data.contributions.models, function(c) {
       return c.attributes.recipient.id == candidateId;
     });
 

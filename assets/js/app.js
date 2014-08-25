@@ -8,68 +8,41 @@ OpenDisclosure.App = Backbone.Router.extend({
   },
 
   initialize : function() {
-    this.candidates = new OpenDisclosure.Candidates();
-    this.contributions = new OpenDisclosure.Contributions();
-    this.employerContributions = new OpenDisclosure.EmployerContributions();
-    this.categoryContributions = new OpenDisclosure.CategoryContributions();
-    this.whales = new OpenDisclosure.Whales();
-    this.multiples = new OpenDisclosure.Multiples();
+    // Store all the data globally, as a convenience.
+    // We should try to minimize the amount of data we need to fetch here,
+    // since each fetch makes an HTTP request.
+    OpenDisclosure.Data = {
+      candidates: new OpenDisclosure.Candidates(),
+      contributions: new OpenDisclosure.Contributions(),
+      employerContributions: new OpenDisclosure.EmployerContributions(),
+      categoryContributions: new OpenDisclosure.CategoryContributions(),
+      whales: new OpenDisclosure.Whales(),
+      multiples: new OpenDisclosure.Multiples()
+    }
 
-    this.candidates.fetch();
-    this.employerContributions.fetch();
-    this.categoryContributions.fetch();
-    this.whales.fetch();
-    this.multiples.fetch();
-    this.contributions.fetch();
+    // Every item in OpenDisclosure.Data is a Backbone.Collection, so they all
+    // have a fetch method.
+    for (var dataset in OpenDisclosure.Data) {
+      OpenDisclosure.Data[dataset].fetch();
+    }
   },
 
   home: function(){
-    $('.main').empty();
-    $('<div id="candidateTable"></div> \
-       <div id="zipcodeChart"></div> \
-       <div id="dailyChart"></div> \
-       <div id="topContributions"></div> \
-       <div id="multiples"></div> \
-    ').appendTo('.main');
-
-    new OpenDisclosure.CandidateTable({
-      el : '#candidateTable',
-      collection : this.candidates
+    new OpenDisclosure.Views.Home({
+      el: '.main'
     });
-
-    new OpenDisclosure.ZipcodeChartView({
-      el : '#zipcodeChart',
-      collection : this.contributions,
-      base_height: 480
-    });
-
-    new OpenDisclosure.ContributorsView({
-      el : '#topContributions',
-      collection : this.whales,
-      headline :'Top Contributors To All Candidates in This Election'
-    });
-
-    new OpenDisclosure.MultiplesView({
-      el : '#multiples',
-      collection: this.multiples,
-      headline: 'Contributors To More Than One Mayoral Candidate'
-    });
-
-    // Temporarily disabled until the black-background bug is fixed:
-    //
-    // new OpenDisclosure.DailyContributionsChartView({
-    //   el : "#dailyChart",
-    //   collection: that.contributions,
-    //   base_height: 480
-    // })
   },
 
   about: function () {
-    new OpenDisclosure.AboutView();
+    new OpenDisclosure.Views.About({
+      el: '.main'
+    });
   },
 
   rules: function () {
-    new OpenDisclosure.RulesView();
+    new OpenDisclosure.Views.Rules({
+      el: '.main'
+    });
   },
 
   candidate: function(name){
@@ -79,18 +52,18 @@ OpenDisclosure.App = Backbone.Router.extend({
       var shortNameMatches = function(c) {
         return c.linkPath().indexOf(name) >= 0;
       };
-      var candidate = this.candidates.find(shortNameMatches);
+      var candidate = OpenDisclosure.Data.candidates.find(shortNameMatches);
 
       if (candidate) {
         new OpenDisclosure.CandidateView({ el: '#candidate', model: candidate });
       }
     }.bind(this);
 
-    if (this.candidates.length > 0) {
+    if (OpenDisclosure.Data.candidates.length > 0) {
       createView();
     }
 
-    this.listenTo(this.candidates, 'sync', createView);
+    this.listenTo(OpenDisclosure.Data.candidates, 'sync', createView);
   },
 
   contributor : function(id) {
