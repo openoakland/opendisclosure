@@ -14,7 +14,6 @@ OpenDisclosure.App = Backbone.Router.extend({
     // We should try to minimize the amount of data we need to fetch here,
     // since each fetch makes an HTTP request.
     OpenDisclosure.Data = {
-      candidates: new OpenDisclosure.Candidates(),
       contributions: new OpenDisclosure.Contributions(),
       employerContributions: new OpenDisclosure.EmployerContributions(),
       categoryContributions: new OpenDisclosure.CategoryContributions(),
@@ -27,6 +26,8 @@ OpenDisclosure.App = Backbone.Router.extend({
     for (var dataset in OpenDisclosure.Data) {
       OpenDisclosure.Data[dataset].fetch();
     }
+
+    OpenDisclosure.Data.candidates = new OpenDisclosure.Candidates(OpenDisclosure.BootstrappedData.candidates);
 
     Backbone.history.start({ pushState: true });
   },

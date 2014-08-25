@@ -120,6 +120,13 @@
     :javascript
       google.load('visualization', '1.0', {'packages':['corechart']});
 
+      window.OpenDisclosure = {};
+      window.OpenDisclosure.Views = {};
+      window.OpenDisclosure.Data = {};
+      window.OpenDisclosure.BootstrappedData = {
+        candidates: #{candidate_json}
+      }
+
     -#
       Include the assets/js/application.js manifest. If you want to include
       another manifest here, you must also add it to the "assets_precompile"
