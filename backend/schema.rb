@@ -13,6 +13,7 @@ ActiveRecord::Schema.define do
     t.integer :zip
     t.integer :committee_id # 0 = pending
     t.string :employer
+    t.integer :employer_id
     t.string :occupation
 
     t.integer :received_contributions_count, null: false, default: 0
@@ -23,6 +24,12 @@ ActiveRecord::Schema.define do
 
     t.index [:committee_id, :type]
     t.index [:type, :name, :city, :state]
+  end
+
+  create_table :employers do |t|
+    t.string :employer_name, null: false
+
+    t.index :employer_name
   end
 
   create_table :contributions do |t|
@@ -75,6 +82,7 @@ ActiveRecord::Schema.define do
   end
   create_table :employer_contributions do |t|
     t.integer :recipient_id, null: false
+    t.integer :employer_id
     t.string :name, null: false
     t.string :contrib, null: false
     t.integer :amount, null: false

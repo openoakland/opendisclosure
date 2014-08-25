@@ -27,3 +27,16 @@ OpenDisclosure.Contributors = Backbone.Collection.extend({
     this.options = options;
   }
 });
+OpenDisclosure.Employees = Backbone.Collection.extend({
+  model: OpenDisclosure.Employee,
+  url: function() {
+    return '/api/employees/' + this.options.employer_id + '/' + this.options.recipient_id;
+  },
+  initialize: function(options){
+    this.options = options;
+    this.fetch();
+    this.listenTo(this, 'sync', function() {
+      this.loaded = true;
+   });
+  }
+});

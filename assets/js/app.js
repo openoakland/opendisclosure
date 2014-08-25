@@ -4,7 +4,8 @@ OpenDisclosure.App = Backbone.Router.extend({
     'about': 'about',
     'rules': 'rules',
     'candidate/:id': 'candidate',
-    'contributor/:id': 'contributor'
+    'contributor/:id': 'contributor',
+    'employer/:employer_name/:employer_id/:recipient_id': 'employer'
   },
 
   initialize : function() {
@@ -59,6 +60,16 @@ OpenDisclosure.App = Backbone.Router.extend({
     new OpenDisclosure.Views.Contributor({
       el: '.main',
       contributorId: id
+    });
+  },
+
+  employer : function(employer_name, employer_id, recipient_id) {
+    $('.main').empty();
+    $('<div id = "employer"></div> \
+    ').appendTo('.main');
+    var contrib = new OpenDisclosure.Employees({employer_id: employer_id, recipient_id: recipient_id } );
+    this.listenTo(contrib, 'sync', function() {
+      new OpenDisclosure.ContributorsView({el: '#employer', collection: contrib.models, headline: employer_name});
     });
   },
 
