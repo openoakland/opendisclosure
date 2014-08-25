@@ -24,14 +24,17 @@ OpenDisclosure.ContributorsView = Backbone.View.extend({
     this.headline = options.headline;
 
     _.bindAll(this, 'renderContribution', 'filterContributors');
+    this.listenTo(this.collection, 'sync', this.render);
 
-    this.render();
+    if (this.collection.length > 0) {
+      this.render();
+    }
   },
 
   render: function() {
     this.$el.html(this.template({
       headline : this.headline,
-      contributions : _.map(this.collection, this.renderContribution).join('')
+      contributions : this.collection.map(this.renderContribution).join('')
     }));
   },
 

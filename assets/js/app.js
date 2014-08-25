@@ -14,6 +14,13 @@ OpenDisclosure.App = Backbone.Router.extend({
     this.categoryContributions = new OpenDisclosure.CategoryContributions();
     this.whales = new OpenDisclosure.Whales();
     this.multiples = new OpenDisclosure.Multiples();
+
+    this.candidates.fetch();
+    this.employerContributions.fetch();
+    this.categoryContributions.fetch();
+    this.whales.fetch();
+    this.multiples.fetch();
+    this.contributions.fetch();
   },
 
   home: function(){
@@ -24,54 +31,37 @@ OpenDisclosure.App = Backbone.Router.extend({
        <div id="topContributions"></div> \
        <div id="multiples"></div> \
     ').appendTo('.main');
-    new OpenDisclosure.CandidateTable({el : '#candidateTable',
-				      collection : this.candidates});
 
-    doChart = function(that){
-      new OpenDisclosure.ZipcodeChartView({el : '#zipcodeChart',
-					  collection : that.contributions,
-					  base_height: 480
-      });
-      // Temporarily disabled until the black-background bug is fixed:
-      //
-      // new OpenDisclosure.DailyContributionsChartView({
-      //   el : "#dailyChart",
-      //   collection: that.contributions,
-      //   base_height: 480
-      // })
-    }
-    if (this.contributions.loaded)
-      doChart(this);
-    else
-      this.listenTo(this.contributions, 'sync', function() {
-	doChart(this);
-      });
+    new OpenDisclosure.CandidateTable({
+      el : '#candidateTable',
+      collection : this.candidates
+    });
 
-    doWhalesView = function(that){
-      new OpenDisclosure.ContributorsView({el : '#topContributions',
-					  collection : that.whales.models,
-					  headline :'Top Contributors To All Candidates in This Election'});
-    }
-    if (this.whales.loaded)
-      doWhalesView(this);
-    else
-      this.listenTo(this.whales, 'sync', function() {
-	console.log('Received whale data!');
-	doWhalesView(this);
-      });
+    new OpenDisclosure.ZipcodeChartView({
+      el : '#zipcodeChart',
+      collection : this.contributions,
+      base_height: 480
+    });
 
-    doMultiView = function (that) {
-      new OpenDisclosure.MultiplesView({el : '#multiples',
-				       collection: that.multiples.models,
-				       headline:'Contributors To More Than One Mayoral Candidate'});
-    };
-    if (this.multiples.loaded)
-      doMultiView(this);
-    else
-      this.listenTo(this.multiples, 'sync', function() {
-        console.log('Received multiples data!');
-        doMultiView(this);
-      });
+    new OpenDisclosure.ContributorsView({
+      el : '#topContributions',
+      collection : this.whales,
+      headline :'Top Contributors To All Candidates in This Election'
+    });
+
+    new OpenDisclosure.MultiplesView({
+      el : '#multiples',
+      collection: this.multiples,
+      headline: 'Contributors To More Than One Mayoral Candidate'
+    });
+
+    // Temporarily disabled until the black-background bug is fixed:
+    //
+    // new OpenDisclosure.DailyContributionsChartView({
+    //   el : "#dailyChart",
+    //   collection: that.contributions,
+    //   base_height: 480
+    // })
   },
 
   about: function () {
@@ -83,30 +73,37 @@ OpenDisclosure.App = Backbone.Router.extend({
   },
 
   candidate: function(name){
-    $('.main').empty();
-    $('<div id="candidate"></div>').appendTo('.main');
+    $('.main').html('<div id="candidate"></div>');
 
-    doView = function(that) {
-      var candidate = that.candidates.find(function(c) { return c.linkPath().indexOf(name) >= 0; });
-      new OpenDisclosure.CandidateView({el: '#candidate', model: candidate});
+    var createView = function() {
+      var shortNameMatches = function(c) {
+        return c.linkPath().indexOf(name) >= 0;
+      };
+      var candidate = this.candidates.find(shortNameMatches);
+
+      if (candidate) {
+        new OpenDisclosure.CandidateView({ el: '#candidate', model: candidate });
+      }
+    }.bind(this);
+
+    if (this.candidates.length > 0) {
+      createView();
     }
 
-    if (this.candidates.loaded) {
-      doView(this);
-    } else {
-      this.listenTo(this.candidates, 'sync', function() {
-        doView(this);
-      });
-    }
+    this.listenTo(this.candidates, 'sync', createView);
   },
 
   contributor : function(id) {
-    $('.main').empty();
-    $('<div id = "contirbutor"></div> \
-    ').appendTo('.main');
-    var contrib = new OpenDisclosure.Contributors({contributor: id} );
-    this.listenTo(contrib, 'sync', function() {
-      new OpenDisclosure.ContributorView({el: '#contirbutor', collection: contrib.models});
+    $('.main').html('<div id="contirbutor"></div>');
+
+    var contributors = new OpenDisclosure.Contributors([], {
+      contributor: id
+    });
+    contributors.fetch();
+
+    new OpenDisclosure.ContributorView({
+      el: '#contirbutor',
+      collection: contributors
     });
   }
 

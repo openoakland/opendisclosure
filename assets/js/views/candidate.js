@@ -1,4 +1,3 @@
-
 OpenDisclosure.CandidateView = Backbone.View.extend({
 
   template: _.template("\
@@ -47,9 +46,9 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
   initialize: function(){
     if (this.model) {
       this.model.attributes.imagePath = this.model.imagePath();
-      this.render();}
-    else {
-      app.navigate('',true);
+      this.render();
+    } else {
+      app.navigate('', true);
     }
   },
 
@@ -60,9 +59,17 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
     this.$el.html(this.template(this.model));
 
     //Render Subviews
-    this.renderCategoryChart();
-    this.renderTopContributors();
-    this.renderAllContributions();
+    if (app.categoryContributions.length > 0) {
+      this.renderCategoryChart();
+    }
+
+    if (app.employerContributions.length > 0) {
+      this.renderTopContributors();
+    }
+
+    if (app.contributions.length > 0) {
+      this.renderAllContributions();
+    }
 
     //Listen for new data
     this.listenTo(app.categoryContributions, 'sync', this.renderCategoryChart);
@@ -87,27 +94,27 @@ OpenDisclosure.CandidateView = Backbone.View.extend({
     // Filter contributors based on cadidateId
     var count = 0;
     var candidateId = this.model.attributes.id;
-    var that = this;
+
     this.topContributions = _.filter(app.employerContributions.models, function(c) {
-      return c.attributes.recipient_id == that.model.attributes.id;
+      return c.attributes.recipient_id == candidateId;
     }).sort(function(a, b){return b.attributes.amount - a.attributes.amount});
-    this.topContributions = _.filter(this.topContributions, function() { return count++ < 10; });
 
     // Create a new subview
     new OpenDisclosure.TopContributorsView({
       el: "#topContributors",
-      collection: this.topContributions
+      collection: this.topContributions.slice(0, 10)
     });
   },
 
   renderAllContributions: function(){
     var candidateId = this.model.attributes.id;
-    this.filteredContributions = _.filter(app.contributions.models, function(c) {
+    var filteredContributions = _.filter(app.contributions.models, function(c) {
       return c.attributes.recipient.id == candidateId;
     });
 
-    new OpenDisclosure.ContributorsView({el: "#contributors",
-      collection: this.filteredContributions,
+    new OpenDisclosure.ContributorsView({
+      el: "#contributors",
+      collection: new OpenDisclosure.Contributions(this.filteredContributions),
       headline: 'All Contributions'
     });
   },
