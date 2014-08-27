@@ -20,8 +20,16 @@ OpenDisclosure.Multiples = Backbone.Collection.extend({
 });
 OpenDisclosure.Contributors = Backbone.Collection.extend({
   model: OpenDisclosure.Contributor,
+  comparator: function (collection) {
+    return collection.get('contributor').name;
+  },
   url: function() {
-    return '/api/contributor/' + this.options.contributor;
+    if (this.options.contributor) {
+      return '/api/contributor/' + this.options.contributor;
+    } else {
+      return '/api/contributorName/' + this.options.search;
+    }
+
   },
   initialize: function(models, options) {
     this.options = options;
