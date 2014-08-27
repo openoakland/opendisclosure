@@ -20,13 +20,7 @@ OpenDisclosure.MultiplesView = Backbone.View.extend({
 
   render: function() {
     this.$el.empty();
-    $('<section>\
-         <div class="col-sm-12">\
-           <h2>Contributors Who Gave to More Than One Mayoral Candidate</h2>\
-         </div>\
-         <div class="multples clearfix"></div>\
-      </div>\
-      </section>').appendTo(this.$el);
+    $('<h2>Contributors Who Gave to More Than One Mayoral Candidate</h2>').appendTo(this.$el);
 
     this.$el.append(this.collection.map(this.renderContributor).join(' '));
   },
