@@ -84,7 +84,7 @@ class Party < ActiveRecord::Base
     QUAN => {
       name: 'Jean Quan',
       declared: '2013-02-04',
-      profession: 'Incumbant Oakland Mayor',
+      profession: 'Incumbent Oakland Mayor',
       party: 'Democrat',
       twitter:'@jeanquan',
       bio: "Jean is the incumbent in the 2014 Oakland Mayoral election. She previously served as City Council member for District 4 from 2002 to 2010. Prior to her time in office, Jean was on the Oakland School Board for 12 years and acted as President from 1996 to 2002. Jean's husband, Dr. Floyd Huen, is a doctor of internal medicine for Alameda County.",
