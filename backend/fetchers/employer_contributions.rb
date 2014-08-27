@@ -7,7 +7,12 @@ class DataFetcher
            (
             SELECT
              CASE
-               WHEN p.Emp1 = 'N/A' THEN c.occupation
+               WHEN p.Emp1 = 'N/A' THEN 
+		coalesce((SELECT p1.Emp1
+			FROM maps p1 WHERE p1.Emp2 = c.occupation), c.occupation)
+	       WHEN p.Emp1 = 'Unemployed' THEN
+		coalesce((SELECT p1.Emp1
+			FROM maps p1 WHERE p1.Emp2 = c.occupation), 'Unemployed')
                ELSE p.Emp1
              END AS contrib
               FROM contributions b,  parties c, maps p
@@ -15,16 +20,20 @@ class DataFetcher
               c.employer = p.Emp2 AND c.type = 'Party::Individual'
             UNION ALL
             SELECT p.Emp1 AS contrib
-              FROM contributions b, parties c, maps p
-              WHERE b.contributor_id = c.id AND
-              c.name = p.Emp2 AND c.type <> 'Party::Individual'
+              FROM parties c, maps p
+              WHERE c.name = p.Emp2 AND c.type <> 'Party::Individual'
            ) s
       QUERY
       ActiveRecord::Base.connection.execute <<-QUERY
         UPDATE parties c SET employer_id = e.id
         FROM employers e, maps p
         WHERE CASE
-          WHEN p.Emp1 = 'N/A' THEN c.occupation
+          WHEN p.Emp1 = 'N/A' THEN 
+		coalesce((SELECT p1.Emp1
+			FROM maps p1 WHERE p1.Emp2 = c.occupation), c.occupation)
+	  WHEN p.Emp1 = 'Unemployed' THEN
+		coalesce((SELECT p1.Emp1
+			FROM maps p1 WHERE p1.Emp2 = c.occupation), 'Unemployed')
           ELSE p.Emp1
         END = e.employer_name AND
         c.employer = p.Emp2 AND c.type = 'Party::Individual'
