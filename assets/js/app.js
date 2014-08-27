@@ -5,7 +5,8 @@ OpenDisclosure.App = Backbone.Router.extend({
     'rules': 'rules',
     'candidate/:id': 'candidate',
     'contributor/:id': 'contributor',
-    'employer/:employer_name/:employer_id/:recipient_id': 'employer'
+    'employer/:employer_name/:employer_id/:recipient_id': 'employer',
+    'search': 'search'
   },
 
   initialize : function() {
@@ -74,6 +75,13 @@ OpenDisclosure.App = Backbone.Router.extend({
         collection: contrib,
         headline: employer_name
       });
+    });
+  },
+
+  search : function() {
+    new OpenDisclosure.Views.Contributor({
+      el: '.main',
+      search: location.search.slice(location.search.search("name=") + 5)
     });
   },
 

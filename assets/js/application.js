@@ -25,6 +25,7 @@
 //= require views/_topContributorsView
 //= require views/_categoryView
 //= require views/_multiplesView
+//= require views/_search
 
 //= require util
 //= require app
