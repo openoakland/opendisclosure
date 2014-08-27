@@ -5,6 +5,7 @@ OpenDisclosure.Views.Home = Backbone.View.extend({
 
   render : function() {
     this.$el.html('<div id="candidateTable"></div>\
+       <div id="donorSearch"></div> \
        <div id="zipcodeChart"></div> \
        <div id="dailyChart"></div> \
        <div id="topContributions"></div> \
@@ -15,6 +16,12 @@ OpenDisclosure.Views.Home = Backbone.View.extend({
       collection : OpenDisclosure.Data.candidates
     });
 
+    $('<form id="search" action="search">\
+    <input type="text" name="name" value=""/>\
+    <input type="submit" value="Search Contributors"/>\
+    </form>').appendTo('#donorSearch');
+
+    
     new OpenDisclosure.ZipcodeChartView({
       el : '#zipcodeChart',
       collection : OpenDisclosure.Data.contributions,

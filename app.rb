@@ -49,6 +49,25 @@ class OpenDisclosureApp < Sinatra::Application
       .includes(:contributor, :recipient).to_json(fields)
   end
 
+  get '/api/contributorName/:name' do |name|
+    cache_control :public
+    last_modified Import.last.import_time
+
+    headers 'Content-Type' => 'application/json'
+
+    fields = {
+      include: [
+        { recipient: { methods: :short_name } },
+        { contributor: { methods: :short_name } },
+      ],
+    }
+    search 	  = "%" + name.downcase + "%"
+    party         = Party.where("lower(name) like ?", search)
+    Contribution
+      .where(contributor_id: party)
+      .includes(:contributor, :recipient).to_json(fields)
+  end
+
   get '/api/contributions' do
     cache_control :public
     last_modified Import.last.import_time
