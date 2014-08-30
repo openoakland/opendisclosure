@@ -114,7 +114,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         .enter().append("svg:path")
         .attr("class", "zip")
         .attr("id", function(d) {
-          zip = d.properties.ZIP;
+          return "zip-" + d.properties.ZIP;
         })
         .attr("d", chart.path)
 
@@ -122,26 +122,37 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     });
   },
 
-  addOverviewTooltip: function(d, path, chart) {
-    var x = d3.mouse(path)[0];
-    var y = d3.mouse(path)[1];
+  overviewTooltip: function(d, path, chart) {
+    var zip = d.properties.ZIP;
+    var content = "<div>Total: $0</div>" // Default content
+    if (chart.data.amounts[zip]) {
+      var total = chart.data.amounts[zip]["total"];
+      var leader = chart.data.amounts[zip]["max"];
+      var percent_to_leader = Math.round(chart.data.amounts[zip][leader]/total*100);
+      content = "<div>Total: $" + total + "</div>" +
+        "<div>" + percent_to_leader + "% to " + leader + "</div>";
+    }
+    chart.setTooltip(d, path, chart, content);
+  },
+
+  candidateTooltip: function(d, path, chart, candidate) {
+    var zip = d.properties.ZIP;
+    var content = "$0 to " + candidate; // Default content
+    if (chart.data.amounts[zip] && chart.data.amounts[zip][candidate]) {
+      content = "$" + chart.data.amounts[zip][candidate] + " to " + candidate;
+    }
+    chart.setTooltip(d, path, chart, content);
+  },
+
+  setTooltip: function(d, path, chart, content) {
     var city = chart.toTitleCase(d.properties.PO_NAME);
     var zip = d.properties.ZIP;
-    var total = 0;
-    var leader_string = ""
-    if (chart.data.amounts[zip]) {
-      total = chart.data.amounts[zip]["total"];
-      var leader = chart.data.amounts[zip]["max"];
-      var percent_to_leader = Math.round(chart.data.amounts[zip][leader]/total*100)
-      leader_string = "<div>" + percent_to_leader + "% to " + leader + "</div>";
-    }
-    d3.select("#zip-bubble-chart #tooltip")
+    d3.select(chart.el).select("#tooltip")
       .classed("hidden", false)
-      .style("left", x + "px")
-      .style("top", y+20 + "px")
+      .style("left", d3.mouse(path)[0] + "px")
+      .style("top", d3.mouse(path)[1] + 20 + "px")
       .html("<div>" + zip + " (" + city + ")</div>" +
-        "<div>Total: $" + total + "</div>" +
-        leader_string);
+        content);
   },
 
   toTitleCase: function(str) {
@@ -412,12 +423,12 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     });
     $('g#scale').fadeOut();
 
-    d3.selectAll("#zip-bubble-chart path.zip")
+    chart.svg.selectAll("path.zip")
       .on('mousemove', function(d) {
-        chart.addOverviewTooltip(d, this, chart);
+        chart.overviewTooltip(d, this, chart);
       })
       .on('mouseleave', function(d) {
-        d3.select("#zip-bubble-chart #tooltip")
+        d3.select(chart.el).select("#tooltip")
           .classed("hidden", true);
       });
   },
@@ -442,12 +453,27 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       $('.candidate.description').fadeIn();
     });
 
-    d3.selectAll("#zip-bubble-chart path.zip")
+    chart.svg.selectAll("#circles circle")
       .on('mousemove', function(d) {
-        return false;
+        chart.svg.selectAll(".zip#zip-" + d.properties.ZIP)
+          .classed("hover", true);
+        chart.candidateTooltip(d, this, chart, label);
       })
       .on('mouseleave', function(d) {
-        d3.select("#zip-bubble-chart #tooltip")
+        chart.svg.selectAll(".zip#zip-" + d.properties.ZIP)
+          .classed("hover", false);
+        d3.select(chart.el).select("#tooltip")
+          .classed("hidden", true);
+      });
+
+    chart.svg.selectAll("path.zip")
+      .on('mousemove', function(d) {
+        d3.select(this).classed("hover", true)
+        chart.candidateTooltip(d, this, chart, label);
+      })
+      .on('mouseleave', function(d) {
+        d3.select(this).classed("hover", false)
+        d3.select(chart.el).select("#tooltip")
           .classed("hidden", true);
       });
   },
