@@ -4,119 +4,88 @@ OpenDisclosure.App = Backbone.Router.extend({
     'about': 'about',
     'rules': 'rules',
     'candidate/:id': 'candidate',
-    'contributor/:id': 'contributor'
+    'contributor/:id': 'contributor',
+    'employer/:employer_name/:employer_id/:recipient_id': 'employer',
+    'search': 'search'
   },
 
   initialize : function() {
-    this.candidates = new OpenDisclosure.Candidates();
-    this.contributions = new OpenDisclosure.Contributions();
-    this.employerContributions = new OpenDisclosure.EmployerContributions();
-    this.categoryContributions = new OpenDisclosure.CategoryContributions();
-    this.whales = new OpenDisclosure.Whales();
-    this.multiples = new OpenDisclosure.Multiples();
+    // Store all the data globally, as a convenience.
+    //
+    // We should try to minimize the amount of data we need to fetch here,
+    // since each fetch makes an HTTP request.
+    OpenDisclosure.Data = {
+      contributions: new OpenDisclosure.Contributions(),
+      employerContributions: new OpenDisclosure.EmployerContributions(),
+      categoryContributions: new OpenDisclosure.CategoryContributions(),
+      whales: new OpenDisclosure.Whales(),
+      multiples: new OpenDisclosure.Multiples()
+    }
+
+    // Every item in OpenDisclosure.Data is a Backbone.Collection, so they all
+    // have a fetch method.
+    for (var dataset in OpenDisclosure.Data) {
+      OpenDisclosure.Data[dataset].fetch();
+    }
+
+    OpenDisclosure.Data.candidates = new OpenDisclosure.Candidates(OpenDisclosure.BootstrappedData.candidates);
+
+    Backbone.history.start({ pushState: true });
   },
 
   home: function(){
-    $('.main').empty();
-    $('<div id="candidateTable"></div> \
-       <div id="zipcodeChart"></div> \
-       <div id="dailyChart"></div> \
-       <div id="topContributions"></div> \
-       <div id="multiples"></div> \
-    ').appendTo('.main');
-    new OpenDisclosure.CandidateTable({el : '#candidateTable',
-				      collection : this.candidates});
-
-    doChart = function(that){
-      new OpenDisclosure.ZipcodeChartView({el : '#zipcodeChart',
-					  collection : that.contributions,
-					  base_height: 480
-      });
-      // Temporarily disabled until the black-background bug is fixed:
-      //
-      new OpenDisclosure.DailyContributionsChartView({
-        el : "#dailyChart",
-        collection: that.contributions,
-        base_height: 480
-      })
-    }
-    if (this.contributions.loaded)
-      doChart(this);
-    else
-      this.listenTo(this.contributions, 'sync', function() {
-	doChart(this);
-      });
-
-    doWhalesView = function(that){
-      new OpenDisclosure.ContributorsView({el : '#topContributions',
-					  collection : that.whales.models,
-					  headline :'Top Contributors To All Candidates in This Election'});
-    }
-    if (this.whales.loaded)
-      doWhalesView(this);
-    else
-      this.listenTo(this.whales, 'sync', function() {
-	console.log('Received whale data!');
-	doWhalesView(this);
-      });
-
-    doMultiView = function (that) {
-      new OpenDisclosure.MultiplesView({el : '#multiples',
-				       collection: that.multiples.models,
-				       headline:'Contributors To More Than One Mayoral Candidate'});
-    };
-    if (this.multiples.loaded)
-      doMultiView(this);
-    else
-      this.listenTo(this.multiples, 'sync', function() {
-        console.log('Received multiples data!');
-        doMultiView(this);
-      });
+    new OpenDisclosure.Views.Home({
+      el: '.main'
+    });
   },
 
   about: function () {
-    new OpenDisclosure.AboutView();
+    new OpenDisclosure.Views.About({
+      el: '.main'
+    });
   },
 
   rules: function () {
-    new OpenDisclosure.RulesView();
+    new OpenDisclosure.Views.Rules({
+      el: '.main'
+    });
   },
 
   candidate: function(name){
-    $('.main').empty();
-    $('<div id="candidate"></div>').appendTo('.main');
-
-    doView = function(that) {
-      var candidate = that.candidates.find(function(c) { return c.linkPath().indexOf(name) >= 0; });
-      new OpenDisclosure.CandidateView({el: '#candidate', model: candidate});
-    }
-
-    if (this.candidates.loaded) {
-      doView(this);
-    } else {
-      this.listenTo(this.candidates, 'sync', function() {
-        doView(this);
-      });
-    }
+    new OpenDisclosure.Views.Candidate({
+      el: '.main',
+      candidateName: name
+    });
   },
 
   contributor : function(id) {
-    $('.main').empty();
-    $('<div id = "contirbutor"></div> \
-    ').appendTo('.main');
-    var contrib = new OpenDisclosure.Contributors({contributor: id} );
-    this.listenTo(contrib, 'sync', function() {
-      new OpenDisclosure.ContributorView({el: '#contirbutor', collection: contrib.models});
+    new OpenDisclosure.Views.Contributor({
+      el: '.main',
+      contributorId: id
     });
-  }
+  },
 
-});
+  employer : function(employer_name, employer_id, recipient_id) {
+    $('.main').html('<div id="employer"></div>');
+    var contrib = new OpenDisclosure.Employees({employer_id: employer_id, recipient_id: recipient_id } );
 
-$(function(){
-  app = new OpenDisclosure.App();
-  Backbone.history.start({ pushState: true });
+    this.listenTo(contrib, 'sync', function() {
+      new OpenDisclosure.ContributorsView({
+        el: '#employer',
+        collection: contrib,
+        headline: employer_name
+      });
+    });
+  },
 
-  $(document).click(function(e) {
+  search : function() {
+    new OpenDisclosure.Views.Contributor({
+      el: '.main',
+      search: location.search.slice(location.search.search("name=") + 5)
+    });
+  },
+
+  handleLinkClicked: function(e) {
     var $link = $(e.target).closest('a');
 
     if ($link.length) {
@@ -126,10 +95,16 @@ $(function(){
 
       if (externalUrl || dontIntercept) {
         return;
+      } else {
+        e.preventDefault();
       }
 
-      app.navigate(linkUrl.replace(/^\//,''), { trigger: true });
-      e.preventDefault();
+      this.navigate(linkUrl.replace(/^\//,''), { trigger: true });
     }
-  });
+  }
+});
+
+$(function() {
+  var app = new OpenDisclosure.App();
+  $(document).click(app.handleLinkClicked.bind(app));
 });

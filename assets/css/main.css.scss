@@ -111,12 +111,22 @@ h2.mayor2014 {
 
 /* ------------------- SIDEBAR -------------------- */
 
-.sidebar {
-  background-color: rgba(255, 255, 255, 0.5);
-  border-top: 2px solid #fff;
+.sidebar-container {
+  box-sizing: border-box;
   font-size: 16px;
   list-style: none;
-  padding: 0;
+  padding: 0 20px 0 0;
+  position: absolute;
+
+  &.affix {
+    position: fixed;
+    top: 15px;
+  }
+
+  .sidebar {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-top: 2px solid #fff;
+  }
 }
 
 .sidebar a{
@@ -143,7 +153,7 @@ h2.mayor2014 {
 
 }
 
-.sidebar .nav>li>a:hover, 
+.sidebar .nav>li>a:hover,
 .sidebar .nav>li>a:active {
 text-decoration: none;
 background-color: $color-gold-highlight;
@@ -158,11 +168,6 @@ background-color: $color-gold-highlight;
 .main section{
   border-bottom: 2px solid #539137;
   padding: 15px 0;
-}
-
-#charts div {
-  padding-top:10px;
-  border-bottom: 2px solid #539137;
 }
 
 /* ------------------- FOOTER -------------------- */
@@ -193,7 +198,7 @@ background-color: $color-gold-highlight;
     line-height: 18px;
     padding: 4px 8px 8px 8px;
   }
-  
+
   .mayor-info {
     font-size: 12px;
     line-height: 16px;
@@ -275,6 +280,13 @@ div#candidate {
       padding: 0 8px;
     }
 
+    .fa-twitter{
+      vertical-align: middle;
+      color: #555555;
+      font-size: 14px;
+      margin-right: 4px;
+    }
+
     .sources{
       font-size: 11px;
       line-height: 15px;
@@ -298,7 +310,7 @@ div#candidate {
   color: white;
   font-family: 'Crete Round', serif;
   line-height: 20px;
-  width: 100%; 
+  width: 100%;
   padding: 0;
   margin: 0;
 

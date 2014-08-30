@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH << '.'
+require 'backend/environment.rb'
+require 'pry'
+
+binding.pry

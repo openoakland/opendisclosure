@@ -23,7 +23,9 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         .scale(s)
         .translate(t));
 
-    chart.svg = d3.select(el).append("svg")
+    chart.svg = d3.select(this.el).append("div")
+      .attr("id", "svg-wrapper")
+    .append("svg")
       .attr("id", "map")
       .attr("width", chart.dimensions.width)
       .attr("height", chart.dimensions.height)
@@ -36,6 +38,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         chart.drawScale();
         chart.drawLegend();
         chart.clickListener();
+        chart.drawTooltip();
         chart.click(d3.select('.legend.overview'), 'Overview');
       });
     });
@@ -56,12 +59,15 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
       // Add contributions by zip code
       if (!amounts[zip]) {
-        amounts[zip] = {};
+        amounts[zip] = {
+          total: 0
+        };
       }
       if (!amounts[zip][candidate]) {
         amounts[zip][candidate] = 0;
       }
       amounts[zip][candidate] += amount;
+      amounts[zip]["total"] += amount;
 
       // Create a list of all candidates
       if (!candidates[candidate]) {
@@ -70,14 +76,16 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     }
 
     _.map(amounts, function(val, zip) {
-      var candidate_list = _.map(val, function(donation, candidate) {
+      var candidate_list = _.map(val, function(contribution, candidate) {
         return {
           'name': candidate,
-          'total': donation
+          'total': contribution
         }
       });
       var max = _.max(candidate_list, function(candidate) {
-        return candidate.total;
+        if (candidate.name != "total")
+          { return candidate.total; }
+        else { return 0; }
       });
       amounts[zip]['max'] = max.name;
     });
@@ -108,14 +116,37 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         .attr("id", function(d) {
           zip = d.properties.ZIP;
         })
-        .attr("d", chart.path);
-
-      zips.append("svg:title")
-        .text(function(d) {
-          return d.properties.ZIP + ": " + d.properties.PO_NAME;
-        });
+        .attr("d", chart.path)
 
       done(chart.zipUpdater);
+    });
+  },
+
+  addOverviewTooltip: function(d, path, chart) {
+    var x = d3.mouse(path)[0];
+    var y = d3.mouse(path)[1];
+    var city = chart.toTitleCase(d.properties.PO_NAME);
+    var zip = d.properties.ZIP;
+    var total = 0;
+    var leader_string = ""
+    if (chart.data.amounts[zip]) {
+      total = chart.data.amounts[zip]["total"];
+      var leader = chart.data.amounts[zip]["max"];
+      var percent_to_leader = Math.round(chart.data.amounts[zip][leader]/total*100)
+      leader_string = "<div>" + percent_to_leader + "% to " + leader + "</div>";
+    }
+    d3.select("#zip-bubble-chart #tooltip")
+      .classed("hidden", false)
+      .style("left", x + "px")
+      .style("top", y+20 + "px")
+      .html("<div>" + zip + " (" + city + ")</div>" +
+        "<div>Total: $" + total + "</div>" +
+        leader_string);
+  },
+
+  toTitleCase: function(str) {
+    return str.replace(/\w\S*/g, function(txt){
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
   },
 
@@ -332,6 +363,10 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       "</div>");
   },
 
+  drawTooltip: function() {
+    $('#svg-wrapper').prepend('<div id="tooltip" class="hidden">TOOLTIP!</div>');
+  },
+
   clickListener: function() {
     var chart = this;
 
@@ -376,6 +411,15 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       $('.overview.description').fadeIn();
     });
     $('g#scale').fadeOut();
+
+    d3.selectAll("#zip-bubble-chart path.zip")
+      .on('mousemove', function(d) {
+        chart.addOverviewTooltip(d, this, chart);
+      })
+      .on('mouseleave', function(d) {
+        d3.select("#zip-bubble-chart #tooltip")
+          .classed("hidden", true);
+      });
   },
 
   clickCandidate: function(clicked, label) {
@@ -397,6 +441,15 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     $('.overview.description').fadeOut(function() {
       $('.candidate.description').fadeIn();
     });
+
+    d3.selectAll("#zip-bubble-chart path.zip")
+      .on('mousemove', function(d) {
+        return false;
+      })
+      .on('mouseleave', function(d) {
+        d3.select("#zip-bubble-chart #tooltip")
+          .classed("hidden", true);
+      });
   },
 
   setOverviewHover: function() {

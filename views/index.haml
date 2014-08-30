@@ -6,6 +6,7 @@
     %title Open Disclosure
     %meta{content: "width=device-width", name: "viewport"}
     %link{ rel: 'stylesheet', href: '//fonts.googleapis.com/css?family=Open+Sans:400,700|Crete+Round' }
+    %link{ rel: 'stylesheet', href: '//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css' }
     %meta{ name: 'google-site-verification', content: 'yXhjc2AToqKzxrNc5p03ZIaaNiid07AB0_-VoNFP-pw' }
     = stylesheet_tag '//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'
     -#
@@ -36,8 +37,8 @@
 
     .container
       .row
-        %aside.col-sm-2.sidebar{ role: 'navigation'}
-          %ul.nav.nav-sidebar
+        %aside.col-sm-2.sidebar-container{ role: 'navigation', data: { spy: 'affix', 'offset-top' => 185 } }
+          %ul.nav.nav-sidebar.sidebar
             %li
               %a{ href: '/about' } About Us
             %li
@@ -54,7 +55,7 @@
                   %li
                     %a{ href: c.link_path }= c.short_name
 
-        .main.col-sm-10
+        .main.col-sm-offset-2.col-sm-10
           %span Loading data...
           %script{ type: 'text/template', id: 'mayoral-table-template' }
             :plain
@@ -66,8 +67,8 @@
                     <th id='mayoral-table-name-column'></th>
                     <th class='mayoral-table-head bold'>Total Raised</th>
                     <th class='mayoral-table-head'>Number of itemized contributions</th>
-                    <th class='mayoral-table-head'>Percentage from outside Oakland</th>
-                    <th class='mayoral-table-head'>Percentage from small donations*</th>
+                    <th class='mayoral-table-head'>Percentage of # of itemized contributions from outside Oakland</th>
+                    <th class='mayoral-table-head'>Percentage from small contributions*</th>
                     <th class='mayoral-table-head'>Average of itemized contributions</th>
                   </tr>
                 </thead>
@@ -119,6 +120,13 @@
     %script{src: "https://www.google.com/jsapi"}
     :javascript
       google.load('visualization', '1.0', {'packages':['corechart']});
+
+      window.OpenDisclosure = {};
+      window.OpenDisclosure.Views = {};
+      window.OpenDisclosure.Data = {};
+      window.OpenDisclosure.BootstrappedData = {
+        candidates: #{candidate_json}
+      }
 
     -#
       Include the assets/js/application.js manifest. If you want to include

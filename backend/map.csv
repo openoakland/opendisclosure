@@ -483,7 +483,7 @@ id,emp1,emp2,type
 482,California Supreme Court,California Supreme Court,NULL
 483,California Tax Solutions,California Tax Solutions,
 484,California Teacher's Association,California Teacher's Association,Union
-485,California Teacher's Association,California Teachers Association,
+485,California Teacher's Association,California Teachers Association,Union
 486,California Women Lead,California Women Lead,
 487,Californians against Waste,Californians against Waste,NULL
 488,Califrance Corp.,Califrance Corp.,
@@ -1283,7 +1283,7 @@ id,emp1,emp2,type
 1282,ILWU,ILWU,Union
 1283,ILWU Local 10,ILWU Local 10,Union
 1284,ILWU/Pacific Maritime Assn,ILWU/Pacific Maritime Assn,Union
-1285,ILWU/PMA,ILWU/PMA,Union
+1285,ILWU/Pacific Maritime Assn,ILWU/PMA,Union
 1286,Imergy Power Systems,Imergy Power Systems,
 1287,Impaq International,Impaq International,
 1288,In Line Chriopractic Sports & Wellness Center,In Line Chriopractic Sports & Wellness Center,
@@ -1908,7 +1908,7 @@ id,emp1,emp2,type
 1907,One Market Restaurant,One Market Restaurant,
 1908,One Toyota of Oakland,One Toyota of Oakland,NULL
 1909,OP/GYN Partners for Health,OP/GYN Partners for Health,
-1910,OPA,OPA,NULL
+1910,Oakland's Promise Alliance,OPA,NULL
 1911,Operating Engineers Union No. 3,Operating Engineers Union No. 3,Union
 1912,Operation Wounded Minds.org,Operation Wounded Minds.org,
 1913,Opower,Opower,
@@ -2871,7 +2871,7 @@ id,emp1,emp2,type
 2870,Viz Glass,Viz Glass,NULL
 2871,VLP,VLP,NULL
 2872,VN Realty,VN Realty,
-2873,VNA (Visiting Nurse Association) and Hospice,VNA (Visiting Nurse Association) and Hospice,
+2873,VNA (Visiting Nurse Association) and Hospice,VNA (Visiting Nurse Association) and Hospice,Union
 2874,Voelia ES Technical Solutions,Voelia ES Technical Solutions,
 2875,VOGL Investment Partners,VOGL Investment Partners,NULL
 2876,Voices of Hope,Voices of Hope,NULL
@@ -2976,3 +2976,15 @@ id,emp1,emp2,type
 2975,Zentner and Zentner,Zentner and Zentner,NULL
 2976,ZeZeN Advisors,ZeZeN Advisors,NULL
 2977,Zhi Guo Jiang,Zhi Guo Jiang,NULL
+2978,Homemaker,Stay at home mom,
+2979,Homemaker,at-home mom,
+2980,Homemaker,stay-at-home mom,
+2981,Homemaker,homemaker,
+2982,Unemployed,Not Employed,
+2983,Homemaker,Stay at home parent,
+2984,Homemaker,mom,
+2985,Homemaker,Housewife,
+2986,Homemaker,housewife,
+2987,Homemaker,Stay at home Mom,
+2988,Homemaker,mother,
+2989,Homemaker,Mother,

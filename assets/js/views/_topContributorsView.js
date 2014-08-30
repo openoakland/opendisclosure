@@ -1,8 +1,10 @@
 OpenDisclosure.TopContributorsView = Backbone.View.extend({
   template: _.template(' \
     <div class="col-sm-6">\
-    <span class="col-sm-8"><%= contrib %></span>\
-    <span class="col-sm-4"><%= OpenDisclosure.friendlyMoney(amount) %> </span>\
+      <a href="<%= employerLinkPath() %>">\
+	<span class="col-sm-8"><%= attributes.contrib %></span>\
+	<span class="col-sm-4"><%= OpenDisclosure.friendlyMoney(attributes.amount) %> </span>\
+      </a>\
     </div>'),
 
   initialize: function() {
@@ -16,7 +18,7 @@ OpenDisclosure.TopContributorsView = Backbone.View.extend({
     .appendTo(this.$el);
     var that = this;
     _.each(this.collection, function(c){
-      that.$el.find('.topContributions').append(that.template(c.attributes));
+      that.$el.find('.topContributions').append(that.template(c));
     });
   },
 

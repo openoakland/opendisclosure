@@ -52,6 +52,7 @@ class Party < ActiveRecord::Base
   CANDIDATE_INFO = {
     PARKER => {
       name: 'Bryan Parker',
+      declared: '2013-05-06',
       profession: 'Health Care and Technology Professional',
       party: 'Democrat',
       twitter:'@bryanparker2014',
@@ -82,7 +83,8 @@ class Party < ActiveRecord::Base
 
     QUAN => {
       name: 'Jean Quan',
-      profession: 'Incumbant Oakland Mayor',
+      declared: '2013-02-04',
+      profession: 'Incumbent Oakland Mayor',
       party: 'Democrat',
       twitter:'@jeanquan',
       bio: "Jean is the incumbent in the 2014 Oakland Mayoral election. She previously served as City Council member for District 4 from 2002 to 2010. Prior to her time in office, Jean was on the Oakland School Board for 12 years and acted as President from 1996 to 2002. Jean's husband, Dr. Floyd Huen, is a doctor of internal medicine for Alameda County.",
@@ -107,6 +109,7 @@ class Party < ActiveRecord::Base
     },
     SCHAAF => {
       name: 'Libby Schaaf',
+      declared: '2013-12-02',
       profession: 'Councilmember for District 4',
       party: 'Democrat',
       twitter: '@libbyformayor',
@@ -141,6 +144,7 @@ class Party < ActiveRecord::Base
 
     TUMAN => {
       name: 'Joe Tuman',
+      declared: '2013-07-24',
       profession: 'University Professor',
       party: 'Independent',
       twitter:'@joe4mayor',
@@ -167,6 +171,7 @@ class Party < ActiveRecord::Base
 
     RUBY => {
       name: 'Courtney Ruby',
+      declared: '2014-02-26',
       profession: 'City Auditor',
       party: 'Unknown',
       twitter:'@Ruby4Oakland',
@@ -193,6 +198,7 @@ class Party < ActiveRecord::Base
 
     KAPLAN => {
       name: 'Rebecca Kaplan',
+      declared: '2014-06-04',
       profession: 'Oakland City Council President Pro Tem',
       party: 'Democrat',
       twitter: '@kaplan4oakland',
@@ -214,6 +220,7 @@ class Party < ActiveRecord::Base
     },
     SIEGEL => {
       name: 'Dan Siegel',
+      declared: '2014-01-09',
       profession: 'Civil-Rights Attorney',
       party: 'Unknown',
       twitter:'@DanMSiegel',
@@ -258,7 +265,11 @@ class Party < ActiveRecord::Base
   # These fields aren't persisted in the database, but instead loaded from the
   # at the top of this file
 
-  attr_accessor :profession, :party, :twitter, :bio, :sources
+  attr_accessor :declared, :profession, :party, :twitter, :bio, :sources
+
+  def declared
+    CANDIDATE_INFO.fetch(committee_id, {})[:declared] || @declared
+  end
 
   def profession
     CANDIDATE_INFO.fetch(committee_id, {})[:profession] || @profession

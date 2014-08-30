@@ -273,4 +273,3 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
       .attr("height", legend.offset)
   }
 })
-
