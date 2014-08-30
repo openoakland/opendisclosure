@@ -24,6 +24,10 @@
   stroke: #bfbfbf;
 }
 
+.zip.hover {
+	fill: #f0f0f0;
+}
+
 .city {
 	fill: none;
 	stroke: #4c4c4c;

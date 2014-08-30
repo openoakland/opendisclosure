@@ -3,7 +3,6 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     var chart = this;
 
     chart.data = this.processData(this.collection);
-    console.log(chart.data);
 
     chart.color = d3.scale.ordinal()
       .domain(chart.data.candidates)
@@ -115,7 +114,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         .enter().append("svg:path")
         .attr("class", "zip")
         .attr("id", function(d) {
-          zip = d.properties.ZIP;
+          return "zip-" + d.properties.ZIP;
         })
         .attr("d", chart.path)
 
@@ -142,6 +141,22 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       .style("top", y+20 + "px")
       .html("<div>" + zip + " (" + city + ")</div>" +
         "<div>Total: $" + total + "</div>" + 
+        leader_string);
+  },
+
+  addCandidateTooltip: function(d, path, chart, candidate) {
+    var x = d3.mouse(path)[0];
+    var y = d3.mouse(path)[1];
+    var city = chart.toTitleCase(d.properties.PO_NAME);
+    var zip = d.properties.ZIP;
+    if (chart.data.amounts[zip] && chart.data.amounts[zip][candidate]) {
+      leader_string = "$" + chart.data.amounts[zip][candidate] + " to " + candidate;
+    }
+    d3.select(chart.el).select("#tooltip")
+      .classed("hidden", false)
+      .style("left", x + "px")
+      .style("top", y+20 + "px")
+      .html("<div>" + zip + " (" + city + ")</div>" +
         leader_string);
   },
 
@@ -443,11 +458,26 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       $('.candidate.description').fadeIn();
     });
 
-    chart.svg.selectAll("path.zip")
+    chart.svg.selectAll("#circles circle")
       .on('mousemove', function(d) {
-        return false;
+        chart.svg.selectAll(".zip#zip-" + d.properties.ZIP)
+          .classed("hover", true);
+        chart.addCandidateTooltip(d, this, chart, label);
       })
       .on('mouseleave', function(d) {
+        chart.svg.selectAll(".zip#zip-" + d.properties.ZIP)
+          .classed("hover", false);
+        d3.select(chart.el).select("#tooltip")
+          .classed("hidden", true);
+      });
+
+    chart.svg.selectAll("path.zip")
+      .on('mousemove', function(d) {
+        d3.select(this).classed("hover", true)
+        chart.addCandidateTooltip(d, this, chart, label);
+      })
+      .on('mouseleave', function(d) {
+        d3.select(this).classed("hover", false)
         d3.select(chart.el).select("#tooltip")
           .classed("hidden", true);
       });
