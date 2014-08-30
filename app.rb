@@ -68,7 +68,7 @@ class OpenDisclosureApp < Sinatra::Application
       .includes(:contributor, :recipient).order(:date).reverse_order.to_json(fields)
   end
 
-  get '/api/contributions' do
+  get '/api/contributions/:id' do |id|
     cache_control :public
     last_modified Import.last.import_time
 
@@ -83,7 +83,7 @@ class OpenDisclosureApp < Sinatra::Application
     }
 
     Contribution
-      .where(recipient_id: Party.mayoral_candidates.to_a)
+      .where(recipient_id: id)
       .includes(:recipient, :contributor).order(:date).reverse_order
       .to_json(fields)
   end
