@@ -163,7 +163,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
   updateZips: function(selection) {
     var chart = this;
-    var zips = d3.selectAll('.zip');
+    var zips = chart.svg.selectAll('.zip');
     if ($(selection).select('text').text() == 'Overview') {
       zips.attr('class', function(d) {
         var leader = chart.data.amounts[d.properties.ZIP];
@@ -222,7 +222,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
   // Update the chart when a user clicks on a candidate's name
   updateBubbles: function(selection) {
     var chart = this;
-    var circles = d3.selectAll("svg circle")
+    var circles = chart.svg.selectAll("svg circle")
     candidate = $(selection).select('text').text();
     circles.attr('class', chart.color(candidate))
       .transition()
@@ -230,7 +230,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
   },
 
   clearBubbles: function() {
-    d3.selectAll("g#circles circle").attr('r', 0);
+    this.svg.selectAll("g#circles circle").attr('r', 0);
   },
 
   radius: function(d) {
