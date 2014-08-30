@@ -13,7 +13,7 @@ OpenDisclosure.TopContributorsView = Backbone.View.extend({
 
   render: function() {
     this.$el.empty();
-    $('<h2>Top Contributions (grouped by Employer/Business)</h2>\
+    $('<h2>Top Contributions (employees grouped with their employer)</h2>\
       <div class="topContributions clearfix"></div>')
     .appendTo(this.$el);
     var that = this;

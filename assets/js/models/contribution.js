@@ -20,8 +20,7 @@ OpenDisclosure.Contribution = Backbone.Model.extend({
 
 OpenDisclosure.EmployerContribution = Backbone.Model.extend({
   employerLinkPath : function () {
-    return '/employer/' + this.attributes.contrib + '/' +
-	    this.attributes.employer_id + '/' + this.attributes.recipient_id;
+    return '/employer/' + this.attributes.contrib + '/' + this.attributes.employer_id;
   }
 });
 
