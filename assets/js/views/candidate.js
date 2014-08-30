@@ -63,6 +63,8 @@ OpenDisclosure.Views.Candidate = Backbone.View.extend({
 
     if (candidate) {
       this.model = candidate;
+      this.contributions = new OpenDisclosure.Contributions([], { candidateId: candidate.attributes.id });
+      this.contributions.fetch();
       this.render();
     }
   },
@@ -80,14 +82,14 @@ OpenDisclosure.Views.Candidate = Backbone.View.extend({
       this.renderTopContributors();
     }
 
-    if (OpenDisclosure.Data.contributions.length > 0) {
+    if (this.contributions.length > 0) {
       this.renderAllContributions();
     }
 
     //Listen for new data
     this.listenTo(OpenDisclosure.Data.categoryContributions, 'sync', this.renderCategoryChart);
     this.listenTo(OpenDisclosure.Data.employerContributions, 'sync', this.renderTopContributors);
-    this.listenTo(OpenDisclosure.Data.contributions, 'sync', this.renderAllContributions);
+    this.listenTo(this.contributions, 'sync', this.renderAllContributions);
   },
 
   renderCategoryChart: function() {
@@ -121,14 +123,10 @@ OpenDisclosure.Views.Candidate = Backbone.View.extend({
 
   renderAllContributions: function(){
     var candidateId = this.model.attributes.id;
-    var filteredContributions = _.filter(OpenDisclosure.Data.contributions.models, function(c) {
-      return c.attributes.recipient.id == candidateId;
-    });
-
 
     new OpenDisclosure.ContributorsView({
       el: "#contributors",
-      collection: new OpenDisclosure.Contributions(filteredContributions),
+      collection: this.contributions,
       headline: 'All Contributions'
     });
   },

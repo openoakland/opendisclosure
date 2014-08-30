@@ -15,7 +15,6 @@ OpenDisclosure.App = Backbone.Router.extend({
     // We should try to minimize the amount of data we need to fetch here,
     // since each fetch makes an HTTP request.
     OpenDisclosure.Data = {
-      contributions: new OpenDisclosure.Contributions(),
       employerContributions: new OpenDisclosure.EmployerContributions(),
       categoryContributions: new OpenDisclosure.CategoryContributions(),
       whales: new OpenDisclosure.Whales(),

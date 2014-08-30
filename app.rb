@@ -69,6 +69,7 @@ class OpenDisclosureApp < Sinatra::Application
   end
 
   get '/api/contributions/:type/?:id?' do |type, id|
+    # TODO: Figure out how to cache this
     # cache_control :public
     # last_modified Import.last.import_time
 
@@ -102,8 +103,13 @@ class OpenDisclosureApp < Sinatra::Application
           end
         .to_json
     when 'candidate'
-      # TODO: Fill in with the merge commit from @mikeubell
+      Contribution
+        .where(recipient_id: id)
+        .includes(:recipient, :contributor)
+        .order(date: :desc)
+        .to_json(fields)
     else
+      # TODO: Remove this once we no longer hit /api/contributions
       Contribution
         .where(recipient_id: Party.mayoral_candidates.to_a)
         .includes(:recipient, :contributor)

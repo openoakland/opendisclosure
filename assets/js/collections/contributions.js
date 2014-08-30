@@ -1,6 +1,11 @@
 OpenDisclosure.Contributions = Backbone.Collection.extend({
-  url: '/api/contributions',
-  model: OpenDisclosure.Contribution
+  url: function() {
+    return '/api/contributions/candidate/' + this.options.candidateId;
+  },
+  model: OpenDisclosure.Contribution,
+  initialize: function(models, options) {
+    this.options = options;
+  }
 });
 OpenDisclosure.CategoryContributions = Backbone.Collection.extend({
   url: '/api/category_contributions',
