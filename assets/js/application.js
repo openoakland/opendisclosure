@@ -3,6 +3,7 @@
 //= require vendor/modernizr-2.6.2-respond-1.1.0.min
 //= require vendor/accounting.min
 //= require vendor/GoogleChart
+//= require vendor/moment
 
 //= require config
 

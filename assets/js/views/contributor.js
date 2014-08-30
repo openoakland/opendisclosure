@@ -1,9 +1,10 @@
 OpenDisclosure.Views.Contributor = Backbone.View.extend({
   template: _.template(' \
     <div id="contirbutor">\
-    <div class="col-sm-6 contribution"><a href="<%= contribution.recipientLinkPath() %>">\
-    <span class="col-sm-8"><%= contribution.attributes.recipient.name %></span>\
-    <span class="col-sm-4"><%= OpenDisclosure.friendlyMoney(contribution.attributes.amount) %> </span>\
+    <div class="col-sm-12 contribution"><a href="<%= contribution.recipientLinkPath() %>">\
+    <span class="col-sm-6"><%= contribution.attributes.recipient.name %></span>\
+    <span class="col-sm-2"><%= OpenDisclosure.friendlyMoney(contribution.attributes.amount) %> </span>\
+    <span class="col-sm-4"><%= moment(contribution.attributes.date).format("MMM-DD-YY") %></span>\
                        </a></div></div>'),
 
     header: _.template('\
@@ -29,20 +30,23 @@ OpenDisclosure.Views.Contributor = Backbone.View.extend({
   },
 
   render: function() {
+    this.$el.html('<div id="search"></div>\
+	     <div class="data"></div>');
+
+    new OpenDisclosure.Search({
+      el : "#search"
+    });
+
     if (this.collection.length > 0) {
       if (this.options.search) {
 	this.collection.sort();
       }
       this.name = this.contributorName();
-      this.$el.html(this.header({ contributorName: this.name }));
+      this.$('.data').html(this.header({ contributorName: this.name }));
       this.$('.contributions').html(this.collection.map(this.renderContribution));
     } else {
-      this.$el.empty();
+      this.$('.data').empty();
     }
-
-    new OpenDisclosure.Search({
-      el : this.$el
-    });
 
   },
 

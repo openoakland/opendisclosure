@@ -65,7 +65,7 @@ class OpenDisclosureApp < Sinatra::Application
     party         = Party.where("lower(name) like ?", search)
     Contribution
       .where(contributor_id: party)
-      .includes(:contributor, :recipient).to_json(fields)
+      .includes(:contributor, :recipient).order(:date).reverse_order.to_json(fields)
   end
 
   get '/api/contributions' do
@@ -84,7 +84,7 @@ class OpenDisclosureApp < Sinatra::Application
 
     Contribution
       .where(recipient_id: Party.mayoral_candidates.to_a)
-      .includes(:recipient, :contributor)
+      .includes(:recipient, :contributor).order(:date).reverse_order
       .to_json(fields)
   end
 

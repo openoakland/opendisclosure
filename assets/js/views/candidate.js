@@ -125,6 +125,7 @@ OpenDisclosure.Views.Candidate = Backbone.View.extend({
       return c.attributes.recipient.id == candidateId;
     });
 
+
     new OpenDisclosure.ContributorsView({
       el: "#contributors",
       collection: new OpenDisclosure.Contributions(filteredContributions),
