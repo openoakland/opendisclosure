@@ -1,11 +1,11 @@
 
-div#dailyChart path {
+section#dailyChart path {
     /*stroke: steelblue;*/
     stroke-width: 3;
     fill: none;
 }
 
-div#dailyChart .axis path,
+section#dailyChart .axis path,
 .axis line {
   fill: none;
   stroke: #000;
@@ -13,23 +13,23 @@ div#dailyChart .axis path,
   shape-rendering: crispEdges;
 }
 
-div#dailyChart {
+section#dailyChart {
   margin-top: 30px;
   /*margin-left: 300px;*/
   margin-bottom: 30px;
 }
 
-div#dailyChart .q0-12{stroke: #000000}
-div#dailyChart .q1-12{stroke: #0087E5}
-div#dailyChart .q2-12{stroke: #26D5F5}
-div#dailyChart .q3-12{stroke: #A8E938}
-div#dailyChart .q4-12{stroke: #FED35E}
-div#dailyChart .q5-12{stroke: #FD2D2D}
-div#dailyChart .q6-12{stroke: #E1266C}
-div#dailyChart .q7-12{stroke: #DA9EE7}
-div#dailyChart .q8-12{stroke: #0A588f}
-div#dailyChart .q9-12{stroke: #8E34F4}
-div#dailyChart .q10-12{stroke: #2FB788}
-div#dailyChart .q11-12{stroke: #BA0012}
-div#dailyChart .q12-12{stroke: #B9A101}
-div#dailyChart .q13-12{stroke: #480A6A}
+section#dailyChart .q0-12{stroke: #000000}
+section#dailyChart .q1-12{stroke: #0087E5}
+section#dailyChart .q2-12{stroke: #26D5F5}
+section#dailyChart .q3-12{stroke: #A8E938}
+section#dailyChart .q4-12{stroke: #FED35E}
+section#dailyChart .q5-12{stroke: #FD2D2D}
+section#dailyChart .q6-12{stroke: #E1266C}
+section#dailyChart .q7-12{stroke: #DA9EE7}
+section#dailyChart .q8-12{stroke: #0A588f}
+section#dailyChart .q9-12{stroke: #8E34F4}
+section#dailyChart .q10-12{stroke: #2FB788}
+section#dailyChart .q11-12{stroke: #BA0012}
+section#dailyChart .q12-12{stroke: #B9A101}
+section#dailyChart .q13-12{stroke: #480A6A}
