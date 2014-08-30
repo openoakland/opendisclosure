@@ -22,14 +22,14 @@ OpenDisclosure.Views.Home = Backbone.View.extend({
       el : '#search'
     });
 
-    // TODO: This is commented out until it uses the data format returned by
-    // /api/contributions/zip
-    //
-    // new OpenDisclosure.ZipcodeChartView({
-    //   el : '#zipcodeChart',
-    //   collection : OpenDisclosure.Data.contributions,
-    //   base_height: 480
-    // });
+    OpenDisclosure.Data.zipContributions.done(function(data) {
+      new OpenDisclosure.ZipcodeChartView({
+        el : '#zipcodeChart',
+        collection : data,
+        base_height: 480
+      });
+    });
+      
 
     new OpenDisclosure.ContributorsView({
       el : '#topContributions',
