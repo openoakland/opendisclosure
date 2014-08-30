@@ -68,9 +68,9 @@ class OpenDisclosureApp < Sinatra::Application
       .includes(:contributor, :recipient).order(:date).reverse_order.to_json(fields)
   end
 
-  get '/api/contributions' do
-    cache_control :public
-    last_modified Import.last.import_time
+  get '/api/contributions/:type/?:id?' do |type, id|
+    # cache_control :public
+    # last_modified Import.last.import_time
 
     headers 'Content-Type' => 'application/json'
 
@@ -82,10 +82,34 @@ class OpenDisclosureApp < Sinatra::Application
       ],
     }
 
-    Contribution
-      .where(recipient_id: Party.mayoral_candidates.to_a)
-      .includes(:recipient, :contributor).order(:date).reverse_order
-      .to_json(fields)
+    case type
+    when 'zip'
+      Contribution
+        .joins(:recipient, :contributor)
+        .where(recipient_id: Party.mayoral_candidates.to_a)
+        .group('contributors_contributions.zip, parties.committee_id')
+        .pluck('contributors_contributions.zip, parties.committee_id, sum(contributions.amount)')
+        .each_with_object({}) do |(zip, committee_id, amount), hash|
+            candidate_name = Party::CANDIDATE_INFO[committee_id][:name]
+            hash[zip] ||= Hash.new(0)
+            hash[zip][candidate_name] += amount
+          end
+        .each do |zip, candidate_hash|
+            leader, _max = candidate_hash.max_by { |_candidate, amount| amount }
+            total        = candidate_hash.sum    { |_candidate, amount| amount }
+            candidate_hash['leader'] = leader
+            candidate_hash['total'] = total
+          end
+        .to_json
+    when 'candidate'
+      # TODO: Fill in with the merge commit from @mikeubell
+    else
+      Contribution
+        .where(recipient_id: Party.mayoral_candidates.to_a)
+        .includes(:recipient, :contributor)
+        .order(date: :desc)
+        .to_json(fields)
+    end
   end
 
   get '/api/employer_contributions' do
