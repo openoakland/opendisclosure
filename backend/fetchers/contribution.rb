@@ -27,14 +27,13 @@ class DataFetcher
                                   city: row['tran_city'],
                                   state: row['tran_state'],
                                   zip: row['tran_zip4'])
-                           .first_or_create(employer: row['tran_emp'],
-                                            occupation: row['tran_occ'])
+                           .first_or_initialize
+                           .tap { |p| p.update_attributes(employer: row['tran_emp'], occupation: row['tran_occ']) }
         when 'OTH'
           # contributor is "Other"
           Party::Other.where(name: row['tran_naml'])
-                      .first_or_create(city: row['tran_city'],
-                                       state: row['tran_state'],
-                                       zip: row['tran_zip4'])
+                      .first_or_initialize
+                      .tap { |p| p.update_attributes(city: row['tran_city'], state: row['tran_state'], zip: row['tran_zip4']) }
         end
 
       ::Contribution.create(
