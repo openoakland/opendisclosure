@@ -2,8 +2,9 @@ OpenDisclosure.App = Backbone.Router.extend({
   routes: {
     '': 'home',
     'about': 'about',
-    'rules': 'rules',
     'candidate/:id': 'candidate',
+    'faq':'faq',
+    'rules': 'rules',
     'contributor/:id': 'contributor',
     'employer/:employer_name/:employer_id/:recipient_id': 'employer',
     'search': 'search'
@@ -19,7 +20,7 @@ OpenDisclosure.App = Backbone.Router.extend({
       categoryContributions: new OpenDisclosure.CategoryContributions(),
       whales: new OpenDisclosure.Whales(),
       multiples: new OpenDisclosure.Multiples()
-    }
+    };
 
     // Every item in OpenDisclosure.Data is a Backbone.Collection, so they all
     // have a fetch method.
@@ -44,16 +45,16 @@ OpenDisclosure.App = Backbone.Router.extend({
     });
   },
 
-  rules: function () {
-    new OpenDisclosure.Views.Rules({
-      el: '.main'
-    });
-  },
-
   candidate: function(name){
     new OpenDisclosure.Views.Candidate({
       el: '.main',
       candidateName: name
+    });
+  },
+
+  rules: function () {
+    new OpenDisclosure.Views.Rules({
+      el: '.main'
     });
   },
 
@@ -81,6 +82,12 @@ OpenDisclosure.App = Backbone.Router.extend({
     new OpenDisclosure.Views.Contributor({
       el: '.main',
       search: location.search.slice(location.search.search("name=") + 5)
+    });
+  },
+
+  faq : function() {
+    new OpenDisclosure.Views.Faq({
+      el: '.main',
     });
   },
 
