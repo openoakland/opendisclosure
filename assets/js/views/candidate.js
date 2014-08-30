@@ -28,10 +28,10 @@ OpenDisclosure.Views.Candidate = Backbone.View.extend({
           </div>\
         </div>\
         <div class='col-sm-4'>\
-          <p>Percentage of small donors*: <%= candidate.pctSmallContributions() %></p>\
+          <p>Percentage of total contributions that are small contributions*: <%= candidate.pctSmallContributions() %></p>\
           <p>Personal funds loaned and contributed to campaign: <%= OpenDisclosure.friendlyMoney(candidate.get('self_contributions_total')) %></p>\
           <% if (candidate.get('summary') !== null) { %>\
-            <p>% of the total amount raised is personal funds: <%= OpenDisclosure.friendlyPct(candidate.get('self_contributions_total') / candidate.get('summary').total_contributions_received) %></p>\
+            <p>Percentage of total amount raised that is contributed from candidate's personal funds: <%= OpenDisclosure.friendlyPct(candidate.get('self_contributions_total') / candidate.get('summary').total_contributions_received) %></p>\
           <% } %>\
           <p>Declared candidacy: <%= candidate.get('declared') %> </p>\
           <p>Data last updated: <%= candidate.get('summary').last_summary_date %> </p>\
