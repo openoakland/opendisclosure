@@ -3,6 +3,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     var chart = this;
 
     chart.data = this.processData(this.collection);
+    console.log(chart.data);
 
     chart.color = d3.scale.ordinal()
       .domain(chart.data.candidates)
@@ -122,42 +123,37 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     });
   },
 
-  addOverviewTooltip: function(d, path, chart) {
-    var x = d3.mouse(path)[0];
-    var y = d3.mouse(path)[1];
-    var city = chart.toTitleCase(d.properties.PO_NAME);
+  overviewTooltip: function(d, path, chart) {
     var zip = d.properties.ZIP;
-    var total = 0;
-    var leader_string = ""
+    var content = "<div>Total: $0</div>" // Default content
     if (chart.data.amounts[zip]) {
-      total = chart.data.amounts[zip]["total"];
+      var total = chart.data.amounts[zip]["total"];
       var leader = chart.data.amounts[zip]["max"];
       var percent_to_leader = Math.round(chart.data.amounts[zip][leader]/total*100);
-      leader_string = "<div>" + percent_to_leader + "% to " + leader + "</div>";
+      content = "<div>Total: $" + total + "</div>" +
+        "<div>" + percent_to_leader + "% to " + leader + "</div>";
     }
-    d3.select(chart.el).select("#tooltip")
-      .classed("hidden", false)
-      .style("left", x + "px")
-      .style("top", y+20 + "px")
-      .html("<div>" + zip + " (" + city + ")</div>" +
-        "<div>Total: $" + total + "</div>" + 
-        leader_string);
+    chart.setTooltip(d, path, chart, content);
   },
 
-  addCandidateTooltip: function(d, path, chart, candidate) {
-    var x = d3.mouse(path)[0];
-    var y = d3.mouse(path)[1];
+  candidateTooltip: function(d, path, chart, candidate) {
+    var zip = d.properties.ZIP;
+    var content = "$0 to " + candidate; // Default content
+    if (chart.data.amounts[zip] && chart.data.amounts[zip][candidate]) {
+      content = "$" + chart.data.amounts[zip][candidate] + " to " + candidate;
+    }
+    chart.setTooltip(d, path, chart, content);
+  },
+
+  setTooltip: function(d, path, chart, content) {
     var city = chart.toTitleCase(d.properties.PO_NAME);
     var zip = d.properties.ZIP;
-    if (chart.data.amounts[zip] && chart.data.amounts[zip][candidate]) {
-      leader_string = "$" + chart.data.amounts[zip][candidate] + " to " + candidate;
-    }
     d3.select(chart.el).select("#tooltip")
       .classed("hidden", false)
-      .style("left", x + "px")
-      .style("top", y+20 + "px")
+      .style("left", d3.mouse(path)[0] + "px")
+      .style("top", d3.mouse(path)[1] + 20 + "px")
       .html("<div>" + zip + " (" + city + ")</div>" +
-        leader_string);
+        content);
   },
 
   toTitleCase: function(str) {
@@ -430,7 +426,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
     chart.svg.selectAll("path.zip")
       .on('mousemove', function(d) {
-        chart.addOverviewTooltip(d, this, chart);
+        chart.overviewTooltip(d, this, chart);
       })
       .on('mouseleave', function(d) {
         d3.select(chart.el).select("#tooltip")
@@ -462,7 +458,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       .on('mousemove', function(d) {
         chart.svg.selectAll(".zip#zip-" + d.properties.ZIP)
           .classed("hover", true);
-        chart.addCandidateTooltip(d, this, chart, label);
+        chart.candidateTooltip(d, this, chart, label);
       })
       .on('mouseleave', function(d) {
         chart.svg.selectAll(".zip#zip-" + d.properties.ZIP)
@@ -474,7 +470,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     chart.svg.selectAll("path.zip")
       .on('mousemove', function(d) {
         d3.select(this).classed("hover", true)
-        chart.addCandidateTooltip(d, this, chart, label);
+        chart.candidateTooltip(d, this, chart, label);
       })
       .on('mouseleave', function(d) {
         d3.select(this).classed("hover", false)
