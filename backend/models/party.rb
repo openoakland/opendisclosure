@@ -518,7 +518,7 @@ class Party < ActiveRecord::Base
     return nil unless defined?(OpenDisclosureApp)
 
     last_name = short_name.split.last
-    OpenDisclosureApp.image_path(last_name + '.png')
+    OpenDisclosureApp.image_path(last_name + '.jpg')
   end
 
   def link_path
