@@ -40,10 +40,6 @@
       .row
         %aside.col-sm-2.sidebar-container{ role: 'navigation', data: { spy: 'affix', 'offset-top' => 185 } }
           %ul.nav.nav-sidebar.sidebar
-            %li
-              %a{ href: '/about' } About Us
-            %li
-              %a{ href: '/rules' } Oakland Campaign Finance Rules
             / Hiding these until we have some content there - KW 5/19/14
             / %li
             /   %a{ href: '#' } Where does the data come from?
@@ -55,7 +51,12 @@
                 - Party.mayoral_candidates.each do |c|
                   %li
                     %a{ href: c.link_path }= c.short_name
-
+            %li
+              %a{ href: '/rules' } Oakland Campaign Finance Rules
+            %li
+              %a{ href: '/faq' } FAQ
+            %li
+              %a{ href: '/about' } About Us
         .main.col-sm-offset-2.col-sm-10
           %span Loading data...
           %script{ type: 'text/template', id: 'mayoral-table-template' }
