@@ -132,10 +132,10 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     if (chart.data.amounts[zip]) {
       total = chart.data.amounts[zip]["total"];
       var leader = chart.data.amounts[zip]["max"];
-      var percent_to_leader = Math.round(chart.data.amounts[zip][leader]/total*100)
+      var percent_to_leader = Math.round(chart.data.amounts[zip][leader]/total*100);
       leader_string = "<div>" + percent_to_leader + "% to " + leader + "</div>";
     }
-    d3.select("#zip-bubble-chart #tooltip")
+    d3.select(chart.el).select("#tooltip")
       .classed("hidden", false)
       .style("left", x + "px")
       .style("top", y+20 + "px")
@@ -412,13 +412,13 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     });
     $('g#scale').fadeOut();
 
-    d3.selectAll("#zip-bubble-chart path.zip")
+    chart.svg.selectAll("path.zip")
       .on('mousemove', function(d) {
         chart.addOverviewTooltip(d, this, chart);
       })
       .on('mouseleave', function(d) {
-        d3.select("#zip-bubble-chart #tooltip")
-          .classed("hidden", true);
+        d3.select(chart.el).select("#tooltip")
+          .classed("hidden", false);
       });
   },
 
@@ -442,12 +442,12 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       $('.candidate.description').fadeIn();
     });
 
-    d3.selectAll("#zip-bubble-chart path.zip")
+    chart.svg.selectAll("path.zip")
       .on('mousemove', function(d) {
         return false;
       })
       .on('mouseleave', function(d) {
-        d3.select("#zip-bubble-chart #tooltip")
+        d3.select(chart.el).select("#tooltip")
           .classed("hidden", true);
       });
   },
