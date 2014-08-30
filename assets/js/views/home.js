@@ -7,11 +7,11 @@ OpenDisclosure.Views.Home = Backbone.View.extend({
     this.$el.html('<section id="candidateTable"></section>\
        <section id="search"></section> \
        <section id="zipcodeChart"></section> \
+      <section id="dailyChart"></section> \
        <section id="topContributions"></section> \
        <section class="clearfix" id="multiples"></section>');
 
     //TODO: add this back into the above template when the chart is ready
-    // <section id="dailyChart"></section> \
 
     new OpenDisclosure.CandidateTable({
       el : '#candidateTable',
@@ -31,6 +31,12 @@ OpenDisclosure.Views.Home = Backbone.View.extend({
     //   base_height: 480
     // });
 
+    new OpenDisclosure.DailyContributionsChartView({
+      el : "#dailyChart",
+      collection: OpenDisclosure.Data.contributions,
+      base_height: 480
+    });
+
     new OpenDisclosure.ContributorsView({
       el : '#topContributions',
       collection : OpenDisclosure.Data.whales,
@@ -43,12 +49,5 @@ OpenDisclosure.Views.Home = Backbone.View.extend({
       headline: 'Contributors To More Than One Mayoral Candidate'
     });
 
-    // Temporarily disabled until the black-background bug is fixed:
-    //
-    // new OpenDisclosure.DailyContributionsChartView({
-    //   el : "#dailyChart",
-    //   collection: this.contributions,
-    //   base_height: 480
-    // })
   }
 });
