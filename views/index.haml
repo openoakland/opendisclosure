@@ -101,7 +101,6 @@
               </table>
               <p>This table includes all candidates who have submitted campaign finance disclosure forms as of #{last_updated.strftime '%B %e, %Y'}.</p>
               <p> * Candidates do not need to itemize contributions less than $100 </p>
-
     %footer.main-footer
       %a{ href: 'http://openoakland.org/'}
         %img.footer-logos{ src: image_path('footer_logo1.png') }
@@ -143,3 +142,18 @@
 
       ga('create', 'UA-50973042-1', 'auto');
       ga('send', 'pageview');
+
+
+    / USERVOICE Stuff
+    :javascript
+      UserVoice=window.UserVoice||[];
+      (function(){
+        var uv=document.createElement('script');
+        uv.type='text/javascript';
+        uv.async=true;
+        uv.src='//widget.uservoice.com/1o7Exac5LC7Bzxo83eBF1w.js';
+        var s=document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(uv,s)
+      })();
+
+      UserVoice.push(['addTrigger', {trigger_background_color: '#0F4800' }]);
