@@ -116,6 +116,11 @@ text.grey {
 	background-color: white;
 	position: absolute;
 	padding: 5px;
+	font-size: 12px;
+}
+
+#tooltip.hidden {
+	display: none;
 }
 
 /* ------------------- COLOR SCALE -------------------- */
