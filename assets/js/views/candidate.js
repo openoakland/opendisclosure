@@ -12,31 +12,31 @@ OpenDisclosure.Views.Candidate = Backbone.View.extend({
       </section>\
     <% } %>\
     <section class='clearfix' id= 'candidateDetails'>\
-        <div class='col-sm-3'>\
-          <img class='mayor-picture' src='<%= candidate.imagePath() %>' />\
-          <p><%= candidate.get('profession') %></p>\
-          <p>Party Affiliation: <%= candidate.get('party_affiliation') %></p>\
-          <p><i class='fa fa-twitter fa-2x'></i><a id='twitter' href='https://twitter.com/<%= candidate.get('twitter') %>'><%= candidate.get('twitter') %></a></p>\
+      <div class='col-sm-3'>\
+        <img class='mayor-picture' src='<%= candidate.imagePath() %>' />\
+        <p><%= candidate.get('profession') %></p>\
+        <p>Party Affiliation: <%= candidate.get('party_affiliation') %></p>\
+        <p><i class='fa fa-twitter fa-2x'></i><a id='twitter' href='https://twitter.com/<%= candidate.get('twitter') %>'><%= candidate.get('twitter') %></a></p>\
+      </div>\
+      <div class='col-sm-5'>\
+        <p><%= candidate.get('bio') %></p>\
+        <div class='sources'>\
+        <span>Sources</span><br>\
+          <% (candidate.get('sources') || []).forEach(function (source) { %>\
+            <a href='<%= source.uri %>'><%= source.name %></a><br>\
+          <% }) %>\
         </div>\
-        <div class='col-sm-5'>\
-          <p><%= candidate.get('bio') %></p>\
-          <div class='sources'>\
-          <span>Sources</span><br>\
-            <% (candidate.get('sources') || []).forEach(function (source) { %>\
-              <a href='<%= source.uri %>'><%= source.name %></a><br>\
-            <% }) %>\
-          </div>\
-        </div>\
-        <div class='col-sm-4'>\
-          <p>Percentage of small contributions*: <%= candidate.pctSmallContributions() %></p>\
-          <p>Personal funds loaned and contributed to campaign: <%= OpenDisclosure.friendlyMoney(candidate.get('self_contributions_total')) %></p>\
-          <% if (candidate.get('summary') !== null) { %>\
-            <p>% of the total amount raised is personal funds: <%= OpenDisclosure.friendlyPct(candidate.get('self_contributions_total') / candidate.get('summary').total_contributions_received) %></p>\
-          <% } %>\
-          <p>Declared candidacy: <%= candidate.get('declared') %> </p>\
-          <p>Data last updated: <%= candidate.get('summary').last_summary_date %> </p>\
-          <p class='sources'>* Candidates do not need to itemize contributions less than $100 by contributor, but do need to include all contributions in their total reported amount. </p>\
-        </div>\
+      </div>\
+      <div class='col-sm-4'>\
+        <p>Percentage of small contributions*: <%= candidate.pctSmallContributions() %></p>\
+        <p>Personal funds loaned and contributed to campaign: <%= OpenDisclosure.friendlyMoney(candidate.get('self_contributions_total')) %></p>\
+        <% if (candidate.get('summary') !== null) { %>\
+          <p>% of the total amount raised is personal funds: <%= OpenDisclosure.friendlyPct(candidate.get('self_contributions_total') / candidate.get('summary').total_contributions_received) %></p>\
+        <% } %>\
+        <p>Declared candidacy: <%= candidate.get('declared') %> </p>\
+        <p>Data last updated: <%= candidate.get('summary').last_summary_date %> </p>\
+        <p class='sources'>* Candidates do not need to itemize contributions less than $100 by contributor, but do need to include all contributions in their total reported amount. </p>\
+      </div>\
     </section>\
     <section class='clearfix' id= 'category'></section>\
     <section class='clearfix' id= 'topContributors'></section>\
