@@ -77,14 +77,14 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     }
 
     _.map(amounts, function(val, zip) {
-      var candidate_list = _.map(val, function(donation, candidate) {
+      var candidate_list = _.map(val, function(contribution, candidate) {
         return {
           'name': candidate,
-          'total': donation
+          'total': contribution
         }
       });
       var max = _.max(candidate_list, function(candidate) {
-        if (candidate.name != "total") 
+        if (candidate.name != "total")
           { return candidate.total; }
         else { return 0; }
       });
