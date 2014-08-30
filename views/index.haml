@@ -37,8 +37,8 @@
 
     .container
       .row
-        %aside.col-sm-2.sidebar{ role: 'navigation'}
-          %ul.nav.nav-sidebar
+        %aside.col-sm-2.sidebar-container{ role: 'navigation', data: { spy: 'affix', 'offset-top' => 185 } }
+          %ul.nav.nav-sidebar.sidebar
             %li
               %a{ href: '/about' } About Us
             %li
@@ -55,7 +55,7 @@
                   %li
                     %a{ href: c.link_path }= c.short_name
 
-        .main.col-sm-10
+        .main.col-sm-offset-2.col-sm-10
           %span Loading data...
           %script{ type: 'text/template', id: 'mayoral-table-template' }
             :plain

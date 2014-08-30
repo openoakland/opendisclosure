@@ -111,12 +111,22 @@ h2.mayor2014 {
 
 /* ------------------- SIDEBAR -------------------- */
 
-.sidebar {
-  background-color: rgba(255, 255, 255, 0.5);
-  border-top: 2px solid #fff;
+.sidebar-container {
+  box-sizing: border-box;
   font-size: 16px;
   list-style: none;
-  padding: 0;
+  padding: 0 20px 0 0;
+  position: absolute;
+
+  &.affix {
+    position: fixed;
+    top: 15px;
+  }
+
+  .sidebar {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-top: 2px solid #fff;
+  }
 }
 
 .sidebar a{
