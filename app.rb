@@ -2,10 +2,9 @@ require 'sinatra'
 require 'sinatra/content_for'
 require 'sinatra/asset_pipeline'
 require 'active_record'
+require 'sass'
 require 'haml'
 
-ENV['DATABASE_URL'] ||= "postgres://localhost/postgres"
-ActiveRecord::Base.establish_connection
 Dir['./backend/models/*.rb'].each { |f| require f }
 
 class OpenDisclosureApp < Sinatra::Application
@@ -15,17 +14,16 @@ class OpenDisclosureApp < Sinatra::Application
     include Sprockets::Helpers
   end
 
+  configure do
+    ENV['DATABASE_URL'] ||= "postgres://localhost/postgres"
+    ActiveRecord::Base.establish_connection
+    ActiveRecord::Base.connection.verify!
+  end
+
   register Sinatra::AssetPipeline
+  use Rack::Deflater
 
   set :assets_precompile, %w(application.js application.css *.png *.jpg *.svg *.eot *.ttf *.woff)
-
-  get '/' do
-    # This renders the file views/index.haml inside of the 'yield' in
-    # views/layout.haml:
-    haml :index, locals: {
-      organizations: Party.mayoral_candidates
-    }
-  end
 
   # Below here are some API endpoints for the frontend JS to use to fetch data.
   # This uses a special ActiveRecord syntax for converting models to JSON. It is
@@ -40,7 +38,10 @@ class OpenDisclosureApp < Sinatra::Application
     headers 'Content-Type' => 'application/json'
 
     fields = {
-      include: [:recipient, :contributor],
+      include: [
+        { recipient: { methods: :short_name } },
+        { contributor: { methods: :short_name } },
+      ],
     }
     party         = Party.find(id)
     Contribution
@@ -48,26 +49,23 @@ class OpenDisclosureApp < Sinatra::Application
       .includes(:contributor, :recipient).to_json(fields)
   end
 
-  get '/api/candidates' do
+  get '/api/contributorName/:name' do |name|
     cache_control :public
     last_modified Import.last.import_time
 
     headers 'Content-Type' => 'application/json'
 
     fields = {
-      only: %w[id name committee_id received_contributions_count contributions_count received_contributions_from_oakland small_donations],
-      methods: [
-        :summary,
-        :short_name,
-        :profession,
-        :party_affiliation,
-        :image,
-        :twitter,
-        :bio,
+      include: [
+        { recipient: { methods: :short_name } },
+        { contributor: { methods: :short_name } },
       ],
     }
-
-    Party.mayoral_candidates.to_json(fields)
+    search 	  = "%" + CGI.unescape(name).downcase + "%"
+    party         = Party.where("lower(name) like ?", search)
+    Contribution
+      .where(contributor_id: party)
+      .includes(:contributor, :recipient).to_json(fields)
   end
 
   get '/api/contributions' do
@@ -77,7 +75,7 @@ class OpenDisclosureApp < Sinatra::Application
     headers 'Content-Type' => 'application/json'
 
     fields = {
-      only: %w[amount date],
+      only: %w[amount date type],
       include: [
         { recipient: { methods: :short_name } },
         { contributor: { methods: :short_name } },
@@ -118,6 +116,7 @@ class OpenDisclosureApp < Sinatra::Application
       only: %[amount],
       include: [:contributor],
     }
+
     Whale.includes(:contributor).to_json(fields)
   end
 
@@ -131,6 +130,7 @@ class OpenDisclosureApp < Sinatra::Application
       only: %[number],
       include: [:contributor],
     }
+
     Multiple.includes(:contributor).to_json(fields);
   end
 
@@ -150,6 +150,73 @@ class OpenDisclosureApp < Sinatra::Application
     }
 
     Party.find(id).to_json(fields)
+  end
+
+  get '/api/employees/:employer_id/:recipient_id' do |employer_id, recipient_id|
+    cache_control :public
+    last_modified Import.last.import_time
+
+    headers 'Content-Type' => 'application/json'
+
+    fields = {
+      only: %w[amount date type],
+      include: [
+        { recipient: { methods: :short_name } },
+        { contributor: { methods: :short_name } },
+      ],
+    }
+    Contribution.joins('JOIN parties on contributor_id = parties.id').where("parties.employer_id = ? and recipient_id = ?", params[:employer_id], params[:recipient_id]).to_json(fields)
+  end
+
+  get '/sitemap.xml' do
+    send_file 'public/sitemap.xml.gz'
+  end
+
+  get '/robots.txt' do
+    send_file 'public/robots.txt'
+  end
+
+  get '*' do
+    # This renders views/index.haml
+    haml :index, locals: {
+      organizations: Party.mayoral_candidates,
+      last_updated: Summary.order(:last_summary_date).last.last_summary_date,
+      candidate_json: candidate_json
+    }
+  end
+
+  # This JSON is put (bootstrapped) into every response because it's crucial for
+  # displaying the above-the-fold content (the candidate table).
+  def candidate_json
+    fields = {
+      only: %w[
+        id name committee_id received_contributions_count contributions_count
+        received_contributions_from_oakland self_contributions_total small_donations],
+      methods: [
+        :summary,
+        :short_name,
+        :declared,
+        :profession,
+        :party_affiliation,
+        :image,
+        :twitter,
+        :bio,
+        :sources,
+      ],
+    }
+
+    candidates_with_data = Party.mayoral_candidates
+                                .includes(:summary)
+                                .joins(:summary)
+                                .order('summaries.total_contributions_received DESC')
+
+    candidates_without_data = Party::CANDIDATE_INFO
+                                .dup
+                                .keep_if { |k, _v| Party::MAYORAL_CANDIDATE_IDS.exclude?(k) }
+                                .values
+                                .map { |p| Party.new(p) }
+
+    [candidates_with_data + candidates_without_data].flatten.to_json(fields)
   end
 
   after do

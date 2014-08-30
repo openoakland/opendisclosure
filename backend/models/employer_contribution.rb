@@ -1,1 +1,3 @@
-class EmployerContribution < ActiveRecord::Base; end
+class EmployerContribution < ActiveRecord::Base
+
+end
