@@ -38,8 +38,8 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         chart.drawScale();
         chart.drawLegend();
         chart.clickListener();
-        chart.click(d3.select('.legend.overview'), 'Overview');
         chart.drawTooltip();
+        chart.click(d3.select('.legend.overview'), 'Overview');
       });
     });
 
@@ -59,12 +59,15 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
       // Add contributions by zip code
       if (!amounts[zip]) {
-        amounts[zip] = {};
+        amounts[zip] = {
+          total: 0
+        };
       }
       if (!amounts[zip][candidate]) {
         amounts[zip][candidate] = 0;
       }
       amounts[zip][candidate] += amount;
+      amounts[zip]["total"] += amount;
 
       // Create a list of all candidates
       if (!candidates[candidate]) {
@@ -80,7 +83,9 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         }
       });
       var max = _.max(candidate_list, function(candidate) {
-        return candidate.total;
+        if (candidate.name != "total")
+          { return candidate.total; }
+        else { return 0; }
       });
       amounts[zip]['max'] = max.name;
     });
@@ -112,23 +117,37 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
           zip = d.properties.ZIP;
         })
         .attr("d", chart.path)
-        .on('mousemove', function(d) {
-          chart.tooltip(d, this, chart);
-        });
 
       done(chart.zipUpdater);
     });
   },
 
-  tooltip: function(d, path, chart) {
+  addOverviewTooltip: function(d, path, chart) {
     var x = d3.mouse(path)[0];
     var y = d3.mouse(path)[1];
-    console.log(chart.data);
-    d3.select("#tooltip")
+    var city = chart.toTitleCase(d.properties.PO_NAME);
+    var zip = d.properties.ZIP;
+    var total = 0;
+    var leader_string = ""
+    if (chart.data.amounts[zip]) {
+      total = chart.data.amounts[zip]["total"];
+      var leader = chart.data.amounts[zip]["max"];
+      var percent_to_leader = Math.round(chart.data.amounts[zip][leader]/total*100)
+      leader_string = "<div>" + percent_to_leader + "% to " + leader + "</div>";
+    }
+    d3.select("#zip-bubble-chart #tooltip")
+      .classed("hidden", false)
       .style("left", x + "px")
       .style("top", y+20 + "px")
-      .html("<div>CITY: " + d.properties.PO_NAME + "</div>" +
-        "<div>ZIP: " + d.properties.ZIP + "</div>");
+      .html("<div>" + zip + " (" + city + ")</div>" +
+        "<div>Total: $" + total + "</div>" +
+        leader_string);
+  },
+
+  toTitleCase: function(str) {
+    return str.replace(/\w\S*/g, function(txt){
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
   },
 
   updateZips: function(selection) {
@@ -345,8 +364,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
   },
 
   drawTooltip: function() {
-    $('#svg-wrapper').prepend('<div id="tooltip">TOOLTIP!</div>');
-    // this.placeTooltip();
+    $('#svg-wrapper').prepend('<div id="tooltip" class="hidden">TOOLTIP!</div>');
   },
 
   clickListener: function() {
@@ -393,6 +411,15 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       $('.overview.description').fadeIn();
     });
     $('g#scale').fadeOut();
+
+    d3.selectAll("#zip-bubble-chart path.zip")
+      .on('mousemove', function(d) {
+        chart.addOverviewTooltip(d, this, chart);
+      })
+      .on('mouseleave', function(d) {
+        d3.select("#zip-bubble-chart #tooltip")
+          .classed("hidden", true);
+      });
   },
 
   clickCandidate: function(clicked, label) {
@@ -414,6 +441,15 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     $('.overview.description').fadeOut(function() {
       $('.candidate.description').fadeIn();
     });
+
+    d3.selectAll("#zip-bubble-chart path.zip")
+      .on('mousemove', function(d) {
+        return false;
+      })
+      .on('mouseleave', function(d) {
+        d3.select("#zip-bubble-chart #tooltip")
+          .classed("hidden", true);
+      });
   },
 
   setOverviewHover: function() {
