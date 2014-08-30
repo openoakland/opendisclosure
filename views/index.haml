@@ -43,7 +43,7 @@
             %li
               %a{href: '/'} Candidates
               %ul.nav.nav-sidebar.compressed
-                - Party.mayoral_candidates.each do |c|
+                - candidates.each do |c|
                   %li
                     %a{ href: c.link_path }= c.short_name
             %li

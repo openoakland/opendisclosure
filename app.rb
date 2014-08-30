@@ -242,7 +242,7 @@ class OpenDisclosureApp < Sinatra::Application
   get '*' do
     # This renders views/index.haml
     haml :index, locals: {
-      organizations: Party.mayoral_candidates,
+      candidates: Party.all_mayoral_candidates,
       last_updated: Summary.order(:last_summary_date).last.last_summary_date,
       candidate_json: candidate_json
     }
@@ -268,18 +268,7 @@ class OpenDisclosureApp < Sinatra::Application
       ],
     }
 
-    candidates_with_data = Party.mayoral_candidates
-                                .includes(:summary)
-                                .joins(:summary)
-                                .order('summaries.total_contributions_received DESC')
-
-    candidates_without_data = Party::CANDIDATE_INFO
-                                .dup
-                                .keep_if { |k, _v| Party::MAYORAL_CANDIDATE_IDS.exclude?(k) }
-                                .values
-                                .map { |p| Party.new(p) }
-
-    [candidates_with_data + candidates_without_data].flatten.to_json(fields)
+    Party.all_mayoral_candidates.to_json(fields)
   end
 
   after do

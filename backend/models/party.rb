@@ -460,6 +460,21 @@ class Party < ActiveRecord::Base
     # },
   }
 
+  def self.all_mayoral_candidates
+    candidates_with_data = Party.mayoral_candidates
+                                .includes(:summary)
+                                .joins(:summary)
+                                .order('summaries.total_contributions_received DESC')
+
+    candidates_without_data = Party::CANDIDATE_INFO
+                                .dup
+                                .keep_if { |k, _v| Party::MAYORAL_CANDIDATE_IDS.exclude?(k) }
+                                .values
+                                .map { |p| Party.new(p) }
+
+    [candidates_with_data + candidates_without_data].flatten
+  end
+
   def self.mayoral_candidates
     where(committee_id: MAYORAL_CANDIDATE_IDS)
   end
