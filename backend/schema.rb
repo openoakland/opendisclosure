@@ -41,6 +41,8 @@ ActiveRecord::Schema.define do
 
     t.index :recipient_id
     t.index :contributor_id
+
+    t.boolean :self_contribution, null: false, default: false
   end
 
   create_table :payments do |t|
