@@ -3,6 +3,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     var chart = this;
 
     chart.data = this.processData(this.collection);
+    console.log(chart.data);
 
     chart.color = d3.scale.ordinal()
       .domain(chart.data.candidates)
@@ -418,7 +419,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       })
       .on('mouseleave', function(d) {
         d3.select(chart.el).select("#tooltip")
-          .classed("hidden", false);
+          .classed("hidden", true);
       });
   },
 
