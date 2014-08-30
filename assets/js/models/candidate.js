@@ -14,7 +14,7 @@ OpenDisclosure.Candidate = Backbone.Model.extend({
 
   pctSmallContributions : function() {
     return OpenDisclosure.friendlyPct((
-      this.attributes.small_donations +
+      this.attributes.small_contributions +
          this.attributes.summary['total_unitemized_contributions']) /
       this.attributes.summary['total_contributions_received']);
   },

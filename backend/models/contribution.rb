@@ -5,7 +5,7 @@ class Contribution < ActiveRecord::Base
   belongs_to :recipient, class_name: 'Party', counter_cache: :received_contributions_count
 
   after_create :increment_oakland_contribution_count
-  after_create :increment_small_donor_ammount
+  after_create :increment_small_contribution_ammount
   after_create :increment_self_contributions_total
 
   enum type: [:contribution, :loan, :inkind]
@@ -26,9 +26,9 @@ class Contribution < ActiveRecord::Base
     end
   end
 
-  def increment_small_donor_ammount
+  def increment_small_contribution_ammount
     if amount.to_f < 100 && amount.to_f > -100
-      recipient.small_donations += amount.to_f
+      recipient.small_contributions += amount.to_f
       recipient.save
     end
   end
