@@ -1,4 +1,5 @@
 OpenDisclosure.Views.Candidate = Backbone.View.extend({
+
   template: _.template("\
     <div id='candidate'>\
     <h2 class='mayor2014'>Campaign Finance for the 2014 Oakland Mayoral Election</h2>\
@@ -28,15 +29,18 @@ OpenDisclosure.Views.Candidate = Backbone.View.extend({
         </div>\
       </div>\
       <div class='col-sm-4'>\
-        <p>Percentage of small contributions*: <%= candidate.pctSmallContributions() %></p>\
-        <p>Personal funds loaned and contributed to campaign: <%= OpenDisclosure.friendlyMoney(candidate.get('self_contributions_total')) %></p>\
         <% if (candidate.get('summary') !== null) { %>\
+          <p>Percentage of total contributions that are small contributions*: <%= candidate.pctSmallContributions() %></p>\
+          <p>Personal funds loaned and contributed to campaign: <%= OpenDisclosure.friendlyMoney(candidate.get('self_contributions_total')) %></p>\
           <p>% of the total amount raised is personal funds: <%= OpenDisclosure.friendlyPct(candidate.get('self_contributions_total') / candidate.get('summary').total_contributions_received) %></p>\
+          <p>Declared candidacy: <%= candidate.get('declared') %> </p>\
+          <p>Data last updated: <%= candidate.get('summary').last_summary_date %> </p>\
+          <p class='sources'>* Candidates do not need to itemize contributions less than $100 by contributor, but do need to include all contributions in their total reported amount. </p>\
         <% } %>\
-        <p>Declared candidacy: <%= candidate.get('declared') %> </p>\
-        <p>Data last updated: <%= candidate.get('summary').last_summary_date %> </p>\
-        <p class='sources'>* Candidates do not need to itemize contributions less than $100 by contributor, but do need to include all contributions in their total reported amount. </p>\
       </div>\
+      <% if (candidate.get('summary') == null) { %>\
+        <div class='col-sm-4 noContributions'>The candidate had not reported any campaign contributions by the last filing deadline. Candidates are not required to report if they have raised less than $1,000.</div>\
+        <% } %>\
     </section>\
     <section class='clearfix' id= 'category'></section>\
     <section class='clearfix' id= 'topContributors'></section>\
@@ -73,18 +77,25 @@ OpenDisclosure.Views.Candidate = Backbone.View.extend({
     //Render main view
     this.$el.html(this.template({ candidate: this.model }));
 
-    //Render Subviews
-    if (OpenDisclosure.Data.categoryContributions.length > 0) {
-      this.renderCategoryChart();
+    if (this.model.get('summary') !== null){
+      //Render Subviews
+      if (OpenDisclosure.Data.categoryContributions.length > 0) {
+        this.renderCategoryChart();
+      }
+
+      if (OpenDisclosure.Data.employerContributions.length > 0) {
+        this.renderTopContributors();
+      }
+
+      if (this.contributions.length > 0) {
+        this.renderAllContributions();
+      }
+    } else {
+      $('#category').hide();
+      $('#topContributors').hide();
+      $('#contributors').hide();
     }
 
-    if (OpenDisclosure.Data.employerContributions.length > 0) {
-      this.renderTopContributors();
-    }
-
-    if (this.contributions.length > 0) {
-      this.renderAllContributions();
-    }
 
     //Listen for new data
     this.listenTo(OpenDisclosure.Data.categoryContributions, 'sync', this.renderCategoryChart);
@@ -117,7 +128,8 @@ OpenDisclosure.Views.Candidate = Backbone.View.extend({
     // Create a new subview
     new OpenDisclosure.TopContributorsView({
       el: "#topContributors",
-      collection: this.topContributions.slice(0, 10)
+      collection: this.topContributions.slice(0, 10),
+      candidate: this.model.get('short_name')
     });
   },
 
@@ -127,7 +139,7 @@ OpenDisclosure.Views.Candidate = Backbone.View.extend({
     new OpenDisclosure.ContributorsView({
       el: "#contributors",
       collection: this.contributions,
-      headline: 'All Contributions'
+      headline: 'All Contributions to ' + this.model.get('short_name')
     });
   },
 

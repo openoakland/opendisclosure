@@ -2,10 +2,13 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
   draw: function(el) {
     var chart = this;
 
-    chart.data = this.processData(this.collection);
+    // Process data
+    chart.candidates = _.pluck(OpenDisclosure.BootstrappedData.candidates, "short_name")
+    chart.candidates.unshift("Overview");
+    chart.amounts = this.collection;
 
     chart.color = d3.scale.ordinal()
-      .domain(chart.data.candidates)
+      .domain(chart.candidates)
       .range(d3.range(12).map(function(i) {
         return "q" + i + "-12";
       }));
@@ -47,58 +50,6 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     chart.drawCandidateDescription();
   },
 
-  processData: function(data) {
-    var amounts = {};
-    var candidates = {};
-
-    for (var i = 0; i < data.length; i++) {
-      var el = data.models[i].attributes,
-        candidate = el.recipient.short_name,
-        amount = (!isNaN(parseInt(el.amount))) ? parseInt(el.amount) : 0,
-        zip = el.contributor.zip;
-
-      // Add contributions by zip code
-      if (!amounts[zip]) {
-        amounts[zip] = {
-          total: 0
-        };
-      }
-      if (!amounts[zip][candidate]) {
-        amounts[zip][candidate] = 0;
-      }
-      amounts[zip][candidate] += amount;
-      amounts[zip]["total"] += amount;
-
-      // Create a list of all candidates
-      if (!candidates[candidate]) {
-        candidates[candidate] = true;
-      }
-    }
-
-    _.map(amounts, function(val, zip) {
-      var candidate_list = _.map(val, function(contribution, candidate) {
-        return {
-          'name': candidate,
-          'total': contribution
-        }
-      });
-      var max = _.max(candidate_list, function(candidate) {
-        if (candidate.name != "total")
-          { return candidate.total; }
-        else { return 0; }
-      });
-      amounts[zip]['max'] = max.name;
-    });
-
-    var candidates = _.keys(candidates);
-    candidates.unshift('Overview');
-
-    return {
-      candidates: candidates,
-      amounts: amounts
-    }
-  },
-
   drawMap: function(done) {
     var chart = this;
 
@@ -125,10 +76,10 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
   overviewTooltip: function(d, path, chart) {
     var zip = d.properties.ZIP;
     var content = "<div>Total: $0</div>" // Default content
-    if (chart.data.amounts[zip]) {
-      var total = chart.data.amounts[zip]["total"];
-      var leader = chart.data.amounts[zip]["max"];
-      var percent_to_leader = Math.round(chart.data.amounts[zip][leader]/total*100);
+    if (chart.amounts[zip]) {
+      var total = chart.amounts[zip]["total"];
+      var leader = chart.amounts[zip]["leader"];
+      var percent_to_leader = Math.round(chart.amounts[zip][leader]/total*100);
       content = "<div>Total: $" + total + "</div>" +
         "<div>" + percent_to_leader + "% to " + leader + "</div>";
     }
@@ -138,8 +89,8 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
   candidateTooltip: function(d, path, chart, candidate) {
     var zip = d.properties.ZIP;
     var content = "$0 to " + candidate; // Default content
-    if (chart.data.amounts[zip] && chart.data.amounts[zip][candidate]) {
-      content = "$" + chart.data.amounts[zip][candidate] + " to " + candidate;
+    if (chart.amounts[zip] && chart.amounts[zip][candidate]) {
+      content = "$" + chart.amounts[zip][candidate] + " to " + candidate;
     }
     chart.setTooltip(d, path, chart, content);
   },
@@ -163,11 +114,11 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
   updateZips: function(selection) {
     var chart = this;
-    var zips = d3.selectAll('.zip');
+    var zips = chart.svg.selectAll('.zip');
     if ($(selection).select('text').text() == 'Overview') {
       zips.attr('class', function(d) {
-        var leader = chart.data.amounts[d.properties.ZIP];
-        return leader ? chart.color(leader.max) + ' zip' : 'zip';
+        var zip_data = chart.amounts[d.properties.ZIP];
+        return zip_data ? chart.color(zip_data.leader) + ' zip' : 'zip';
       })
     } else {
       zips.attr('class', 'zip');
@@ -222,7 +173,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
   // Update the chart when a user clicks on a candidate's name
   updateBubbles: function(selection) {
     var chart = this;
-    var circles = d3.selectAll("svg circle")
+    var circles = chart.svg.selectAll("svg circle")
     candidate = $(selection).select('text').text();
     circles.attr('class', chart.color(candidate))
       .transition()
@@ -230,7 +181,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
   },
 
   clearBubbles: function() {
-    d3.selectAll("g#circles circle").attr('r', 0);
+    this.svg.selectAll("g#circles circle").attr('r', 0);
   },
 
   radius: function(d) {
@@ -238,8 +189,8 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     var bubbleScale = chart.dimensions.width * .00014;
     var area = 0;
     if (d.properties) {
-      if (chart.data.amounts[d.properties.ZIP]) {
-        area = chart.data.amounts[d.properties.ZIP][candidate] || 0;
+      if (chart.amounts[d.properties.ZIP]) {
+        area = chart.amounts[d.properties.ZIP][candidate] || 0;
       }
     } else {
       area = d;
@@ -252,7 +203,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
     var legend = {
       width: chart.dimensions.width / 4.8,
-      offset: chart.dimensions.height / chart.data.candidates.length,
+      offset: chart.dimensions.height / chart.candidates.length,
       right_bar: {
         width: chart.dimensions.width / 80
       },
@@ -261,7 +212,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     }
 
     chart.legend = chart.svg.selectAll('.legend')
-      .data(chart.data.candidates)
+      .data(chart.candidates)
       .enter().append('g')
       .attr("class", "legend")
       .attr("transform", function(d, i) {

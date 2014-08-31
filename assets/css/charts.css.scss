@@ -1,0 +1,133 @@
+
+#zipcodeChart {
+	/* ------------------- HEADERS -------------------- */
+	h3, h4 {
+		text-align: right;
+	}
+
+	div.candidate.description {
+		display: none;
+	}
+
+
+	div.candidate.description .return{
+		text-decoration: underline;
+		cursor: pointer;
+	}
+
+	/* ------------------- TOOLTIP -------------------- */
+	#svg-wrapper {
+		position: relative;
+	}
+
+	#tooltip {
+		background-color: white;
+		position: absolute;
+		padding: 5px;
+		font-size: 12px;
+	}
+
+	#tooltip.hidden {
+		display: none;
+	}
+
+	/* ------------------- MAP -------------------- */
+	.zip {
+		fill: white;
+	  stroke: #bfbfbf;
+	}
+
+	.zip.hover {
+		fill: #f0f0f0;
+	}
+
+	.city {
+		fill: none;
+		stroke: #4c4c4c;
+	}
+
+	/* ------------------- LEGEND -------------------- */
+	.legend { 
+		cursor: pointer;
+	}
+
+	.legend text{
+		fill: #555555;
+		text-anchor: end;
+	}
+
+	.status {
+		fill: #bfbfbf;
+	}
+
+	.legend rect.name {
+		fill-opacity: 0;
+	}
+
+	.legend.selected rect.name {
+		fill : #ffffff;
+		fill-opacity: 1;
+	}
+
+	.legend rect.name.highlight {
+		fill : #ffffff;
+		fill-opacity: 1;
+	}
+
+	.divider {
+		fill: white;
+	}
+
+	/* -- Overview Bar -- */
+
+	.legend.overview text {
+		font-family: 'Crete Round', serif;
+	}
+
+	.legend.overview rect.divider {
+		display: none;
+	}
+
+	.legend.overview.selected rect.name{
+		fill: black;
+		fill-opacity: 100%;
+	}
+
+	.legend.overview.selected text {
+		fill: white;
+	}
+
+	.legend.selected text {
+		fill: black;
+	}
+
+	/* ------------------- SCALE -------------------- */
+	#scale {
+		display: none;
+	}
+
+	#scale text.name {
+		text-anchor: middle;
+		fill: #555555;
+	}
+
+	rect.scale {
+		fill: white;
+	}
+
+	/* ------------------- COLOR SCALE -------------------- */
+	.q0-12{fill: #000000} 
+	.q1-12{fill: #0087E5} 
+	.q2-12{fill: #26D5F5} 
+	.q3-12{fill: #A8E938} 
+	.q4-12{fill: #FED35E} 
+	.q5-12{fill: #FD2D2D} 
+	.q6-12{fill: #E1266C} 
+	.q7-12{fill: #DA9EE7} 
+	.q8-12{fill: #0A588f} 
+	.q9-12{fill: #8E34F4}
+	.q10-12{fill: #2FB788} 
+	.q11-12{fill: #BA0012}
+	.q12-12{fill: #B9A101}
+	.q13-12{fill: #480A6A}
+}

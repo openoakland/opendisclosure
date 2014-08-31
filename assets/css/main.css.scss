@@ -87,6 +87,11 @@ header {
   }
 
   .header-main-title {
+    color: $color-gray-text;
+    font-size: 40px;
+    display: inline-block;
+  }
+  .header-main-title-green{
     color: $color-green-accent;
     font-size: 40px;
     display: inline-block;
@@ -177,11 +182,6 @@ background-color: $color-gold-highlight;
   padding: 10px;
   margin: 10px;
   float: left;
-}
-
-#charts div {
-  padding-top:10px;
-  border-bottom: 2px solid #539137;
 }
 
 /* ------------------- FOOTER -------------------- */

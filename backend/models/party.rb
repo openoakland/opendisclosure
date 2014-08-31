@@ -22,6 +22,16 @@ class Party < ActiveRecord::Base
     RUBY = 1364278,
     KAPLAN = 1367270,
     SIEGEL = 1362877,
+    #################
+    # No filer ID
+    # ANDERSON =
+    # HOUSTON =
+    # KARAMOOZ =
+    # LIU =
+    # MCCULLOUGH =
+    # SIDEBOTHAM =
+    # WILLIAMS =
+    # WILSON =
   ]
 
   # Filer_IDs of other races this cycle
@@ -107,6 +117,7 @@ class Party < ActiveRecord::Base
         },
       ]
     },
+
     SCHAAF => {
       name: 'Libby Schaaf',
       declared: '2013-12-02',
@@ -218,6 +229,7 @@ class Party < ActiveRecord::Base
         },
       ]
     },
+
     SIEGEL => {
       name: 'Dan Siegel',
       declared: '2014-01-09',
@@ -245,14 +257,223 @@ class Party < ActiveRecord::Base
       ]
     },
 
+    'ANDERSON' => {
+      name: 'Jason "Shake" Anderson',
+      declared: '',
+      profession: '',
+      party: 'Green Party',
+      twitter:'@Shake9169',
+      bio: "Jason Anderson is a former Occupy Oakland spokesperson and honorably discharged veteran of the U.S. Navy. He is an Oakland native, artist, community organizer. As the Green Party endorsed Oakland mayoral candidate, he has committed to accept no corporate money.",
+      sources: [
+        {
+          name: 'Official campaign website',
+          uri: 'http://townmayor.nationbuilder.com/'
+        },
+        {
+          name: 'Jason "Shake" Anderson is Oakland\'s "Candidate X" (03/04/14)',
+          uri: 'http://www.sfbg.com/politics/2014/03/04/jason-shake-anderson-oaklands-candidate-x'
+        },
+        {
+          name: 'GoFundMe donation campaign',
+          uri: 'http://www.gofundme.com/townmayor'
+        },
+        {
+          name: 'Ending musical chair politics in Oakland: an interview with Oakland mayoral candidate Jason ‘Shake’ Anderson” (03/15/2014)',
+          uri: 'http://sfbayview.com/2014/ending-musical-chair-politics-in-oakland-an-interview-with-oakland-mayoral-candidate-jason-shake-anderson/'
+        },
+        {
+          name: 'LinkedIn profile',
+          uri: 'http://www.linkedin.com/in/shake9169'
+        },
+        {
+          name: 'Facebook page',
+          uri: 'https://www.facebook.com/shake.anderson.3'
+        }
+      ]
+    },
+
+    'HOUSTON' => {
+      name: 'Ken Houston',
+      declared: '',
+      profession: '',
+      party: '',
+      twitter:'',
+      bio: "Ken Houston attended public schools in Oakland, went to Laney College and trade school, and then joined Plumber’s Union. Houston remodeled blighted homes in Oakland, then moved to commercial jobs and public works projects. Houston volunteered on the task force to reform the practices of Oakland’s Building Services Department. He chairs the East Oakland Beautification Council.
+",
+      sources: [
+        {
+          name: 'Ken Houston on Oakland Elects website',
+          uri: 'http://www.oaklandelects.com/kenhouston.html'
+        }
+      ]
+    },
+
+    'KARAMOOZ' => {
+      name: 'Saied Karamooz',
+      declared: '',
+      profession: '',
+      party: '',
+      twitter:'',
+      bio: "Saied Karamooz holds B.S. (computer science), M.B.A., and M.S. (information sciences) degrees from Pennsylvania State University.  Starting his career as an intern with IBM, he has served in senior and executive roles in both the software and consulting industries. Helping to find technological solutions to large-scale problems is a recurring theme in this Oakland resident’s résumé.",
+      sources: [
+        {
+          name: 'Official Campaign site',
+          uri: 'http://www.oaklandmayormovement.org/'
+        }
+      ]
+    },
+
+    'MCCULLOUGH' => {
+      name: 'Patrick McCullough',
+      declared: '',
+      profession: '',
+      party: 'Independent',
+      twitter:'',
+      bio: "According to his campaign website, Patrick McCullough currently works as a technician and self-employed attorney. When he was 18, McCullough enlisted in the U.S. Navy and was honorably discharged in 1980. McCullough graduated with a J.D. from San Francisco Law School and earned a B.A. from Golden Gate University. In 2005, during a confrontation with a group of youths outside his home, Patrick shot his 15-year-old neighbor. The Alameda County district attorney found that he had acted in self-defense, and no charges were brought against anyone involved in the incident. In 2008, McCullough ran for Oakland City Council, District 1. He and his wife, Daphne, have been residents of the Bushrod neighborhood for over 30 years.",
+      sources: [
+        {
+          name: 'Patrick McCullough’s Campaign Website',
+          uri: 'http://www.pat4oakland.com/home.'
+        },
+        {
+          name: '\”A Neighborhood Reborn: A year after Patrick McCullough shot teen, Oakland\'s 59th Street has safer rec center, reduced loitering and fewer drug deals\” (02/18/2006)',
+          uri: 'http://www.sfgate.com/bayarea/article/A-NEIGHBORHOOD-REBORN-A-year-after-Patrick-2504002.php'
+        },
+        {
+          name: '”Public Comment: Oakland City Council District 1 Candidate Statement by Patrick McCullough” (05/22/2008)',
+          uri: 'http://www.berkeleydailyplanet.com/issue/2008-05-22/article/30089?headline=Oakland-City-Council-District-1-Candidate-Statement-Patrick-McCullough%E2%80%94'
+        },
+        {
+          name: 'Patrick McCullough Runs For Mayor Of Oakland: Vigilante Candidate” video for Zennie62 Blog (01/17/2014)',
+          uri: 'http://youtu.be/CNS4VpA3fLE'
+        }
+      ]
+    },
+
+    'SIDEBOTHAM' => {
+      name: 'Nancy Sidebotham',
+      declared: '',
+      profession: '',
+      party: 'nonpartisan',
+      twitter:'@nancy6368',
+      bio: "Nancy Sidebotham is a supervised registered tax preparer and neighborhood activist. She has previously run for the Oakland City Council, District 6 council seat. Sidebotham is a former Community Policing Advisory Board (CPAB) member. She currently lives in Oakland.",
+      sources: [
+        {
+          name: 'Candidate Biography from League of Women Voters',
+          uri: '”http://www.smartvoter.org/2001/04/17/ca/alm/vote/sidebotham_n/bio.html'
+        },
+        {
+          name: 'Oakland Wiki',
+          uri: 'http://oaklandwiki.org/2014_mayoral_election'
+        },
+        {
+          name: 'Nancy Sidebotham / Linkedin',
+          uri: 'https://www.linkedin.com/pub/nancy-s-sidebotham/9/72/532'
+        },
+      ]
+    },
+
+    'WILLIAMS' => {
+      name: 'Charles R. Williams',
+      declared: '',
+      profession: '',
+      party: '',
+      twitter:'',
+      bio: "Starting in 1961, Charles R. Williams had an extensive career with the U.S. Navy in a variety of assignments ranging from ship maintenance to recruiting and the military police.  After retiring, he entered private consulting with a focus on small businesses and local government.  Most recently, he served as a consultant to the city and and county of San Francisco.",
+      sources: [
+        {
+          name: 'Charles Ray Williams',
+          uri: 'http://oaklandwiki.org/charles_ray_williams'
+        },
+        {
+          name: 'Charles Ray Williams Fundly',
+          uri: 'https://fundly.com/charles-r-williams-for-mayor-of-oakland'
+        },
+        {
+          name: 'Google +',
+          uri: 'https://plus.google.com/101642577580197907873/posts'
+        },
+        {
+          name: 'Facebook',
+          uri: 'https://www.facebook.com/people/Charles-Williams/100006463488973?fref=nf'
+        },
+        {
+          name: 'Twitter',
+          uri: 'https://twitter.com/CharlesMmcrw40'
+        }
+      ]
+    }
+
     # Candidates without data are below. Since they're not in the database,
     # these should have the same schema as the party table (see
     # backend/schema.rb) -- city, state, zip, employer, occupation
-    'WASHINGTON' => {
-      name: 'Sammuel Washington',
-      bio: "test test test",
-    },
+
+    # LIU => {
+    #   name: 'Peter Liu',
+    #   declared: '',
+    #   profession: '',
+    #   party: '',
+    #   twitter:'',
+    #   bio: "Peter Liu has worked as an entrepreneur and real estate agent. He reports eight years of experience in the insurance industry. His campaign statement indicates that he graduated from Oakland High in 1998 and received a B.A. in History from the University of California, Santa Cruz. Liu also states that he earned a journalism degree from the United States Defense Information School at Fort Meade, Maryland. He reports serving in the United States Army for two years in Kuwait and Iraq. Peter Liu lives with his wife and two-year-old son in Oakland.",
+    #   sources: [
+    #     {
+    #       name: 'Mayoral Candidate Peter Liu / Oakland North',
+    #       uri: 'http://oaknorth.wpengine.com/2014/05/21/mayoral-candidate-peter-liu/'
+    #     },
+    #     {
+    #       name: 'Ballotpedia Peter Liu',
+    #       uri: 'http://ballotpedia.org/Peter_Yuan_Liu'
+    #     },
+    #     {
+    #       name: 'Peter Liu / Linkedin',
+    #       uri: 'https://www.linkedin.com/pub/peter-liu/22/80/10b'
+    #     },
+    #     {
+    #       name: 'Oakland Wiki / Official Campaign Statement PDF',
+    #       uri: 'http://oaklandwiki.org/Peter_Y._Liu/#camstat'
+    #     },
+    #   ]
+    # },
+
+    # NOT ON CLERKS LIST OF ANNOUNCED CANDIDATES
+
+    # 'WILSON' => {
+    #   name: 'Eric Wilson',
+    #   declared: '',
+    #   profession: '',
+    #   party: '',
+    #   twitter:'',
+    #   bio: "[PLEASE NOTE: OpenOakland requested biographical information from this candidate on August 24, 2014, but has yet to receive any.]",
+    #   sources: [
+    #     {
+    #       name: 'Official campaign site',
+    #       uri: 'http://www.wilson4oakland.com/'
+    #     }
+    #   ]
+    # }
+    # ,
+
+
+    # 'WASHINGTON' => {
+    #   name: 'Sammuel Washington',
+    #   bio: "test test test",
+    # },
   }
+
+  def self.all_mayoral_candidates
+    candidates_with_data = Party.mayoral_candidates
+                                .includes(:summary)
+                                .joins(:summary)
+                                .order('summaries.total_contributions_received DESC')
+
+    candidates_without_data = Party::CANDIDATE_INFO
+                                .dup
+                                .keep_if { |k, _v| Party::MAYORAL_CANDIDATE_IDS.exclude?(k) }
+                                .values
+                                .map { |p| Party.new(p) }
+
+    [candidates_with_data + candidates_without_data].flatten
+  end
 
   def self.mayoral_candidates
     where(committee_id: MAYORAL_CANDIDATE_IDS)
@@ -297,7 +518,7 @@ class Party < ActiveRecord::Base
     return nil unless defined?(OpenDisclosureApp)
 
     last_name = short_name.split.last
-    OpenDisclosureApp.image_path(last_name + '.png')
+    OpenDisclosureApp.image_path(last_name + '.jpg')
   end
 
   def link_path

@@ -6,7 +6,7 @@ OpenDisclosure.App = Backbone.Router.extend({
     'faq':'faq',
     'rules': 'rules',
     'contributor/:id': 'contributor',
-    'employer/:employer_name/:employer_id/:recipient_id': 'employer',
+    'employer/:employer_name/:employer_id': 'employer',
     'search': 'search'
   },
 
@@ -19,13 +19,16 @@ OpenDisclosure.App = Backbone.Router.extend({
       employerContributions: new OpenDisclosure.EmployerContributions(),
       categoryContributions: new OpenDisclosure.CategoryContributions(),
       whales: new OpenDisclosure.Whales(),
-      multiples: new OpenDisclosure.Multiples()
+      multiples: new OpenDisclosure.Multiples(),
+      zipContributions: $.getJSON("/api/contributions/zip"),
+      dailyContributions: $.getJSON("/api/contributions/over_time")
     };
 
-    // Every item in OpenDisclosure.Data is a Backbone.Collection, so they all
-    // have a fetch method.
+    // Call fetch on each Backbone.Collection
     for (var dataset in OpenDisclosure.Data) {
-      OpenDisclosure.Data[dataset].fetch();
+      if (typeof OpenDisclosure.Data[dataset].fetch === "function") {
+        OpenDisclosure.Data[dataset].fetch();
+      }
     }
 
     OpenDisclosure.Data.candidates = new OpenDisclosure.Candidates(OpenDisclosure.BootstrappedData.candidates);
@@ -65,16 +68,11 @@ OpenDisclosure.App = Backbone.Router.extend({
     });
   },
 
-  employer : function(employer_name, employer_id, recipient_id) {
-    $('.main').html('<div id="employer"></div>');
-    var contrib = new OpenDisclosure.Employees({employer_id: employer_id, recipient_id: recipient_id } );
-
-    this.listenTo(contrib, 'sync', function() {
-      new OpenDisclosure.ContributorsView({
-        el: '#employer',
-        collection: contrib,
-        headline: employer_name
-      });
+  employer : function(employer_name, employer_id) {
+    new OpenDisclosure.Views.Employees({
+      el: '.main',
+      employer_id: employer_id,
+      headline: employer_name
     });
   },
 

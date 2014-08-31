@@ -88,6 +88,7 @@ class OpenDisclosureApp < Sinatra::Application
       Contribution
         .joins(:recipient, :contributor)
         .where(recipient_id: Party.mayoral_candidates.to_a)
+        .where(self_contribution: false)
         .group('contributors_contributions.zip, parties.committee_id')
         .pluck('contributors_contributions.zip, parties.committee_id, sum(contributions.amount)')
         .each_with_object({}) do |(zip, committee_id, amount), hash|
@@ -100,6 +101,38 @@ class OpenDisclosureApp < Sinatra::Application
             total        = candidate_hash.sum    { |_candidate, amount| amount }
             candidate_hash['leader'] = leader
             candidate_hash['total'] = total
+          end
+        .to_json
+    when 'over_time'
+      names_by_id = Hash[Party.mayoral_candidates.map { |c| [c.id, c.short_name] }]
+      total_amount_by_candidate = Hash.new(0)
+
+      Contribution
+        .where(recipient_id: Party.mayoral_candidates.to_a)
+        .order(:date)
+        .pluck(:amount, :recipient_id, :date)
+        .each_with_object({}) do |(amount, recipient_id, date), hash|
+            candidate_name             = names_by_id[recipient_id]
+            # Since we process data points in date order, if this date's total
+            # isn't defined we should start with the previous total.
+            hash[recipient_id]       ||= {}
+            hash[recipient_id][date] ||= total_amount_by_candidate[recipient_id]
+
+            # And actually update the totals counters:
+            total_amount_by_candidate[recipient_id] += amount
+            hash[recipient_id][date]                += amount
+          end
+        .each_with_object({}) do |(recipient_id, amount_by_date), hash|
+            candidate_name = names_by_id[recipient_id]
+
+            amount_by_date.each do |date, amount|
+              hash[candidate_name] ||= []
+              hash[candidate_name] << {
+                'amount' => amount,
+                'close' => amount,    # hack needed by D3 (??, ask Ian)
+                'date' => date,
+              }
+            end
           end
         .to_json
     when 'candidate'
@@ -182,7 +215,7 @@ class OpenDisclosureApp < Sinatra::Application
     Party.find(id).to_json(fields)
   end
 
-  get '/api/employees/:employer_id/:recipient_id' do |employer_id, recipient_id|
+  get '/api/employees/:employer_id' do |employer_id|
     cache_control :public
     last_modified Import.last.import_time
 
@@ -195,7 +228,10 @@ class OpenDisclosureApp < Sinatra::Application
         { contributor: { methods: :short_name } },
       ],
     }
-    Contribution.joins('JOIN parties on contributor_id = parties.id').where("parties.employer_id = ? and recipient_id = ?", params[:employer_id], params[:recipient_id]).to_json(fields)
+    Contribution.joins('JOIN parties on contributor_id = parties.id')
+      .where("parties.employer_id = ?", params[:employer_id])
+      .order(:date).reverse_order
+      .to_json(fields)
   end
 
   get '/sitemap.xml' do
@@ -209,7 +245,7 @@ class OpenDisclosureApp < Sinatra::Application
   get '*' do
     # This renders views/index.haml
     haml :index, locals: {
-      organizations: Party.mayoral_candidates,
+      candidates: Party.all_mayoral_candidates,
       last_updated: Summary.order(:last_summary_date).last.last_summary_date,
       candidate_json: candidate_json
     }
@@ -235,18 +271,7 @@ class OpenDisclosureApp < Sinatra::Application
       ],
     }
 
-    candidates_with_data = Party.mayoral_candidates
-                                .includes(:summary)
-                                .joins(:summary)
-                                .order('summaries.total_contributions_received DESC')
-
-    candidates_without_data = Party::CANDIDATE_INFO
-                                .dup
-                                .keep_if { |k, _v| Party::MAYORAL_CANDIDATE_IDS.exclude?(k) }
-                                .values
-                                .map { |p| Party.new(p) }
-
-    [candidates_with_data + candidates_without_data].flatten.to_json(fields)
+    Party.all_mayoral_candidates.to_json(fields)
   end
 
   after do
