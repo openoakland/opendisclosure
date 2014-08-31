@@ -11,7 +11,17 @@ OpenDisclosure.Views.About = Backbone.View.extend({
     { "name" : "Amanda Richardson", "github" : "https://github.com/amandaric" },
     { "name" : "Dave Guarino", "github" : "https://github.com/daguar" },
     { "name" : "John Osborn", "github" : "https://github.com/bayreporta" },
-    { "name" : "Phil Wolf", "github" : "https://github.com/evanwolf" }
+    { "name" : "Phil Wolf", "github" : "https://github.com/evanwolf" },
+    { "name" : "Steve 'Spike' Spiker", "github" : "https://github.com/spjika" },
+    { "name" : "Luis Aguilar", "github" : "https://github.com/munners17" },
+    { "name" : "Emily Bookstein", "github" : "https://github.com/bookstein" },
+    { "name" : "Brian Ferrell", "github" : "https://github.com/endenizen" },
+    { "name" : "Edward Breen", "github" : "https://github.com/tedbreen" },
+    { "name" : "Timothy Kempf", "github" : "https://github.com/Fauntleroy" },
+    { "name" : "Ian Rees", "github" : "https://github.com/irees" },
+    { "name" : "Jonathan Wrobel", "github" : "https://github.com/jwrobes" },
+    { "name" : "Maggie Shine", "github" : "https://github.com/magshi" },
+    { "name" : "Sunny Juneja", "github" : "https://github.com/whatasunnyday" }
   ],
 
   template: _.template("\
