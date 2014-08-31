@@ -1,6 +1,6 @@
 OpenDisclosure.Candidate = Backbone.Model.extend({
   linkPath : function() {
-    return '/candidate/' + this.attributes.short_name.toLowerCase().replace(/[^a-z]/, '-');
+    return '/candidate/' + this.attributes.short_name.toLowerCase().replace(/[^a-z]/g, '-');
   },
 
   imagePath : function() {
