@@ -18,13 +18,15 @@ OpenDisclosure.App = Backbone.Router.extend({
       employerContributions: new OpenDisclosure.EmployerContributions(),
       categoryContributions: new OpenDisclosure.CategoryContributions(),
       whales: new OpenDisclosure.Whales(),
-      multiples: new OpenDisclosure.Multiples()
+      multiples: new OpenDisclosure.Multiples(),
+      zipContributions: $.getJSON("/api/contributions/zip")
     }
 
-    // Every item in OpenDisclosure.Data is a Backbone.Collection, so they all
-    // have a fetch method.
+    // Call fetch on each Backbone.Collection
     for (var dataset in OpenDisclosure.Data) {
-      OpenDisclosure.Data[dataset].fetch();
+      if (OpenDisclosure.Data[dataset].fetch) {
+        OpenDisclosure.Data[dataset].fetch();
+      }
     }
 
     OpenDisclosure.Data.candidates = new OpenDisclosure.Candidates(OpenDisclosure.BootstrappedData.candidates);
