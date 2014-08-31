@@ -22,6 +22,8 @@ OpenDisclosure.TopContributorsView = Backbone.View.extend({
     _.each(this.collection, function(c){
       that.$el.find('.topContributions').append(that.template(c));
     });
+
+    this.$el.append("<h5 class='footnote'>For more Details on how we group businesses and employers see the <a href='/faq#groupingBy'>FAQ</a></h5>");
   },
 
 });

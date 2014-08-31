@@ -15,6 +15,7 @@
 
 //= require views/about
 //= require views/candidate
+//= require views/faq
 //= require views/home
 //= require views/rules
 //= require views/contributor
@@ -28,6 +29,7 @@
 //= require views/_categoryView
 //= require views/_multiplesView
 //= require views/_search
+
 
 //= require util
 //= require app
