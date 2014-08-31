@@ -215,7 +215,7 @@ class OpenDisclosureApp < Sinatra::Application
     Party.find(id).to_json(fields)
   end
 
-  get '/api/employees/:employer_id/:recipient_id' do |employer_id, recipient_id|
+  get '/api/employees/:employer_id' do |employer_id|
     cache_control :public
     last_modified Import.last.import_time
 
@@ -228,7 +228,10 @@ class OpenDisclosureApp < Sinatra::Application
         { contributor: { methods: :short_name } },
       ],
     }
-    Contribution.joins('JOIN parties on contributor_id = parties.id').where("parties.employer_id = ? and recipient_id = ?", params[:employer_id], params[:recipient_id]).to_json(fields)
+    Contribution.joins('JOIN parties on contributor_id = parties.id')
+      .where("parties.employer_id = ?", params[:employer_id])
+      .order(:date).reverse_order
+      .to_json(fields)
   end
 
   get '/sitemap.xml' do

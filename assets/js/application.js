@@ -18,6 +18,7 @@
 //= require views/home
 //= require views/rules
 //= require views/contributor
+//= require views/employees
 //= require views/_candidateTable
 //= require views/_chartsWrapper
 //= require views/_zipcodeChartView
