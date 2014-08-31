@@ -19,12 +19,13 @@ OpenDisclosure.App = Backbone.Router.extend({
       categoryContributions: new OpenDisclosure.CategoryContributions(),
       whales: new OpenDisclosure.Whales(),
       multiples: new OpenDisclosure.Multiples(),
-      zipContributions: $.getJSON("/api/contributions/zip")
+      zipContributions: $.getJSON("/api/contributions/zip"),
+      dailyContributions: $.getJSON("/api/contributions/over_time")
     }
 
     // Call fetch on each Backbone.Collection
     for (var dataset in OpenDisclosure.Data) {
-      if (OpenDisclosure.Data[dataset].fetch) {
+      if (typeof OpenDisclosure.Data[dataset].fetch === "function") {
         OpenDisclosure.Data[dataset].fetch();
       }
     }

@@ -88,6 +88,7 @@ class OpenDisclosureApp < Sinatra::Application
       Contribution
         .joins(:recipient, :contributor)
         .where(recipient_id: Party.mayoral_candidates.to_a)
+        .where(self_contribution: false)
         .group('contributors_contributions.zip, parties.committee_id')
         .pluck('contributors_contributions.zip, parties.committee_id, sum(contributions.amount)')
         .each_with_object({}) do |(zip, committee_id, amount), hash|
@@ -100,6 +101,38 @@ class OpenDisclosureApp < Sinatra::Application
             total        = candidate_hash.sum    { |_candidate, amount| amount }
             candidate_hash['leader'] = leader
             candidate_hash['total'] = total
+          end
+        .to_json
+    when 'over_time'
+      names_by_id = Hash[Party.mayoral_candidates.map { |c| [c.id, c.short_name] }]
+      total_amount_by_candidate = Hash.new(0)
+
+      Contribution
+        .where(recipient_id: Party.mayoral_candidates.to_a)
+        .order(:date)
+        .pluck(:amount, :recipient_id, :date)
+        .each_with_object({}) do |(amount, recipient_id, date), hash|
+            candidate_name             = names_by_id[recipient_id]
+            # Since we process data points in date order, if this date's total
+            # isn't defined we should start with the previous total.
+            hash[recipient_id]       ||= {}
+            hash[recipient_id][date] ||= total_amount_by_candidate[recipient_id]
+
+            # And actually update the totals counters:
+            total_amount_by_candidate[recipient_id] += amount
+            hash[recipient_id][date]                += amount
+          end
+        .each_with_object({}) do |(recipient_id, amount_by_date), hash|
+            candidate_name = names_by_id[recipient_id]
+
+            amount_by_date.each do |date, amount|
+              hash[candidate_name] ||= []
+              hash[candidate_name] << {
+                'amount' => amount,
+                'close' => amount,    # hack needed by D3 (??, ask Ian)
+                'date' => date,
+              }
+            end
           end
         .to_json
     when 'candidate'

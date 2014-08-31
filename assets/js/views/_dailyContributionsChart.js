@@ -14,9 +14,8 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
     var xRange = []
     var yRange = []
     var chart = this;
-    processedData = this.processData(this.collection);
-    chart.data = processedData.amounts
-    chart.candidates = processedData.candidates
+    chart.data = this.collection;
+    chart.candidates = _.pluck(OpenDisclosure.BootstrappedData.candidates, "short_name");
 
     chart.color = d3.scale.ordinal()
       .domain(chart.candidates)
@@ -131,78 +130,6 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
       .attr("dy", ".71em")
       .style("text-anchor", "end")
       .text("Total Raised ($)");
-
-
-    // chart.drawLegend()
-  },
-
-  candidateColors: {
-    "Bryan Parker": "#26D5F5",
-    "Re-Elect Mayor Quan 2014": "#A8E938",
-    "Libby Schaaf for Oakland Mayor 2014": "#FED35E",
-    "Joe Tuman for Mayor 2014": "#FD2D2D"
-  },
-
-  candidates: [
-    "Bryan Parker",
-    "Jean Quan",
-    "Libby Schaaf",
-    "Joe Tuman"
-  ],
-
-
-  processData: function(data) {
-    var tempAmounts = {}
-    var amounts = {}
-    var candidates = {};
-    for (var i = 0; i < data.length; i++) {
-      if (data.models[i].attributes ){
-        el = data.models[i].attributes
-        candidate = el.recipient.short_name
-        // Create a list of all candidates
-        if (!candidates[candidate]) {
-          candidates[candidate] = true;
-        }
-        if (tempAmounts[candidate]) {
-          if (tempAmounts[candidate][new Date(el.date)]) {
-            tempAmounts[candidate][new Date(el.date)] += el.amount
-          }
-          else {
-            tempAmounts[candidate][new Date(el.date)] = el.amount
-            tempAmounts[candidate][new Date(new Date(el.date) - 300000000)] = 0
-            tempAmounts[candidate][new Date] = 0
-          }
-        }
-        else {
-          tempAmounts[candidate] = {}
-          tempAmounts[candidate][new Date(new Date(el.date) - 300000000)] = 0
-          tempAmounts[candidate][new Date] = 0
-          tempAmounts[candidate][new Date(el.date)] = el.amount;
-        }
-      }
-    }
-
-    for (var key in tempAmounts){
-      sorted_dates = _.keys(tempAmounts[key]).sort(this.dateSortAsc)
-      amounts[key] = []
-      for (i = 0; i < sorted_dates.length; i ++) {
-        if (tempAmounts[key][sorted_dates[i - 1]]) {
-          amounts[key].push({date: new Date(sorted_dates[i]), amount: (tempAmounts[key][sorted_dates[i]] + tempAmounts[key][sorted_dates[i - 1]] ) })
-          tempAmounts[key][sorted_dates[i]] += tempAmounts[key][sorted_dates[i - 1]]
-        }
-        else {
-          amounts[key].push({date: new Date(sorted_dates[i]), amount: tempAmounts[key][sorted_dates[i]]})
-        }
-
-      }
-    }
-    candidates = _.keys(candidates);
-    console.log( candidates )
-    return { amounts: amounts, candidates: candidates }
-  },
-
-  prePendButtons: function(){
-
   },
 
   drawLegend: function() {
