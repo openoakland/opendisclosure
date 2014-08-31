@@ -36,6 +36,7 @@ OpenDisclosure.Views.About = Backbone.View.extend({
        <li><a href='<%= m.github %>'><%= m.name %></a></li>\
      <% }) %>\
      </ul>\
+     ...and thanks to everyone else in the <a href='http://openoakland.org'>OpenOakland</a> Code for America Brigade for helping us out.\
      </section>"),
 
   initialize: function() {
