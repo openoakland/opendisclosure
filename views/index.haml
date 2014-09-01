@@ -32,7 +32,7 @@
             %a{ href: '/#' }
               %img{ src: image_path('OaklandCityTree.png') }
           .col-xs-8.col-sm-10.header-title-container
-            %h1.header-main-title Open Disclosure 
+            %h1.header-main-title Open Disclosure
             %h1.header-main-title-green Oakland
             %h2.header-catchphrase Bringing Oakland Campaign Money to Light
 
@@ -41,21 +41,17 @@
         %aside.col-sm-2.sidebar-container{ role: 'navigation', data: { spy: 'affix', 'offset-top' => 185 } }
           %ul.nav.nav-sidebar.sidebar
             %li
-              %a{ href: '/about' } About Us
-            %li
-              %a{ href: '/rules' } Oakland Campaign Finance Rules
-            / Hiding these until we have some content there - KW 5/19/14
-            / %li
-            /   %a{ href: '#' } Where does the data come from?
-            / %li
-            /   %a{ href: '#' } Contribute
-            %li
               %a{href: '/'} Candidates
               %ul.nav.nav-sidebar.compressed
-                - Party.mayoral_candidates.each do |c|
+                - candidates.each do |c|
                   %li
                     %a{ href: c.link_path }= c.short_name
-
+            %li
+              %a{ href: '/rules' } Oakland Campaign Finance Rules
+            %li
+              %a{ href: '/faq' } FAQ
+            %li
+              %a{ href: '/about' } About Us
         .main.col-sm-offset-2.col-sm-10
           %span Loading data...
           %script{ type: 'text/template', id: 'mayoral-table-template' }
@@ -94,7 +90,7 @@
                         <td class='mayoral-table-number'><%= m.pctSmallContributions() %></td>
                         <td class='mayoral-table-number'><%= m.avgContribution() %></td>
                       <% } else { %>
-                        <td colspan="5">No Data Available :(</td>
+                        <td class='mayoral-table-blank' colspan="5"><em>Candidate Has Not Filed Any Campaign Finance Forms</em></td>
                       <% } %>
                     </tr>
                   <% }); %>

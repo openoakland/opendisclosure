@@ -7,19 +7,23 @@ OpenDisclosure.TopContributorsView = Backbone.View.extend({
       </a>\
     </div>'),
 
-  initialize: function() {
+  initialize: function(options) {
+    this.options = options;
     this.render();
   },
 
   render: function() {
     this.$el.empty();
-    $('<h2>Top Contributions (grouped by Employer/Business)</h2>\
+    $('<h2>Top Contributors to ' + this.options.candidate + '</h2>\
+      <h4>employees grouped with their employer</h4>\
       <div class="topContributions clearfix"></div>')
     .appendTo(this.$el);
     var that = this;
     _.each(this.collection, function(c){
       that.$el.find('.topContributions').append(that.template(c));
     });
+
+    this.$el.append("<h5 class='footnote'>For more Details on how we group businesses and employers see the <a href='/faq#groupingBy'>FAQ</a></h5>");
   },
 
 });

@@ -235,7 +235,8 @@ background-color: $color-gold-highlight;
     padding-bottom: 3px;
   }
 
-  .mayoral-table-number {
+  .mayoral-table-number,
+  .mayoral-table-blank {
     vertical-align: middle;
   }
 
@@ -353,9 +354,27 @@ div#candidate {
 }
 
 
-
 /* ------------------- About Page -------------------- */
 #about {
   font-size: 14;
   max-width: 800px;
+}
+
+/* ------------------- FAQ Page -------------------- */
+
+#faq {
+
+  table {
+    margin: 15px auto;
+    border:1px solid black;
+
+    th, td {
+      text-align: center;
+      padding: 5px 10px;
+      border:1px solid black;
+    }
+
+  }
+
+
 }

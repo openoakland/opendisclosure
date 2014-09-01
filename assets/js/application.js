@@ -15,9 +15,11 @@
 
 //= require views/about
 //= require views/candidate
+//= require views/faq
 //= require views/home
 //= require views/rules
 //= require views/contributor
+//= require views/employees
 //= require views/_candidateTable
 //= require views/_chartsWrapper
 //= require views/_zipcodeChartView
@@ -27,6 +29,7 @@
 //= require views/_categoryView
 //= require views/_multiplesView
 //= require views/_search
+
 
 //= require util
 //= require app
