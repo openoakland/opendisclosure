@@ -50,16 +50,16 @@ OpenDisclosure.Views.Faq = Backbone.View.extend({
 	  </p>\
 	</div>\
         <div class='question'>\
-          <h3>What is displayed in the category pie chart?</h3>\
           <a name='categoryChart'></a>\
+          <h3>What is displayed in the category pie chart?</h3>\
 	  <div class='col-sm-2'><img src='pie.jpg' hight='130' width='130'></div>\
           <div class='col-sm-10'><p>\
 	  This chart displays the proportion of funds collected by the candidate from individuals, companies, committees, unions and registered Oakland lobbyists and lobbying companies.  The proportion of money not itemized is also displayed.  Candidates do not need to itemize individual contributions that are less than $100.  Lobbyists are identified from the <a href='https://data.oaklandnet.com/Public-Services/2014-Lobbyist-Directory/7jq6-spyn?category=Public-Services&view_'> 2041 lobbyist directory</a>.  Unions are identified “by hand” from the names of the contributors. Unlike the Top Contributors display, employees are NOT aggregated with their employers.\
 	  </p></div>\
 	</div>\
         <div class='question'>\
-          <h3>How do you group by business and employer?</h3>\
           <a name='groupBy'></a>\
+          <h3>How do you group by business and employer?</h3>\
           <p>\
             Campaign finance data is complex. Some contributions come from individuals. Others come from companies, unions or other advocacy groups. Candidate committees file contribution information which specifies if the contribution is from an individual or a company or committee. If the contribution is from an individual the committee reports the employer reported by that individual. People may specify their employer in a varity of ways. For example, 'IBM' can also be called 'International Business Machines' or 'Internaltion Buisness Machines Inc'. We did our best to map different names for the same company together. For each company in the list we group contributions from that company with contributions from employees who reported that they work for that company.\
           </p>\
