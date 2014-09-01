@@ -23,7 +23,7 @@ OpenDisclosure.TopContributorsView = Backbone.View.extend({
       that.$el.find('.topContributions').append(that.template(c));
     });
 
-    this.$el.append("<h5 class='footnote'>For more Details on how we group businesses and employers see the <a href='/faq#groupingBy'>FAQ</a></h5>");
+    this.$el.append("<h5 class='footnote'>For more Details on how we group businesses and employers see the <a href='/faq#groupBy'>FAQ</a></h5>");
   },
 
 });

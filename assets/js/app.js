@@ -85,7 +85,7 @@ OpenDisclosure.App = Backbone.Router.extend({
 
   faq : function() {
     new OpenDisclosure.Views.Faq({
-      el: '.main',
+      el: '.main'
     });
   },
 
