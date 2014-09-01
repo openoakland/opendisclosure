@@ -66,7 +66,7 @@ header {
 
 .main-header {
   background-color: #fff;
-  margin-bottom: 30px;
+  margin-bottom: 12px;
   padding: 12px;
   width: 100%;
 
@@ -118,7 +118,7 @@ h2.mayor2014 {
 
 .sidebar-container {
   box-sizing: border-box;
-  font-size: 16px;
+  font-size: 14px;
   list-style: none;
   padding: 0 20px 0 0;
   position: absolute;
@@ -134,9 +134,15 @@ h2.mayor2014 {
   }
 }
 
-.sidebar a{
+.sidebar li > a{
   display: block;
   color:inherit;
+  line-height: 18px;
+  padding: 6px 12px;
+}
+
+.sidebar li > a:hover{
+  background-color: $color-gold-highlight;
 }
 
 .sidebar .compressed a:hover{
@@ -152,10 +158,13 @@ h2.mayor2014 {
 }
 
 .compressed li {
-  font-size: 14px;
-  line-height: 14px;
+  font-size: 12px;
+  line-height: 13px;
   padding: 0 0 0 10px;
+}
 
+.compressed li > a {
+  padding: 4px 16px;
 }
 
 .sidebar .nav>li>a:hover,
