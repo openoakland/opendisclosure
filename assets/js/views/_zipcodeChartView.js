@@ -9,7 +9,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
     chart.color = d3.scale.ordinal()
       .domain(chart.candidates)
-      .range(d3.range(12).map(function(i) {
+      .range(d3.range(chart.candidates.length).map(function(i) {
         return "q" + i + "-12";
       }));
 

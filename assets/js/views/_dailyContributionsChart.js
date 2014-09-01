@@ -32,7 +32,7 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
     // Color scale - takes a candidate name and returns a CSS class name.
     chart.color = d3.scale.ordinal()
       .domain(chart.candidates)
-      .range(d3.range(12).map(function(i) {
+      .range(d3.range(chart.candidates.length).map(function(i) {
         return "q" + (i + 1) + "-12";
       }));
 
@@ -103,7 +103,7 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
         .attr("class", chart.color(candidate)); 
     }
 
-    var font_size: chart.dimensions.width / 50;
+    // var font_size: chart.dimensions.width / 50;
 
     chart.svg.append("g")
       .attr("class", "x axis")
@@ -119,5 +119,19 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
       .attr("dy", ".71em")
       .style("text-anchor", "end")
       .text("Total Raised ($)");
+
+    chart.drawLegend();
+  },
+
+  drawLegend: function() {
+    var candidates = _.keys(this.data);
+    this.$el.append("<div class='legend'></div><div class='clearfix'></div>");
+    for (var i = 0; i < candidates.length; i++){
+      var candidate = candidates[i];
+      this.$el.find('.legend').append("<div class='legend-item'>" +
+                      "<div class='color " + this.color(candidate) + "'></div>" +
+                      "<div class='name'>" + candidate + "</div>" + 
+                      "</div>");
+    }
   }
 })

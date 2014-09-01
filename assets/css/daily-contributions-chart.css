@@ -1,6 +1,5 @@
 
 section#dailyChart path {
-    /*stroke: steelblue;*/
     stroke-width: 3;
     fill: none;
 }
@@ -15,21 +14,82 @@ section#dailyChart .axis path,
 
 section#dailyChart {
   margin-top: 30px;
-  /*margin-left: 300px;*/
   margin-bottom: 30px;
 }
 
-section#dailyChart .q0-12{stroke: #000000}
-section#dailyChart .q1-12{stroke: #0087E5}
-section#dailyChart .q2-12{stroke: #26D5F5}
-section#dailyChart .q3-12{stroke: #A8E938}
-section#dailyChart .q4-12{stroke: #FED35E}
-section#dailyChart .q5-12{stroke: #FD2D2D}
-section#dailyChart .q6-12{stroke: #E1266C}
-section#dailyChart .q7-12{stroke: #DA9EE7}
-section#dailyChart .q8-12{stroke: #0A588f}
-section#dailyChart .q9-12{stroke: #8E34F4}
-section#dailyChart .q10-12{stroke: #2FB788}
-section#dailyChart .q11-12{stroke: #BA0012}
-section#dailyChart .q12-12{stroke: #B9A101}
-section#dailyChart .q13-12{stroke: #480A6A}
+.legend {
+  margin-left: 80px;
+}
+
+.legend div {
+  display: block;
+  float: left;
+}
+
+.legend .legend-item {
+  margin: 5px 6px;
+  width: 150px;
+}
+
+.legend .color {
+  width: 16px;
+  height: 16px;
+  margin: 2px 4px 0 4px;
+}
+
+section#dailyChart .q0-12 {
+  stroke: #000000;
+  background-color: #000000;
+}
+section#dailyChart .q1-12 {
+  stroke: #0087E5;
+  background-color: #0087E5;
+}
+section#dailyChart .q2-12 {
+  stroke: #26D5F5;
+  background-color: #26D5F5;
+}
+section#dailyChart .q3-12 {
+  stroke: #A8E938;
+  background-color: #A8E938;
+}
+section#dailyChart .q4-12 {
+  stroke: #FED35E;
+  background-color: #FED35E;
+}
+section#dailyChart .q5-12 {
+  stroke: #FD2D2D;
+  background-color: #FD2D2D;
+}
+section#dailyChart .q6-12 {
+  stroke: #E1266C;
+  background-color: #E1266C;
+}
+section#dailyChart .q7-12 {
+  stroke: #DA9EE7;
+  background-color: #DA9EE7;
+}
+section#dailyChart .q8-12 {
+  stroke: #0A588f;
+  background-color: #0A588f;
+}
+section#dailyChart .q9-12 {
+  stroke: #8E34F4;
+  background-color: #8E34F4;
+}
+section#dailyChart .q10-12 {
+  stroke: #2FB788;
+  background-color: #2FB788;
+}
+section#dailyChart .q11-12 {
+  stroke: #BA0012;
+  background-color: #BA0012;
+}
+section#dailyChart .q12-12 {
+  stroke: #B9A101;
+  background-color: #B9A101;
+}
+section#dailyChart .q13-12 {
+  stroke: #480A6A;
+  background-color: #480A6A;
+}
