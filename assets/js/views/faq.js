@@ -50,8 +50,8 @@ OpenDisclosure.Views.Faq = Backbone.View.extend({
 	  </p>\
 	</div>\
         <div class='question'>\
-          <h3>What is displayed in the catagory pie chart?</h3>\
-          <a name='catagoryChart'></a>\
+          <h3>What is displayed in the category pie chart?</h3>\
+          <a name='categoryChart'></a>\
 	  <div class='col-sm-2'><img src='pie.jpg' hight='130' width='130'></div>\
           <div class='col-sm-10'><p>\
 	  This chart displays the proportion of funds collected by the candidate from individuals, companies, committees, unions and registered Oakland lobbyists and lobbying companies.  The proportion of money not itemized is also displayed.  Candidates do not need to itemize individual contributions that are less than $100.  Lobbyists are identified from the <a href='https://data.oaklandnet.com/Public-Services/2014-Lobbyist-Directory/7jq6-spyn?category=Public-Services&view_'> 2041 lobbyist directory</a>.  Unions are identified “by hand” from the names of the contributors. Unlike the Top Contributors display, employees are NOT aggregated with their employers.\

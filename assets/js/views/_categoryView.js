@@ -29,7 +29,7 @@ OpenDisclosure.CategoryView = Backbone.View.extend({
     });
 
     this.$el.append(pieChart.render().el);
-    this.$el.append("<h5 class='footnote'>For more details on the data in this pie chart see the <a href='/faq#catagoryChart'>FAQ</a></h5>");
+    this.$el.append("<h5 class='footnote'>For more details on the data in this pie chart see the <a href='/faq#categoryChart'>FAQ</a></h5>");
   },
 
 });
