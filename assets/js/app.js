@@ -91,9 +91,13 @@ OpenDisclosure.App = Backbone.Router.extend({
   },
 
   faq : function() {
+    $(window).scrollTop(0);
     new OpenDisclosure.Views.Faq({
       el: '.main'
     });
+    var tmp = location.hash;
+    location.hash = "";
+    location.hash = tmp;
   },
 
   handleLinkClicked: function(e) {
