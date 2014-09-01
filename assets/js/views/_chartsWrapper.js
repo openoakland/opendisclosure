@@ -74,9 +74,6 @@ OpenDisclosure.ChartView = Backbone.View.extend({
   },
   // The render function wraps drawing with responsivosity
   render: function() {
-    console.log(this.collection);
-    if (this.collection.toJSON)
-      this.data = this.collection.toJSON();
     this.$el.empty();
     this.get_dimensions();
     this.draw(this.el);
