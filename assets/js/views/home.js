@@ -34,11 +34,11 @@ OpenDisclosure.Views.Home = Backbone.View.extend({
     // TODO: This is commented out until it uses the data format returned by
     // /api/contributions/by_date and that API endpoint is created.
     //
-    // new OpenDisclosure.DailyContributionsChartView({
-    //   el : "#dailyChart",
-    //   collection: OpenDisclosure.Data.contributions,
-    //   base_height: 480
-    // });
+    new OpenDisclosure.DailyContributionsChartView({
+      el : "#dailyChart",
+      collection: OpenDisclosure.Data.contributions,
+      base_height: 480
+    });
 
     new OpenDisclosure.ContributorsView({
       el : '#topContributions',

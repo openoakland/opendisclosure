@@ -88,6 +88,7 @@ class OpenDisclosureApp < Sinatra::Application
       Contribution
         .joins(:recipient, :contributor)
         .where(recipient_id: Party.mayoral_candidates.to_a)
+        .where(self_contribution: false)
         .group('contributors_contributions.zip, parties.committee_id')
         .pluck('contributors_contributions.zip, parties.committee_id, sum(contributions.amount)')
         .each_with_object({}) do |(zip, committee_id, amount), hash|
