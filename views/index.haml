@@ -16,15 +16,6 @@
     = stylesheet_tag 'application'
 
   %body
-    .disclaimer
-      %i.glyphicon.glyphicon-exclamation-sign
-      This site is
-      %a{ href: 'https://github.com/openoakland/opendisclosure' }
-        under active development
-      and all data is unfinalized.
-      %a{ href: 'http://www.meetup.com/OpenOakland/' }
-        You can help us finish it!
-
     %header.main-header
       .container
         .row
@@ -41,17 +32,17 @@
         %aside.col-sm-2.sidebar-container{ role: 'navigation', data: { spy: 'affix', 'offset-top' => 185 } }
           %ul.nav.nav-sidebar.sidebar
             %li
-              %a{href: '/'} Candidates
-              %ul.nav.nav-sidebar.compressed
-                - candidates.each do |c|
-                  %li
-                    %a{ href: c.link_path }= c.short_name
+              %a{ href: '/about' } About Us
             %li
               %a{ href: '/rules' } Oakland Campaign Finance Rules
             %li
               %a{ href: '/faq' } FAQ
             %li
-              %a{ href: '/about' } About Us
+              %a{href: '/'} Candidates
+              %ul.nav.nav-sidebar.compressed
+                - candidates.each do |c|
+                  %li
+                    %a{ href: c.link_path }= c.short_name
         .main.col-sm-offset-2.col-sm-10
           %span Loading data...
           %script{ type: 'text/template', id: 'mayoral-table-template' }
