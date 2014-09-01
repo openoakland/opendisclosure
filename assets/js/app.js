@@ -37,18 +37,21 @@ OpenDisclosure.App = Backbone.Router.extend({
   },
 
   home: function(){
+    $(window).scrollTop(0);
     new OpenDisclosure.Views.Home({
       el: '.main'
     });
   },
 
   about: function () {
+    $(window).scrollTop(0);
     new OpenDisclosure.Views.About({
       el: '.main'
     });
   },
 
   candidate: function(name){
+    $(window).scrollTop(0);
     new OpenDisclosure.Views.Candidate({
       el: '.main',
       candidateName: name
@@ -56,12 +59,14 @@ OpenDisclosure.App = Backbone.Router.extend({
   },
 
   rules: function () {
+    $(window).scrollTop(0);
     new OpenDisclosure.Views.Rules({
       el: '.main'
     });
   },
 
   contributor : function(id) {
+    $(window).scrollTop(0);
     new OpenDisclosure.Views.Contributor({
       el: '.main',
       contributorId: id
@@ -69,6 +74,7 @@ OpenDisclosure.App = Backbone.Router.extend({
   },
 
   employer : function(employer_name, employer_id) {
+    $(window).scrollTop(0);
     new OpenDisclosure.Views.Employees({
       el: '.main',
       employer_id: employer_id,
@@ -77,6 +83,7 @@ OpenDisclosure.App = Backbone.Router.extend({
   },
 
   search : function() {
+    $(window).scrollTop(0);
     new OpenDisclosure.Views.Contributor({
       el: '.main',
       search: location.search.slice(location.search.search("name=") + 5)
