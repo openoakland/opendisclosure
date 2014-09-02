@@ -443,14 +443,12 @@ class Party < ActiveRecord::Base
     #   ]
     # },
 
-    # NOT ON CLERKS LIST OF ANNOUNCED CANDIDATES
-
     # 'WILSON' => {
     #   name: 'Eric Wilson',
     #   declared: '2014-05-30',
     #   profession: 'Non-profit Employee',
     #   party: 'Democrat',
-    #   twitter:'',
+    #   twitter:'no known handle',
     #   bio: "[PLEASE NOTE: OpenOakland requested biographical information from this candidate on August 24, 2014, but has yet to receive any.]",
     #   sources: [
     #     {
@@ -461,6 +459,7 @@ class Party < ActiveRecord::Base
     # }
     # ,
 
+    # NOT ON CLERKS LIST OF ANNOUNCED CANDIDATES
 
     # 'WASHINGTON' => {
     #   name: 'Sammuel Washington',
