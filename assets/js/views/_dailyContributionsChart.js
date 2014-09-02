@@ -83,6 +83,7 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
 
      yAxis = d3.svg.axis()
       .scale(y)
+      .tickFormat(d3.format("$d"))
       .orient("left");
 
     var line = d3.svg.line()
@@ -118,9 +119,10 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
       .attr("y", 6)
       .attr("dy", ".71em")
       .style("text-anchor", "end")
-      .text("Total Raised ($)");
+      .text("Total raised");
 
     chart.drawLegend();
+    chart.drawTitle();
   },
 
   drawLegend: function() {
@@ -133,5 +135,9 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
                       "<div class='name'>" + candidate + "</div>" + 
                       "</div>");
     }
+  },
+
+  drawTitle: function() {
+    this.$el.prepend("<h3>Cumulative campaign contributions</h3>");
   }
 })

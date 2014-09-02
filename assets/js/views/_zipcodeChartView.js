@@ -207,7 +207,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         width: chart.dimensions.width / 80
       },
       margin: chart.dimensions.width / 100,
-      font_size: chart.dimensions.width / 50
+      font_size: chart.dimensions.width / 62
     }
 
     chart.legend = chart.svg.selectAll('.legend')

@@ -7,6 +7,7 @@ OpenDisclosure.Views.Home = Backbone.View.extend({
     this.$el.html('<section id="candidateTable"></section>\
       <section id="search"></section> \
       <section id="zipcodeChart"></section> \
+      <section id="dailyChart"></section> \
       <section id="topContributions"></section> \
       <section class="clearfix" id="multiples"></section>');
 

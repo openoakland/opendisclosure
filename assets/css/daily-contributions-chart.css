@@ -12,26 +12,33 @@ section#dailyChart .axis path,
   shape-rendering: crispEdges;
 }
 
-section#dailyChart {
-  margin-top: 30px;
-  margin-bottom: 30px;
+section#dailyChart text {
+  fill: #555555;
 }
 
-.legend {
+section#dailyChart .axis path,line {
+  stroke: #555555;
+}
+
+section#dailyChart h3, h4 {
+  text-align: right;
+}
+
+section#dailyChart .legend {
   margin-left: 80px;
 }
 
-.legend div {
+section#dailyChart .legend div {
   display: block;
   float: left;
 }
 
-.legend .legend-item {
+section#dailyChart .legend .legend-item {
   margin: 5px 6px;
-  width: 150px;
+  width: 148px;
 }
 
-.legend .color {
+section#dailyChart .legend .color {
   width: 16px;
   height: 16px;
   margin: 2px 4px 0 4px;
