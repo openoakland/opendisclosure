@@ -17,7 +17,9 @@ OpenDisclosure.Candidate = Backbone.Model.extend({
   },
 
   pctContributionsFromOakland : function() {
-    return OpenDisclosure.friendlyPct(this.attributes.received_contributions_from_oakland / this._totalContributionsRaw());
+    return OpenDisclosure.friendlyPct(
+      (this.attributes.received_contributions_from_oakland - this.attributes.self_contributions_total)
+      / (this._totalContributionsRaw() - this.attributes.self_contributions_total));
   },
 
   pctSmallContributions : function() {
