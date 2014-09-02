@@ -95,6 +95,8 @@ OpenDisclosure.App = Backbone.Router.extend({
     new OpenDisclosure.Views.Faq({
       el: '.main'
     });
+    // For some reason the FAQ page does not go to the hash.
+    // This code makes it do it.
     var tmp = location.hash;
     location.hash = "";
     location.hash = tmp;
