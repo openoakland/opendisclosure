@@ -11,10 +11,34 @@ $color-green-dark: #0F4800;
 $color-gray-text: #555;
 $color-gold-highlight: #FFDD1F;
 
+$font-size-base: 12px;
+$font-size-xlarge: #{40px / $font-size-base}em;
+$font-size-large: #{22px / $font-size-base}em;
+$font-size-medium: #{16px / $font-size-base}em;
+$font-size-small: #{14px / $font-size-base}em;
+$font-size-xsmall: #{12px / $font-size-base}em;
+
+$font-size-main-header: $font-size-xlarge;
+$font-size-header-catchphrase: $font-size-medium;
+$font-size-header-mayoral: $font-size-large;
+$font-size-sidebar: $font-size-medium;
+$font-size-mayoral-table-header: $font-size-small;
+$font-size-mayoral-table-info: $font-size-xsmall;
+$font-size-mayoral-table-number: $font-size-medium;
+
 body, html {
   background-image: image_url('squairy_light.png');
   font-family: 'Open Sans', sans-serif;
+  font-size: $font-size-base;
   color: $color-gray-text;
+
+  @include degrade(small) {
+    font-size: 10px;
+  }
+
+  @include degrade(extra-small) {
+    font-size: 8px;
+  }
 }
 
 a {
@@ -53,6 +77,10 @@ header {
   padding: 12px;
   width: 100%;
 
+  a {
+    color: inherit;
+  }
+
   .header-oakland-logo, .header-title-container {
     height: 100%;
   }
@@ -66,30 +94,52 @@ header {
   }
 
   .header-title-container {
-    padding-top: 26px;
+    @include enhance(medium) {
+      padding-top: 3em;
+    }
   }
 
   .header-main-title {
     color: $color-gray-text;
-    font-size: 40px;
+    font-size: $font-size-main-header;
     display: inline-block;
+    margin-right: 10px;
+
+    @include degrade(medium) {
+      margin-top: 0;
+      text-align: center;
+    }
+
+    .header-oakland-logo-inline {
+      height: 1em;
+      display: none;
+
+      @include degrade(extra-small) {
+        float: left;
+        display: inline-block;
+        margin-right: 10px;
+      }
+    }
   }
-  .header-main-title-green{
+
+  .header-main-title-green {
     color: $color-green-accent;
-    font-size: 40px;
-    display: inline-block;
   }
 
   .header-catchphrase {
     display: inline-block;
-    font-size: 16px;
+    font-size: $font-size-header-catchphrase;
     margin-left: 12px;
+
+    @include degrade(medium) {
+      margin: 0 0 1em 0;
+    }
   }
 }
 
-h2.mayor2014 {
+.mayoral-context-header {
   border-bottom: 1px solid #fff;
-  font-size: 22px;
+  font-size: $font-size-header-mayoral;
   letter-spacing: 1px;
   margin: 5px;
   padding-bottom: 4px;
@@ -101,50 +151,30 @@ h2.mayor2014 {
 
 .sidebar-container {
   box-sizing: border-box;
-  font-size: 16px;
+  font-size: $font-size-sidebar;
   list-style: none;
   padding: 0 20px 0 0;
-  position: absolute;
+}
 
-  &.affix {
-    position: fixed;
-    top: 15px;
+.sidebar {
+  background-color: rgba(255, 255, 255, 0.5);
+  border-top: 2px solid #fff;
+
+  a {
+    display: block;
+    color: inherit;
+    text-decoration: none;
   }
 
-  .sidebar {
-    background-color: rgba(255, 255, 255, 0.5);
-    border-top: 2px solid #fff;
+  .compressed li {
+    font-size: .8em;
+    line-height: 1.2em;
+    padding: 0 0 0 10px;
   }
-}
 
-.sidebar a{
-  display: block;
-  color:inherit;
-}
-
-.sidebar .compressed a:hover{
-  display: block;
-  color:inherit;
-  background-color: $color-gold-highlight;
-}
-
-.sidebar .active > a {
-  font-weight: bold;
-  color: #539137;
-  background-color: $color-gold-highlight;
-}
-
-.compressed li {
-  font-size: 14px;
-  line-height: 14px;
-  padding: 0 0 0 10px;
-
-}
-
-.sidebar .nav>li>a:hover,
-.sidebar .nav>li>a:active {
-text-decoration: none;
-background-color: $color-gold-highlight;
+  .compressed a:hover{
+    background-color: $color-gold-highlight;
+  }
 }
 
 /* ------------------- GENERAL LAYOUT -------------------- */
@@ -191,13 +221,12 @@ background-color: $color-gold-highlight;
   }
 
   .mayoral-table-head {
-    font-size: 14px;
-    line-height: 18px;
+    font-size: $font-size-mayoral-table-header;
     padding: 4px 8px 8px 8px;
   }
 
   .mayor-info {
-    font-size: 12px;
+    font-size: $font-size-mayoral-table-info;
     line-height: 16px;
     text-align: left;
   }
@@ -220,11 +249,11 @@ background-color: $color-gold-highlight;
 
   .mayoral-table-number,
   .mayoral-table-blank {
+    font-size: $font-size-mayoral-table-number;
     vertical-align: middle;
   }
 
   th {
-    font-size: 16px;
     font-weight: normal;
     width: 130px;
   }
@@ -234,8 +263,7 @@ background-color: $color-gold-highlight;
   }
 
   td {
-    border-top: 2px white solid;
-    font-size: 18px;
+    border-top: 2px #ddd solid;
   }
 
   td, th {
@@ -254,13 +282,19 @@ background-color: $color-gold-highlight;
 
 /* ------------------- Candidate Page -------------------- */
 
-div#candidate {
+#candidate {
 
   h2, h4 {
     text-align: left;
   }
 
-  section#candidateDetails{
+  .mayor-picture-inline {
+    float: left;
+    margin-right: 12px;
+    width: 64px;
+  }
+
+  #candidateDetails{
     div {
       padding: 0 4px;
     }

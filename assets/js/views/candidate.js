@@ -2,7 +2,8 @@ OpenDisclosure.Views.Candidate = Backbone.View.extend({
 
   template: _.template("\
     <div id='candidate'>\
-    <h2 class='mayor2014'>Campaign Finance for the 2014 Oakland Mayoral Election</h2>\
+    <h2 class='mayoral-context-header'>Campaign Finance for the 2014 Oakland Mayoral Election</h2>\
+    <img class='visible-xs mayor-picture-inline' style='float: left; margin-right: 12px;' src='<%= candidate.imagePath() %>' />\
     <h1><%= candidate.get('short_name') %></h1>\
     <% if (candidate.get('summary') !== null) { %>\
       <section class='clearfix' id='mathbar'>\
@@ -14,7 +15,7 @@ OpenDisclosure.Views.Candidate = Backbone.View.extend({
     <% } %>\
     <section class='clearfix' id= 'candidateDetails'>\
       <div class='col-sm-3'>\
-        <img class='mayor-picture' src='<%= candidate.imagePath() %>' />\
+        <img class='hidden-xs' src='<%= candidate.imagePath() %>' />\
         <p><%= candidate.get('profession') %></p>\
         <p>Party Affiliation: <%= candidate.get('party_affiliation') %></p>\
         <p><i class='fa fa-twitter fa-2x'></i><a id='twitter' href='https://twitter.com/<%= candidate.get('twitter') %>'><%= candidate.get('twitter') %></a></p>\

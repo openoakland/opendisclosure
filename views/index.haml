@@ -4,7 +4,7 @@
     %meta{charset: "utf-8"}
     %meta{content: "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}
     %title Open Disclosure
-    %meta{content: "width=device-width", name: "viewport"}
+    %meta{content: "width=device-width, user-scalable=no", name: "viewport"}
     %link{ rel: 'stylesheet', href: '//fonts.googleapis.com/css?family=Open+Sans:400,700|Crete+Round' }
     %link{ rel: 'stylesheet', href: '//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css' }
     %meta{ name: 'google-site-verification', content: 'yXhjc2AToqKzxrNc5p03ZIaaNiid07AB0_-VoNFP-pw' }
@@ -19,17 +19,20 @@
     %header.main-header
       .container
         .row
-          .col-xs-4.col-sm-2.header-oakland-logo
+          .hidden-xs.col-sm-2.header-oakland-logo
             %a{ href: '/#' }
               %img{ src: image_path('OaklandCityTree.png') }
-          .col-xs-8.col-sm-10.header-title-container
-            %h1.header-main-title Open Disclosure
-            %h1.header-main-title-green Oakland
+          .col-xs-12.col-sm-10.header-title-container
+            %h1.header-main-title
+              %a{ href: '/' }
+                %img.header-oakland-logo-inline{ src: image_path('OaklandCityTree.png') }
+                Open Disclosure
+                %span.header-main-title-green Oakland
             %h2.header-catchphrase Bringing Oakland Campaign Money to Light
 
     .container
       .row
-        %aside.col-sm-2.sidebar-container{ role: 'navigation', data: { spy: 'affix', 'offset-top' => 185 } }
+        %aside.col-sm-2.hidden-xs.hidden-sm.sidebar-container{ role: 'navigation' }
           %ul.nav.nav-sidebar.sidebar
             %li
               %a{ href: '/about' } About Us
@@ -43,11 +46,11 @@
                 - candidates.each do |c|
                   %li
                     %a{ href: c.link_path }= c.short_name
-        .main.col-sm-offset-2.col-sm-10
+        .main.col-xs-12.col-md-10
           %span Loading data...
           %script{ type: 'text/template', id: 'mayoral-table-template' }
             :plain
-              <h2 class='mayor2014'>Campaign Finance for the 2014 Oakland Mayoral Election</h2>
+              <h2 class='mayoral-context-header'>Campaign Finance for the 2014 Oakland Mayoral Election</h2>
               <table id='mayoral-table' class='table'>
                 <thead>
                   <tr>
