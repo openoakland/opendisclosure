@@ -21,8 +21,8 @@ $font-size-xsmall: #{12px / $font-size-base}em;
 $font-size-main-header: $font-size-xlarge;
 $font-size-header-catchphrase: $font-size-medium;
 $font-size-header-mayoral: $font-size-large;
-$font-size-sidebar: $font-size-medium;
-$font-size-mayoral-table-header: $font-size-small;
+$font-size-sidebar: $font-size-small;
+$font-size-mayoral-table-header: $font-size-xsmall;
 $font-size-mayoral-table-info: $font-size-xsmall;
 $font-size-mayoral-table-number: $font-size-medium;
 
@@ -73,7 +73,7 @@ header {
 
 .main-header {
   background-color: #fff;
-  margin-bottom: 30px;
+  margin-bottom: 12px;
   padding: 12px;
   width: 100%;
 
@@ -152,24 +152,32 @@ header {
 .sidebar-container {
   box-sizing: border-box;
   font-size: $font-size-sidebar;
-  list-style: none;
-  padding: 0 20px 0 0;
 }
 
 .sidebar {
   background-color: rgba(255, 255, 255, 0.5);
   border-top: 2px solid #fff;
 
-  a {
+  li > a {
     display: block;
     color: inherit;
     text-decoration: none;
+    line-height: 18px;
+    padding: 6px 12px;
+
+    &:hover {
+      background-color: $color-gold-highlight;
+    }
   }
 
   .compressed li {
     font-size: .8em;
     line-height: 1.2em;
     padding: 0 0 0 10px;
+  }
+
+  .compressed li > a {
+    padding: 4px 16px;
   }
 
   .compressed a:hover{
@@ -201,7 +209,7 @@ header {
 .main-footer {
   background-color: $color-green-dark;
   margin-top: 36px;
-  padding: 12px 30px;
+  padding: 12px 50px 30px;
   width: 100%;
   text-align: right;
 
@@ -222,6 +230,7 @@ header {
 
   .mayoral-table-head {
     font-size: $font-size-mayoral-table-header;
+    line-height: 15px;
     padding: 4px 8px 8px 8px;
   }
 
@@ -341,20 +350,22 @@ header {
   border-bottom: none;
   color: white;
   font-family: 'Crete Round', serif;
-  line-height: 20px;
+  line-height: 18px;
   width: 100%;
   padding: 0;
   margin: 0;
 
   .money-label {
     background-color: $color-green-accent;
-    font-size: 15px;
-    letter-spacing: 0.7px;
+    display: block;
+    font-size: 12px;
+    letter-spacing: 0.5px;
     padding: 6px 12px;
+    width: 20%;
   }
 
   .money-number {
-    font-size: 24px;
+    font-size: 22px;
   }
 
   .mathsign {

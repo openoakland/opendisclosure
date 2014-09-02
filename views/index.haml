@@ -35,7 +35,7 @@
         %aside.col-sm-2.hidden-xs.hidden-sm.sidebar-container{ role: 'navigation' }
           %ul.nav.nav-sidebar.sidebar
             %li
-              %a{ href: '/about' } About Us
+              %a{ href: '/about' } About Open Disclosure
             %li
               %a{ href: '/rules' } Oakland Campaign Finance Rules
             %li
@@ -46,6 +46,7 @@
                 - candidates.each do |c|
                   %li
                     %a{ href: c.link_path }= c.short_name
+
         .main.col-xs-12.col-md-10
           %span Loading data...
           %script{ type: 'text/template', id: 'mayoral-table-template' }

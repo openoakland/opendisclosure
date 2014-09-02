@@ -184,7 +184,7 @@ class Party < ActiveRecord::Base
       name: 'Courtney Ruby',
       declared: '2014-02-26',
       profession: 'City Auditor',
-      party: 'Unknown',
+      party: 'Nonpartisan',
       twitter:'@Ruby4Oakland',
       bio:"Courtney is Oakland’s City Auditor, since 2007. She is a Certified Public Accountant and Certified Fraud Examiner. Previously, she served as vice-chair of the Budget Advisory Committee for the City of Oakland and Board Finance Chair for a local nonprofit dedicated to ending the cycle of homelessness. In 2005, she became the Chief Financial Officer and Director of Administration of the East Bay Conservation Corps, a nonprofit organization dedicated to promoting youth development through environmental stewardship and community service. She graduated from the Kogod School of Business at American University in 1989. She lives in East Oakland with her two young sons.",
       sources: [
@@ -259,8 +259,8 @@ class Party < ActiveRecord::Base
 
     'ANDERSON' => {
       name: 'Jason "Shake" Anderson',
-      declared: '',
-      profession: '',
+      declared: '2014-02-18',
+      profession: 'Communications Director',
       party: 'Green Party',
       twitter:'@Shake9169',
       bio: "Jason Anderson is a former Occupy Oakland spokesperson and honorably discharged veteran of the U.S. Navy. He is an Oakland native, artist, community organizer. As the Green Party endorsed Oakland mayoral candidate, he has committed to accept no corporate money.",
@@ -294,41 +294,49 @@ class Party < ActiveRecord::Base
 
     'HOUSTON' => {
       name: 'Ken Houston',
-      declared: '',
-      profession: '',
-      party: '',
-      twitter:'',
+      declared: '2014-06-18',
+      profession: 'Contractor',
+      party: 'Not reported',
+      twitter:'@KHouston4Mayor',
       bio: "Ken Houston attended public schools in Oakland, went to Laney College and trade school, and then joined Plumber’s Union. Houston remodeled blighted homes in Oakland, then moved to commercial jobs and public works projects. Houston volunteered on the task force to reform the practices of Oakland’s Building Services Department. He chairs the East Oakland Beautification Council.
 ",
       sources: [
         {
           name: 'Ken Houston on Oakland Elects website',
           uri: 'http://www.oaklandelects.com/kenhouston.html'
+        },
+        {
+          name: 'Oakland Wiki article on Ken Houston',
+          uri: 'http://oaklandwiki.org/Ken_Houston'
         }
       ]
     },
 
     'KARAMOOZ' => {
       name: 'Saied Karamooz',
-      declared: '',
-      profession: '',
-      party: '',
-      twitter:'',
-      bio: "Saied Karamooz holds B.S. (computer science), M.B.A., and M.S. (information sciences) degrees from Pennsylvania State University.  Starting his career as an intern with IBM, he has served in senior and executive roles in both the software and consulting industries. Helping to find technological solutions to large-scale problems is a recurring theme in this Oakland resident’s résumé.",
+      declared: '2014-06-06',
+      profession: 'Private Sector Executive',
+      party: 'Nonpartisan',
+      twitter:'@SaiedKaramooz',
+      bio: "Saied Karamooz holds B.S. in Computer Science, M.B.A., and M.S. in Information Sciences from Pennsylvania State University.  Starting his career as an intern with IBM, he has served in senior and executive roles in both the software and consulting industries. Helping to find technological solutions to large-scale problems is a recurring theme in this Oakland resident’s résumé.",
       sources: [
         {
           name: 'Official Campaign site',
           uri: 'http://www.oaklandmayormovement.org/'
+        },
+        {
+          name: 'Oakland Wiki article on Saied Karamooz',
+          uri: 'http://oaklandwiki.org/Saied_Karamooz'
         }
       ]
     },
 
     'MCCULLOUGH' => {
       name: 'Patrick McCullough',
-      declared: '',
-      profession: '',
-      party: 'Independent',
-      twitter:'',
+      declared: '2013-07-24',
+      profession: 'Technician/Lawyer/Entrepreneur',
+      party: 'Nonpartisan',
+      twitter:'@pat4oakland',
       bio: "According to his campaign website, Patrick McCullough currently works as a technician and self-employed attorney. When he was 18, McCullough enlisted in the U.S. Navy and was honorably discharged in 1980. McCullough graduated with a J.D. from San Francisco Law School and earned a B.A. from Golden Gate University. In 2005, during a confrontation with a group of youths outside his home, Patrick shot his 15-year-old neighbor. The Alameda County district attorney found that he had acted in self-defense, and no charges were brought against anyone involved in the incident. In 2008, McCullough ran for Oakland City Council, District 1. He and his wife, Daphne, have been residents of the Bushrod neighborhood for over 30 years.",
       sources: [
         {
@@ -352,9 +360,9 @@ class Party < ActiveRecord::Base
 
     'SIDEBOTHAM' => {
       name: 'Nancy Sidebotham',
-      declared: '',
-      profession: '',
-      party: 'nonpartisan',
+      declared: '2014-01-02',
+      profession: 'Tax Preparer',
+      party: 'Democrat',
       twitter:'@nancy6368',
       bio: "Nancy Sidebotham is a supervised registered tax preparer and neighborhood activist. She has previously run for the Oakland City Council, District 6 council seat. Sidebotham is a former Community Policing Advisory Board (CPAB) member. She currently lives in Oakland.",
       sources: [
@@ -375,10 +383,10 @@ class Party < ActiveRecord::Base
 
     'WILLIAMS' => {
       name: 'Charles R. Williams',
-      declared: '',
-      profession: '',
-      party: '',
-      twitter:'',
+      declared: '2014-80-09',
+      profession: 'Engineering Manager Administrator',
+      party: 'Democrat',
+      twitter:'@CharlesMmcrw40',
       bio: "Starting in 1961, Charles R. Williams had an extensive career with the U.S. Navy in a variety of assignments ranging from ship maintenance to recruiting and the military police.  After retiring, he entered private consulting with a focus on small businesses and local government.  Most recently, he served as a consultant to the city and and county of San Francisco.",
       sources: [
         {
@@ -410,9 +418,9 @@ class Party < ActiveRecord::Base
 
     # LIU => {
     #   name: 'Peter Liu',
-    #   declared: '',
-    #   profession: '',
-    #   party: '',
+    #   declared: '2014-01-29',
+    #   profession: 'Father, Businessman, Executive',
+    #   party: 'Nonpartisan',
     #   twitter:'',
     #   bio: "Peter Liu has worked as an entrepreneur and real estate agent. He reports eight years of experience in the insurance industry. His campaign statement indicates that he graduated from Oakland High in 1998 and received a B.A. in History from the University of California, Santa Cruz. Liu also states that he earned a journalism degree from the United States Defense Information School at Fort Meade, Maryland. He reports serving in the United States Army for two years in Kuwait and Iraq. Peter Liu lives with his wife and two-year-old son in Oakland.",
     #   sources: [
@@ -435,14 +443,12 @@ class Party < ActiveRecord::Base
     #   ]
     # },
 
-    # NOT ON CLERKS LIST OF ANNOUNCED CANDIDATES
-
     # 'WILSON' => {
     #   name: 'Eric Wilson',
-    #   declared: '',
-    #   profession: '',
-    #   party: '',
-    #   twitter:'',
+    #   declared: '2014-05-30',
+    #   profession: 'Non-profit Employee',
+    #   party: 'Democrat',
+    #   twitter:'no known handle',
     #   bio: "[PLEASE NOTE: OpenOakland requested biographical information from this candidate on August 24, 2014, but has yet to receive any.]",
     #   sources: [
     #     {
@@ -453,6 +459,7 @@ class Party < ActiveRecord::Base
     # }
     # ,
 
+    # NOT ON CLERKS LIST OF ANNOUNCED CANDIDATES
 
     # 'WASHINGTON' => {
     #   name: 'Sammuel Washington',
