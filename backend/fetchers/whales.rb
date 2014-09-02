@@ -10,7 +10,7 @@ class DataFetcher
           committee_id in (#{Party::CANDIDATE_IDS.join ','}))
         GROUP BY contributor_id
         ORDER BY sum(amount) desc
-        LIMIT 10;
+        LIMIT 20;
       QUERY
     end
   end
