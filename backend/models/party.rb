@@ -257,6 +257,11 @@ class Party < ActiveRecord::Base
       ]
     },
 
+    # Candidates without data are below. Since they're not in the database,
+    # these should have the same schema as the party table (see
+    # backend/schema.rb) -- city, state, zip, employer, occupation
+
+
     'ANDERSON' => {
       name: 'Jason "Shake" Anderson',
       declared: '2014-02-18',
@@ -410,53 +415,50 @@ class Party < ActiveRecord::Base
           uri: 'https://twitter.com/CharlesMmcrw40'
         }
       ]
+    },
+
+
+    'LIU' => {
+      name: 'Peter Liu',
+      declared: '2014-01-29',
+      profession: 'Father, Businessman, Executive',
+      party: 'Nonpartisan',
+      twitter:'',
+      bio: "Peter Liu has worked as an entrepreneur and real estate agent. He reports eight years of experience in the insurance industry. His campaign statement indicates that he graduated from Oakland High in 1998 and received a B.A. in History from the University of California, Santa Cruz. Liu also states that he earned a journalism degree from the United States Defense Information School at Fort Meade, Maryland. He reports serving in the United States Army for two years in Kuwait and Iraq. Peter Liu lives with his wife and two-year-old son in Oakland.",
+      sources: [
+        {
+          name: 'Mayoral Candidate Peter Liu / Oakland North',
+          uri: 'http://oaknorth.wpengine.com/2014/05/21/mayoral-candidate-peter-liu/'
+        },
+        {
+          name: 'Ballotpedia Peter Liu',
+          uri: 'http://ballotpedia.org/Peter_Yuan_Liu'
+        },
+        {
+          name: 'Peter Liu / Linkedin',
+          uri: 'https://www.linkedin.com/pub/peter-liu/22/80/10b'
+        },
+        {
+          name: 'Oakland Wiki / Official Campaign Statement PDF',
+          uri: 'http://oaklandwiki.org/Peter_Y._Liu/#camstat'
+        },
+      ]
+    },
+
+    'WILSON' => {
+      name: 'Eric Wilson',
+      declared: '2014-05-30',
+      profession: 'Non-profit Employee',
+      party: 'Democrat',
+      twitter:'no known handle',
+      bio: "[PLEASE NOTE: OpenOakland requested biographical information from this candidate on August 24, 2014, but has yet to receive any.]",
+      sources: [
+        {
+          name: 'Official campaign site',
+          uri: 'http://www.wilson4oakland.com/'
+        }
+      ]
     }
-
-    # Candidates without data are below. Since they're not in the database,
-    # these should have the same schema as the party table (see
-    # backend/schema.rb) -- city, state, zip, employer, occupation
-
-    # LIU => {
-    #   name: 'Peter Liu',
-    #   declared: '2014-01-29',
-    #   profession: 'Father, Businessman, Executive',
-    #   party: 'Nonpartisan',
-    #   twitter:'',
-    #   bio: "Peter Liu has worked as an entrepreneur and real estate agent. He reports eight years of experience in the insurance industry. His campaign statement indicates that he graduated from Oakland High in 1998 and received a B.A. in History from the University of California, Santa Cruz. Liu also states that he earned a journalism degree from the United States Defense Information School at Fort Meade, Maryland. He reports serving in the United States Army for two years in Kuwait and Iraq. Peter Liu lives with his wife and two-year-old son in Oakland.",
-    #   sources: [
-    #     {
-    #       name: 'Mayoral Candidate Peter Liu / Oakland North',
-    #       uri: 'http://oaknorth.wpengine.com/2014/05/21/mayoral-candidate-peter-liu/'
-    #     },
-    #     {
-    #       name: 'Ballotpedia Peter Liu',
-    #       uri: 'http://ballotpedia.org/Peter_Yuan_Liu'
-    #     },
-    #     {
-    #       name: 'Peter Liu / Linkedin',
-    #       uri: 'https://www.linkedin.com/pub/peter-liu/22/80/10b'
-    #     },
-    #     {
-    #       name: 'Oakland Wiki / Official Campaign Statement PDF',
-    #       uri: 'http://oaklandwiki.org/Peter_Y._Liu/#camstat'
-    #     },
-    #   ]
-    # },
-
-    # 'WILSON' => {
-    #   name: 'Eric Wilson',
-    #   declared: '2014-05-30',
-    #   profession: 'Non-profit Employee',
-    #   party: 'Democrat',
-    #   twitter:'no known handle',
-    #   bio: "[PLEASE NOTE: OpenOakland requested biographical information from this candidate on August 24, 2014, but has yet to receive any.]",
-    #   sources: [
-    #     {
-    #       name: 'Official campaign site',
-    #       uri: 'http://www.wilson4oakland.com/'
-    #     }
-    #   ]
-    # }
     # ,
 
     # NOT ON CLERKS LIST OF ANNOUNCED CANDIDATES
