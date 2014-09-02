@@ -65,7 +65,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <% _.each(models, function(m) { %>
+                  <% _.each(candidatesWithData, function(m) { %>
                     <tr>
                       <td>
                         <a href='<%= m.linkPath() %>'><img class='mayor-picture' src="<%= m.imagePath() %>" /></a>
@@ -73,26 +73,37 @@
                       <td scope='row'>
                         <div class='mayor-info'>
                           <p class='mayor-name'>
-                            <a href= '<%= m.linkPath() %>'><%- m.attributes.short_name %></a>
+                            <a href= '<%= m.linkPath() %>'><%= m.get('short_name') %></a>
                           </p>
-                          <p class='mayor-profession'><%- m.attributes.profession %></p>
+                          <p class='mayor-profession'><%= m.get('profession') %></p>
                         </div>
                       </td>
-                      <% if (m.attributes.summary) { %>
-                        <td class='mayoral-table-number'><%= m.totalContributions() %></td>
-                        <td class='mayoral-table-number'><%= m.attributes.received_contributions_count %></td>
-                        <td class='mayoral-table-number'><%= m.pctContributionsFromOakland() %></td>
-                        <td class='mayoral-table-number'><%= m.pctSmallContributions() %></td>
-                        <td class='mayoral-table-number'><%= m.avgContribution() %></td>
-                      <% } else { %>
-                        <td class='mayoral-table-blank' colspan="5"><em>Candidate Has Not Filed Any Campaign Finance Forms</em>
-                        <h5 class='footnote'>For more information on who must file disclosures see the <a href='/faq#whoMustFile'>FAQ</a></h5></td>
-                      <% } %>
+                      <td class='mayoral-table-number'><%= m.totalContributions() %></td>
+                      <td class='mayoral-table-number'><%= m.attributes.received_contributions_count %></td>
+                      <td class='mayoral-table-number'><%= m.pctContributionsFromOakland() %></td>
+                      <td class='mayoral-table-number'><%= m.pctSmallContributions() %></td>
+                      <td class='mayoral-table-number'><%= m.avgContribution() %></td>
                     </tr>
                   <% }); %>
                 </tbody>
               </table>
-              <p>This table includes all candidates who have submitted campaign finance disclosure forms as of #{last_updated.strftime '%B %e, %Y'}.</p>
+              <h3>Candidates Without Data:</h3>
+              <p class='footnote'>These candidates will appear on the ballot in November, but have not filed any campaign finance disclosures.</p>
+              <p class='footnote'>For more information on who must file disclosures <a href='/faq#whoMustFile'>see the FAQ</a>.</p>
+              <ul class='mayoral-dataless-candidate-list row'>
+              <% _.each(candidatesWithoutData, function(m) { %>
+                <li class='mayoral-dataless-candidate col-xs-12 col-sm-4'>
+                  <a href='<%= m.linkPath() %>'>
+                    <img class='mayor-picture' src="<%= m.imagePath() %>" />
+                  </a>
+                  <a href='<%= m.linkPath() %>'>
+                    <p class='mayor-name'><%= m.get('short_name') %></p>
+                  </a>
+                  <p class='mayor-profession'><%= m.get('profession') %></p>
+                </li>
+              <% }); %>
+              </ul>
+              <p class='clearfix'>This table includes all candidates who have submitted campaign finance disclosure forms as of #{last_updated.strftime '%B %e, %Y'}.</p>
               <h5> * Candidates do not need to itemize contributions less than $100, <a href='/faq#smallContributions'>see the FAQ</a> </h5>
     %footer.main-footer
       %a{ href: 'http://codeforamerica.org/'}
@@ -108,7 +119,7 @@
 
     / Third Party (cdn)
     %script{src: "http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"}
-    %script{src: "http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"}
+    %script{src: "http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"}
     %script{src: "http://d3js.org/d3.v3.js"}
     %script{src: '//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js'}
 

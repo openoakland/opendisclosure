@@ -9,6 +9,13 @@ OpenDisclosure.CandidateTable = Backbone.View.extend({
   },
 
   render : function() {
-    this.$el.html(this.template(this.collection));
+    var candidates = _.partition(this.collection.models, function(m) {
+      return m.attributes.summary;
+    });
+
+    this.$el.html(this.template({
+      candidatesWithData : candidates[0],
+      candidatesWithoutData : candidates[1]
+    }));
   },
 });

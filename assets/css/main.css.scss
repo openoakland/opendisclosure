@@ -60,6 +60,10 @@ h2, h4 {
   text-align: center;
 }
 
+.clearfix {
+  clear: both;
+}
+
 /* ------------------- HEADER -------------------- */
 
 header {
@@ -286,6 +290,44 @@ header {
 
   p {
     margin: 0;
+  }
+}
+
+.mayoral-dataless-candidate-list {
+  list-style: none;
+  padding-left: 10px;
+}
+
+.mayoral-dataless-candidate {
+  float: left;
+  font-size: $font-size-mayoral-table-info;
+  line-height: 16px;
+  margin-bottom: 1em;
+
+  @include degrade(medium) {
+    min-height: 80px;
+  }
+
+  .mayor-info {
+    text-align: left;
+  }
+
+  .mayor-picture {
+    border: 1px solid #c0c0c0;
+    float: left;
+    margin-right: 1em;
+    width: 50px;
+  }
+
+  .mayor-picture:hover {
+    opacity:0.9;
+  }
+
+  .mayor-name {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 21px;
+    margin: 3px 0 5px;
   }
 }
 
