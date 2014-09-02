@@ -362,6 +362,10 @@ header {
     letter-spacing: 0.5px;
     padding: 6px 12px;
     width: 20%;
+
+    @include degrade(extra-small) {
+      width: 100%;
+    }
   }
 
   .money-number {
@@ -372,6 +376,10 @@ header {
     float: right;
     font-size: 32px;
     line-height: 2px;
+
+    @include degrade(extra-small) {
+      display: none;   // they show in the wrong place; it's confusing
+    }
   }
 
   .money-label.count{
