@@ -60,7 +60,7 @@
                     <th class='mayoral-table-head bold'>Total Raised</th>
                     <th class='mayoral-table-head'>Number of itemized contributions</th>
                     <th class='mayoral-table-head'>Percentage of itemized contributions from Oakland*</th>
-                    <th class='mayoral-table-head'>Percentage of Total Raised from small contributions*</th>
+                    <th class='mayoral-table-head'>Percentage of Total Raised from small contributions**</th>
                     <th class='mayoral-table-head'>Average of itemized contributions</th>
                   </tr>
                 </thead>
@@ -104,7 +104,8 @@
               <% }); %>
               </ul>
               <p class='clearfix'>This table includes all candidates who have submitted campaign finance disclosure forms as of #{last_updated.strftime '%B %e, %Y'}.</p>
-              <h5> * Candidates do not need to itemize contributions less than $100, <a href='/faq#smallContributions'>see the FAQ</a> </h5>
+              <h5> * Does not include candidates own contributions or non-itimized contributions </h5>
+              <h5> ** Candidates do not need to itemize contributions less than $100, <a href='/faq#smallContributions'>see the FAQ</a> </h5>
     %footer.main-footer
       %a{ href: 'http://codeforamerica.org/'}
         %img.footer-logos.CfA{ src: image_path('cfa_logo_footer.png') }
