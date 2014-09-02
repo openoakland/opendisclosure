@@ -9,7 +9,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
     chart.color = d3.scale.ordinal()
       .domain(chart.candidates)
-      .range(d3.range(12).map(function(i) {
+      .range(d3.range(chart.candidates.length).map(function(i) {
         return "q" + i + "-12";
       }));
 
@@ -35,7 +35,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       .attr("viewBox", "0 0 " + chart.dimensions.width + " " + chart.dimensions.height)
       .attr("preserveAspectRatio", "xMidYMid");
 
-    chart.drawMap(function(zipUpdater) {
+    chart.drawZips(function(zipUpdater) {
       chart.drawCities(zipUpdater, function() {
         chart.drawBubbles();
         chart.drawScale();
@@ -50,7 +50,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     chart.drawCandidateDescription();
   },
 
-  drawMap: function(done) {
+  drawZips: function(done) {
     var chart = this;
 
     var zipcodes = chart.svg.append("g")
@@ -138,8 +138,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         .data(data)
         .enter().append("svg:path")
         .attr("d", chart.path)
-        .attr('class', 'city')
-        .append("svg:title");
+        .attr('class', 'city');
 
       done();
 
@@ -208,7 +207,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
         width: chart.dimensions.width / 80
       },
       margin: chart.dimensions.width / 100,
-      font_size: chart.dimensions.width / 50
+      font_size: chart.dimensions.width / 62
     }
 
     chart.legend = chart.svg.selectAll('.legend')

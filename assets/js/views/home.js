@@ -7,6 +7,7 @@ OpenDisclosure.Views.Home = Backbone.View.extend({
     this.$el.html('<section id="candidateTable"></section>\
       <section id="search"></section> \
       <section id="zipcodeChart"></section> \
+      <section id="dailyChart"></section> \
       <section id="topContributions"></section> \
       <section class="clearfix" id="multiples"></section>');
 
@@ -34,11 +35,13 @@ OpenDisclosure.Views.Home = Backbone.View.extend({
     // TODO: This is commented out until it uses the data format returned by
     // /api/contributions/by_date and that API endpoint is created.
     //
-    // new OpenDisclosure.DailyContributionsChartView({
-    //   el : "#dailyChart",
-    //   collection: OpenDisclosure.Data.contributions,
-    //   base_height: 480
-    // });
+    OpenDisclosure.Data.dailyContributions.done(function(data) {
+      new OpenDisclosure.DailyContributionsChartView({
+        el : "#dailyChart",
+        collection: data,
+        base_height: 480
+      });
+    });
 
     new OpenDisclosure.ContributorsView({
       el : '#topContributions',
