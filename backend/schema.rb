@@ -58,11 +58,18 @@ ActiveRecord::Schema.define do
   create_table :summaries do |t|
     t.integer :party_id, null: false
     t.date :last_summary_date
-    t.integer :total_unitemized_contributions
+
+    # From Summary sheet:
     t.integer :total_monetary_contributions
+    t.integer :total_nonmonetary_contributions
     t.integer :total_contributions_received
+    t.integer :total_unpaid_bills
     t.integer :total_expenditures_made
+    t.integer :total_misc_increases_to_cash
     t.integer :ending_cash_balance
+
+    # From Schedule A summary:
+    t.integer :total_unitemized_contributions
 
     t.index :party_id, unique: true
   end

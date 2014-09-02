@@ -361,11 +361,6 @@ header {
     font-size: 12px;
     letter-spacing: 0.5px;
     padding: 6px 12px;
-    width: 20%;
-
-    @include degrade(extra-small) {
-      width: 100%;
-    }
   }
 
   .money-number {

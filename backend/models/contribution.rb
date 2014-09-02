@@ -13,9 +13,9 @@ class Contribution < ActiveRecord::Base
   enum type: [:contribution, :loan, :inkind]
 
   def increment_oakland_contribution_count
-    if contributor.from_oakland?
-      Party.increment_counter(:received_contributions_from_oakland, recipient.id)
-    end
+    return unless contributor.from_oakland?
+    recipient.received_contributions_from_oakland += amount
+    recipient.save
   end
 
   def set_self_contribution
