@@ -6,7 +6,7 @@ OpenDisclosure.CategoryView = Backbone.View.extend({
 
   render: function() {
     this.$el.empty();
-    this.$el.append('<h2>Total Contributions by Category');
+    this.$el.append('<h2>Total Contributions by Category</h2>');
     // Create the data table.
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Category');
@@ -21,14 +21,21 @@ OpenDisclosure.CategoryView = Backbone.View.extend({
       options: {
        // 'title':'Total Contributions by Category',
        // 'titleTextStyle':{'fontSize':30, 'fontName':'Crete Round', 'color':'#555555'},
-       'backgroundColor':'#E9E9E9',
-       'chartArea':{'width':600},
-                   'width':900,
-                   'height':250},
+       'backgroundColor': '#E9E9E9',
+       'chartArea': {
+         'width': 300
+       },
+       'width': 300,
+       'height': 250,
+      },
       dataTable: data,
     });
 
-    this.$el.append(pieChart.render().el);
+    // This is pretty hacky, but it's a way to center the chart without reaching
+    // into its internals.
+    pieChart.render();
+    this.$el.append($('<div style="width: 300px; margin: auto">').html(pieChart.el));
+    this.$el.append("<h5 class='footnote'>For more details on the data in this pie chart see the <a href='/faq#categoryChart'>FAQ</a></h5>");
   },
 
 });
