@@ -5,13 +5,13 @@ OpenDisclosure.Views.Home = Backbone.View.extend({
 
   render : function() {
     this.$el.html('<section id="candidateTable"></section>\
-       <section id="search"></section> \
-       <section id="zipcodeChart"></section> \
-      <section id="dailyChart"></section> \
-       <section id="topContributions"></section> \
-       <section class="clearfix" id="multiples"></section>');
+      <section id="search"></section> \
+      <section id="zipcodeChart"></section> \
+      <section id="topContributions"></section> \
+      <section class="clearfix" id="multiples"></section>');
 
     //TODO: add this back into the above template when the chart is ready
+    // <section id="dailyChart"></section> \
 
     new OpenDisclosure.CandidateTable({
       el : '#candidateTable',
@@ -29,7 +29,7 @@ OpenDisclosure.Views.Home = Backbone.View.extend({
         base_height: 480
       });
     });
-      
+
 
     // TODO: This is commented out until it uses the data format returned by
     // /api/contributions/by_date and that API endpoint is created.
