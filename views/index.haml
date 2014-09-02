@@ -41,17 +41,18 @@
         %aside.col-sm-2.sidebar-container{ role: 'navigation', data: { spy: 'affix', 'offset-top' => 185 } }
           %ul.nav.nav-sidebar.sidebar
             %li
+              %a{ href: '/about' } About Open Disclosure
+            %li
+              %a{ href: '/rules' } Oakland Campaign Finance Rules
+            %li
+              %a{ href: '/faq' } FAQ
+            %li
               %a{href: '/'} Candidates
               %ul.nav.nav-sidebar.compressed
                 - candidates.each do |c|
                   %li
                     %a{ href: c.link_path }= c.short_name
-            %li
-              %a{ href: '/about' } About Open Disclosure
-            %li
-              %a{ href: '/faq' } FAQ
-            %li
-              %a{ href: '/rules' } Oakland Campaign Finance Rules
+
         .main.col-sm-offset-2.col-sm-10
           %span Loading data...
           %script{ type: 'text/template', id: 'mayoral-table-template' }
