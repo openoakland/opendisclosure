@@ -4,9 +4,12 @@ class DataFetcher
     # Form_Type => { Line_Item => SQL Column name }
     SUMMARY_LINES = {
       'F460' => {
-        '1'  => :total_monetary_contributions,
+        '3'  => :total_monetary_contributions,
+        '4'  => :total_nonmonetary_contributions,
         '5'  => :total_contributions_received,
+        '9'  => :total_unpaid_bills,
         '11' => :total_expenditures_made,
+        '14' => :total_misc_increases_to_cash,
         '16' => :ending_cash_balance,
       },
       'A' => {

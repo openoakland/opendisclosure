@@ -7,10 +7,9 @@ OpenDisclosure.Views.Candidate = Backbone.View.extend({
     <h1><%= candidate.get('short_name') %></h1>\
     <% if (candidate.get('summary') !== null) { %>\
       <section class='clearfix' id='mathbar'>\
-        <div class='col-sm-3 money-label'>Total Contributions <br><span class='money-number'><%= candidate.friendlySummaryNumber('total_contributions_received') %></span><span class='mathsign'>–</span></div>\
+        <div class='col-sm-3 money-label'>Total Contributions <br><span class='money-number'><%= candidate.totalContributions() %></span><span class='mathsign'>–</span></div>\
         <div class='col-sm-3 money-label'>Expenditures <br><span class='money-number'><%= candidate.friendlySummaryNumber('total_expenditures_made') %></span><span class='mathsign'>=</span></div>\
-        <div class='col-sm-3 money-label'>Cash On Hand <br><span class='money-number'><%= candidate.friendlySummaryNumber('ending_cash_balance') %></span><span class='mathsign'>+</span></div>\
-        <div class='col-sm-3 money-label'>Unpaid Bills <br><span class='money-number'><%= candidate.friendlySummaryNumber('NNN') %></span></div>\
+        <div class='col-sm-3 money-label'>Available Balance<br><span class='money-number'><%= candidate.availableBalance() %></span></div>\
         <div class='col-sm-3 money-label count'> No. of Contributions <br><span class='money-number'><%= candidate.get('received_contributions_count') %></span></div>\
       </section>\
     <% } %>\

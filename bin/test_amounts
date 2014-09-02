@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+load 'backend/environment.rb'
+
+Party.mayoral_candidates.each do |c|
+  puts c.short_name
+  contributions = c.summary.total_contributions_received
+  expenditures = c.summary.total_expenditures_made
+  misc = c.summary.total_misc_increases_to_cash
+  unpaid = c.summary.total_unpaid_bills
+  actual = c.summary.ending_cash_balance
+
+  total = contributions - expenditures + misc + unpaid
+
+  puts "contributions:    $#{contributions}"
+  puts "expenditures:   - $#{expenditures}"
+  puts "misc:           + $#{misc}"
+  puts "unpaid:         + $#{unpaid}"
+  puts "                ===================="
+  puts "                  $#{total}"
+  puts "actual COH:     - $#{actual}"
+  puts "                ===================="
+  puts "difference:       $#{total - actual}"
+  puts ''
+  puts ''
+end
