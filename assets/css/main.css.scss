@@ -333,20 +333,22 @@ div#candidate {
   border-bottom: none;
   color: white;
   font-family: 'Crete Round', serif;
-  line-height: 20px;
+  line-height: 18px;
   width: 100%;
   padding: 0;
   margin: 0;
 
   .money-label {
     background-color: $color-green-accent;
-    font-size: 15px;
-    letter-spacing: 0.7px;
+    display: block;
+    font-size: 12px;
+    letter-spacing: 0.5px;
     padding: 6px 12px;
+    width: 20%;
   }
 
   .money-number {
-    font-size: 24px;
+    font-size: 22px;
   }
 
   .mathsign {
