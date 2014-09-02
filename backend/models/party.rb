@@ -57,6 +57,14 @@ class Party < ActiveRecord::Base
     JOHNSON = 1360826,
     MOORE = 0,
     NOSAKHARE = 1365766,
+    # OUSD
+    DERBO = 1366842,
+    SEEN = 1368416,
+    SHAKIR = 1365733,
+    SPRINGER = 1367083,
+    ALMONZOR = 1365454,
+    DOBBINS = 1277578,
+    GONZALES = 1364457,
   ]
 
   CANDIDATE_INFO = {
