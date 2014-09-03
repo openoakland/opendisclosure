@@ -22,6 +22,7 @@ class Party < ActiveRecord::Base
     RUBY = 1364278,
     KAPLAN = 1367270,
     SIEGEL = 1362877,
+    WILLIAMS = 1367207
     #################
     # No filer ID
     # ANDERSON =
@@ -30,7 +31,6 @@ class Party < ActiveRecord::Base
     # LIU =
     # MCCULLOUGH =
     # SIDEBOTHAM =
-    # WILLIAMS =
     # WILSON =
   ]
 
@@ -265,6 +265,37 @@ class Party < ActiveRecord::Base
       ]
     },
 
+    WILLIAMS => {
+      name: 'Charles R. Williams',
+      declared: '2014-80-09',
+      profession: 'Engineering Manager Administrator',
+      party: 'Democrat',
+      twitter:'@CharlesMmcrw40',
+      bio: "Starting in 1961, Charles R. Williams had an extensive career with the U.S. Navy in a variety of assignments ranging from ship maintenance to recruiting and the military police.  After retiring, he entered private consulting with a focus on small businesses and local government.  Most recently, he served as a consultant to the city and and county of San Francisco.",
+      sources: [
+        {
+          name: 'Charles Ray Williams',
+          uri: 'http://oaklandwiki.org/charles_ray_williams'
+        },
+        {
+          name: 'Charles Ray Williams Fundly',
+          uri: 'https://fundly.com/charles-r-williams-for-mayor-of-oakland'
+        },
+        {
+          name: 'Google +',
+          uri: 'https://plus.google.com/101642577580197907873/posts'
+        },
+        {
+          name: 'Facebook',
+          uri: 'https://www.facebook.com/people/Charles-Williams/100006463488973?fref=nf'
+        },
+        {
+          name: 'Twitter',
+          uri: 'https://twitter.com/CharlesMmcrw40'
+        }
+      ]
+    },
+
     # Candidates without data are below. Since they're not in the database,
     # these should have the same schema as the party table (see
     # backend/schema.rb) -- city, state, zip, employer, occupation
@@ -391,37 +422,6 @@ class Party < ActiveRecord::Base
           name: 'Nancy Sidebotham / Linkedin',
           uri: 'https://www.linkedin.com/pub/nancy-s-sidebotham/9/72/532'
         },
-      ]
-    },
-
-    'WILLIAMS' => {
-      name: 'Charles R. Williams',
-      declared: '2014-80-09',
-      profession: 'Engineering Manager Administrator',
-      party: 'Democrat',
-      twitter:'@CharlesMmcrw40',
-      bio: "Starting in 1961, Charles R. Williams had an extensive career with the U.S. Navy in a variety of assignments ranging from ship maintenance to recruiting and the military police.  After retiring, he entered private consulting with a focus on small businesses and local government.  Most recently, he served as a consultant to the city and and county of San Francisco.",
-      sources: [
-        {
-          name: 'Charles Ray Williams',
-          uri: 'http://oaklandwiki.org/charles_ray_williams'
-        },
-        {
-          name: 'Charles Ray Williams Fundly',
-          uri: 'https://fundly.com/charles-r-williams-for-mayor-of-oakland'
-        },
-        {
-          name: 'Google +',
-          uri: 'https://plus.google.com/101642577580197907873/posts'
-        },
-        {
-          name: 'Facebook',
-          uri: 'https://www.facebook.com/people/Charles-Williams/100006463488973?fref=nf'
-        },
-        {
-          name: 'Twitter',
-          uri: 'https://twitter.com/CharlesMmcrw40'
-        }
       ]
     },
 
