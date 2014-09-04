@@ -228,7 +228,9 @@ class OpenDisclosureApp < Sinatra::Application
         { contributor: { methods: :short_name } },
       ],
     }
-    Contribution.joins('JOIN parties on contributor_id = parties.id')
+    Contribution
+      .includes(:contributor, :recipient)
+      .joins('JOIN parties on contributor_id = parties.id')
       .where("parties.employer_id = ?", params[:employer_id])
       .order(:date).reverse_order
       .to_json(fields)
