@@ -21,3 +21,16 @@ OpenDisclosure.Search = Backbone.View.extend({
     window.appNavigate('/search/' + this.$('[name=name]').val(), { trigger: true });
   }
 });
+
+OpenDisclosure.CommitteeSearch = Backbone.View.extend({
+  initialize : function () {
+    this.render();
+  },
+  render : function() {
+    this.$el.append('<h3>Search for Committees or Candidates  By Name</h3>\
+		      <form id="search" action="/searchCommittee">\
+			<input type="text" name="name" value=""/>\
+			<input type="submit" value="Search Committees"/>\
+		      </form>');
+  },
+});

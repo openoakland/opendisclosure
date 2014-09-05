@@ -143,6 +143,14 @@ class OpenDisclosureApp < Sinatra::Application
         .includes(:recipient, :contributor)
         .order(date: :desc)
         .to_json(fields)
+    when 'committee'
+      search 	  = "%" + CGI.unescape(id).downcase.gsub(/-/, '_') + "%"
+      party         = Party::Committee.where("lower(name) like ?", search)
+      Contribution
+        .where(recipient_id: party)
+        .includes(:recipient, :contributor)
+        .order(recipient_id: :asc).order(date: :desc)
+        .to_json(fields)
     else
       # TODO: Remove this once we no longer hit /api/contributions
       Contribution
