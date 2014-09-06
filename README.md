@@ -63,3 +63,27 @@ site here: http://ssl.netfile.com/pub2/Default.aspx?aid=COAK
 We process that data in a nightly ETL process. Every day (or so) [this
 dataset][1] is updated with the latest version of the data. **There is a [data
 dictionary of what all the columns mean here][2].**
+
+## Deploying
+
+In order to deploy to production ([opendisclosure.io]) you will need a couple things:
+
+1. A public-private SSH keypair (use the `ssh-keygen` command to make one)
+2. A [Heroku][https://heroku.com] account. Make sure to associate it with your
+   public key (`~/.ssh/id_rsa.pub`)
+3. Permission for your Heroku account to deploy. You can get this from the
+   current OpenDisclosure maintainers.
+
+Then, you can deploy via git:
+
+    # first time setup:
+    git remote add heroku git@heroku.com:opendisclosure.git
+
+    # to deploy:
+    git checkout master
+    # highly recommended: run `git log` so you know what will be deployed. When
+    # ready to deploy, run:
+    git push heroku master
+
+Make sure to push changes back to this repository as well, so that heroku and
+this repository's master branch stay in-sync!
