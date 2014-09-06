@@ -1,6 +1,14 @@
 Disclosure Data in Neo4j
 ========================
 
+## Warning!
+
+The Neo4j part of the project, while cool and promising, is not currently part
+of the project nor something the OpenDisclosure team is currently developing.
+This folder is here for historical purposes and in case anyone happens upon
+this project who is passionate about graph databases and wants to play around
+with this stuff.
+
 ## Overview
 
 Importing in the [Neo4j Graph Database](http://neo4j.org) allows for analysis and querying of this connected data. Neo4j can then be used to answer questions of interest, and provide data for visulatizations.
