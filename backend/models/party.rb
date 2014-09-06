@@ -266,7 +266,7 @@ class Party < ActiveRecord::Base
     },
 
     WILLIAMS => {
-      name: 'Charles R. Williams',
+      name: 'Charles Williams',
       declared: '2014-80-09',
       profession: 'Engineering Manager Administrator',
       party: 'Democrat',

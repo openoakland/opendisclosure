@@ -12,7 +12,7 @@ OpenDisclosure.ContributorsView = Backbone.View.extend({
         <a href="<%= contribution.contributorLinkPath() %>">\
           <span class="col-sm-6"><%= contribution.attributes.contributor.name %></span>\
           <span class="col-sm-2"><%= OpenDisclosure.friendlyMoney(contribution.attributes.amount) %><%= contribution.typeName() %></span>\
-          <span class="col-sm-4"><%= moment(contribution.attributes.date).format("MMM-DD-YY") %></span>\
+          <span class="col-sm-4"><%= contribution.attributes.date ? moment(contribution.attributes.date).format("MMM-DD-YY"): "" %></span>\
         </a>\
       </div>'),
 
