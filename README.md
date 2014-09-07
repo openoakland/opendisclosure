@@ -69,7 +69,7 @@ dictionary of what all the columns mean here][2].**
 In order to deploy to production ([opendisclosure.io]) you will need a couple things:
 
 1. A public-private SSH keypair (use the `ssh-keygen` command to make one)
-2. A [Heroku][https://heroku.com] account. Make sure to associate it with your
+2. A [Heroku](https://heroku.com) account. Make sure to associate it with your
    public key (`~/.ssh/id_rsa.pub`)
 3. Permission for your Heroku account to deploy. You can get this from the
    current OpenDisclosure maintainers.
@@ -87,3 +87,6 @@ Then, you can deploy via git:
 
 Make sure to push changes back to this repository as well, so that heroku and
 this repository's master branch stay in-sync!
+
+[1]: https://data.oaklandnet.com/dataset/Campaign-Finance-FPPC-Form-460-Schedule-A-Monetary/3xq4-ermg
+[2]: https://data.sfgov.org/Ethics/Campaign-Finance-Data-Key/wygs-cc76
