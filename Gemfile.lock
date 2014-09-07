@@ -40,6 +40,7 @@ GEM
     hike (1.2.3)
     i18n (0.6.9)
     json (1.8.1)
+    libv8 (3.16.14.3)
     method_source (0.8.2)
     minitest (5.3.3)
     multi_json (1.9.3)
@@ -55,6 +56,7 @@ GEM
       rack (>= 1.0)
     rake (10.3.2)
     rb-readline (0.5.1)
+    ref (1.0.5)
     rspec (3.0.0)
       rspec-core (~> 3.0.0)
       rspec-expectations (~> 3.0.0)
@@ -100,6 +102,9 @@ GEM
     sprockets-sass (1.2.0)
       sprockets (~> 2.0)
       tilt (~> 1.1)
+    therubyracer (0.12.1)
+      libv8 (~> 3.16.14.0)
+      ref
     thor (0.17.0)
     thread_safe (0.3.3)
     tilt (1.4.1)
@@ -125,3 +130,4 @@ DEPENDENCIES
   sinatra-asset-pipeline
   sinatra-contrib
   sitemap_generator
+  therubyracer
