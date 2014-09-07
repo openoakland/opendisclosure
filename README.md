@@ -64,6 +64,36 @@ We process that data in a nightly ETL process. Every day (or so) [this
 dataset][1] is updated with the latest version of the data. **There is a [data
 dictionary of what all the columns mean here][2].**
 
+## Name mapping
+
+When we aggregate to find top contributors by company and employee, we use a mapping table to correct for spelling errors and different ways of representing the same entity.  This is stored in backend/map.csv and gets loaded into the maps table during the data load process.
+
+Since there is no easy way to calculate when two entities are the same updating the maps table requires human intervention. Here are the steps to update the data:
+
+1) load the most recent data (see above).
+2) In your favorite Postgres interface run this query and export it:
+	SELECT DISTINCT * FROM (
+	  SELECT  0, name, name FROM parties c, contributions 
+	  WHERE contributor_id = c.id AND c.type <> 'Party::Individual'
+	    AND NOT name =ANY (SELECT Emp2 FROM maps)
+	  UNION ALL SELECT  0, employer, employer FROM parties c, contributions 
+	  WHERE contributor_id = c.id AND c.type ='Party::Individual'
+	    AND NOT employer =ANY (SELECT Emp2 FROM maps)
+	) s
+4) load map.csv and this new data into your favorite column oriented data processing tool
+	e.g. Excel
+5) sort on the Emp1 column
+6) Search for rows that have 0 in the first column and see if they are equivalent
+	to any near by entity.  If they are, copy the value of Emp1 from that row
+	to this one.  If the entity is a union but "Union" in the type column.
+	In some cases an equivalent entity might not sort near by, e.g:
+		San Fransisco Bay Area Rapid Transit District : BART
+		City of Oakland : Oakland, city of
+		California Senate : State of CA Senate
+7) Renumber the first column so all are unique.  In Excel or equivalent you can
+	set the first row to 1 and the second row to =A1+1 and copy that forumla to
+	all the other rows.
+
 ## Deploying
 
 In order to deploy to production ([opendisclosure.io]) you will need a couple things:

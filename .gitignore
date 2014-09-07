@@ -1,6 +1,7 @@
 .idea
 .bundle
 .env
+**/*.swp
 **/.DS_Store
 **/*.sqlite3
 .sass-cache
