@@ -1,0 +1,61 @@
+<div id='candidate'>
+  <h2 class='mayoral-context-header'>Campaign Finance for the 2014 Oakland Mayoral Election</h2>
+  <img class='visible-xs mayor-picture-inline' style='float: left; margin-right: 12px;' src='{{imagePath}}' />
+
+  <h1>{{shortName}}</h1>
+  {{#if summary}}
+    <section class='clearfix' id='mathbar'>
+      <div class='col-sm-3 money-label'>
+        Total Contributions <br>
+        <span class='money-number'>{{summary.totalContributions}}</span>
+        <span class='mathsign'>–</span>
+      </div>
+      <div class='col-sm-3 money-label'>Expenditures <br>
+        <span class='money-number'>{{summary.totalExpenditures}}</span>
+        <span class='mathsign'>=</span>
+      </div>
+      <div class='col-sm-3 money-label'>Available Balance<br>
+        <span class='money-number'>{{summary.availableBalance}}</span>
+      </div>
+      <div class='col-sm-3 money-label count'>No. of Contributions<br>
+        <span class='money-number'>{{received_contributions_count}}</span>
+      </div>
+    </section>
+    {{/if}}
+  <section class='clearfix' id= 'candidateDetails'>
+    <div class='col-sm-3'>
+      <img class='hidden-xs' src='{{imagePath}}' />
+      <p>{{profession}}</p>
+      <p>Party Affiliation: {{party_affiliation}}</p>
+      <p>
+        <i class='fa fa-twitter fa-2x'></i>
+        <a id='twitter' href='https://twitter.com/{{twitter}}'>{{twitter}}</a>
+      </p>
+    </div>
+    <div class='col-sm-5'>
+      <p>{{bio}}</p>
+      <div class='sources'>
+        <span>Sources</span><br>
+        {{#each sources}}
+          <a href='{{uri}}'>{{name}}</a><br>
+        {{/each}}
+      </div>
+    </div>
+    <div class='col-sm-4'>
+      {{#if summary}}
+        <p>Percentage of total contributions that are small contributions*: {{summary.pctSmallContributions}}</p>
+        <p>Personal funds loaned and contributed to campaign: {{friendlyMoney self_contributions_total}}</p>
+        <p>% of the total amount raised is personal funds: {{summary.pctPersonalContributions}}</p>
+        <p>Declared candidacy: {{declared}} </p>
+        <p>Data last updated: {{summary.lastSummaryDate}} </p>
+        <p class='sources'>* Candidates do not need to itemize contributions less than $100 by contributor, but do need to include all contributions in their total reported amount.  <b><a href='/faq#smallContributions'>FAQ</a> </b></p>
+      {{else}}
+        <div class='noContributions'>The candidate had not reported any campaign contributions by the last filing deadline. Candidates are not required to report if they have raised less than $1,000.</div>
+      {{/if}}
+    </div>
+  </section>
+
+  <section class='clearfix' id= 'category'></section>
+  <section class='clearfix' id= 'topContributors'></section>
+  <section class='clearfix' id= 'contributors'></section>
+</div>

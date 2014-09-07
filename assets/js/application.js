@@ -4,6 +4,7 @@
 //= require vendor/accounting.min
 //= require vendor/GoogleChart
 //= require vendor/moment
+//= require handlebars
 
 //= require config
 
@@ -12,6 +13,8 @@
 
 //= require collections/candidates
 //= require collections/contributions
+
+//= require_tree ./templates/
 
 //= require views/about
 //= require views/candidate
@@ -29,7 +32,6 @@
 //= require views/_categoryView
 //= require views/_multiplesView
 //= require views/_search
-
 
 //= require util
 //= require app
