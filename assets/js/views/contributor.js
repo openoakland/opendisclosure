@@ -28,7 +28,7 @@ OpenDisclosure.Views.Contributor = Backbone.View.extend({
       return m.attributes.contributor.name;
     });
 
-    this.$el.html(new OpenDisclosure.Search().$el);
+    this.$el.html(new OpenDisclosure.Search({ search : this.options.search }).$el);
     this.$el.append(this.template({
       // produce a mapping like:
       // {
