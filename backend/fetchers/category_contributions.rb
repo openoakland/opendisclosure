@@ -15,6 +15,7 @@ class DataFetcher
               end
             when c.type = 'Party::Individual' AND
                 l.name is not null OR l.firm is not null then 'Lobbyist'
+	    when c.type = 'Party::Committee' and maps.type = 'Union' then 'Union'
             else substring(c.type, 8)
           end as ConType, count(*), sum(amount)
         FROM

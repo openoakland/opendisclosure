@@ -5,15 +5,20 @@ OpenDisclosure.CategoryView = Backbone.View.extend({
   },
 
   render: function() {
+    var attributes = this.options.attributes;
     this.$el.empty();
     this.$el.append('<h2>Total Contributions by Category</h2>');
     // Create the data table.
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Category');
     data.addColumn('number', 'Amount');
-    data.addRow(['Not Itemized', this.options.summary.total_unitemized_contributions]);
+    data.addRow(['Not Itemized', attributes.summary.total_unitemized_contributions]);
     _.each(this.collection, function( c ){
-      data.addRow([c.attributes.contype, c.attributes.amount]);
+      if (c.attributes.contype === 'Individual')
+	data.addRow([c.attributes.contype,
+		    c.attributes.amount - attributes.self_contributions_total]);
+      else
+	data.addRow([c.attributes.contype, c.attributes.amount]);
     });
 
     pieChart = new Backbone.GoogleChart({
