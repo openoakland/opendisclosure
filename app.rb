@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'sinatra/content_for'
 require 'sinatra/asset_pipeline'
+require 'handlebars_assets'
 require 'active_record'
 require 'sass'
 require 'haml'
@@ -20,10 +21,11 @@ class OpenDisclosureApp < Sinatra::Application
     ActiveRecord::Base.connection.verify!
   end
 
+  set :assets_precompile, %w(application.js application.css *.png *.jpg *.svg *.eot *.ttf *.woff)
+  set :assets_prefix, %w(assets vendor/assets) + [File.dirname(HandlebarsAssets.path)]
+
   register Sinatra::AssetPipeline
   use Rack::Deflater
-
-  set :assets_precompile, %w(application.js application.css *.png *.jpg *.svg *.eot *.ttf *.woff)
 
   # Below here are some API endpoints for the frontend JS to use to fetch data.
   # This uses a special ActiveRecord syntax for converting models to JSON. It is

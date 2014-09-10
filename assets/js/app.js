@@ -7,7 +7,7 @@ OpenDisclosure.App = Backbone.Router.extend({
     'rules': 'rules',
     'contributor/:id': 'contributor',
     'employer/:employer_name/:employer_id': 'employer',
-    'search': 'search'
+    'search/:name': 'search'
   },
 
   initialize : function() {
@@ -82,11 +82,11 @@ OpenDisclosure.App = Backbone.Router.extend({
     });
   },
 
-  search : function() {
+  search : function(name) {
     $(window).scrollTop(0);
     new OpenDisclosure.Views.Contributor({
       el: '.main',
-      search: location.search.slice(location.search.search("name=") + 5)
+      search: name
     });
   },
 
@@ -123,5 +123,6 @@ OpenDisclosure.App = Backbone.Router.extend({
 
 $(function() {
   var app = new OpenDisclosure.App();
+  window.appNavigate = app.navigate;
   $(document).click(app.handleLinkClicked.bind(app));
 });

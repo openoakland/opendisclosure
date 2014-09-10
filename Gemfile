@@ -9,6 +9,8 @@ gem 'rake'
 gem 'sinatra'
 gem 'sinatra-asset-pipeline'
 gem 'sinatra-contrib'
+gem 'handlebars_assets'
+gem 'therubyracer'
 
 group :development do
   gem 'pry'

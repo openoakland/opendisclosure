@@ -1,0 +1,19 @@
+{{#each contributors}}
+  <div class="col-sm-12">
+    <h1>{{name}}</h1>
+  </div>
+
+  <div class="contributions clearfix"></div>
+    {{#each contributions}}
+      <div id="contributor">
+        <div class="col-sm-12 contribution">
+          <a href="{{recipientLinkPath}}">
+            <span class="col-sm-6">{{recipientName}}</span>
+            <span class="col-sm-2">{{amount}}</span>
+            <span class="col-sm-4">{{date}}</span>
+          </a>
+        </div>
+      </div>
+    {{/each}}
+  </div>
+{{/each}}

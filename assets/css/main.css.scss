@@ -334,7 +334,6 @@ header {
 /* ------------------- Candidate Page -------------------- */
 
 #candidate {
-
   h2, h4 {
     text-align: left;
   }
@@ -346,10 +345,6 @@ header {
   }
 
   #candidateDetails{
-    div {
-      padding: 0 4px;
-    }
-
     img {
       border: 1px solid #c0c0c0;
       margin: 0 0 6px 8px;
@@ -363,7 +358,7 @@ header {
       padding: 0 8px;
     }
 
-    .fa-twitter{
+    .fa-twitter {
       vertical-align: middle;
       color: #555555;
       font-size: 14px;
@@ -446,8 +441,5 @@ header {
       padding: 5px 10px;
       border:1px solid black;
     }
-
   }
-
-
 }

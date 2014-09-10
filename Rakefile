@@ -1,4 +1,5 @@
 require 'sinatra/asset_pipeline/task'
+load 'backend/environment.rb'
 require './app'
 
 namespace :sitemap do

@@ -1,53 +1,5 @@
 OpenDisclosure.Views.Candidate = Backbone.View.extend({
-
-  template: _.template("\
-    <div id='candidate'>\
-    <h2 class='mayoral-context-header'>Campaign Finance for the 2014 Oakland Mayoral Election</h2>\
-    <img class='visible-xs mayor-picture-inline' style='float: left; margin-right: 12px;' src='<%= candidate.imagePath() %>' />\
-    <h1><%= candidate.get('short_name') %></h1>\
-    <% if (candidate.get('summary') !== null) { %>\
-      <section class='clearfix' id='mathbar'>\
-        <div class='col-sm-3 money-label'>Total Contributions <br><span class='money-number'><%= candidate.totalContributions() %></span><span class='mathsign'>–</span></div>\
-        <div class='col-sm-3 money-label'>Expenditures <br><span class='money-number'><%= candidate.friendlySummaryNumber('total_expenditures_made') %></span><span class='mathsign'>=</span></div>\
-        <div class='col-sm-3 money-label'>Available Balance<br><span class='money-number'><%= candidate.availableBalance() %></span></div>\
-        <div class='col-sm-3 money-label count'> No. of Contributions <br><span class='money-number'><%= candidate.get('received_contributions_count') %></span></div>\
-      </section>\
-    <% } %>\
-    <section class='clearfix' id= 'candidateDetails'>\
-      <div class='col-sm-3'>\
-        <img class='hidden-xs' src='<%= candidate.imagePath() %>' />\
-        <p><%= candidate.get('profession') %></p>\
-        <p>Party Affiliation: <%= candidate.get('party_affiliation') %></p>\
-        <p><i class='fa fa-twitter fa-2x'></i><a id='twitter' href='https://twitter.com/<%= candidate.get('twitter') %>'><%= candidate.get('twitter') %></a></p>\
-      </div>\
-      <div class='col-sm-5'>\
-        <p><%= candidate.get('bio') %></p>\
-        <div class='sources'>\
-        <span>Sources</span><br>\
-          <% (candidate.get('sources') || []).forEach(function (source) { %>\
-            <a href='<%= source.uri %>'><%= source.name %></a><br>\
-          <% }) %>\
-        </div>\
-      </div>\
-      <div class='col-sm-4'>\
-        <% if (candidate.get('summary') !== null) { %>\
-          <p>Percentage of total contributions that are small contributions*: <%= candidate.pctSmallContributions() %></p>\
-          <p>Personal funds loaned and contributed to campaign: <%= OpenDisclosure.friendlyMoney(candidate.get('self_contributions_total')) %></p>\
-          <p>% of the total amount raised is personal funds: <%= OpenDisclosure.friendlyPct(candidate.get('self_contributions_total') / candidate.get('summary').total_contributions_received) %></p>\
-          <p>Declared candidacy: <%= candidate.get('declared') %> </p>\
-          <p>Data last updated: <%= candidate.get('summary').last_summary_date %> </p>\
-          <p class='sources'>* Candidates do not need to itemize contributions less than $100 by contributor, but do need to include all contributions in their total reported amount.  <b><a href='/faq#smallContributions'>FAQ</a> </b></p>\
-        <% } %>\
-      </div>\
-      <% if (candidate.get('summary') == null) { %>\
-        <div class='col-sm-4 noContributions'>The candidate had not reported any campaign contributions by the last filing deadline. Candidates are not required to report if they have raised less than $1,000.</div>\
-        <% } %>\
-    </section>\
-    <section class='clearfix' id= 'category'></section>\
-    <section class='clearfix' id= 'topContributors'></section>\
-    <section class='clearfix' id= 'contributors'></section>\
-    </div>\
-  "),
+  template: HandlebarsTemplates['candidate'],
 
   initialize: function(options) {
     this.candidateName = options.candidateName;
@@ -75,8 +27,7 @@ OpenDisclosure.Views.Candidate = Backbone.View.extend({
   },
 
   render: function(){
-    //Render main view
-    this.$el.html(this.template({ candidate: this.model }));
+    this.$el.html(this.template(this.templateContext()));
 
     if (this.model.get('summary') !== null){
       //Render Subviews
@@ -144,9 +95,20 @@ OpenDisclosure.Views.Candidate = Backbone.View.extend({
     });
   },
 
-  updateNav: function(){
-    $('.sidebar li').removeClass('active');
-    $('#nav-'+this.model.attributes.id).addClass('active');
-  }
+  templateContext: function() {
+    var context = _.clone(this.model.attributes);
 
+    context.imagePath = this.model.imagePath();
+
+    if (this.model.get('summary') !== null) {
+      context.summary.lastSummaryDate = this.model.get('summary').last_summary_date;
+      context.summary.totalContributions = this.model.totalContributions();
+      context.summary.availableBalance = this.model.availableBalance();
+      context.summary.totalExpenditures = this.model.friendlySummaryNumber('total_expenditures_made');
+      context.summary.pctPersonalContributions = OpenDisclosure.friendlyPct(this.model.get('self_contributions_total') / this.model.get('summary').total_contributions_received);
+      context.summary.pctSmallContributions = this.model.pctSmallContributions();
+    }
+
+    return context;
+  }
 });
