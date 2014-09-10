@@ -3,7 +3,10 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     var chart = this;
 
     // Process data
-    chart.candidates = _.pluck(OpenDisclosure.BootstrappedData.candidates, "short_name")
+    var candidates_with_contributions = _.filter(OpenDisclosure.BootstrappedData.candidates, function(d) {
+      return d.received_contributions_count > 0;
+    });
+    chart.candidates = _.pluck(candidates_with_contributions, "short_name")
     chart.candidates.unshift("Overview");
     chart.amounts = this.collection;
 
@@ -60,7 +63,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
       chart.zips = topojson.feature(json, json.objects.layer1).features;
 
       // Add map regions
-      zips = zipcodes.selectAll("path")
+      var zips = zipcodes.selectAll("path")
         .data(chart.zips)
         .enter().append("svg:path")
         .attr("class", "zip")
@@ -129,7 +132,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     var chart = this;
     // Add outline for cities
     d3.json("/data/sfgov_bayarea_cities_topo.json", function(json) {
-      data = topojson.feature(json, json.objects.layer1).features;
+      var data = topojson.feature(json, json.objects.layer1).features;
 
       var cities = chart.svg.append('g')
         .attr('id', 'bay-cities');
@@ -201,7 +204,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     var chart = this;
 
     var legend = {
-      width: chart.dimensions.width / 4.8,
+      width: chart.dimensions.width / 6,
       offset: chart.dimensions.height / chart.candidates.length,
       right_bar: {
         width: chart.dimensions.width / 80
@@ -319,7 +322,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
 
   drawCandidateDescription: function() {
     this.$el.prepend("<div class='candidate description'>" +
-      "<h3>Total contributions from each zip code</h3>" +
+      "<h3>Total itemized contributions from each zip code</h3>" +
       "<h4 class='return'>Return to overview map.</h4>" +
       "</div>");
   },

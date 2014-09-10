@@ -1,7 +1,7 @@
 
 section#dailyChart path {
-    stroke-width: 3;
-    fill: none;
+  stroke-width: 4;
+  fill: none;
 }
 
 section#dailyChart .axis path,
@@ -25,7 +25,7 @@ section#dailyChart h3, h4 {
 }
 
 section#dailyChart .legend {
-  margin-left: 80px;
+  margin-left: 12%;
 }
 
 section#dailyChart .legend div {
@@ -39,9 +39,9 @@ section#dailyChart .legend .legend-item {
 }
 
 section#dailyChart .legend .color {
-  width: 16px;
-  height: 16px;
-  margin: 2px 4px 0 4px;
+  width: 1.3em;
+  height: 1.3em;
+  margin: 1px 4px 0 4px;
 }
 
 section#dailyChart .q0-12 {
