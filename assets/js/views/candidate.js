@@ -113,7 +113,7 @@ OpenDisclosure.Views.Candidate = Backbone.View.extend({
     new OpenDisclosure.CategoryView({
       el: '#category',
       collection: this.categories,
-      summary: this.model.attributes.summary
+      attributes: this.model.attributes
     });
   },
 
