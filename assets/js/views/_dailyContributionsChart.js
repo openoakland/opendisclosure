@@ -1,24 +1,13 @@
 OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
-  dateSortAsc: function (date1, date2) {
-    // This is a comparison function that will result in dates being sorted in
-    // ASCENDING order. As you can see, JavaScript's native comparison operators
-    // can be used to compare dates. This was news to me.
-    date1 = new Date (date1)
-    date2 = new Date (date2)
-    if (date1 > date2) return 1;
-    if (date1 < date2) return -1;
-    return 0;
-  },
-
   draw: function(el){
     var chart = this;
     chart.data = this.collection;
     chart.candidates = _.pluck(OpenDisclosure.BootstrappedData.candidates, "short_name");
 
-    var margin = {top: 0, right: 0, bottom: 30, left: 70},
-      svgWidth = chart.dimensions.width;
-      svgHeight = chart.dimensions.height;
-      chartWidth = svgWidth - margin.left - margin.right;
+    var margin = {top: 0, right: 0, bottom: 30, left: 100},
+      svgWidth = chart.dimensions.width,
+      svgHeight = chart.dimensions.height,
+      chartWidth = svgWidth - margin.left - margin.right,
       chartHeight = svgHeight - margin.top - margin.bottom;
 
     chart.svg = d3.select(el).append("svg")
@@ -61,7 +50,7 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
 
     // Find the maximum contribution so we can set the range.
     var y_max = _.reduce(chart.data, function(maximum, candidate) {
-      candidate_max = candidate[candidate.length - 1].amount;
+      var candidate_max = candidate[candidate.length - 1].amount;
       return Math.max(maximum, candidate_max);
     }, 0);
 
@@ -75,15 +64,15 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
         ["%b", function() { return true; } ]
       ]);
 
-     xAxis = d3.svg.axis()
+     var xAxis = d3.svg.axis()
       .scale(x)
       .orient("bottom")
       .ticks(d3.time.months, 1)
       .tickFormat(date_tick_format);
 
-     yAxis = d3.svg.axis()
+     var yAxis = d3.svg.axis()
       .scale(y)
-      .tickFormat(d3.format("$d"))
+      .tickFormat(d3.format("$,d"))
       .orient("left");
 
     var line = d3.svg.line()
@@ -104,8 +93,6 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
         .attr("class", chart.color(candidate)); 
     }
 
-    // var font_size: chart.dimensions.width / 50;
-
     chart.svg.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + (chartHeight) + ")")
@@ -123,6 +110,10 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
 
     chart.drawLegend();
     chart.drawTitle();
+
+    var font_size = chart.dimensions.width / 62;
+    chart.svg.selectAll('text')
+      .attr("font-size", font_size);
   },
 
   drawLegend: function() {
@@ -138,6 +129,6 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
   },
 
   drawTitle: function() {
-    this.$el.prepend("<h3>Cumulative campaign contributions</h3>");
+    this.$el.prepend("<h3>Cumulative itemized campaign contributions</h3>");
   }
 })
