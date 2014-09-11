@@ -5,6 +5,7 @@ require_relative 'schema.rb' # wipe the database and start anew
 class DataFetcher
   URLS = {
     'Schedule A' => 'http://data.oaklandnet.com/resource/3xq4-ermg.json',
+    'Form 497' => 'https://data.oaklandnet.com/resource/qact-u8hq.json',
     'Schedule E' => 'http://data.oaklandnet.com/resource/bvfu-nq99.json',
     'Schedule B1' => 'http://data.oaklandnet.com/resource/qaa7-q29f.json',
     'Summary'    => 'http://data.oaklandnet.com/resource/rsxe-vvuw.json',
@@ -24,6 +25,9 @@ class DataFetcher
     # !! Need a new Lobbyist Directory for 2014
     puts "Loading Lobbyist data"
     Lobbyist.load_from_file('backend/2014_Lobbyist_Directory.csv')
+
+    puts "Fetching Contribution data (Form 497) from Socrata:"
+    DataFetcher::LateContribution.fetch_and_parse(URLS['Form 497'])
 
     puts "Fetching Contribution data (Schedule A) from Socrata:"
     DataFetcher::Contribution.fetch_and_parse(URLS['Schedule A'])
