@@ -20,6 +20,11 @@ OpenDisclosure.Views.Contributor = Backbone.View.extend({
 
   render: function() {
     if (this.collection.length === 0) {
+      this.$el.empty();
+      new OpenDisclosure.Search({
+	el: this.$el,
+      });
+
       return;
     }
 
