@@ -41,6 +41,13 @@ OpenDisclosure.Views.Faq = Backbone.View.extend({
 	  <p>\
 	  A candidate only has to file campaign finance forms if the candidate-controlled committee has raised or spent or will raise or spend $1,000 or more during a calendar year in connection with election to office or holding office.\
 	  </p>\
+        <div class='question'>\
+          <a name='fromOakland'></a>\
+	  <h3>What is the basis of calculating the proprotion from Oakland?</h3>\
+	  <p>\
+	  Candidates must itemize contributions that are greater than $100.  They provide information on where the person or company contributing is located. The percentage is the proportion of contributions reported to be from Oakland divided by the total of the itemized contributions.  We remove contributions and loans made by the candidate to the campaign from this calculation.  An early version of this column displayed the proportion of the number of contributions from outside Oakland but it is thought the value of the contributions is more interesting.  Previously the number failed to remove non-itemized contributions from the total and therefore under represented the proportion known to be from Oakland.\
+	  </p>\
+	  </div>\
         </div>\
         <div class='question'>\
           <a name='smallContributions'></a>\
@@ -52,7 +59,7 @@ OpenDisclosure.Views.Faq = Backbone.View.extend({
         <div class='question'>\
           <a name='categoryChart'></a>\
           <h3>What is displayed in the category pie chart?</h3>\
-	  <div class='col-sm-2'><img src='pie.jpg' hight='130' width='130'></div>\
+	  <div class='col-sm-2'><img src='pie.jpg' hight='100' width='100'></div>\
           <div class='col-sm-10'><p>\
 	  This chart displays the proportion of funds collected by the candidate from individuals, companies, committees, unions and registered Oakland lobbyists and lobbying companies.  The proportion of money not itemized is also displayed.  Candidates do not need to itemize individual contributions that are less than $100.  Lobbyists are identified from the <a href='https://data.oaklandnet.com/Public-Services/2014-Lobbyist-Directory/7jq6-spyn?category=Public-Services&view_'> 2041 lobbyist directory</a>.  Unions are identified “by hand” from the names of the contributors. Unlike the Top Contributors display, employees are NOT aggregated with their employers. Candidates contributions to themselves are not included.\
 	  </p></div>\
