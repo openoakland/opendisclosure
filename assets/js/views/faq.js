@@ -7,7 +7,7 @@ OpenDisclosure.Views.Faq = Backbone.View.extend({
         <div class='question'>\
           <h3>What data is featured on this website?</h3>\
           <p>\
-          Open Disclosure features campaign finance data for all Oakland mayoral candidates that have been certified by the Oakland City Clerk to be placed on the November 2014 ballot. This campaign finance data has been self-reported by all Oakland mayoral candidate-controlled committees.\
+          Open Disclosure features campaign finance data for all Oakland mayoral candidates certified by the Oakland City Clerk to be placed on the November 2014 ballot. This campaign finance data has been self-reported by all Oakland mayoral candidate-controlled committees.\
           </p>\
         </div>\
         <div class='question'>\
@@ -43,9 +43,9 @@ OpenDisclosure.Views.Faq = Backbone.View.extend({
 	  </p>\
         <div class='question'>\
           <a name='fromOakland'></a>\
-	  <h3>What is the basis of calculating the proprotion from Oakland?</h3>\
+	  <h3>How do you calculate the proportion raised from Oakland?</h3>\
 	  <p>\
-	  Candidates must itemize contributions that are greater than $100.  They provide information on where the person or company contributing is located. The percentage is the proportion of contributions reported to be from Oakland divided by the total of the itemized contributions.  We remove contributions and loans made by the candidate to the campaign from this calculation.  An early version of this column displayed the proportion of the number of contributions from outside Oakland but it is thought the value of the contributions is more interesting.  Previously the number failed to remove non-itemized contributions from the total and therefore under represented the proportion known to be from Oakland.\
+	  Candidates must itemize contributions that are greater than $100.  They provide information on where the person or company contributing is located. The percentage is the proportion of contributions reported to be from Oakland divided by the total of the itemized contributions.  We remove contributions and loans made by the candidate to the campaign from this calculation.  An early version of this column displayed the proportion of the number of contributions from outside Oakland but it is thought the value of the contributions is more interesting.  Previously, the number failed to remove non-itemized contributions from the total and therefore under-represented Oakland contributions.\
 	  </p>\
 	  </div>\
         </div>\
@@ -61,7 +61,7 @@ OpenDisclosure.Views.Faq = Backbone.View.extend({
           <h3>What is displayed in the category pie chart?</h3>\
 	  <div class='col-sm-2'><img src='pie.jpg' hight='100' width='100'></div>\
           <div class='col-sm-10'><p>\
-	  This chart displays the proportion of funds collected by the candidate from individuals, companies, committees, unions and registered Oakland lobbyists and lobbying companies.  The proportion of money not itemized is also displayed.  Candidates do not need to itemize individual contributions that are less than $100.  Lobbyists are identified from the <a href='https://data.oaklandnet.com/Public-Services/2014-Lobbyist-Directory/7jq6-spyn?category=Public-Services&view_'> 2041 lobbyist directory</a>.  Unions are identified “by hand” from the names of the contributors. Unlike the Top Contributors display, employees are NOT aggregated with their employers. Candidates contributions to themselves are not included.\
+	  This chart displays the proportion of funds collected by the candidate from individuals, companies, committees, unions and registered Oakland lobbyists and lobbying companies.  The proportion of money not itemized is also displayed. Candidates do not need to itemize individual contributions less than $100.  Lobbyists are identified from the <a href='https://data.oaklandnet.com/Public-Services/2014-Lobbyist-Directory/7jq6-spyn?category=Public-Services&view_'> 2041 lobbyist directory</a>.  Unions are identified “by hand” from the names of the contributors. Unlike the Top Contributors display, employees are NOT aggregated with their employers. Candidates contributions to themselves are not included.\
 	  </p></div>\
 	</div>\
         <div class='question'>\
@@ -82,7 +82,7 @@ OpenDisclosure.Views.Faq = Backbone.View.extend({
         </div>\
         <div class = 'question'>\
           <h3>Who do I contact if I believe any of the data is incorrect?</h3>\
-          <p>Please contact the <a href='mailto:oaklandopendisclosure@gmail.com' target='_top'>Open Disclosure team</a> if you believe any of the data or candidate information is incorrect.  We want to get public feedback and definitely be notified if any errors are present. Thank you!\
+          <p>Please contact the <a href='mailto:oaklandopendisclosure@gmail.com' target='_top' title="email us">Open Disclosure team</a> if you believe any of the data or candidate information is incorrect.  We want public feedback and definitely to be notified if any errors are present. Thank you!\
           </p>\
         </div>\
       </section>\
