@@ -5,9 +5,10 @@ OpenDisclosure.Views.Home = Backbone.View.extend({
 
   render : function() {
     this.$el.html('<section id="candidateTable"></section>\
-      <section>\
+      <section class="col-sm-12">\
 	<span id="search" class="col-sm-6"></span>\
 	<span id="committee" class="col-sm-6"></span>\
+	<h5>For information on searching <a href="/faq#search">see the FAQ</a><h5>\
       </section>\
       <section id="zipcodeChart"></section> \
       <section id="dailyChart"></section> \
