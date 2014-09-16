@@ -82,7 +82,7 @@ OpenDisclosure.Views.Faq = Backbone.View.extend({
         </div>\
         <div class = 'question'>\
           <h3>Who do I contact if I believe any of the data is incorrect?</h3>\
-          <p>Please contact the <a href='mailto:oaklandopendisclosure@gmail.com' target='_top' title="email us">Open Disclosure team</a> if you believe any of the data or candidate information is incorrect.  We want public feedback and definitely to be notified if any errors are present. Thank you!\
+          <p>Please contact the <a href='mailto:oaklandopendisclosure@gmail.com' target='_top' title='email us'>Open Disclosure team</a> if you believe any of the data or candidate information is incorrect.  We want public feedback and definitely to be notified if any errors are present. Thank you!\
           </p>\
         </div>\
       </section>\
