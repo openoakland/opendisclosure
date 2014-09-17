@@ -48,7 +48,7 @@ class OpenDisclosureApp < Sinatra::Application
     party         = Party.find(id)
     Contribution
       .where(contributor_id: party)
-      .includes(:contributor, :recipient).to_json(fields)
+      .includes(:contributor, :recipient).order(:date).reverse_order.to_json(fields)
   end
 
   get '/api/contributorName/:name' do |name|
