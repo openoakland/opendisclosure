@@ -65,10 +65,10 @@
                 <tbody>
                   <% _.each(candidatesWithData, function(m) { %>
                     <tr>
-                      <td>
+                      <td class='headshot'>
                         <a href='<%= m.linkPath() %>'><img class='mayor-picture' src="<%= m.imagePath() %>" /></a>
                       </td>
-                      <td scope='row'>
+                      <td class='mayor-info' scope='row'>
                         <div class='mayor-info'>
                           <p class='mayor-name'>
                             <a href= '<%= m.linkPath() %>'><%= m.get('short_name') %></a>
@@ -76,7 +76,7 @@
                           <p class='mayor-profession'><%= m.get('profession') %></p>
                         </div>
                       </td>
-                      <td class='mayoral-table-number'><%= m.totalContributions() %></td>
+                      <td class='mayoral-table-number total-raised'><%= m.totalContributions() %></td>
                       <td class='mayoral-table-number'><%= m.attributes.received_contributions_count %></td>
                       <td class='mayoral-table-number'><%= m.pctContributionsFromOakland() %></td>
                       <td class='mayoral-table-number'><%= m.pctSmallContributions() %></td>
