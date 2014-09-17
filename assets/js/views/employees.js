@@ -1,12 +1,6 @@
 OpenDisclosure.Views.Employees = Backbone.View.extend({
-  template: _.template(' \
-    <div id="contirbutor">\
-    <div class="row""><a href="<%= contribution.recipientLinkPath() %>">\
-    <span class="col-sm-3"><%= contribution.attributes.contributor.name %></span>\
-    <span class="col-sm-6"><%= contribution.attributes.recipient.name %></span>\
-    <span class="col-sm-1"><%= OpenDisclosure.friendlyMoney(contribution.attributes.amount) %> </span>\
-    <span class="col-sm-2"><%= moment(contribution.attributes.date).format("MMM-DD-YY") %></span>\
-                       </a></div></div>'),
+
+  template: HandlebarsTemplates['employees'],
 
   initialize: function(options) {
     _.bindAll(this, 'render', 'renderContribution');
@@ -36,6 +30,12 @@ OpenDisclosure.Views.Employees = Backbone.View.extend({
 
   renderContribution: function(c) {
     var contribution = new OpenDisclosure.Contribution(c.attributes);
+
+    contribution.friendlyAmount = OpenDisclosure.friendlyMoney(contribution.attributes.amount);
+
+    contribution.friendlyDate = moment(contribution.attributes.date).format("MMM-DD-YY");
+
+    contribution.calculatedLink = contribution.recipientLinkPath();
 
     return this.template({ contribution: contribution });
   }

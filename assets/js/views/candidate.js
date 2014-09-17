@@ -1,4 +1,5 @@
 OpenDisclosure.Views.Candidate = Backbone.View.extend({
+
   template: HandlebarsTemplates['candidate'],
 
   initialize: function(options) {

@@ -1,4 +1,5 @@
 OpenDisclosure.Views.Contributor = Backbone.View.extend({
+
   template: HandlebarsTemplates['contributor'],
 
   initialize: function(options) {
