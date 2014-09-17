@@ -266,6 +266,15 @@ header {
     vertical-align: middle;
   }
 
+  td, th {
+    padding: 14px 8px;
+    text-align: center;
+
+    &:nth-child(3) {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+
   th {
     font-weight: normal;
     width: 130px;
@@ -279,18 +288,48 @@ header {
     border-top: 2px #ddd solid;
   }
 
-  td, th {
-    padding: 14px 8px;
-    text-align: center;
-
-    &:nth-child(3) {
-      background-color: rgba(0, 0, 0, 0.1);
-    }
-  }
-
   p {
     margin: 0;
   }
+
+  /* Move candidate name above each row on mobile */
+  @include degrade(extra-small) {
+    thead tr {
+      display: block;
+    }
+
+    th#mayoral-table-picture-column, 
+    th#mayoral-table-name-column, 
+    td.headshot {
+      display: none;
+    }
+
+    th {
+      width: 20%;
+    }
+
+    td {
+      display: block;
+      float: left;
+      width: 20%;
+
+      &.total-raised {
+        clear: both;
+      }
+
+      &.mayor-info {
+        width: 100%;
+        padding-top: 12px;
+        padding-bottom: 2px;
+
+        p.mayor-name,
+        p.mayor-profession {
+          display: inline;
+        }
+      }
+    }
+  }
+
 }
 
 .mayoral-dataless-candidate-list {
