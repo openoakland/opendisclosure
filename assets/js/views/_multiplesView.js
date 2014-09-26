@@ -2,7 +2,7 @@ OpenDisclosure.MultiplesView = Backbone.View.extend({
 
   template: _.template('\
     <div class="col-sm-6 col-xs-12contribution"><a href="<%= contributor.linkPath() %>">\
-    <span class="col-xs-8"><%= contributor.attributes.name %></span>\
+    <span class="col-xs-6"><%= contributor.attributes.name %></span>\
     <span class="col-xs-4"><%= number %> candidates </span>\
     </a></div>'),
 
