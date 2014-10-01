@@ -40,14 +40,15 @@ class DataFetcher
       if column =~ /^total/
         summary.update_attributes(
           column => (summary[column] || 0) + value.to_i,
-          :last_summary_date => row['rpt_date']
         )
       else
         summary.update_attributes(
           column => value,
-          :last_summary_date => row['rpt_date']
         )
       end
+
+      ::Party.where(committee_id: row['filer_id'])
+             .update_all(['last_updated_date = GREATEST(?, last_updated_date)', row['rpt_date']])
 
       summary
     end

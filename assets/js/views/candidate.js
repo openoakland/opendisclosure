@@ -24,6 +24,8 @@ OpenDisclosure.Views.Candidate = Backbone.View.extend({
       this.contributions = new OpenDisclosure.Contributions([], { candidateId: candidate.attributes.id });
       this.contributions.fetch();
       this.render();
+    } else {
+      location.assign(location.href.replace("candidate/", "searchCommittee/"));
     }
   },
 
@@ -100,9 +102,9 @@ OpenDisclosure.Views.Candidate = Backbone.View.extend({
     var context = _.clone(this.model.attributes);
 
     context.imagePath = this.model.imagePath();
+    context.lastUpdatedDate = this.model.get('last_updated_date');
 
     if (this.model.get('summary') !== null) {
-      context.summary.lastSummaryDate = this.model.get('summary').last_summary_date;
       context.summary.totalContributions = this.model.totalContributions();
       context.summary.availableBalance = this.model.availableBalance();
       context.summary.totalExpenditures = this.model.friendlySummaryNumber('total_expenditures_made');

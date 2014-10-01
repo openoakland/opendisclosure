@@ -2,12 +2,13 @@ OpenDisclosure.App = Backbone.Router.extend({
   routes: {
     '': 'home',
     'about': 'about',
-    'candidate/:id': 'candidate',
+    'candidate/:name': 'candidate',
     'faq':'faq',
     'rules': 'rules',
     'contributor/:id': 'contributor',
     'employer/:employer_name/:employer_id': 'employer',
-    'search/:name': 'search'
+    'search/:name': 'search',
+    'searchCommittee/:name': 'searchCommittee'
   },
 
   initialize : function() {
@@ -87,6 +88,14 @@ OpenDisclosure.App = Backbone.Router.extend({
     new OpenDisclosure.Views.Contributor({
       el: '.main',
       search: name
+    });
+  },
+
+  searchCommittee: function(name){
+    $(window).scrollTop(0);
+    new OpenDisclosure.Views.Committee({
+      el: '.main',
+      committeeName: name
     });
   },
 

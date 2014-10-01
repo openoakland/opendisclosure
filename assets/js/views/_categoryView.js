@@ -14,11 +14,7 @@ OpenDisclosure.CategoryView = Backbone.View.extend({
     data.addColumn('number', 'Amount');
     data.addRow(['Not Itemized', attributes.summary.total_unitemized_contributions]);
     _.each(this.collection, function( c ){
-      if (c.attributes.contype === 'Individual')
-	data.addRow([c.attributes.contype,
-		    c.attributes.amount - attributes.self_contributions_total]);
-      else
-	data.addRow([c.attributes.contype, c.attributes.amount]);
+      data.addRow([c.attributes.contype, c.attributes.amount]);
     });
 
     pieChart = new Backbone.GoogleChart({
@@ -32,6 +28,7 @@ OpenDisclosure.CategoryView = Backbone.View.extend({
        },
        'width': 300,
        'height': 250,
+       'sliceVisibilityThreshold': 0
       },
       dataTable: data,
     });

@@ -48,7 +48,7 @@ class OpenDisclosureApp < Sinatra::Application
     party         = Party.find(id)
     Contribution
       .where(contributor_id: party)
-      .includes(:contributor, :recipient).to_json(fields)
+      .includes(:contributor, :recipient).order(:date).reverse_order.to_json(fields)
   end
 
   get '/api/contributorName/:name' do |name|
@@ -142,6 +142,14 @@ class OpenDisclosureApp < Sinatra::Application
         .where(recipient_id: id)
         .includes(:recipient, :contributor)
         .order(date: :desc)
+        .to_json(fields)
+    when 'committee'
+      search 	  = "%" + CGI.unescape(id).downcase.gsub(/-/, '_') + "%"
+      party         = Party::Committee.where("lower(name) like ?", search)
+      Contribution
+        .where(recipient_id: party)
+        .includes(:recipient, :contributor)
+        .order(recipient_id: :asc).order(date: :desc)
         .to_json(fields)
     else
       # TODO: Remove this once we no longer hit /api/contributions
@@ -247,10 +255,14 @@ class OpenDisclosureApp < Sinatra::Application
   end
 
   get '*' do
+    most_recently_updated_party = Party.where('last_updated_date is not null')
+                                       .order(last_updated_date: :desc)
+                                       .first
+
     # This renders views/index.haml
     haml :index, locals: {
       candidates: Party.all_mayoral_candidates,
-      last_updated: Summary.order(:last_summary_date).last.last_summary_date,
+      last_updated: most_recently_updated_party.last_updated_date,
       candidate_json: candidate_json
     }
   end
@@ -261,7 +273,9 @@ class OpenDisclosureApp < Sinatra::Application
     fields = {
       only: %w[
         id name committee_id received_contributions_count contributions_count
-        received_contributions_from_oakland self_contributions_total small_contributions],
+        received_contributions_from_oakland self_contributions_total small_contributions
+        last_updated_date
+      ],
       methods: [
         :summary,
         :short_name,
