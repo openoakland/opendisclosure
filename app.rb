@@ -48,7 +48,7 @@ class OpenDisclosureApp < Sinatra::Application
     party         = Party.find(id)
     Contribution
       .where(contributor_id: party)
-      .includes(:contributor, :recipient).to_json(fields)
+      .includes(:contributor, :recipient).order(:date).reverse_order.to_json(fields)
   end
 
   get '/api/contributorName/:name' do |name|
@@ -142,6 +142,14 @@ class OpenDisclosureApp < Sinatra::Application
         .where(recipient_id: id)
         .includes(:recipient, :contributor)
         .order(date: :desc)
+        .to_json(fields)
+    when 'committee'
+      search 	  = "%" + CGI.unescape(id).downcase.gsub(/-/, '_') + "%"
+      party         = Party::Committee.where("lower(name) like ?", search)
+      Contribution
+        .where(recipient_id: party)
+        .includes(:recipient, :contributor)
+        .order(recipient_id: :asc).order(date: :desc)
         .to_json(fields)
     else
       # TODO: Remove this once we no longer hit /api/contributions

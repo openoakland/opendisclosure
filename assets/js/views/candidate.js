@@ -24,6 +24,8 @@ OpenDisclosure.Views.Candidate = Backbone.View.extend({
       this.contributions = new OpenDisclosure.Contributions([], { candidateId: candidate.attributes.id });
       this.contributions.fetch();
       this.render();
+    } else {
+      location.assign(location.href.replace("candidate/", "searchCommittee/"));
     }
   },
 

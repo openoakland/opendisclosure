@@ -18,6 +18,7 @@
 
 //= require views/about
 //= require views/candidate
+//= require views/committee
 //= require views/faq
 //= require views/home
 //= require views/rules

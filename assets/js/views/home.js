@@ -5,7 +5,11 @@ OpenDisclosure.Views.Home = Backbone.View.extend({
 
   render : function() {
     this.$el.html('<section id="candidateTable"></section>\
-      <section id="search"></section> \
+      <section class="col-sm-12">\
+	<span id="search" class="col-sm-6"></span>\
+	<span id="committee" class="col-sm-6"></span>\
+	<h5>For information on searching <a href="/faq#search">see the FAQ</a><h5>\
+      </section>\
       <section id="zipcodeChart"></section> \
       <section id="dailyChart"></section> \
       <section id="topContributions"></section> \
@@ -21,6 +25,10 @@ OpenDisclosure.Views.Home = Backbone.View.extend({
 
     new OpenDisclosure.Search({
       el : '#search'
+    });
+
+    new OpenDisclosure.CommitteeSearch({
+      el : '#committee'
     });
 
     OpenDisclosure.Data.zipContributions.done(function(data) {

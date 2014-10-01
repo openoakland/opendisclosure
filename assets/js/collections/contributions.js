@@ -7,6 +7,15 @@ OpenDisclosure.Contributions = Backbone.Collection.extend({
     this.options = options;
   }
 });
+OpenDisclosure.CommitteeContributions = Backbone.Collection.extend({
+  url: function() {
+    return '/api/contributions/committee/' + encodeURI(this.options.committeeName);
+  },
+  model: OpenDisclosure.Contribution,
+  initialize: function(models, options) {
+    this.options = options;
+  }
+});
 OpenDisclosure.CategoryContributions = Backbone.Collection.extend({
   url: '/api/category_contributions',
   model: OpenDisclosure.CategoryContribution
@@ -32,7 +41,7 @@ OpenDisclosure.Contributors = Backbone.Collection.extend({
     if (this.options.contributor) {
       return '/api/contributor/' + this.options.contributor;
     } else {
-      return '/api/contributorName/' + this.options.search;
+      return '/api/contributorName/' + encodeURI(this.options.search);
     }
 
   },
