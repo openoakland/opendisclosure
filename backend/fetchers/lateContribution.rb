@@ -36,6 +36,9 @@ class DataFetcher
                       .tap { |p| p.update_attributes(city: row['enty_city'], state: row['enty_st'], zip: row['enty_zip4']) }
         end
 
+      ::Party.where(committee_id: row['filer_id'])
+             .update_all(['last_updated_date = GREATEST(?, last_updated_date)', row['rpt_date']])
+
       ::Contribution.create(
         recipient: recipient,
         contributor: contributor,

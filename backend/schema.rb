@@ -21,9 +21,11 @@ ActiveRecord::Schema.define do
     t.integer :small_contributions, null: false, default: 0
     t.integer :contributions_count, null: false, default: 0
     t.integer :self_contributions_total, null: false, default: 0
+    t.date :last_updated_date
 
     t.index [:committee_id, :type]
     t.index [:type, :name, :city, :state]
+    t.index :last_updated_date
   end
 
   create_table :employers do |t|
@@ -57,7 +59,6 @@ ActiveRecord::Schema.define do
 
   create_table :summaries do |t|
     t.integer :party_id, null: false
-    t.date :last_summary_date
 
     # From Summary sheet:
     t.integer :total_monetary_contributions
@@ -73,6 +74,7 @@ ActiveRecord::Schema.define do
 
     t.index :party_id, unique: true
   end
+
   create_table :maps do |t|
     t.string :emp1, null: false
     t.string :emp2, null: false
