@@ -255,10 +255,14 @@ class OpenDisclosureApp < Sinatra::Application
   end
 
   get '*' do
+    most_recently_updated_party = Party.where('last_updated_date is not null')
+                                       .order(last_updated_date: :desc)
+                                       .first
+
     # This renders views/index.haml
     haml :index, locals: {
       candidates: Party.all_mayoral_candidates,
-      last_updated: Summary.order(:last_summary_date).last.last_summary_date,
+      last_updated: most_recently_updated_party.last_updated_date,
       candidate_json: candidate_json
     }
   end
@@ -269,7 +273,9 @@ class OpenDisclosureApp < Sinatra::Application
     fields = {
       only: %w[
         id name committee_id received_contributions_count contributions_count
-        received_contributions_from_oakland self_contributions_total small_contributions],
+        received_contributions_from_oakland self_contributions_total small_contributions
+        last_updated_date
+      ],
       methods: [
         :summary,
         :short_name,
