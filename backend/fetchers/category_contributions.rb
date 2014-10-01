@@ -7,9 +7,11 @@ class DataFetcher
           r.id,
           r.name,
           case
+	    when cont.self_contribution then 'Self Funded'
             when c.type = 'Party::Other' then
               case
                 when maps.type = 'Union' then 'Union'
+		when maps.type = 'PAC' then 'Political Action Committee'
                 when l.firm is not null then 'Lobbyist'
               else 'Company'
               end
@@ -32,7 +34,7 @@ class DataFetcher
         GROUP BY
           r.id, r.name, ConType
         ORDER BY
-          r.id, r.name, sum(amount) desc;
+          r.id, r.name, ConType;
       QUERY
     end
   end
