@@ -1,9 +1,9 @@
 OpenDisclosure.TopContributorsView = Backbone.View.extend({
   template: _.template(' \
-    <div class="col-sm-6">\
+    <div class="col-sm-6 col-xs-12">\
       <a href="<%= employerLinkPath() %>">\
-	<span class="col-sm-8"><%= attributes.contrib %></span>\
-	<span class="col-sm-4"><%= OpenDisclosure.friendlyMoney(attributes.amount) %> </span>\
+	<span class="col-xs-8"><%= attributes.contrib %></span>\
+	<span class="col-xs-4"><%= OpenDisclosure.friendlyMoney(attributes.amount) %> </span>\
       </a>\
     </div>'),
 
