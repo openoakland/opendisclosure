@@ -22,12 +22,12 @@ class Party < ActiveRecord::Base
     RUBY = 1364278,
     KAPLAN = 1367270,
     SIEGEL = 1362877,
-    WILLIAMS = 1367207
+    WILLIAMS = 1367207,
+    KARAMOOZ = 1369536
     #################
     # No filer ID
     # ANDERSON =
     # HOUSTON =
-    # KARAMOOZ =
     # LIU =
     # MCCULLOUGH =
     # SIDEBOTHAM =
@@ -296,6 +296,25 @@ class Party < ActiveRecord::Base
       ]
     },
 
+    KARAMOOZ => {
+      name: 'Saied Karamooz',
+      declared: '2014-06-06',
+      profession: 'Private Sector Executive',
+      party: 'Nonpartisan',
+      twitter:'@SaiedKaramooz',
+      bio: "Saied Karamooz holds B.S. in Computer Science, M.B.A., and M.S. in Information Sciences from Pennsylvania State University.  Starting his career as an intern with IBM, he has served in senior and executive roles in both the software and consulting industries. Helping to find technological solutions to large-scale problems is a recurring theme in this Oakland resident’s résumé.",
+      sources: [
+        {
+          name: 'Official Campaign site',
+          uri: 'http://www.oaklandmayormovement.org/'
+        },
+        {
+          name: 'Oakland Wiki article on Saied Karamooz',
+          uri: 'http://oaklandwiki.org/Saied_Karamooz'
+        }
+      ]
+    },
+
     # Candidates without data are below. Since they're not in the database,
     # these should have the same schema as the party table (see
     # backend/schema.rb) -- city, state, zip, employer, occupation
@@ -352,25 +371,6 @@ class Party < ActiveRecord::Base
         {
           name: 'Oakland Wiki article on Ken Houston',
           uri: 'http://oaklandwiki.org/Ken_Houston'
-        }
-      ]
-    },
-
-    'KARAMOOZ' => {
-      name: 'Saied Karamooz',
-      declared: '2014-06-06',
-      profession: 'Private Sector Executive',
-      party: 'Nonpartisan',
-      twitter:'@SaiedKaramooz',
-      bio: "Saied Karamooz holds B.S. in Computer Science, M.B.A., and M.S. in Information Sciences from Pennsylvania State University.  Starting his career as an intern with IBM, he has served in senior and executive roles in both the software and consulting industries. Helping to find technological solutions to large-scale problems is a recurring theme in this Oakland resident’s résumé.",
-      sources: [
-        {
-          name: 'Official Campaign site',
-          uri: 'http://www.oaklandmayormovement.org/'
-        },
-        {
-          name: 'Oakland Wiki article on Saied Karamooz',
-          uri: 'http://oaklandwiki.org/Saied_Karamooz'
         }
       ]
     },
