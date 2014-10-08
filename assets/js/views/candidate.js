@@ -94,7 +94,8 @@ OpenDisclosure.Views.Candidate = Backbone.View.extend({
     new OpenDisclosure.ContributorsView({
       el: "#contributors",
       collection: this.contributions,
-      headline: 'All Contributions to ' + this.model.get('short_name')
+      headline: 'All Contributions to ' + this.model.get('short_name'),
+      showDate: true
     });
   },
 
