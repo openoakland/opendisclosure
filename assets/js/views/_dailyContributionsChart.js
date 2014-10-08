@@ -49,16 +49,21 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
     }
 
     // Find the maximum contribution so we can set the range.
-    var y_max = _.reduce(chart.data, function(maximum, candidate) {
+    var y_max = 4500 + _.reduce(chart.data, function(maximum, candidate) { //the 4500 is added to prevent clipping at the top of the graph.
       var candidate_max = candidate[candidate.length - 1].amount;
       return Math.max(maximum, candidate_max);
     }, 0);
 
-    x.domain([parse_date("2013-04-09"), parse_date("2014-08-31")]);
+    var today = new Date()
+    var electionDate = parse_date( "2014-11-04" )
+    var endDate = ( today < electionDate ? today : electionDate )
+    var dateOfFirstContribution = parse_date("2013-04-09")
+
+    x.domain([ dateOfFirstContribution, endDate ]);
     y.domain([0, y_max]);
 
     // Format x axis labels
-    var date_tick_format = d3.time.format.multi([ 
+    var date_tick_format = d3.time.format.multi([
         ["%b '%y", function(d) { return (d.getMonth() == 0 && d.getYear() != 113) } ],
         ["%b '%y", function(d) { return (d.getMonth() == 4 && d.getYear() == 113) } ],
         ["%b", function() { return true; } ]
@@ -76,11 +81,11 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
       .orient("left");
 
     var line = d3.svg.line()
-      .x(function(d) { 
-        return x(parse_date(d.date)); 
+      .x(function(d) {
+        return x(parse_date(d.date));
       })
-      .y(function(d) { 
-        return y(d.amount); 
+      .y(function(d) {
+        return y(d.amount);
       });
 
     // Plot each line.
@@ -90,7 +95,7 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
         .attr("class", "line")
         .attr("id", candidate)
         .attr("d", line)
-        .attr("class", chart.color(candidate)); 
+        .attr("class", chart.color(candidate));
     }
 
     chart.svg.append("g")
@@ -123,7 +128,7 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
       var candidate = candidates[i];
       this.$el.find('.legend').append("<div class='legend-item'>" +
                       "<div class='color " + this.color(candidate) + "'></div>" +
-                      "<div class='name'>" + candidate + "</div>" + 
+                      "<div class='name'>" + candidate + "</div>" +
                       "</div>");
     }
   },
