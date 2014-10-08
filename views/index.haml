@@ -58,7 +58,7 @@
                     <th class='mayoral-table-head bold'>Total Raised</th>
                     <th class='mayoral-table-head'>Number of itemized contributions</th>
                     <th class='mayoral-table-head'>Percentage of amount of itemized contributions from Oakland*</th>
-                    <th class='mayoral-table-head'>Percentage of Total Raised from small contributions**</th>
+                    <th class='mayoral-table-head'>Percentage of total from personal funds</th>
                     <th class='mayoral-table-head'>Average of itemized contributions</th>
                   </tr>
                 </thead>
@@ -79,7 +79,7 @@
                       <td class='mayoral-table-number total-raised'><%= m.totalContributions() %></td>
                       <td class='mayoral-table-number'><%= m.attributes.received_contributions_count %></td>
                       <td class='mayoral-table-number'><%= m.pctContributionsFromOakland() %></td>
-                      <td class='mayoral-table-number'><%= m.pctSmallContributions() %></td>
+                      <td class='mayoral-table-number'><%= m.pctPersonalContributions() %></td>
                       <td class='mayoral-table-number'><%= m.avgContribution() %></td>
                     </tr>
                   <% }); %>
