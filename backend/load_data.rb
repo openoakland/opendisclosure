@@ -32,8 +32,9 @@ class DataFetcher
     puts "Fetching Contribution data (Schedule A) from Socrata:"
     DataFetcher::Contribution.fetch_and_parse(URLS['Schedule A'])
 
-    puts "Fetching Expense data (Schedule E) from Socrata:"
-    DataFetcher::Payment.fetch_and_parse(URLS['Schedule E'])
+    # Disabled so we can fit under the 10,000 row limit on Heroku
+    # puts "Fetching Expense data (Schedule E) from Socrata:"
+    # DataFetcher::Payment.fetch_and_parse(URLS['Schedule E'])
 
     puts 'Fetching Loan data (Schedule B1) from Socrata:'
     DataFetcher::Loan.fetch_and_parse(URLS['Schedule B1'])
