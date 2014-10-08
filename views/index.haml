@@ -14,6 +14,13 @@
     = stylesheet_tag 'application'
     %link{ href: image_path('favicon.ico'), rel:'icon' , type: 'image/x-icon'}
   %body
+    .disclaimer
+      %i.fa.fa-warning
+      Due to a technical issue,
+      = succeed '.' do
+        %a{ href: 'https://github.com/openoakland/opendisclosure/issues/323' }<
+          recent data is incomplete
+
     %header.main-header
       .container
         .row
