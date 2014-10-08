@@ -16,7 +16,7 @@ class DataFetcher
           # contributor is a Committee and Cmte_ID is set. Same thing as
           # Filer_ID but some names disagree
           Party::Committee.where(committee_id: row['cmte_id'])
-                          .first_or_create(name: row['tran_naml'])
+                          .first_or_create(name: row['tran_naml'] || 'unknown')
 
         when 'IND'
           # contributor is an Individual
@@ -31,7 +31,7 @@ class DataFetcher
                            .tap { |p| p.update_attributes(employer: row['tran_emp'], occupation: row['tran_occ']) }
         when 'OTH'
           # contributor is "Other"
-          Party::Other.where(name: row['tran_naml'])
+          Party::Other.where(name: row['tran_naml'] || 'unknown')
                       .first_or_initialize
                       .tap { |p| p.update_attributes(city: row['tran_city'], state: row['tran_state'], zip: row['tran_zip4']) }
         end
