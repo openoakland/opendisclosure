@@ -10,7 +10,7 @@ class Contribution < ActiveRecord::Base
   after_create :increment_small_contribution_ammount
   after_create :increment_self_contributions_total
 
-  enum type: [:contribution, :loan, :inkind]
+  enum type: [:contribution, :loan, :inkind, :independent]
 
   def increment_oakland_contribution_count
     return unless contributor.from_oakland?

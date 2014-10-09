@@ -28,6 +28,18 @@ ActiveRecord::Schema.define do
     t.index :last_updated_date
   end
 
+  create_table :iecs do |t|
+    t.string :transaction_id, null: false
+    t.integer :contributor_id, null: false
+    t.integer :recipient_id, null: false
+    t.boolean :support
+    t.integer :amount
+    t.date :date
+    t.string :description
+
+    t.index [:recipient_id, :transaction_id]
+  end
+
   create_table :employers do |t|
     t.string :employer_name, null: false
 

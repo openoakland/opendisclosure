@@ -24,6 +24,7 @@
 //= require views/rules
 //= require views/contributor
 //= require views/employees
+//= require views/iec
 //= require views/_candidateTable
 //= require views/_chartsWrapper
 //= require views/_zipcodeChartView

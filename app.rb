@@ -207,6 +207,21 @@ class OpenDisclosureApp < Sinatra::Application
     Multiple.includes(:contributor).to_json(fields);
   end
 
+  get '/api/independent' do
+    cache_control :public
+    last_modified Import.last.import_time
+
+    headers 'Content-Type' => 'application/json'
+
+    fields = {
+      include: [:contributor, :recipient],
+    }
+
+    IEC.includes(:contributor, :recipient)
+	      .order('extract(year from date)').reverse_order
+	      .order(:contributor_id).to_json(fields);
+  end
+
   get '/api/party/:id' do |id|
     cache_control :public
     last_modified Import.last.import_time

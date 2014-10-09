@@ -9,6 +9,7 @@ class DataFetcher
     'Schedule E' => 'http://data.oaklandnet.com/resource/bvfu-nq99.json',
     'Schedule B1' => 'http://data.oaklandnet.com/resource/qaa7-q29f.json',
     'Summary' => 'http://data.oaklandnet.com/resource/rsxe-vvuw.json',
+    'IEC Form 496' => 'http://data.oaklandnet.com/resource/6ejr-39gh.json',
   }.freeze
 
   def self.load_all_data!
@@ -40,6 +41,9 @@ class DataFetcher
 
     puts "Fetching Summary data from Socrata:"
     DataFetcher::Summary.fetch_and_parse(URLS['Summary'])
+
+    puts "Fetching IEC data from Socrata:"
+    DataFetcher::IEC.fetch_and_parse(URLS['IEC Form 496'])
 
     puts "Run analysis"
     DataFetcher::CategoryContributions.run!
