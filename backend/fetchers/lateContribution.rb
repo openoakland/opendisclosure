@@ -39,8 +39,7 @@ class DataFetcher
       ::Party.where(committee_id: row['filer_id'])
              .update_all(['last_updated_date = GREATEST(?, last_updated_date)', row['rpt_date']])
 
-      ::Contribution.create(
-        recipient: recipient,
+      ::Contribution.where(recipient: recipient, transaction_id: row['tran_id']).first_or_create(
         contributor: contributor,
         amount: row['amount'],
         date: row['ctrib_date'],

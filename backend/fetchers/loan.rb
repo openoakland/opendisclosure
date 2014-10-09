@@ -39,8 +39,7 @@ class DataFetcher
                                        zip: row['loan_zip4'])
         end
 
-      ::Contribution.create(
-        recipient: recipient,
+      ::Contribution.where(recipient: recipient, transaction_id: row['tran_id']).first_or_create(
         contributor: contributor,
         amount: row['loan_amt1'], # "amount received this period"
         date: row['loan_date1'],
