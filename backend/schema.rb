@@ -35,6 +35,7 @@ ActiveRecord::Schema.define do
   end
 
   create_table :contributions do |t|
+    t.string :transaction_id, null: false
     t.integer :contributor_id, null: false
     t.integer :recipient_id, null: false
     t.integer :amount
@@ -43,6 +44,7 @@ ActiveRecord::Schema.define do
 
     t.index :recipient_id
     t.index :contributor_id
+    t.index :transaction_id
 
     t.boolean :self_contribution, null: false, default: false
   end

@@ -36,8 +36,7 @@ class DataFetcher
                       .tap { |p| p.update_attributes(city: row['tran_city'], state: row['tran_state'], zip: row['tran_zip4']) }
         end
 
-      ::Contribution.create(
-        recipient: recipient,
+      ::Contribution.where(recipient: recipient, transaction_id: row['tran_id']).first_or_create(
         contributor: contributor,
         amount: row['tran_amt1'],
         date: row['tran_date'],
