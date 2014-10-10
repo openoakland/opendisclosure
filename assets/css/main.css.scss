@@ -314,9 +314,9 @@ header {
       display: block;
     }
 
-    th#mayoral-table-picture-column, 
-    th#mayoral-table-name-column, 
-    td.headshot {
+    #mayoral-table-picture-column, 
+    #mayoral-table-name-column, 
+    .headshot {
       display: none;
     }
 
@@ -328,20 +328,20 @@ header {
       display: block;
       float: left;
       width: 20%;
+    }
 
-      &.total-raised {
-        clear: both;
-      }
+    .total-raised {
+      clear: both;
+    }
 
-      &.mayor-info {
-        width: 100%;
-        padding-top: 12px;
-        padding-bottom: 2px;
+    .mayor-info {
+      width: 100%;
+      padding-top: 12px;
+      padding-bottom: 2px;
 
-        p.mayor-name,
-        p.mayor-profession {
-          display: inline;
-        }
+      .mayor-name,
+      .mayor-profession {
+        display: inline;
       }
     }
   }
