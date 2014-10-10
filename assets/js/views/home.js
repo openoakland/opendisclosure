@@ -51,7 +51,8 @@ OpenDisclosure.Views.Home = Backbone.View.extend({
     new OpenDisclosure.ContributorsView({
       el : '#topContributions',
       collection : OpenDisclosure.Data.whales,
-      headline :'Top Contributors To All Candidates in This Election'
+      headline :'Top Contributors To All Candidates in This Election',
+      showDate : false
     });
 
     new OpenDisclosure.MultiplesView({

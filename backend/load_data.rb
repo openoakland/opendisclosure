@@ -5,7 +5,7 @@ require_relative 'schema.rb' # wipe the database and start anew
 class DataFetcher
   URLS = {
     'Schedule A' => 'http://data.oaklandnet.com/resource/3xq4-ermg.json',
-    'Form 497' => 'https://data.oaklandnet.com/resource/qact-u8hq.json',
+    'Form 497' => 'http://data.oaklandnet.com/resource/qact-u8hq.json',
     'Schedule E' => 'http://data.oaklandnet.com/resource/bvfu-nq99.json',
     'Schedule B1' => 'http://data.oaklandnet.com/resource/qaa7-q29f.json',
     'Summary'    => 'http://data.oaklandnet.com/resource/rsxe-vvuw.json',

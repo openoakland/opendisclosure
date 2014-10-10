@@ -76,12 +76,10 @@
                         <a href='<%= m.linkPath() %>'><img class='mayor-picture' src="<%= m.imagePath() %>" /></a>
                       </td>
                       <td class='mayor-info' scope='row'>
-                        <div class='mayor-info'>
-                          <p class='mayor-name'>
-                            <a href= '<%= m.linkPath() %>'><%= m.get('short_name') %></a>
-                          </p>
-                          <p class='mayor-profession'><%= m.get('profession') %></p>
-                        </div>
+                        <p class='mayor-name'>
+                          <a href= '<%= m.linkPath() %>'><%= m.get('short_name') %></a>
+                        </p>
+                        <p class='mayor-profession'><%= m.get('profession') %></p>
                       </td>
                       <td class='mayoral-table-number total-raised'><%= m.totalContributions() %></td>
                       <td class='mayoral-table-number'><%= m.attributes.received_contributions_count %></td>
