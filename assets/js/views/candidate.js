@@ -109,7 +109,7 @@ OpenDisclosure.Views.Candidate = Backbone.View.extend({
       context.summary.totalContributions = this.model.totalContributions();
       context.summary.availableBalance = this.model.availableBalance();
       context.summary.totalExpenditures = this.model.friendlySummaryNumber('total_expenditures_made');
-      context.summary.pctPersonalContributions = OpenDisclosure.friendlyPct(this.model.get('self_contributions_total') / this.model.get('summary').total_contributions_received);
+      context.summary.pctPersonalContributions = this.model.pctPersonalContributions();
       context.summary.pctSmallContributions = this.model.pctSmallContributions();
     }
 

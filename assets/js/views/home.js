@@ -6,17 +6,14 @@ OpenDisclosure.Views.Home = Backbone.View.extend({
   render : function() {
     this.$el.html('<section id="candidateTable"></section>\
       <section class="col-sm-12">\
-	<span id="search" class="col-sm-6"></span>\
-	<span id="committee" class="col-sm-6"></span>\
-	<h5>For information on searching <a href="/faq#search">see the FAQ</a><h5>\
+        <span id="search" class="col-sm-6"></span>\
+        <span id="committee" class="col-sm-6"></span>\
+        <h5>For information on searching <a href="/faq#search">see the FAQ</a><h5>\
       </section>\
       <section id="zipcodeChart"></section> \
       <section id="dailyChart"></section> \
       <section id="topContributions"></section> \
       <section class="clearfix" id="multiples"></section>');
-
-    //TODO: add this back into the above template when the chart is ready
-    // <section id="dailyChart"></section> \
 
     new OpenDisclosure.CandidateTable({
       el : '#candidateTable',

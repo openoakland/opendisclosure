@@ -64,6 +64,22 @@ h2, h4 {
   clear: both;
 }
 
+/* ------------------- disclaimer -------------------- */
+
+.disclaimer {
+  background-color: yellow;
+  box-shadow: 0px -2px 7px rgba(0,0,0,0.2) inset;
+  font-size: 14px;
+  padding: 1em;
+  text-align: center;
+  width: 100%;
+}
+
+.disclaimer a {
+  color: #000;
+  font-weight: bolder;
+}
+
 /* ------------------- HEADER -------------------- */
 
 header {
