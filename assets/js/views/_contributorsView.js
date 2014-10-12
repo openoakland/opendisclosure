@@ -39,8 +39,8 @@ OpenDisclosure.ContributorsView = Backbone.View.extend({
 
   render: function() {
     var half  = Math.round(this.collection.length/2);
-    var left  = this.collection.toArray().slice(0,half-1);
-    var right = this.collection.toArray().slice(half,-1);
+    var left  = this.collection.toArray().slice(0,half);
+    var right = this.collection.toArray().slice(half);
 
     this.$el.html(this.template({
       headline : this.headline,

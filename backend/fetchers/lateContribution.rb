@@ -7,8 +7,19 @@ class DataFetcher
     end
 
     def self.parse_contributions(row)
-      recipient = Party::Committee.where(committee_id: row['filer_id'])
-                                  .first_or_create(name: row['filer_naml'])
+      recipient = Party::Committee.where(committee_id: 0, name: row['filer_naml']);
+      if (row['filer_id'] == 0) then
+	# Pending committee id.
+	if (recipient.empty?) then
+	  recipient = Party::Committee.create(committee_id: 0, name: row['filer_naml']);
+	end
+      elsif (recipient.empty?) then
+	recipient = Party::Committee.where(committee_id: row['filer_id'])
+				    .first_or_create(name: row['filer_naml']);
+      else
+	recipient = Party::Committee.where(name: row['filer_naml'])
+				    .update_all(committee_id: row['filer_id']);
+      end
 
       contributor =
         case row['entity_cd']
@@ -39,12 +50,13 @@ class DataFetcher
       ::Party.where(committee_id: row['filer_id'])
              .update_all(['last_updated_date = GREATEST(?, last_updated_date)', row['rpt_date']])
 
-      ::Contribution.where(recipient: recipient, transaction_id: row['tran_id']).first_or_create(
-        contributor: contributor,
-        amount: row['amount'],
-        date: row['ctrib_date'],
-        type: 'contribution'
-      )
+      ::Contribution.where(recipient: recipient,
+			   transaction_id: row['tran_id'],
+			   contributor: contributor,
+			   amount: row['amount'],
+			   date: row['ctrib_date'],
+			   type: 'contribution'
+			  ).first_or_create();
     end
   end
 end
