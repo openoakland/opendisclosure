@@ -8,7 +8,7 @@ class DataFetcher
     'Form 497' => 'http://data.oaklandnet.com/resource/qact-u8hq.json',
     'Schedule E' => 'http://data.oaklandnet.com/resource/bvfu-nq99.json',
     'Schedule B1' => 'http://data.oaklandnet.com/resource/qaa7-q29f.json',
-    'Summary'    => 'http://data.oaklandnet.com/resource/rsxe-vvuw.json',
+    'Summary' => 'http://data.oaklandnet.com/resource/rsxe-vvuw.json',
   }.freeze
 
   def self.load_all_data!
