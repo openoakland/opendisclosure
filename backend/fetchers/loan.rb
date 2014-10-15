@@ -7,6 +7,10 @@ class DataFetcher
     end
 
     def self.parse_loan(row)
+      if (row['loan_amt1'].nil? and row['lndr_naml'].nil? and row['lndr_namf'].nil?) then
+	puts "Skipping " + row.values_at('filer_naml', 'tran_id').join(':');
+	return
+      end
       return if row['loan_amt1'].to_i == 0
 
       recipient = Party::Committee.where(committee_id: 0, name: row['filer_naml']);
