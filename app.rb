@@ -21,7 +21,7 @@ class OpenDisclosureApp < Sinatra::Application
     ActiveRecord::Base.connection.verify!
   end
 
-  set :assets_precompile, %w(application.js application.css *.png *.jpg *.svg *.eot *.ttf *.woff)
+  set :assets_precompile, %w(application.js application.css *.png *.jpg *.svg *.eot *.ttf *.woff *.ico)
   set :assets_prefix, %w(assets vendor/assets) + [File.dirname(HandlebarsAssets.path)]
 
   register Sinatra::AssetPipeline
