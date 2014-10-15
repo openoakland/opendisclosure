@@ -44,7 +44,7 @@ ActiveRecord::Schema.define do
 
     t.index :recipient_id
     t.index :contributor_id
-    t.index :transaction_id
+    t.index [:recipient_id, :transaction_id]
 
     t.boolean :self_contribution, null: false, default: false
   end
