@@ -23,7 +23,7 @@ class SocrataFetcher
       url = @uri
       url.query = URI.encode_www_form(
         '$limit' => 1000,
-        '$order' => 'rpt_date ASC',
+        '$order' => 'thru_date ASC',
         '$offset' => offset
       )
 
