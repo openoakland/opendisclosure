@@ -37,6 +37,16 @@
 
     .container
       .row
+        //Social sharing buttons from share this
+        .social-buttons.pull-right
+          %span{class:'st_facebook_large', displayText:'Facebook'}
+          %span{class:'st_twitter_large', displayText:'Tweet'}
+          / %span{class:'st_linkedin', displayText:'LinkedIn'}
+          %span{class:'st_pinterest_large', displayText:'Pinterest'}
+          / %span{class:'st_googleplus', displayText:'Google +'}
+          / %span{class:'st_sharethis', displayText:'ShareThis'}
+          %span{class:'st_email_large', displayText:'Email'}
+      .row
         %aside.col-sm-2.hidden-xs.hidden-sm.sidebar-container{ role: 'navigation' }
           %ul.nav.nav-sidebar.sidebar
             %li
@@ -128,6 +138,13 @@
     %script{src: "http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"}
     %script{src: "http://d3js.org/d3.v3.js"}
     %script{src: '//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js'}
+
+    //Share this social sharing buttons
+    :javascript
+      var switchTo5x=true;
+    %script{type: "text/javascript", src: "http://w.sharethis.com/button/buttons.js"}
+    :javascript
+      stLight.options({publisher: "200b2fec-7081-42c4-950a-450071728f72", doNotHash: true, doNotCopy: false, hashAddressBar: false});
 
     / Google apis
     %script{src: "https://www.google.com/jsapi"}
