@@ -7,6 +7,10 @@ class DataFetcher
     end
 
     def self.parse_contributions(row)
+      if (row['tran_amt1'].nil? and row['tran_naml'].nil? and row['tran_namf'].nil?) then
+	puts "Skipping " + row.values_at('filer_naml', 'tran_id').join(':');
+	return
+      end
       recipient = if row['filer_id'] == 0    # "pending"
                     Party::Committee.where(committee_id: 0, name: row['filer_naml'])
                                     .first_or_create
