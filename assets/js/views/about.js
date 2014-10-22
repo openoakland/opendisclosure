@@ -49,6 +49,10 @@ OpenDisclosure.Views.About = Backbone.View.extend({
       "github" : "https://github.com/evanwolf"
     },
     {
+      "name" : "Ethan Lang",
+      "github" : "https://github.com/ethanlang"
+    },
+    {
       "name" : "Steve 'Spike' Spiker",
       "github" : "https://github.com/spjika"
     },
