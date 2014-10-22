@@ -125,6 +125,8 @@ OpenDisclosure.App = Backbone.Router.extend({
         e.preventDefault();
       }
 
+      window.ga('send', 'pageview', linkUrl);
+
       this.navigate(linkUrl.replace(/^\//,''), { trigger: true });
     }
   }
