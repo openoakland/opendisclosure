@@ -19,7 +19,7 @@ class DataFetcher
 
         when 'IND'
           # entity being paid is an Individual
-          full_name = row.values_at('payee_namt', 'payee_naml', 'payee_namf', 'payee_nams')
+          full_name = row.values_at('payee_naml', 'payee_namf', 'payee_nams')
                          .join(' ')
                          .strip
           Party::Individual.where(name: full_name,

@@ -22,7 +22,6 @@ class DataFetcher
     puts "Loading Employer Map"
     Map.load_mappings('backend/map.csv')
 
-    # !! Need a new Lobbyist Directory for 2014
     puts "Loading Lobbyist data"
     Lobbyist.load_from_file('backend/2014_Lobbyist_Directory.csv')
 
