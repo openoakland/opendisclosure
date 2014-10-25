@@ -29,7 +29,7 @@ class DataFetcher
 
         when 'IND'
           # contributor is an Individual
-          full_name = row.values_at('tran_namt', 'tran_namf', 'tran_naml', 'tran_nams')
+          full_name = row.values_at('tran_namf', 'tran_naml', 'tran_nams')
                          .join(' ')
                          .strip
           Party::Individual.where(name: full_name,
