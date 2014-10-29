@@ -135,5 +135,6 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
 
   drawTitle: function() {
     this.$el.prepend("<h3>Cumulative itemized campaign contributions</h3>");
+    this.$el.append("<h5>The numbers in this graph are calculated from a different data set than the contributions table above. For more details, please check the <a href='faq'>FAQ</a>.</h5>");
   }
 })
