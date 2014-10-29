@@ -7,8 +7,11 @@ class DataFetcher
     end
 
     def self.parse_contributions(row)
-      if (row['amount'].nil? and row['enty_naml'].nil? and row['enty_namf'].nil?) then
+      if row['amount'].nil? && row['enty_naml'].nil? && row['enty_namf'].nil? then
 	puts "Skipping " + row.values_at('filer_naml', 'tran_id').join(':');
+	return
+      end
+      if row['form_type'] == "F497P2" then # this is a payment from this committee.
 	return
       end
       recipient = if row['filer_id'] == 0    # "pending"
