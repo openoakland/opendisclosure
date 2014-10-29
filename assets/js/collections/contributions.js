@@ -32,6 +32,10 @@ OpenDisclosure.Multiples = Backbone.Collection.extend({
   url: '/api/multiples',
   model: OpenDisclosure.Multiple
 });
+OpenDisclosure.IECs = Backbone.Collection.extend({
+  url: '/api/independent',
+  model: OpenDisclosure.IEC
+});
 OpenDisclosure.Contributors = Backbone.Collection.extend({
   model: OpenDisclosure.Contributor,
   comparator: function (model) {

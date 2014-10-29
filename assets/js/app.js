@@ -5,6 +5,7 @@ OpenDisclosure.App = Backbone.Router.extend({
     'candidate/:name': 'candidate',
     'faq':'faq',
     'rules': 'rules',
+    'iec': 'iec',
     'contributor/:id': 'contributor',
     'employer/:employer_name/:employer_id': 'employer',
     'search/:name': 'search',
@@ -21,6 +22,7 @@ OpenDisclosure.App = Backbone.Router.extend({
       categoryContributions: new OpenDisclosure.CategoryContributions(),
       whales: new OpenDisclosure.Whales(),
       multiples: new OpenDisclosure.Multiples(),
+      independentExpends: new OpenDisclosure.IECs(),
       zipContributions: $.getJSON("/api/contributions/zip"),
       dailyContributions: $.getJSON("/api/contributions/over_time")
     };
@@ -63,6 +65,14 @@ OpenDisclosure.App = Backbone.Router.extend({
     $(window).scrollTop(0);
     new OpenDisclosure.Views.Rules({
       el: '.main'
+    });
+  },
+
+  iec: function () {
+    $(window).scrollTop(0);
+    new OpenDisclosure.Views.IECView({
+      el: '.main',
+      collection: OpenDisclosure.Data.independentExpends
     });
   },
 

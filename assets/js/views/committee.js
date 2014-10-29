@@ -3,7 +3,7 @@ OpenDisclosure.Views.Committee = Backbone.View.extend({
     <div id="contirbutor">\
     <div class="col-sm-12 contribution"><a href="<%= contribution.contributorLinkPath() %>">\
     <span class="col-sm-6"><%= contribution.attributes.contributor.name %></span>\
-    <span class="col-sm-2"><%= OpenDisclosure.friendlyMoney(contribution.attributes.amount) %> </span>\
+    <span class="col-sm-2"><%= OpenDisclosure.friendlyMoney(contribution.attributes.amount) %><%=contribution.typeName() %></span>\
     <span class="col-sm-4"><%= moment(contribution.attributes.date).format("MMM-DD-YY") %></span>\
                        </a></div></div>'),
 

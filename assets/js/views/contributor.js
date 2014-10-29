@@ -53,6 +53,7 @@ OpenDisclosure.Views.Contributor = Backbone.View.extend({
               recipientLinkPath: contribution.recipientLinkPath(),
               recipientName: contribution.attributes.recipient.name,
               amount: OpenDisclosure.friendlyMoney(contribution.get('amount')),
+              type: contribution.typeName(),
               date: moment(contribution.attributes.date).format("MMM-DD-YY")
             };
           })

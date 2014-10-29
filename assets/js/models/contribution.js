@@ -4,6 +4,8 @@ OpenDisclosure.Contribution = Backbone.Model.extend({
       return ''; // 'nuff said
     } else if (this.attributes.type == 'loan') {
       return ' (Loan)';
+    } else if (this.attributes.type == 'independent') {
+      return ' (Independent committee expenditure)';
     }
   },
   contributorLinkPath : function() {
@@ -34,6 +36,9 @@ OpenDisclosure.Whale = Backbone.Model.extend({
 });
 
 OpenDisclosure.Multiple = Backbone.Model.extend({
+});
+
+OpenDisclosure.IEC = Backbone.Model.extend({
 });
 
 OpenDisclosure.Contributor = Backbone.Model.extend({
