@@ -4,7 +4,9 @@ OpenDisclosure.Views.IECView = Backbone.View.extend({
       <div class="col-xs-12 contribution">\
           <span class="col-xs-2"><%= attributes.date ? moment(attributes.date).format("MMM-DD-YY"): "" %></span>\
           <span class="col-xs-2"><%= attributes.support ? "Supporting" : "Opposing" %></span>\
-          <span class="col-xs-6"><%= attributes.recipient.name %></span>\
+	  <a href="<%= recipientLinkPath() %>">\
+	    <span class="col-xs-6"><%= attributes.recipient.name %></span>\
+	  </a>\
           <span class="col-xs-2"><%= OpenDisclosure.friendlyMoney(attributes.amount) %></span>\
       </div>\
       <div class="col-xs-12 description">\
@@ -45,7 +47,8 @@ OpenDisclosure.Views.IECView = Backbone.View.extend({
       this.name = c.attributes.contributor.name;
       ret = this.header({ contributorName: this.name });
     }
-    return ret + this.template(c);
+    contribution = new OpenDisclosure.Contribution(c.attributes);
+    return ret + this.template(contribution);
 
   }
 });

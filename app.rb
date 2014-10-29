@@ -214,7 +214,10 @@ class OpenDisclosureApp < Sinatra::Application
     headers 'Content-Type' => 'application/json'
 
     fields = {
-      include: [:contributor, :recipient],
+      include: [
+        { recipient: { methods: :short_name } },
+        { contributor: { methods: :short_name } },
+      ],
     }
 
     IEC.includes(:contributor, :recipient)
