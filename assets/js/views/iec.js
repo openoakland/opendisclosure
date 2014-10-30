@@ -33,7 +33,8 @@ OpenDisclosure.Views.IECView = Backbone.View.extend({
 
   render: function() {
     this.$el.empty();
-    $('<h1>Indepent Commitee Expenditures</h1>').appendTo(this.$el);
+    $('<h1>Independent Commitee Expenditures</h1>').appendTo(this.$el);
+    $('<h5 class="footnote">Not controlled by candidates. <a href="/faq#iec">See FAQ.</a></h5>').appendTo(this.$el);
     if (this.collection.length == 0) {
       return
     }
