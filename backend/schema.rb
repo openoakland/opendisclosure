@@ -28,6 +28,14 @@ ActiveRecord::Schema.define do
     t.index :last_updated_date
   end
 
+  create_table :committee_maps do |t|
+    t.string :filer_id
+    t.string :name
+    t.integer :committee_id
+
+    t.index [:committee_id]
+  end
+
   create_table :iecs do |t|
     t.string :transaction_id, null: false
     t.integer :contributor_id, null: false

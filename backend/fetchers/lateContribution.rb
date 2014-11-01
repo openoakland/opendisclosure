@@ -14,14 +14,8 @@ class DataFetcher
       if row['form_type'] == "F497P2" then # this is a payment from this committee.
 	return
       end
-      recipient = if row['filer_id'] == 0    # "pending"
-                    Party::Committee.where(committee_id: 0, name: row['filer_naml'])
-                                    .first_or_create
-                  else
-                    Party::Committee.where(committee_id: row['filer_id'])
-                                    .first_or_create(name: row['filer_naml'])
-                  end
 
+      recipient = DataFetcher.get_filer(row);
       contributor =
         case row['entity_cd']
         when 'COM', 'SCC'
@@ -30,25 +24,27 @@ class DataFetcher
           Party::Committee.where(committee_id: row['cmte_id'])
                           .first_or_create(name: row['enty_naml'])
 
-        when 'IND'
-          # contributor is an Individual
-          full_name = row.values_at('enty_namf', 'enty_naml', 'enty_nams')
-                         .join(' ')
-                         .strip
-          Party::Individual.where(name: full_name,
-                                  city: row['enty_city'],
-                                  state: row['enty_st'],
-                                  zip: row['enty_zip4'])
-                           .first_or_initialize
-                           .tap { |p| p.update_attributes(employer: row['ctrib_emp'], occupation: row['ctrib_occ']) }
-        when 'OTH'
-          # contributor is "Other"
-          Party::Other.where(name: row['enty_naml'])
-                      .first_or_initialize
-                      .tap { |p| p.update_attributes(city: row['enty_city'], state: row['enty_st'], zip: row['enty_zip4']) }
+        when 'IND', 'OTH'
+	  if row['entity_cd'] == 'IND' || !row['tran_namf'].nil? then
+	    # contributor is an Individual
+	    full_name = row.values_at('enty_namf', 'enty_naml', 'enty_nams')
+			   .join(' ')
+			   .strip
+	    Party::Individual.where(name: full_name,
+				    city: row['enty_city'],
+				    state: row['enty_st'],
+				    zip: row['enty_zip4'])
+			     .first_or_initialize
+			     .tap { |p| p.update_attributes(employer: row['ctrib_emp'], occupation: row['ctrib_occ']) }
+	  else
+	    # contributor is "Other"
+	    Party::Other.where(name: row['enty_naml'])
+			.first_or_initialize
+			.tap { |p| p.update_attributes(city: row['enty_city'], state: row['enty_st'], zip: row['enty_zip4']) }
+	  end
         end
 
-      ::Party.where(committee_id: row['filer_id'])
+      ::Party.where(committee_id: recipient[:filer_id])
              .update_all(['last_updated_date = GREATEST(?, last_updated_date)', row['rpt_date']])
 
       ::Contribution.where(recipient: recipient,
