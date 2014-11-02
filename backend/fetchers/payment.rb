@@ -7,8 +7,7 @@ class DataFetcher
     end
 
     def self.parse_payments(row)
-      payer = Party::Committee.where(committee_id: row['filer_id'])
-                              .first_or_create(name: row['filer_naml'])
+      payer = DataFetcher.get_filer(row);
       recipient =
         case row['entity_cd']
         when 'COM', 'SCC'

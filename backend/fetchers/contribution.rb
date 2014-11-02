@@ -11,13 +11,8 @@ class DataFetcher
 	puts "Skipping " + row.values_at('filer_naml', 'tran_id').join(':');
 	return
       end
-      recipient = if row['filer_id'] == 0    # "pending"
-                    Party::Committee.where(committee_id: 0, name: row['filer_naml'])
-                                    .first_or_create
-                  else
-                    Party::Committee.where(committee_id: row['filer_id'])
-                                    .first_or_create(name: row['filer_naml'])
-                  end
+
+      recipient = DataFetcher.get_filer(row);
 
       contributor =
         case row['entity_cd']
@@ -27,22 +22,24 @@ class DataFetcher
           Party::Committee.where(committee_id: row['cmte_id'])
                           .first_or_create(name: row['tran_naml'] || 'unknown')
 
-        when 'IND'
-          # contributor is an Individual
-          full_name = row.values_at('tran_namf', 'tran_naml', 'tran_nams')
-                         .join(' ')
-                         .strip
-          Party::Individual.where(name: full_name,
-                                  city: row['tran_city'],
-                                  state: row['tran_state'],
-                                  zip: row['tran_zip4'])
-                           .first_or_initialize
-                           .tap { |p| p.update_attributes(employer: row['tran_emp'], occupation: row['tran_occ']) }
-        when 'OTH'
-          # contributor is "Other"
-          Party::Other.where(name: row['tran_naml'] || 'unknown')
-                      .first_or_initialize
-                      .tap { |p| p.update_attributes(city: row['tran_city'], state: row['tran_state'], zip: row['tran_zip4']) }
+        when 'IND', 'OTH'
+	  if row['entity_cd'] == 'IND' || !row['tran_namf'].nil? then
+	    # contributor is an Individual
+	    full_name = row.values_at('tran_namf', 'tran_naml', 'tran_nams')
+			   .join(' ')
+			   .strip
+	    Party::Individual.where(name: full_name,
+				    city: row['tran_city'],
+				    state: row['tran_state'],
+				    zip: row['tran_zip4'])
+			     .first_or_initialize
+			     .tap { |p| p.update_attributes(employer: row['tran_emp'], occupation: row['tran_occ']) }
+	  else
+	    # contributor is "Other"
+	    Party::Other.where(name: row['tran_naml'] || 'unknown')
+			.first_or_initialize
+			.tap { |p| p.update_attributes(city: row['tran_city'], state: row['tran_state'], zip: row['tran_zip4']) }
+	  end
         end
 
       ::Contribution.where(recipient: recipient,

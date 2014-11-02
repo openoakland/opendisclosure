@@ -13,19 +13,7 @@ class DataFetcher
       end
       return if row['loan_amt1'].to_i == 0
 
-      recipient = Party::Committee.where(committee_id: 0, name: row['filer_naml']);
-      if (row['filer_id'] == 0) then
-	# Pending committee id.
-	if (recipient.empty?) then
-	  recipient = Party::Committee.create(committee_id: 0, name: row['filer_naml']);
-	end
-      elsif (recipient.empty?) then
-	recipient = Party::Committee.where(committee_id: row['filer_id'])
-				    .first_or_create(name: row['filer_naml']);
-      else
-	recipient = Party::Committee.where(name: row['filer_naml'])
-				    .update_all(committee_id: row['filer_id']);
-      end
+      recipient = DataFetcher.get_filer(row);
 
       contributor =
         case row['entity_cd']
@@ -35,23 +23,25 @@ class DataFetcher
           Party::Committee.where(committee_id: row['cmte_id'])
                           .first_or_create(name: row['lndr_naml'])
 
-        when 'IND'
-          # contributor is an Individual
-          full_name = row.values_at('lndr_namf', 'lndr_naml', 'lndr_nams')
-                         .join(' ')
-                         .strip
-          Party::Individual.where(name: full_name,
-                                  city: row['loan_city'],
-                                  state: row['loan_st'],
-                                  zip: row['loan_zip4'])
-                           .first_or_create(employer: row['loan_emp'],
-                                            occupation: row['loan_occ'])
-        when 'OTH'
-          # contributor is "Other"
-          Party::Other.where(name: row['lndr_naml'])
-                      .first_or_create(city: row['loan_city'],
-                                       state: row['loan_st'],
-                                       zip: row['loan_zip4'])
+        when 'IND', 'OTH'
+	  if row['entity_cd'] == 'IND' || !row['tran_namf'].nil? then
+	    # contributor is an Individual
+	    full_name = row.values_at('lndr_namf', 'lndr_naml', 'lndr_nams')
+			   .join(' ')
+			   .strip
+	    Party::Individual.where(name: full_name,
+				    city: row['loan_city'],
+				    state: row['loan_st'],
+				    zip: row['loan_zip4'])
+			     .first_or_create(employer: row['loan_emp'],
+					      occupation: row['loan_occ'])
+	  else
+	    # contributor is "Other"
+	    Party::Other.where(name: row['lndr_naml'])
+			.first_or_create(city: row['loan_city'],
+					 state: row['loan_st'],
+					 zip: row['loan_zip4'])
+	  end
         end
 
       ::Contribution.where(recipient: recipient, transaction_id: row['tran_id'],

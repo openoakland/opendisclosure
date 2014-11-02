@@ -555,3 +555,6 @@ end
 
 class Party::Committee < Party
 end
+
+class CommitteeMap < ActiveRecord::Base
+end
