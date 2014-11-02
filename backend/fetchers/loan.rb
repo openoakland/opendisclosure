@@ -8,12 +8,12 @@ class DataFetcher
 
     def self.parse_loan(row)
       if (row['loan_amt1'].nil? and row['lndr_naml'].nil? and row['lndr_namf'].nil?) then
-	puts "Skipping " + row.values_at('filer_naml', 'tran_id').join(':');
+	puts "Skipping " + row.values_at('filer_naml', 'tran_id').join(':')
 	return
       end
       return if row['loan_amt1'].to_i == 0
 
-      recipient = DataFetcher.get_filer(row);
+      recipient = DataFetcher.get_filer(row)
 
       contributor =
         case row['entity_cd']
@@ -24,6 +24,8 @@ class DataFetcher
                           .first_or_create(name: row['lndr_naml'])
 
         when 'IND', 'OTH'
+	  # If there is a first name this may have been chatacterized as other
+	  # instead of individual.  This happened with the Firefighters Union Pac
 	  if row['entity_cd'] == 'IND' || !row['tran_namf'].nil? then
 	    # contributor is an Individual
 	    full_name = row.values_at('lndr_namf', 'lndr_naml', 'lndr_nams')
@@ -49,7 +51,7 @@ class DataFetcher
 			    amount: row['loan_amt1'], # "amount received this period"
 			    date: row['loan_date1'],
 			    type: 'loan'
-			  ).first_or_create();
+			  ).first_or_create()
     end
   end
 end
