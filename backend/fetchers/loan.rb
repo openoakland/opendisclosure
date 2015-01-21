@@ -11,7 +11,7 @@ class DataFetcher
 	puts "Skipping " + row.values_at('filer_naml', 'tran_id').join(':')
 	return
       end
-      return if row['loan_amt1'].to_i == 0
+      return if row['loan_amt1'].to_i == 0 and row['loan_amt5'].to_i == 0
 
       recipient = DataFetcher.get_filer(row)
 
@@ -48,7 +48,7 @@ class DataFetcher
 
       ::Contribution.where(recipient: recipient, transaction_id: row['tran_id'],
 			    contributor: contributor,
-			    amount: row['loan_amt1'], # "amount received this period"
+			    amount: row['loan_amt1'].to_i - row['loan_amt5'].to_i, # "amount received this period less amount paid back"
 			    date: row['loan_date1'],
 			    type: 'loan'
 			  ).first_or_create()
