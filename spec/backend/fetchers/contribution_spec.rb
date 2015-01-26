@@ -4,14 +4,20 @@ describe DataFetcher::Contribution do
     ::Party.delete_all
   end
 
-  let(:row) do
-    FactoryGirl.build(:contribution, :from_json)
-  end
+  describe '.parse_row' do
+    subject { described_class.new([row]).run! }
 
-  describe '.parse_contributions' do
-    subject { described_class.parse_contributions(row) }
+    context 'with a valid committe-to-committee contribution' do
+      let(:row) { JSON.load(File.read('spec/samples/socrata_contribution_from_committee.json')) }
 
-    context 'when given a valid row' do
+      it 'creates a Contribution record' do
+        expect { subject }.to change { Contribution.count }.by(1)
+      end
+    end
+
+    context 'when given a valid personal contribution from Socrata' do
+      let(:row) { JSON.load(File.read('spec/samples/socrata_contribution_valid.json')) }
+
       it 'creates a party for the recipient' do
         subject
         expect(Party.where(committee_id: row['filer_id'])).to be_present
@@ -20,14 +26,14 @@ describe DataFetcher::Contribution do
       it 'creates a Contribution record with the right values' do
         subject
         expect(Contribution.first.amount).to equal(row['tran_amt1'].to_i)
+        expect(Contribution.first.contributor).to be_present
       end
 
       context 'when the recipient exists already' do
         it "doesn't create a Party for the recipient" do
-          FactoryGirl.create(:committee, committee_id: row['filer_id'])
+          ::Party::Committee.create(name: 'foo', committee_id: row['filer_id'])
 
-          expect { subject }.
-            not_to change { Party.where(committee_id: row['filer_id']).count }
+          expect { subject }.not_to change { Party.where(committee_id: row['filer_id']).count }
         end
       end
     end

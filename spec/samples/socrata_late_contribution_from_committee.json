@@ -1,0 +1,21 @@
+{
+  "tran_id": "INC3",
+  "ctrib_emp": "DAVITA",
+  "rec_type": "S497",
+  "filer_id": "1361867",
+  "ctrib_date": "2014-03-18T00:00:00",
+  "enty_naml": "PARKER",
+  "rpt_id_num": "P14-JPP-03",
+  "amount": "20000",
+  "filer_naml": "BRYAN PARKER FOR A SAFER AND MORE EQUITABLE OAKLAND BALLOT MEASURE COMMITTEE SUPPORTING MEASURE AA",
+  "entity_cd": "IND",
+  "enty_st": "CA",
+  "rpt_date": "2014-03-20T00:00:00",
+  "committee_type": "RCP",
+  "enty_zip4": "94611",
+  "enty_city": "OAKLAND",
+  "ctrib_occ": "VICE PRESIDENT",
+  "enty_namf": "BRYAN",
+  "report_num": "0",
+  "form_type": "F497P1"
+}
