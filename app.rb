@@ -28,10 +28,11 @@ class OpenDisclosureApp < Sinatra::Application
   use Rack::Deflater
 
   # Below here are some API endpoints for the frontend JS to use to fetch data.
+  #
   # This uses a special ActiveRecord syntax for converting models to JSON. It is
   # documented here:
   #   http://apidock.com/rails/ActiveRecord/Serialization/to_json
-  #
+
   # This is data of contributions from an individual/company to various campaigns.
   get '/api/contributor/:id' do |id|
     cache_control :public
@@ -45,7 +46,7 @@ class OpenDisclosureApp < Sinatra::Application
         { contributor: { methods: :short_name } },
       ],
     }
-    party         = Party.find(id)
+    party = Party.find(id)
     Contribution
       .where(contributor_id: party)
       .includes(:contributor, :recipient).order(:date).reverse_order.to_json(fields)
