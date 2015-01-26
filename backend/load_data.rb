@@ -1,5 +1,4 @@
 require_relative 'environment.rb'
-require_relative 'downloaders/socrata_downloader.rb'
 require_relative 'schema.rb' # wipe the database and start anew
 
 class DataFetcher
