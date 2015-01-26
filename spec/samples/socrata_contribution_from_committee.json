@@ -1,0 +1,19 @@
+{
+  "thru_date": "2012-09-30T00:00:00",
+  "entity_cd": "COM",
+  "intr_self": "n",
+  "rpt_date": "2012-09-30T00:00:00",
+  "elect_date": "2012-11-06T00:00:00",
+  "form_type": "A",
+  "rec_type": "RCPT",
+  "cmte_id": "1296948",
+  "tran_id": "C5565486",
+  "filer_naml": "Friends of Nyeisha Dewitt for City Council 2012",
+  "committee_type": "CTL",
+  "tran_amt2": "1300",
+  "tran_amt1": "1300",
+  "tran_self": "n",
+  "from_date": "2012-07-01T00:00:00",
+  "report_num": "0",
+  "tran_date": "2012-09-27T00:00:00"
+}

@@ -15,14 +15,17 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 require_relative '../backend/environment.rb'
-require 'factory_girl'
 
 ENV['RACK_ENV'] = 'test'
 
-FactoryGirl.find_definitions
 # ActiveRecord::Base.logger = Logger.new($stderr)
 
 RSpec.configure do |config|
+  config.before(:suite) do
+    ActiveRecord::Migration.verbose = false
+
+    require_relative '../backend/schema.rb'
+  end
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.
 =begin

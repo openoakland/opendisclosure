@@ -63,7 +63,7 @@ class OpenDisclosureApp < Sinatra::Application
         { contributor: { methods: :short_name } },
       ],
     }
-    search 	  = "%" + CGI.unescape(name).downcase + "%"
+    search    = "%" + CGI.unescape(name).downcase + "%"
     party         = Party.where("lower(name) like ?", search)
     Contribution
       .where(contributor_id: party)
@@ -144,7 +144,7 @@ class OpenDisclosureApp < Sinatra::Application
         .order(date: :desc)
         .to_json(fields)
     when 'committee'
-      search 	  = "%" + CGI.unescape(id).downcase.gsub(/-/, '_') + "%"
+      search    = "%" + CGI.unescape(id).downcase.gsub(/-/, '_') + "%"
       party         = Party::Committee.where("lower(name) like ?", search)
       Contribution
         .where(recipient_id: party)
@@ -221,8 +221,8 @@ class OpenDisclosureApp < Sinatra::Application
     }
 
     IEC.includes(:contributor, :recipient)
-	      .order('extract(year from date)').reverse_order
-	      .order(:contributor_id).to_json(fields);
+       .order('extract(year from date)').reverse_order
+       .order(:contributor_id).to_json(fields)
   end
 
   get '/api/party/:id' do |id|
@@ -280,7 +280,7 @@ class OpenDisclosureApp < Sinatra::Application
     # This renders views/index.haml
     haml :index, locals: {
       candidates: Party.all_mayoral_candidates,
-      last_updated: most_recently_updated_party.last_updated_date,
+      last_updated: most_recently_updated_party.try(:last_updated_date) || Time.now,
       candidate_json: candidate_json
     }
   end
