@@ -36,7 +36,7 @@ class DataFetcher
       if filer_id.nil?
         filer_id = 0
       elsif (/^\d*$/ =~ filer_id).nil?
-        puts row.values_at('filer_namf', 'filer_naml').join(' ') + " invalid id:" + filer_id;
+        puts row.values_at('filer_namf', 'filer_naml').join(' ') + " invalid id: #{filer_id}";
         if filer_id =~ /pending/i
           filer_id = 0;
         else
@@ -47,7 +47,7 @@ class DataFetcher
           committee = CommitteeMap.where(filer_id: filer_id)
             .first_or_create(name: row['filer_namel'], committee_id: id + 1);
           filer_id = committee.committee_id;
-          puts 'filer_id is ' + filer_id.to_s;
+          puts "filer_id is  #{filer_id}";
         end
       end
 
@@ -68,7 +68,7 @@ class DataFetcher
                         .first_or_create(name: row['filer_naml'])
                     end
       elsif filer_id != 0 then
-        puts "Updating " + recipient.name + " " + filer_id.to_s;
+        puts "Updating  #{recipient.name} #{filer_id}";
         recipient = Party::Committee.where(committee_id: 0, name: row['filer_naml'])
           .first_or_initialize
           .tap { |p| p.update_attribute('committee_id', filer_id) };

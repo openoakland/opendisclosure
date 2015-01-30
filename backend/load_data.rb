@@ -17,6 +17,9 @@ class DataFetcher
       ActiveRecord::Base.logger = Logger.new(STDOUT)
     end
 
+    puts "Loading Payment Codes"
+    PaymentCodes.load_from_file('backend/payment_codes.csv')
+
     # This table maps spellings of employers to a common spelling.
     # It needs to be updated when a new batch of data is available
     # as there is no check on spelling on the forms.
@@ -39,6 +42,7 @@ class DataFetcher
     puts "Run analysis"
     DataFetcher::CategoryContributions.run!
     DataFetcher::EmployerContributions.run!
+    DataFetcher::CategoryPayments.run!
     DataFetcher::Multiples.run!
     DataFetcher::Whales.run!
 

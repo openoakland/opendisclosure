@@ -20,6 +20,7 @@ OpenDisclosure.App = Backbone.Router.extend({
     OpenDisclosure.Data = {
       employerContributions: new OpenDisclosure.EmployerContributions(),
       categoryContributions: new OpenDisclosure.CategoryContributions(),
+      categoryPayments: new OpenDisclosure.CategoryPayments(),
       whales: new OpenDisclosure.Whales(),
       multiples: new OpenDisclosure.Multiples(),
       independentExpends: new OpenDisclosure.IECs(),

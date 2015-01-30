@@ -23,6 +23,8 @@ OpenDisclosure.Views.Candidate = Backbone.View.extend({
       this.model = candidate;
       this.contributions = new OpenDisclosure.Contributions([], { candidateId: candidate.attributes.id });
       this.contributions.fetch();
+      this.payments = new OpenDisclosure.Payments([], { candidateId: candidate.attributes.id });
+      this.payments.fetch();
       this.render();
     } else {
       location.assign(location.href.replace("candidate/", "searchCommittee/"));
@@ -37,6 +39,9 @@ OpenDisclosure.Views.Candidate = Backbone.View.extend({
       if (OpenDisclosure.Data.categoryContributions.length > 0) {
         this.renderCategoryChart();
       }
+      if (OpenDisclosure.Data.categoryPayments.length > 0) {
+        this.renderPaymentCategoryChart();
+      }
 
       if (OpenDisclosure.Data.employerContributions.length > 0) {
         this.renderTopContributors();
@@ -47,6 +52,7 @@ OpenDisclosure.Views.Candidate = Backbone.View.extend({
       }
     } else {
       $('#category').hide();
+      $('#payment').hide();
       $('#topContributors').hide();
       $('#contributors').hide();
     }
@@ -54,6 +60,7 @@ OpenDisclosure.Views.Candidate = Backbone.View.extend({
 
     //Listen for new data
     this.listenTo(OpenDisclosure.Data.categoryContributions, 'sync', this.renderCategoryChart);
+    this.listenTo(OpenDisclosure.Data.categoryPayments, 'sync', this.renderPaymentCategoryChart);
     this.listenTo(OpenDisclosure.Data.employerContributions, 'sync', this.renderTopContributors);
     this.listenTo(this.contributions, 'sync', this.renderAllContributions);
   },
@@ -67,6 +74,21 @@ OpenDisclosure.Views.Candidate = Backbone.View.extend({
     new OpenDisclosure.CategoryView({
       el: '#category',
       collection: this.categories,
+      attributes: this.model.attributes
+    });
+  },
+
+  renderPaymentCategoryChart: function() {
+    var candidateId = this.model.attributes.id;
+    this.categories = _.filter(OpenDisclosure.Data.categoryPayments.models, function(c) {
+      return c.attributes.payer_id == candidateId;
+    });
+
+    new OpenDisclosure.Views.PaymentCategory({
+      el: '#payment',
+      list: '#paymentList',
+      collection: this.categories,
+      payments: this.payments,
       attributes: this.model.attributes
     });
   },

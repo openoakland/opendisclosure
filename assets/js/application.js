@@ -10,9 +10,11 @@
 
 //= require models/candidate
 //= require models/contribution
+//= require models/payment
 
 //= require collections/candidates
 //= require collections/contributions
+//= require collections/payments
 
 //= require_tree ./templates/
 
@@ -32,6 +34,8 @@
 //= require views/_contributorsView
 //= require views/_topContributorsView
 //= require views/_categoryView
+//= require views/_paymentCategories
+//= require views/_paymentsView
 //= require views/_multiplesView
 //= require views/_search
 
