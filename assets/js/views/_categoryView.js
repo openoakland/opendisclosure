@@ -33,8 +33,6 @@ OpenDisclosure.CategoryView = Backbone.View.extend({
       dataTable: data,
     });
 
-    // This is pretty hacky, but it's a way to center the chart without reaching
-    // into its internals.
     pieChart.render();
     this.$el.append($('<div style="width: 300px; margin: auto">').html(pieChart.el));
     this.$el.append("<h5 class='footnote'>For more details on the data in this pie chart see the <a href='/faq#categoryChart'>FAQ</a></h5>");

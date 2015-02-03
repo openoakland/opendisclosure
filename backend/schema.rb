@@ -73,10 +73,20 @@ ActiveRecord::Schema.define do
     t.integer :payer_id, null: false
     t.integer :recipient_id, null: false
     t.integer :amount
+    t.string :code
     t.date :date
 
     t.index :payer_id
     t.index :recipient_id
+  end
+
+  create_table :category_payments do |t|
+    t.integer :payer_id
+    t.string :text
+    t.string :code
+    t.integer :amount
+
+    t.index :payer_id
   end
 
   create_table :summaries do |t|
@@ -137,6 +147,13 @@ ActiveRecord::Schema.define do
 
     t.index [:name], unique: true
     t.index [:firm]
+  end
+
+  create_table :payment_codes do |t|
+    t.string :code
+    t.string :text
+
+    t.index [:code], unique: true
   end
 
   create_table :imports do |t|

@@ -180,6 +180,35 @@ class OpenDisclosureApp < Sinatra::Application
     CategoryContribution.all.to_json
   end
 
+  get '/api/payments/:id' do |id|
+    cache_control :public
+    last_modified Import.last.import_time
+
+    headers 'Content-Type' => 'application/json'
+
+    fields = {
+      only: %w[amount date code],
+      include: [
+        { recipient: { methods: :short_name } },
+        { payer: { methods: :short_name } },
+      ],
+    }
+    Payment
+      .where(payer_id: id)
+      .includes(:recipient, :payer)
+      .order(date: :desc)
+      .to_json(fields)
+  end
+
+  get '/api/category_payments' do
+    cache_control :public
+    last_modified Import.last.import_time
+
+    headers 'Content-Type' => 'application/json'
+
+    CategoryPayment.order(code: :asc).all.to_json
+  end
+
   get '/api/whales' do
     cache_control :public
     last_modified Import.last.import_time

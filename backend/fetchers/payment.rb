@@ -31,8 +31,9 @@ class DataFetcher::Payment < DataFetcher::Base
       end
 
     ::Payment.create(payer: payer,
-                     recipient: recipient,
-                     amount: row['amount'],
-                     date: row['expn_date'])
+		     recipient: recipient,
+		     amount: row['amount'],
+		     code: row['expn_code'],
+		     date: row['expn_date'])
   end
 end

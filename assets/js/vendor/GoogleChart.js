@@ -179,7 +179,8 @@
     GoogleChart.prototype.bind = function(event, callback) {
       var _base;
 
-      (_base = this._listers)[event] || (_base[event] = this._addGoogleListener(event));
+      _base = this._listers;
+      _base[event] = this._addGoogleListener(event);
       return GoogleChart.__super__.bind.call(this, event, callback);
     };
 
