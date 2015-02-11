@@ -1,7 +1,7 @@
 Open Disclosure backend installation in Vagrant in 6 steps
 =================
 
-Scripts to build Open Disclosure's back end in a vagrant virtual machine.
+Scripts to build Open Disclosure's back end in a Vagrant virtual machine.
 This has been tested on a Mac running Yosemite. From what I understand, Virtual box and Vagrant work in Windows as well, and most of the commands are the same, though, I have not tested it in Windows.
 
 To install the backend:
