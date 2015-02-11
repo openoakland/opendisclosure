@@ -40,11 +40,20 @@ class DataFetcher::Loan < DataFetcher::Base
         end
       end
 
+    # "amount received this period less amount paid backand amount forgiven"
+    loan_amt = row['loan_amt1'].to_i - (row['loan_amt5'].to_i + row['loan_amt6'].to_i)
+    # There is no date recorded for the rempayment/forgiven date, so just use
+    # the report date.
+    if loan_amt > 0 
+      loan_date = row['loan_date1']
+    else
+      loan_date = row['rpt_date']
+    end
+
     ::Contribution.where(recipient: recipient, transaction_id: row['tran_id'],
                          contributor: contributor,
-                         # "amount received this period less amount paid backand amount forgiven"
-                         amount: row['loan_amt1'].to_i - (row['loan_amt5'].to_i + row['loan_amt6'].to_i),
-                         date: row['loan_date1'],
+                         amount: loan_amt,
+                         date: loan_date,
                          type: 'loan'
                         ).first_or_create
   end

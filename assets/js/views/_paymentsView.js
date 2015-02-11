@@ -34,6 +34,7 @@ OpenDisclosure.PaymentsView = Backbone.View.extend({
       leftPayments : left.map(this.renderPayment).join(''),
       rightPayments : right.map(this.renderPayment).join('')
     }));
+    this.$el.append("<h5 class='footnote'>Some data does not have dates see <a href='/faq#paymentDate'>FAQ</a></h5>");
   },
 
   renderPayment: function(payment) {
