@@ -50,7 +50,6 @@ See [http://www.vagrantup.com/](http://www.vagrantup.com/) for Vagrant.
 ####3) Establish the Virtual box and install the server
 At a terminal command prompt run these commands:
   
-	host machine prompt> vagrant box add ubuntu14 https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-i386-vagrant-disk1.box
 	host machine prompt> vagrant up
 	host machine prompt> vagrant ssh
 	#note: the previous command will take you into the vagrant virtual machine and give you a guest machine prompt
