@@ -1,7 +1,7 @@
-OpenDisclosure backend installation in Vagrant in 6 steps
+Open Disclosure backend installation in Vagrant in 6 steps
 =================
 
-Scripts to build Hack Oregon's back end in a vagrant virtual machine.
+Scripts to build Open Disclosure's back end in a vagrant virtual machine.
 This has been tested on a Mac running Yosemite. From what I understand, Virtual box and Vagrant work in Windows as well, and most of the commands are the same, though, I have not tested it in Windows.
 
 To install the backend:
@@ -81,7 +81,7 @@ The server should now be running. To check that everything was successfull open 
   	
   	127.0.0.1:5000
 	
-The OpenDisclosure site should come up, and should look pretty much just like the current running [OpenDisclosure website](http://www.opendisclosure.io/). 
+The Open Disclosure site should come up, and should look pretty much just like the current running [Open Disclosure website](http://www.opendisclosure.io/). 
 
 ####6) Shutting everything down. 
 It is advised that you do not leave a virtual machine running when it is not needed, as this can occasionally cause conflicts if other virtual machines are initilized which are located in associated directories or use the same ports. 
