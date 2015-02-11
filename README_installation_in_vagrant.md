@@ -58,7 +58,7 @@ At a terminal command prompt run these commands:
 	guest machine prompt> sudo chmod 755 ~/installBackEnd.sh
 	guest machine prompt> ./installBackEnd.sh
 	
-After the installation finishes and the guest machine prompt returns:
+After the installation finishes and the guest machine prompt returns, run this command:
 
  	guest machine prompt> source ~/.bash_profile
  	
