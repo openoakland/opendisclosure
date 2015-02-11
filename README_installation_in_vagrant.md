@@ -22,7 +22,7 @@ See [http://www.vagrantup.com/](http://www.vagrantup.com/) for Vagrant.
 		
   you will probably need to read [this](http://stackoverflow.com/questions/25652769/should-vagrant-require-sudo-for-each-command) to make everything   work right again.
 	
-  Running code as root from inside of the Vagrant vitual machine, ( ex: after >vagrant ssh and before ctrl-d ), is fine. 
+  Running code as root inside of the Vagrant vitual machine, ( ie: after >vagrant ssh and before ctrl-d ), is fine. 
 	
 ######b) Starting the Vagrant virtual machine after it is shut down 
   To restart a virtual box, you must first go to the directory where you first initilized and installed the Vagrant box, then use the 'vagrant up' command. If you type this command:
@@ -83,7 +83,7 @@ The server should now be running. To check that everything was successfull open 
 	
 The Open Disclosure site should come up, and should look pretty much just like the current running [Open Disclosure website](http://www.opendisclosure.io/). 
 
-####6) Shutting everything down. 
+####6) Shutting everything down 
 It is advised that you do not leave a virtual machine running when it is not needed, as this can occasionally cause conflicts if other virtual machines are initilized which are located in associated directories or use the same ports. 
 
 ######To stop the server:
