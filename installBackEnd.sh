@@ -22,6 +22,11 @@ sudo ARCHFLAGS="-arch x86_64" gem install pg
 #         /usr/bin/ruby1.9.1 extconf.rb
 # checking for libpq-fe.h... no
 # Can't find the 'libpq-fe.h header
+# Can't find the 'libpq-fe.h header
+# *** extconf.rb failed ***
+# Could not create Makefile due to some reason, probably lack of
+# necessary libraries and/or headers.  Check the mkmf.log file for more
+# details.  You may need configuration options.
 git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
 git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
 echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
@@ -35,22 +40,27 @@ source .bash_profile
 # Reading state information... Done
 # E: Unable to locate package libopenssl-devel
 # E: Unable to locate package libreadline-devel
-
+echo "installing libssl-dev libreadline-dev g++ libpq-dev ... "
 sudo apt-get -y install libssl-dev libreadline-dev g++ libpq-dev
 
+echo "Running rbenv install 2.1.2"
 rbenv install 2.1.2
 rbenv global 2.1.2
 
+echo "installing the pg gem"
 gem install pg -v '0.17.1'
+
+echo "installing bundler"
 gem install bundler
 
+echo "Cloning the opendisclosure git repo..."
 
 git clone https://github.com/openoakland/opendisclosure.git
 
 cd opendisclosure/
 source ~/.bash_profile
 
-
+echo "Installing the bundle..."
 bundle install
 #old error here: Your Ruby version is 1.9.3, but your Gemfile specified 2.1.2
 
@@ -61,6 +71,7 @@ bundle install
 #the preceeding line likely is not necessarry and creates this error after entering a space as the password
 #createuser: creation of new role failed: ERROR:  role "postgres" already exists
 
+echo "Preparing the database"
 sudo -u postgres createuser -d -s vagrant
 
 echo DATABASE_URL="postgres://$USER:password@localhost/vagrant" > .env
@@ -69,11 +80,15 @@ sudo -u postgres psql -c "ALTER USER vagrant WITH PASSWORD 'password';"
 sudo service postgresql restart
 createdb vagrant
 
+source ~/.bash_profile
 #load the data
+echo "Loading the data ... "
 bundle exec ruby backend/load_data.rb
 
-#get ready for the port forwarding
-mv /vagrant/Vagrantfile /vagrant/Vagrantfile_original
-cp /vagrant/Vagrantfile_final /vagrant/Vagrantfile
-#have this command run by the user from the command prompt:
-#foreman start
+echo "All installation steps complete or attempted."
+echo "If all went without error, you should be able to run these commands"
+echo "> source ~/.bash_profile"
+echo "> cd opendisclosure"
+echo "> foreman start"
+echo "then enter 127.0.0.1:5000 into the address bar in an internet"
+echo "browser on this computer and see the Open Disclosure homepage."
