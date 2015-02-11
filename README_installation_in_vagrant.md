@@ -51,29 +51,22 @@ See [http://www.vagrantup.com/](http://www.vagrantup.com/) for Vagrant.
 At a terminal command prompt run these commands:
   
 	host machine prompt> vagrant box add ubuntu14 https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-i386-vagrant-disk1.box
-	host machine prompt> vagrant init ubuntu14
 	host machine prompt> vagrant up
 	host machine prompt> vagrant ssh
 	#note: the previous command will take you into the vagrant virtual machine and give you a guest machine prompt
 	guest machine prompt> cp /vagrant/installBackEnd.sh ~
 	guest machine prompt> sudo chmod 755 ~/installBackEnd.sh
 	guest machine prompt> ./installBackEnd.sh
-
+	
 After the installation finishes and the guest machine prompt returns:
+
+ 	guest machine prompt> source ~/.bash_profile
  	
- 	press 'control + D' to log out of the Vagrant virtual machine; 
- 	
-The host machine prompt should return.
 The server should now be installed and the data loaded.	
 
-####4) Forward port 5000 from the guest machine to the host machine and start the server
-This allows you to see the webpage served by the backend.
+####4) Start the server
 
-To do this, enter these commands:
- 
- 	host machine prompt> vagrant reload
-	host machine prompt> vagrant ssh
-	guest machine prompt> cd opendisclosure/
+	guest machine prompt> cd ~/opendisclosure/
 	guest machine prompt> foreman start
 	
 ####5) Check the installation
