@@ -5,8 +5,25 @@ describe DataFetcher::Summary do
     ::Summary.delete_all
   end
 
-  describe '.parse_row' do
-    subject { DataFetcher::Summary.new(rows).tap(&:run!).last_result }
+  describe '.parse_summary' do
+    let(:row) do
+      {
+        "thru_date" : "2011-12-31T00:00:00",
+        "line_item" : "1",
+        "from_date" : "2011-07-01T00:00:00",
+        "filer_naml" : "Harland For Mayor",
+        "amount_a" : "0",
+        "report_num" : "0",
+        "amount_b" : "5762",
+        "form_type" : "F460",
+        "rec_type" : "SMRY",
+        "filer_id" : "1327636",
+        "committee_type" : "CTL",
+        "rpt_date" : "2014-04-01T00:00:00"
+      }
+    end
+
+    subject { DataFetcher::Summary.parse_summary(row) }
 
     context 'when the line item is "total monetary contributions"' do
       let(:row) { JSON.load(File.read('spec/samples/socrata_summary.json')) }
