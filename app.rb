@@ -5,20 +5,13 @@ require 'handlebars_assets'
 require 'active_record'
 require 'sass'
 require 'haml'
-
-Dir['./backend/models/*.rb'].each { |f| require f }
+require_relative 'backend/environment'
 
 class OpenDisclosureApp < Sinatra::Application
   class << self
     # Include helpers like image_path so that the ActiveRecord models can use
     # them to generate urls.
     include Sprockets::Helpers
-  end
-
-  configure do
-    ENV['DATABASE_URL'] ||= "postgres://localhost/postgres"
-    ActiveRecord::Base.establish_connection
-    ActiveRecord::Base.connection.verify!
   end
 
   set :assets_precompile, %w(application.js application.css *.png *.jpg *.svg *.eot *.ttf *.woff *.ico)
