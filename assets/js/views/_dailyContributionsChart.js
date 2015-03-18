@@ -2,7 +2,7 @@ OpenDisclosure.DailyContributionsChartView = OpenDisclosure.ChartView.extend({
   draw: function(el){
     var chart = this;
     chart.data = this.collection;
-    chart.candidates = _.pluck(OpenDisclosure.BootstrappedData.candidates, "short_name");
+    chart.candidates = _.pluck(OpenDisclosure.BootstrappedData.candidates, "name");
 
     var margin = {top: 0, right: 0, bottom: 30, left: 100},
       svgWidth = chart.dimensions.width,

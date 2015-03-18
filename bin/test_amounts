@@ -2,7 +2,7 @@
 load 'backend/environment.rb'
 
 Party.mayoral_candidates.each do |c|
-  puts c.short_name
+  puts c.name
   contributions = c.summary.total_contributions_received
   expenditures = c.summary.total_expenditures_made
   misc = c.summary.total_misc_increases_to_cash

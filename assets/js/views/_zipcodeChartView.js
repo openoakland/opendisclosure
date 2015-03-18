@@ -6,7 +6,7 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     var candidates_with_contributions = _.filter(OpenDisclosure.BootstrappedData.candidates, function(d) {
       return d.received_contributions_count > 0;
     });
-    chart.candidates = _.pluck(candidates_with_contributions, "short_name")
+    chart.candidates = _.pluck(candidates_with_contributions, "name")
     chart.candidates.unshift("Overview");
     chart.amounts = this.collection;
 

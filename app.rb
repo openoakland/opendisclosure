@@ -36,16 +36,14 @@ class OpenDisclosureApp < Sinatra::Application
 
     headers 'Content-Type' => 'application/json'
 
-    fields = {
-      include: [
-        { recipient: { methods: :short_name } },
-        { contributor: { methods: :short_name } },
-      ],
-    }
+    fields = { include: [:recipient, :contributor], }
     party = Party.find(id)
+
     Contribution
       .where(contributor_id: party)
-      .includes(:contributor, :recipient).order(:date).reverse_order.to_json(fields)
+      .includes(:contributor, :recipient)
+      .order(date: :desc)
+      .to_json(fields)
   end
 
   get '/api/contributorName/:name' do |name|
@@ -55,10 +53,7 @@ class OpenDisclosureApp < Sinatra::Application
     headers 'Content-Type' => 'application/json'
 
     fields = {
-      include: [
-        { recipient: { methods: :short_name } },
-        { contributor: { methods: :short_name } },
-      ],
+      include: [:recipient, :contributor],
     }
     search    = "%" + CGI.unescape(name).downcase + "%"
     party         = Party.where("lower(name) like ?", search)
@@ -76,10 +71,7 @@ class OpenDisclosureApp < Sinatra::Application
 
     fields = {
       only: %w[amount date type],
-      include: [
-        { recipient: { methods: :short_name } },
-        { contributor: { methods: :short_name } },
-      ],
+      include: [:recipient, :contributor],
     }
 
     case type
@@ -211,10 +203,7 @@ class OpenDisclosureApp < Sinatra::Application
     headers 'Content-Type' => 'application/json'
 
     fields = {
-      include: [
-        { recipient: { methods: :short_name } },
-        { contributor: { methods: :short_name } },
-      ],
+      include: [:recipient, :contributor],
     }
 
     IEC.includes(:contributor, :recipient)
@@ -248,11 +237,9 @@ class OpenDisclosureApp < Sinatra::Application
 
     fields = {
       only: %w[amount date type],
-      include: [
-        { recipient: { methods: :short_name } },
-        { contributor: { methods: :short_name } },
-      ],
+      include: [:recipient, :contributor],
     }
+
     Contribution
       .includes(:contributor, :recipient)
       .joins('JOIN parties on contributor_id = parties.id')

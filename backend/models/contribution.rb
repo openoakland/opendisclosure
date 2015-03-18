@@ -19,7 +19,7 @@ class Contribution < ActiveRecord::Base
   end
 
   def set_self_contribution
-    self.self_contribution = contributor.name == recipient.short_name
+    self.self_contribution = contributor.name == recipient.name
     true
   end
 

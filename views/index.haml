@@ -65,7 +65,7 @@
               %ul.nav.nav-sidebar.compressed
                 - candidates.each do |c|
                   %li
-                    %a{ href: c.link_path }= c.short_name
+                    %a{ href: c['slug'] }= c['name']
 
         .main.col-xs-12.col-md-10
           %span Loading data...
@@ -92,7 +92,7 @@
                       </td>
                       <td class='mayor-info' scope='row'>
                         <p class='mayor-name'>
-                          <a href= '<%= m.linkPath() %>'><%= m.get('short_name') %></a>
+                          <a href= '<%= m.linkPath() %>'><%= m.get('name') %></a>
                         </p>
                         <p class='mayor-profession'><%= m.get('profession') %></p>
                       </td>
@@ -118,7 +118,7 @@
                     <img class='mayor-picture' src="<%= m.imagePath() %>" />
                   </a>
                   <a href='<%= m.linkPath() %>'>
-                    <p class='mayor-name'><%= m.get('short_name') %></p>
+                    <p class='mayor-name'><%= m.get('name') %></p>
                   </a>
                   <p class='mayor-profession'><%= m.get('profession') %></p>
                 </li>
