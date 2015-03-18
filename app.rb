@@ -137,19 +137,12 @@ class OpenDisclosureApp < Sinatra::Application
         .order(date: :desc)
         .to_json(fields)
     when 'committee'
-      search    = "%" + CGI.unescape(id).downcase.gsub(/-/, '_') + "%"
+      search        = "%" + CGI.unescape(id).downcase.gsub(/-/, '_') + "%"
       party         = Party::Committee.where("lower(name) like ?", search)
       Contribution
         .where(recipient_id: party)
         .includes(:recipient, :contributor)
         .order(recipient_id: :asc).order(date: :desc)
-        .to_json(fields)
-    else
-      # TODO: Remove this once we no longer hit /api/contributions
-      Contribution
-        .where(recipient_id: Party.mayoral_candidates.to_a)
-        .includes(:recipient, :contributor)
-        .order(date: :desc)
         .to_json(fields)
     end
   end
@@ -211,8 +204,10 @@ class OpenDisclosureApp < Sinatra::Application
     }
 
     IEC.includes(:contributor, :recipient)
-       .order('extract(year from date)').reverse_order
-       .order(:contributor_id).to_json(fields)
+       .order('extract(year from date)')
+       .reverse_order
+       .order(:contributor_id)
+       .to_json(fields)
   end
 
   get '/api/party/:id' do |id|
