@@ -24,7 +24,7 @@ OpenDisclosure.App = Backbone.Router.extend({
       multiples: new OpenDisclosure.Multiples(),
       independentExpends: new OpenDisclosure.IECs(),
       zipContributions: $.getJSON("/api/contributions/zip"),
-      dailyContributions: $.getJSON("/api/contributions/over_time")
+      dailyContributions: $.getJSON("/api/contributions/over-time")
     };
 
     // Call fetch on each Backbone.Collection
