@@ -263,6 +263,12 @@ class OpenDisclosureApp < Sinatra::Application
     parties = Party.where(committee_id: candidates.map { |c| c['committee_id'] }.compact)
                    .to_json(include: :summary)
 
+    # Because of sprockets' asset digesting, we need to add the image path in so
+    # the frontend can create an <img> tag.
+    candidates.each do |candidate|
+      candidate['image'] = image_path(candidate['name'].split.last + '.jpg')
+    end
+
     # This renders views/index.haml
     haml :index, locals: {
       candidates: candidates,
