@@ -63,14 +63,16 @@ class OpenDisclosureApp < Sinatra::Application
   end
 
   get '/api/contributions/zip' do
+    committee_ids_with_data = CandidateConfig.mayoral_committee_ids('oakland')
+
     Contribution
       .joins(:recipient, :contributor)
-      .where(recipient_id: CandidateConfig.mayoral_candidates('oakland'))
+      .where(parties: { committee_id: committee_ids_with_data })
       .where(self_contribution: false)
       .group('contributors_contributions.zip, parties.committee_id')
       .pluck('contributors_contributions.zip, parties.committee_id, sum(contributions.amount)')
       .each_with_object({}) do |(zip, committee_id, amount), hash|
-          candidate_name = CandidateConfig.get_candidate(committee_id)['name']
+          candidate_name = CandidateConfig.get_config('oakland', committee_id)['name']
           hash[zip] ||= Hash.new(0)
           hash[zip][candidate_name] += amount
         end
@@ -84,26 +86,26 @@ class OpenDisclosureApp < Sinatra::Application
   end
 
   get '/api/contributions/over-time' do
-    names_by_id = Hash[CandidateConfig.mayoral_candidates('oakland').map { |c| [c.id, c.name] }]
+    committee_ids_with_data = CandidateConfig.mayoral_committee_ids('oakland')
     total_amount_by_candidate = Hash.new(0)
 
     Contribution
-      .where(recipient_id: CandidateConfig.mayoral_candidates('oakland').to_a)
+      .joins(:recipient)
+      .where(parties: { committee_id: committee_ids_with_data })
       .order(:date)
-      .pluck(:amount, :recipient_id, :date)
-      .each_with_object({}) do |(amount, recipient_id, date), hash|
-          candidate_name             = names_by_id[recipient_id]
+      .pluck(:amount, 'parties.committee_id', :date)
+      .each_with_object({}) do |(amount, recipient_committee_id, date), hash|
           # Since we process data points in date order, if this date's total
           # isn't defined we should start with the previous total.
-          hash[recipient_id]       ||= {}
-          hash[recipient_id][date] ||= total_amount_by_candidate[recipient_id]
+          hash[recipient_committee_id]       ||= {}
+          hash[recipient_committee_id][date] ||= total_amount_by_candidate[recipient_committee_id]
 
           # And actually update the totals counters:
-          total_amount_by_candidate[recipient_id] += amount
-          hash[recipient_id][date]                += amount
+          total_amount_by_candidate[recipient_committee_id] += amount
+          hash[recipient_committee_id][date]                += amount
         end
-      .each_with_object({}) do |(recipient_id, amount_by_date), hash|
-          candidate_name = names_by_id[recipient_id]
+      .each_with_object({}) do |(recipient_committee_id, amount_by_date), hash|
+          candidate_name = CandidateConfig.get_config('oakland', recipient_committee_id)['name']
 
           amount_by_date.each do |date, amount|
             hash[candidate_name] ||= []

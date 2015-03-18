@@ -3,10 +3,10 @@ OpenDisclosure.ZipcodeChartView = OpenDisclosure.ChartView.extend({
     var chart = this;
 
     // Process data
-    var candidates_with_contributions = _.filter(OpenDisclosure.BootstrappedData.candidates, function(d) {
+    var parties_with_contributions = _.filter(OpenDisclosure.BootstrappedData.parties, function(d) {
       return d.received_contributions_count > 0;
     });
-    chart.candidates = _.pluck(candidates_with_contributions, "name")
+    chart.candidates = _.pluck(parties_with_contributions, "name")
     chart.candidates.unshift("Overview");
     chart.amounts = this.collection;
 
