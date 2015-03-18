@@ -261,7 +261,7 @@ class OpenDisclosureApp < Sinatra::Application
     most_recently_updated_party = Party.where('last_updated_date is not null')
                                        .order(last_updated_date: :desc)
                                        .first
-    candidates = CandidateConfig::DATA.fetch('oakland')['candidates']
+    candidates = CandidateConfig.mayoral_candidates('oakland')
     parties = Party.where(committee_id: candidates.map { |c| c['committee_id'] }.compact)
                    .to_json(include: :summary)
 
