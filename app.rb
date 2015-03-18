@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'sinatra/content_for'
 require 'sinatra/asset_pipeline'
+require 'sinatra/reloader'
 require 'handlebars_assets'
 require 'active_record'
 require 'sass'
@@ -13,6 +14,8 @@ class OpenDisclosureApp < Sinatra::Application
     # them to generate urls.
     include Sprockets::Helpers
   end
+
+  configure(:development) { register Sinatra::Reloader }
 
   set :assets_precompile, %w(application.js application.css *.png *.jpg *.svg *.eot *.ttf *.woff *.ico)
   set :assets_prefix, %w(assets vendor/assets) + [File.dirname(HandlebarsAssets.path)]
