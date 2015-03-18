@@ -5,7 +5,6 @@
     %meta{content: "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}
     %title Open Disclosure
     %meta{content: "width=device-width, user-scalable=no", name: "viewport"}
-    %meta{ name: 'google-site-verification', content: 'yXhjc2AToqKzxrNc5p03ZIaaNiid07AB0_-VoNFP-pw' }
     %link{ rel: 'stylesheet', href: '//fonts.googleapis.com/css?family=Open+Sans:400,700|Crete+Round' }
     -#
       Include the assets/css/application.css.scss manifest. If you want to
@@ -13,195 +12,30 @@
       "assets_precompile" array in app.rb
     = stylesheet_tag 'application'
     %link{ href: image_path('favicon.ico'), rel:'icon' , type: 'image/x-icon'}
-  %body
-    -#
-      .disclaimer
-        %i.fa.fa-warning
-        Due to a technical issue,
-        = succeed '.' do
-          %a{ href: 'https://github.com/openoakland/opendisclosure/issues/323' }<
-            recent data is incomplete
-
-    %header.main-header
-      .container
-        .row
-          .hidden-xs.col-sm-2.header-oakland-logo
-            %a{ href: '/#' }
-              %img{ src: image_path('OaklandCityTree.png') }
-          .col-xs-12.col-sm-10.header-title-container
-            %h1.header-main-title
-              %a{ href: '/' }
-                %img.header-oakland-logo-inline{ src: image_path('OaklandCityTree.png') }
-                Open Disclosure
-                %span.header-main-title-green Oakland
-            %h2.header-catchphrase Bringing Oakland Campaign Money to Light
-
-    .container
-      .row
-        //Social sharing buttons from share this
-        .social-buttons.pull-right
-          %span{class:'st_facebook_large', displayText:'Facebook'}
-          %span{class:'st_twitter_large', displayText:'Tweet'}
-          / %span{class:'st_linkedin', displayText:'LinkedIn'}
-          %span{class:'st_pinterest_large', displayText:'Pinterest'}
-          / %span{class:'st_googleplus', displayText:'Google +'}
-          / %span{class:'st_sharethis', displayText:'ShareThis'}
-          %span{class:'st_email_large', displayText:'Email'}
-      .row
-        %aside.col-sm-2.hidden-xs.hidden-sm.sidebar-container{ role: 'navigation' }
-          %ul.nav.nav-sidebar.sidebar
-            %li
-              %a{ href: '/' } Home page
-            %li
-              %a{ href: '/about' } About Open Disclosure
-            %li
-              %a{ href: '/rules' } Oakland Campaign Finance Rules
-            %li
-              %a{ href: '/faq' } FAQ
-            %li
-              %a{ href: '/iec' } Independent Expenditure Committees
-            %li
-              %a{href: '/'} Candidates
-              %ul.nav.nav-sidebar.compressed
-                - candidates.each do |c|
-                  %li
-                    %a{ href: c['slug'] }= c['name']
-
-        .main.col-xs-12.col-md-10
-          %span Loading data...
-          %script{ type: 'text/template', id: 'mayoral-table-template' }
-            :plain
-              <h2 class='mayoral-context-header'>Campaign Finance for the 2014 Oakland Mayoral Election</h2>
-              <table id='mayoral-table' class='table'>
-                <thead>
-                  <tr>
-                    <th id='mayoral-table-picture-column'></th>
-                    <th id='mayoral-table-name-column'></th>
-                    <th class='mayoral-table-head bold'>Total Raised</th>
-                    <th class='mayoral-table-head'>Number of itemized contributions</th>
-                    <th class='mayoral-table-head'>Percentage of amount of itemized contributions from Oakland*</th>
-                    <th class='mayoral-table-head'>Percentage of total from personal funds</th>
-                    <th class='mayoral-table-head'>Average of itemized contributions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% _.each(candidatesWithData, function(m) { %>
-                    <tr>
-                      <td class='headshot'>
-                        <a href='<%= m.linkPath() %>'><img class='mayor-picture' src="<%= m.imagePath() %>" /></a>
-                      </td>
-                      <td class='mayor-info' scope='row'>
-                        <p class='mayor-name'>
-                          <a href= '<%= m.linkPath() %>'><%= m.get('name') %></a>
-                        </p>
-                        <p class='mayor-profession'><%= m.get('profession') %></p>
-                      </td>
-                      <td class='mayoral-table-number total-raised'><%= m.totalContributions() %></td>
-                      <td class='mayoral-table-number'><%= m.attributes.received_contributions_count %></td>
-                      <td class='mayoral-table-number'><%= m.pctContributionsFromOakland() %></td>
-                      <td class='mayoral-table-number'><%= m.pctPersonalContributions() %></td>
-                      <td class='mayoral-table-number'><%= m.avgContribution() %></td>
-                    </tr>
-                  <% }); %>
-                </tbody>
-              </table>
-              <p class='clearfix'>This table includes all candidates who have submitted campaign finance disclosure forms as of #{last_updated.strftime '%B %e, %Y'}.</p>
-              <h5> * This is the percentage of money, excluding candidates' own contributions and non-itemized contributions <a href='/faq#fromOakland'>see the FAQ</a></h5>
-              <h5> ** Candidates do not need to itemize contributions less than $100, <a href='/faq#smallContributions'>see the FAQ</a> </h5>
-              <h3>Candidates Without Data:</h3>
-              <p class='footnote'>These candidates will appear on the ballot in November, but have not filed any campaign finance disclosures.</p>
-              <p class='footnote'>For more information on who must file disclosures <a href='/faq#whoMustFile'>see the FAQ</a>.</p>
-              <ul class='mayoral-dataless-candidate-list row'>
-              <% _.each(candidatesWithoutData, function(m) { %>
-                <li class='mayoral-dataless-candidate col-xs-12 col-sm-4'>
-                  <a href='<%= m.linkPath() %>'>
-                    <img class='mayor-picture' src="<%= m.imagePath() %>" />
-                  </a>
-                  <a href='<%= m.linkPath() %>'>
-                    <p class='mayor-name'><%= m.get('name') %></p>
-                  </a>
-                  <p class='mayor-profession'><%= m.get('profession') %></p>
-                </li>
-              <% }); %>
-              </ul>
-    %footer.main-footer
-      .row
-        .col-sm-2
-          %a{href: '/'} Candidates
-        .col-sm-3
-          %a{ href: '/iec' } Independent Expenditure Committees
-        .col-sm-3
-          %a{ href: '/about' } About Open Disclosure
-        .col-sm-2
-          %a{ href: '/rules' } Oakland Campaign Finance Rules
-        .col-sm-2
-          %a{ href: '/faq' } FAQ
-      /
-        Commented out as a reminder it would be cool to get CfA's logo on here for real.
-        %a{ href: 'http://codeforamerica.org/'}
-          %img.footer-logos.CfA{ src: image_path('cfa_logo_footer.png') }
-        %a{ href: 'https://github.com/openoakland/opendisclosure'}
-          %img.footer-logos{ src: image_path('footer_logo_plus.png') }
-      %a{ href: 'http://openoakland.org/'}
-        %img.footer-logos{ src: image_path('OpenOakland-Logo-white2.png') }
-      %a{ href: 'https://github.com/openoakland/opendisclosure'}
-        %img.footer-logos{ src: image_path('footer_logo_plus.png') }
-      %a{ href: 'http://www2.oaklandnet.com/Government/o/CityAdministration/d/PublicEthics/index.htm'}
-        %img.footer-logos{ src: image_path('logo-Public-Ethics-Commission.png') }
-
-    / Third Party (cdn)
-    %script{src: "http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"}
-    %script{src: "http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"}
-    %script{src: "http://d3js.org/d3.v3.js"}
-    %script{src: '//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js'}
-
-    //Share this social sharing buttons
-    :javascript
-      var switchTo5x=true;
-    %script{type: "text/javascript", src: "http://w.sharethis.com/button/buttons.js"}
-    :javascript
-      stLight.options({publisher: "200b2fec-7081-42c4-950a-450071728f72", doNotHash: true, doNotCopy: false, hashAddressBar: false});
-
-    / Google apis
-    %script{src: "https://www.google.com/jsapi"}
-    :javascript
-      google.load('visualization', '1.0', {'packages':['corechart']});
-
-      window.OpenDisclosure = {};
-      window.OpenDisclosure.Views = {};
-      window.OpenDisclosure.Data = {};
-      window.OpenDisclosure.BootstrappedData = {
-        candidates: #{candidates.to_json},
-        parties: #{parties}
+    :css
+      /* TODO: Move this out of here and into its own stylesheet. */
+      .city-tile {
+        background-color: #fff;
+        width: 280px;
+        padding: 10px;
+        float: left;
+        margin: 10px;
+      }
+      .city-tile:hover h2 {
+        text-decoration: underline;
       }
 
-    -#
-      Include the assets/js/application.js manifest. If you want to include
-      another manifest here, you must also add it to the "assets_precompile"
-      array in app.rb
-    = javascript_tag 'application.js'
+  %body
+    %section{ style: 'width: 940px; margin: auto; text-align: center;' }
+      %h1 Open Disclosure
+      %a.city-tile{ href: subdomain_url('oakland', '/') }
+        %img{ src: image_path('OaklandCityTree.png') }
+        %h2 Oakland
 
-    :javascript
-      <!-- Google Analytics -->
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      %a.city-tile{ href: subdomain_url('sf', '/') }
+        %img{ src: image_path('OaklandCityTree.png') }
+        %h2 San Francisco
 
-      ga('create', '#{ENV['GOOGLE_ANALYTICS_ID']}', 'auto');
-      ga('send', 'pageview');
-
-
-    / USERVOICE Stuff
-    :javascript
-      UserVoice=window.UserVoice||[];
-      (function(){
-        var uv=document.createElement('script');
-        uv.type='text/javascript';
-        uv.async=true;
-        uv.src='//widget.uservoice.com/fE7XpxXMOWc2yipGiIhow.js';
-        var s=document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(uv,s)
-      })();
-
-      UserVoice.push(['addTrigger', {trigger_background_color: '#0F4800' }]);
+      %a.city-tile{ href: subdomain_url('sanjose', '/') }
+        %img{ src: image_path('OaklandCityTree.png') }
+        %h2 San Jose

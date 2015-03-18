@@ -15,6 +15,26 @@ class OpenDisclosureApp < Sinatra::Application
     include Sprockets::Helpers
   end
 
+  def subdomain(request)
+    parts = request.env['SERVER_NAME'].split('.')
+    return nil if parts.length == 2
+    return parts.first
+  end
+
+  helpers do
+    def subdomain_url(subdomain, path)
+      scheme = "http#{'s' if request.secure?}"
+
+      if request.port == (request.secure? ? 443 : 80)
+        "#{scheme}//#{subdomain}.#{request.host}#{path}"
+      else
+        "#{scheme}//#{subdomain}.#{request.host_with_port}#{path}"
+      end
+    end
+  end
+
+  SUBDOMAIN_REGEX = /\w+\.\w+\.\w+/
+
   configure(:development) { register Sinatra::Reloader }
 
   set :assets_precompile, %w(application.js application.css *.png *.jpg *.svg *.eot *.ttf *.woff *.ico)
@@ -30,7 +50,7 @@ class OpenDisclosureApp < Sinatra::Application
   #   http://apidock.com/rails/ActiveRecord/Serialization/to_json
 
   # This is data of contributions from an individual/company to various campaigns.
-  get '/api/contributor/:id' do |id|
+  get '/api/contributor/:id', host_name: SUBDOMAIN_REGEX do |id|
     cache_control :public
     last_modified Import.last.import_time
 
@@ -46,7 +66,7 @@ class OpenDisclosureApp < Sinatra::Application
       .to_json(fields)
   end
 
-  get '/api/contributorName/:name' do |name|
+  get '/api/contributorName/:name', host_name: SUBDOMAIN_REGEX do |name|
     cache_control :public
     last_modified Import.last.import_time
 
@@ -62,8 +82,8 @@ class OpenDisclosureApp < Sinatra::Application
       .includes(:contributor, :recipient).order(:date).reverse_order.to_json(fields)
   end
 
-  get '/api/contributions/zip' do
-    committee_ids_with_data = CandidateConfig.mayoral_committee_ids('oakland')
+  get '/api/contributions/zip', host_name: SUBDOMAIN_REGEX do
+    committee_ids_with_data = CandidateConfig.mayoral_committee_ids(subdomain(request))
 
     Contribution
       .joins(:recipient, :contributor)
@@ -72,7 +92,7 @@ class OpenDisclosureApp < Sinatra::Application
       .group('contributors_contributions.zip, parties.committee_id')
       .pluck('contributors_contributions.zip, parties.committee_id, sum(contributions.amount)')
       .each_with_object({}) do |(zip, committee_id, amount), hash|
-          candidate_name = CandidateConfig.get_config('oakland', committee_id)['name']
+          candidate_name = CandidateConfig.get_config(subdomain(request), committee_id)['name']
           hash[zip] ||= Hash.new(0)
           hash[zip][candidate_name] += amount
         end
@@ -85,8 +105,8 @@ class OpenDisclosureApp < Sinatra::Application
       .to_json
   end
 
-  get '/api/contributions/over-time' do
-    committee_ids_with_data = CandidateConfig.mayoral_committee_ids('oakland')
+  get '/api/contributions/over-time', host_name: SUBDOMAIN_REGEX do
+    committee_ids_with_data = CandidateConfig.mayoral_committee_ids(subdomain(request))
     total_amount_by_candidate = Hash.new(0)
 
     Contribution
@@ -105,7 +125,7 @@ class OpenDisclosureApp < Sinatra::Application
           hash[recipient_committee_id][date]                += amount
         end
       .each_with_object({}) do |(recipient_committee_id, amount_by_date), hash|
-          candidate_name = CandidateConfig.get_config('oakland', recipient_committee_id)['name']
+          candidate_name = CandidateConfig.get_config(subdomain(request), recipient_committee_id)['name']
 
           amount_by_date.each do |date, amount|
             hash[candidate_name] ||= []
@@ -119,7 +139,7 @@ class OpenDisclosureApp < Sinatra::Application
       .to_json
   end
 
-  get '/api/contributions/:type/?:id?' do |type, id|
+  get '/api/contributions/:type/?:id?', host_name: SUBDOMAIN_REGEX do |type, id|
     # TODO: Figure out how to cache this
     # cache_control :public
     # last_modified Import.last.import_time
@@ -149,7 +169,7 @@ class OpenDisclosureApp < Sinatra::Application
     end
   end
 
-  get '/api/employer_contributions' do
+  get '/api/employer_contributions', host_name: SUBDOMAIN_REGEX do
     cache_control :public
     last_modified Import.last.import_time
 
@@ -158,7 +178,7 @@ class OpenDisclosureApp < Sinatra::Application
     EmployerContribution.all.to_json
   end
 
-  get '/api/category_contributions' do
+  get '/api/category_contributions', host_name: SUBDOMAIN_REGEX do
     cache_control :public
     last_modified Import.last.import_time
 
@@ -167,7 +187,7 @@ class OpenDisclosureApp < Sinatra::Application
     CategoryContribution.all.to_json
   end
 
-  get '/api/whales' do
+  get '/api/whales', host_name: SUBDOMAIN_REGEX do
     cache_control :public
     last_modified Import.last.import_time
 
@@ -181,7 +201,7 @@ class OpenDisclosureApp < Sinatra::Application
     Whale.includes(:contributor).to_json(fields)
   end
 
-  get '/api/multiples' do
+  get '/api/multiples', host_name: SUBDOMAIN_REGEX do
     cache_control :public
     last_modified Import.last.import_time
 
@@ -195,7 +215,7 @@ class OpenDisclosureApp < Sinatra::Application
     Multiple.includes(:contributor).to_json(fields);
   end
 
-  get '/api/independent' do
+  get '/api/independent', host_name: SUBDOMAIN_REGEX do
     cache_control :public
     last_modified Import.last.import_time
 
@@ -212,7 +232,7 @@ class OpenDisclosureApp < Sinatra::Application
        .to_json(fields)
   end
 
-  get '/api/party/:id' do |id|
+  get '/api/party/:id', host_name: SUBDOMAIN_REGEX do |id|
     cache_control :public
     last_modified Import.last.import_time
 
@@ -230,7 +250,7 @@ class OpenDisclosureApp < Sinatra::Application
     Party.find(id).to_json(fields)
   end
 
-  get '/api/employees/:employer_id' do |employer_id|
+  get '/api/employees/:employer_id', host_name: SUBDOMAIN_REGEX do |employer_id|
     cache_control :public
     last_modified Import.last.import_time
 
@@ -257,11 +277,11 @@ class OpenDisclosureApp < Sinatra::Application
     send_file 'public/robots.txt'
   end
 
-  get '*' do
+  get '*', host_name: SUBDOMAIN_REGEX do
     most_recently_updated_party = Party.where('last_updated_date is not null')
                                        .order(last_updated_date: :desc)
                                        .first
-    candidates = CandidateConfig.mayoral_candidates('oakland')
+    candidates = CandidateConfig.mayoral_candidates(subdomain(request))
     parties = Party.where(committee_id: candidates.map { |c| c['committee_id'] }.compact)
                    .to_json(include: :summary)
 
@@ -272,11 +292,15 @@ class OpenDisclosureApp < Sinatra::Application
     end
 
     # This renders views/index.haml
-    haml :index, locals: {
+    haml :city, locals: {
       candidates: candidates,
       parties: parties,
       last_updated: most_recently_updated_party.try(:last_updated_date) || Time.now
     }
+  end
+
+  get '*' do
+    haml :index
   end
 
   after do
