@@ -32,7 +32,7 @@ OpenDisclosure.Views.Candidate = Backbone.View.extend({
   render: function(){
     this.$el.html(this.template(this.templateContext()));
 
-    if (this.model.get('summary') !== null){
+    if (this.model.has('summary')){
       //Render Subviews
       if (OpenDisclosure.Data.categoryContributions.length > 0) {
         this.renderCategoryChart();
@@ -105,7 +105,7 @@ OpenDisclosure.Views.Candidate = Backbone.View.extend({
     context.imagePath = this.model.imagePath();
     context.lastUpdatedDate = this.model.get('last_updated_date');
 
-    if (this.model.get('summary') !== null) {
+    if (this.model.has('summary')) {
       context.summary.totalContributions = this.model.totalContributions();
       context.summary.availableBalance = this.model.availableBalance();
       context.summary.totalExpenditures = this.model.friendlySummaryNumber('total_expenditures_made');
