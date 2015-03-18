@@ -34,7 +34,21 @@ OpenDisclosure.App = Backbone.Router.extend({
       }
     }
 
-    OpenDisclosure.Data.candidates = new OpenDisclosure.Candidates(OpenDisclosure.BootstrappedData.candidates);
+    // Merge together candidate configuration with the Party attributes when the
+    // committee_id's agree.
+    OpenDisclosure.Data.candidates = new OpenDisclosure.Candidates(
+      _.map(OpenDisclosure.BootstrappedData.candidates, function(candidateData) {
+        var party = _.find(OpenDisclosure.BootstrappedData.parties, function(p) {
+          return p.committee_id == candidateData.committee_id;
+        });
+
+        if (party) {
+          return new OpenDisclosure.Candidate(_.extend(party, candidateData));
+        } else {
+          return new OpenDisclosure.Candidate(candidateData);
+        }
+      })
+    );
 
     Backbone.history.start({ pushState: true });
   },

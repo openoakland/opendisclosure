@@ -65,12 +65,12 @@ class OpenDisclosureApp < Sinatra::Application
   get '/api/contributions/zip' do
     Contribution
       .joins(:recipient, :contributor)
-      .where(recipient_id: ODConfig.mayoral_candidates('oakland'))
+      .where(recipient_id: CandidateConfig.mayoral_candidates('oakland'))
       .where(self_contribution: false)
       .group('contributors_contributions.zip, parties.committee_id')
       .pluck('contributors_contributions.zip, parties.committee_id, sum(contributions.amount)')
       .each_with_object({}) do |(zip, committee_id, amount), hash|
-          candidate_name = ODConfig.get_candidate(committee_id)['name']
+          candidate_name = CandidateConfig.get_candidate(committee_id)['name']
           hash[zip] ||= Hash.new(0)
           hash[zip][candidate_name] += amount
         end
@@ -84,11 +84,11 @@ class OpenDisclosureApp < Sinatra::Application
   end
 
   get '/api/contributions/over-time' do
-    names_by_id = Hash[ODConfig.mayoral_candidates('oakland').map { |c| [c.id, c.name] }]
+    names_by_id = Hash[CandidateConfig.mayoral_candidates('oakland').map { |c| [c.id, c.name] }]
     total_amount_by_candidate = Hash.new(0)
 
     Contribution
-      .where(recipient_id: ODConfig.mayoral_candidates('oakland').to_a)
+      .where(recipient_id: CandidateConfig.mayoral_candidates('oakland').to_a)
       .order(:date)
       .pluck(:amount, :recipient_id, :date)
       .each_with_object({}) do |(amount, recipient_id, date), hash|
@@ -264,38 +264,16 @@ class OpenDisclosureApp < Sinatra::Application
     most_recently_updated_party = Party.where('last_updated_date is not null')
                                        .order(last_updated_date: :desc)
                                        .first
+    candidates = CandidateConfig::DATA.fetch('oakland')['candidates']
+    parties = Party.where(committee_id: candidates.map { |c| c['committee_id'] }.compact)
+                   .to_json(include: :summary)
 
     # This renders views/index.haml
     haml :index, locals: {
-      candidates: Party.all_mayoral_candidates,
-      last_updated: most_recently_updated_party.try(:last_updated_date) || Time.now,
-      candidate_json: candidate_json
+      candidates: candidates,
+      parties: parties,
+      last_updated: most_recently_updated_party.try(:last_updated_date) || Time.now
     }
-  end
-
-  # This JSON is put (bootstrapped) into every response because it's crucial for
-  # displaying the above-the-fold content (the candidate table).
-  def candidate_json
-    fields = {
-      only: %w[
-        id name committee_id received_contributions_count contributions_count
-        received_contributions_from_oakland self_contributions_total small_contributions
-        last_updated_date
-      ],
-      methods: [
-        :summary,
-        :short_name,
-        :declared,
-        :profession,
-        :party_affiliation,
-        :image,
-        :twitter,
-        :bio,
-        :sources,
-      ],
-    }
-
-    Party.all_mayoral_candidates.to_json(fields)
   end
 
   after do

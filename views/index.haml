@@ -171,7 +171,8 @@
       window.OpenDisclosure.Views = {};
       window.OpenDisclosure.Data = {};
       window.OpenDisclosure.BootstrappedData = {
-        candidates: #{candidate_json}
+        candidates: #{candidates.to_json},
+        parties: #{parties}
       }
 
     -#

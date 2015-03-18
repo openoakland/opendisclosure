@@ -45,6 +45,7 @@ rescue ActiveRecord::AdapterNotSpecified
   exit 1
 end
 
+require 'backend/candidate_config'
 Dir[File.dirname(__FILE__) + '/models/*.rb'].each { |f| require f }
 Dir[File.dirname(__FILE__) + '/fetchers/*.rb'].each { |f| require f }
 Dir[File.dirname(__FILE__) + '/downloaders/*.rb'].each { |f| require f }
