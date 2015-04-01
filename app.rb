@@ -23,7 +23,7 @@ class OpenDisclosureApp < Sinatra::Application
 
   helpers do
     def subdomain_url(subdomain, path)
-      scheme = "http#{'s' if request.secure?}"
+      scheme = "http#{'s' if request.secure?}:"
 
       if request.port == (request.secure? ? 443 : 80)
         "#{scheme}//#{subdomain}.#{request.host}#{path}"
