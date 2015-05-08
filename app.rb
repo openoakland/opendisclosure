@@ -291,7 +291,7 @@ class OpenDisclosureApp < Sinatra::Application
       candidate['image'] = image_path(candidate['name'].split.last + '.jpg')
     end
 
-    # This renders views/index.haml
+    # This renders views/city.haml
     haml :city, locals: {
       candidates: candidates,
       parties: parties,
