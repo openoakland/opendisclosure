@@ -14,6 +14,7 @@ class SocrataDownloader
 
   def initialize(uri)
     @uri = URI(uri)
+    @report_num_by_filer_id = {}
   end
 
   def each(&block)
@@ -23,14 +24,26 @@ class SocrataDownloader
       url = @uri
       url.query = URI.encode_www_form(
         '$limit' => 1000,
-        '$order' => 'thru_date ASC',
+        '$order' => 'report_num DESC',
         '$offset' => offset
       )
 
       puts '    Downloading: ' + url.to_s
 
       response = JSON.parse(open(url.to_s).read)
-      response.each(&block)
+
+      # We cache the largest filer_id for each form, since that field is
+      # incremented if an amended version of that form is published, and we
+      # only care about the most recent version.
+      response.each do |row|
+        @report_num_by_filer_id[row['filer_id']] ||= row['report_num'].to_i
+
+        if row['report_num'].to_i < @report_num_by_filer_id[row['filer_id']]
+          next
+        end
+
+        block.call(row)
+      end
 
       # preparation for next loop!
       more = response.length > 0
