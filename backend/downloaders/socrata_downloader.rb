@@ -30,7 +30,11 @@ class SocrataDownloader
       puts '    Downloading: ' + url.to_s
 
       response = JSON.parse(open(url.to_s).read)
-      response.each(&block)
+
+      response.each do |row|
+        next if row['rpt_date'] > '2014-11-30T00:00:00'
+        block.call(row)
+      end
 
       # preparation for next loop!
       more = response.length > 0
