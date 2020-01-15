@@ -1,3 +1,5 @@
+# THIS VERSION IS DEPRECATED. SEE: https://github.com/caciviclab/odca-jekyll
+
 [![Stories in Ready](https://badge.waffle.io/openoakland/opendisclosure.png?label=ready&title=Ready)](https://waffle.io/openoakland/opendisclosure)
 opendisclosure
 ==============
