@@ -54,7 +54,7 @@ GEM
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
-    rake (10.3.2)
+    rake (12.3.3)
     rb-readline (0.5.1)
     ref (1.0.5)
     rspec (3.0.0)
