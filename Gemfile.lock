@@ -106,9 +106,9 @@ GEM
       libv8 (~> 3.16.14.0)
       ref
     thor (0.17.0)
-    thread_safe (0.3.3)
+    thread_safe (0.3.6)
     tilt (1.4.1)
-    tzinfo (1.1.0)
+    tzinfo (1.2.10)
       thread_safe (~> 0.1)
 
 PLATFORMS
